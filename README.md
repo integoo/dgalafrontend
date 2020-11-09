@@ -68,3 +68,14 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/d
 ### `npm run build` fails to minify
 
 This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+
+
+1. npx create-react-app dgalafrontend
+2. Simple React Snippets (Burke Holland) (imrc, cc)
+3. Prittier - Code formatter (Esben Petersen) Enable formatting on save. Preference, Settings, agregar: "editor.formatOnSave": true,
+4. npm install bootstrap (index.js import 'bootstrap/dist/css/bootstrap.css') (import 'bootstrap/dist/css/bootstrap.min.css';)
+5.  npm install jquery popper.js (Next, go to the src/index.js file and add the following imports:)
+    import $ from 'jquery';
+    import Popper from 'popper.js';
+    import 'bootstrap/dist/js/bootstrap.bundle.min';
+6. 
