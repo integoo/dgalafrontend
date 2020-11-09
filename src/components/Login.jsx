@@ -19,7 +19,6 @@ class Login extends React.Component{
         }
         const styleForm = {
             width: "250px",
-            //border: "2px solid red",
             display: "flex",
             flexDirection: "column",
             justifyContent: "center",
