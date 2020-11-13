@@ -12,33 +12,47 @@ class Login extends React.Component{
         //this.Firmarse = this.Firmarse.bind(this)
         this.usuarioInput = React.createRef();
     }
-    // Firmarse (e) {
-    //     e.preventDefault();
-    //     if(e.target.elements.usuario.value === this.state.user && e.target.elements.password.value === this.state.password ){
-    //         //alert(e.target.elements.usuario.value+" "+e.target.elements.password.value)
-    //         //await this.setState({SignIn: true})
-    //         this.setState((state, props) =>({
-    //             SignIn:true
-    //         }))
-    //         alert("SIII :" +this.state.SignIn)
-    //     }else{
-    //         alert("Las Credenciales no son corrrectas!!!")
-    //         this.usuarioInput.current.focus();
-    //     }
-    // }
 
-
-    someMethod =  (e) => {
+    someMethod =  async (e) => {
         e.preventDefault();
-        if(e.target.elements.usuario.value === this.state.user && e.target.elements.password.value === this.state.password ){
 
-            //Este método corre el método del Parent Component para actualizar el state
-            this.props.handler(true)
+        let json = {
+            user: e.target.elements.usuario.value.toLowerCase(),
+            password: e.target.elements.password.value
+        };
 
-        }else{
-            alert("Las Credenciales no son corrrectas!!!")
-            this.usuarioInput.current.focus();
+        const url = 'https://grupodgala.com:3000/login'
+        try{
+                const response = await fetch(url, {
+                    method:'POST',
+                    body: JSON.stringify(json),
+                    headers:{
+                        'Content-Type': 'application/json'
+                    }
+                })
+                const data = await response.json()
+                alert(JSON.stringify(data))
+                alert(data.accessToken)
+                /* ***************TOKEN*************************** */
+                sessionStorage.setItem('myToken', data.accessToken);
+                sessionStorage.setItem('myColaborador', data.colaborador);
+                /* *********************************************** */
+
+                //if(e.target.elements.usuario.value === this.state.user && e.target.elements.password.value === this.state.password ){
+                if(data.id === 'Success!!!' ){
+                
+                    //Este método corre el método del Parent Component para actualizar el state
+                    this.props.handler(true)
+    
+                }else{
+                    alert("Las Credenciales no son corrrectas!!!")
+                    this.usuarioInput.current.focus();
+                }
+        } catch(error){
+            //alert(error)
+            alert("No se pudo lograr la Conexión. Por favor intente de nuevo.")
         }
+        
     }
 
     //Este método corre el método del Parent Component para actualizar el state
@@ -85,31 +99,15 @@ class Login extends React.Component{
             padding:"0 0 0 10px" 
         }
 
-
-        // function Greeting(props){
-        //     const isLoggedIn = props.isLoggedIn
-        //     if(isLoggedIn){
-        //         return <div>Menu Page</div>
-        //     }else{
-        //         return 
-        //          <div>Menu Page</div>
-                    
-                
-                
-        //     }
-        //}
-
         return(
                 <React.Fragment>
                     <div style={styleBody}>
                     <div className="container" style={styleContainer}>
-                {/* return <button onClick={this.someMethod}>PRESIONAR</button> */}
-                        {/* <form style={styleForm} onSubmit={this.Firmarse}> */}
                         <form style={styleForm} onSubmit={this.someMethod}>
                         <img src={logo} style={styleLogo} alt="logo" />
                             <h3 className="font-weight-bold font-italic mt-4">Grupo D'Gala</h3>
                             <input style={styleInput} type="text" placeholder="Usuario" name="usuario" ref={this.usuarioInput} autoFocus />
-                            <input style={styleInput} type="password" placeholder="Password" name="password"/>
+                            <input style={styleInput} type="password" placeholder="Password" name="password" />
                             <button type="submit" className="btn btn-primary btn-block m-4">Entrar</button>
                             <p>&copy; 2020-10-09</p>
                         </form>
