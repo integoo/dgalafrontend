@@ -1,25 +1,33 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { Component } from 'react'
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
+import Login from './components/Login'
+import Menu from './components/Menu'
+
+class App extends React.Component{
+  constructor(props){
+    super(props)
+
+    this.state={
+      isLoggedIn:false
+    }
+
+  }
+
+  handler = (param) => {
+    this.setState({
+      isLoggedIn: param
+    })
+  }
+  
+  render(){
+
+      return (
+        <div className="App">
+          {this.state.isLoggedIn ? <Menu /> : <Login handler={this.handler}/>}
+        </div>
+      );
+
+    }
+  }
 
 export default App;
