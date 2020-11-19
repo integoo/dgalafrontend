@@ -72,7 +72,7 @@ export default class Login extends React.Component{
                 {/* <h1 className="h3 mb-3 font-weight-normal">Please sign in</h1> */}
                 <h1 className="h3 mb-3 font-weight-bold" style={{color:"darkblue"}}><i>Limpiaduría D'Gala</i></h1>
                 <label for="inputEmail" className="sr-only">Email address</label>
-                <input type="text" id="inputEmail" class="form-control" placeholder="Usuario" name="usuario" ref={this.usuarioInput} required autoFocus></input>
+                <input type="text" id="inputEmail" class="form-control" placeholder="Username" name="usuario" ref={this.usuarioInput} required autoFocus></input>
                 <label for="inputPassword" className="sr-only">Password</label>
                 <input type="password" id="inputPassword" className="form-control" placeholder="Password" name="password" required></input>
                 <div className="checkbox mb-3">
