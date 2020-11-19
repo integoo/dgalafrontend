@@ -13,7 +13,7 @@ class App extends React.Component{
 
   }
 
-  handler = (param) => {
+  handlerAppState = (param) => {
     this.setState({
       isLoggedIn: param
     })
@@ -23,7 +23,7 @@ class App extends React.Component{
 
       return (
         <div className="App">
-          {this.state.isLoggedIn ? <Menu /> : <Login handler={this.handler}/>}
+          {this.state.isLoggedIn ? <Menu handler={this.handlerAppState}/> : <Login handler={this.handlerAppState} history={this.props.history}/>}
         </div>
       );
 

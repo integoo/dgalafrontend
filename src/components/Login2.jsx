@@ -1,16 +1,16 @@
-import { render } from '@testing-library/react';
-import React, { Component } from 'react';
+import React, {Component} from 'react'
 
-export default class Login extends React.Component{
+class Login extends React.Component{
     constructor(props){
         super(props)
 
         this.state = {
             SignIn: false
         }
-
+        //this.Firmarse = this.Firmarse.bind(this)
         this.usuarioInput = React.createRef();
     }
+
 
     someMethod =  async (e) => {
         e.preventDefault();
@@ -58,40 +58,62 @@ export default class Login extends React.Component{
     //      this.props.handler(true)
     // }
 
-
     render(){
-
         const handler = this.props.handler
         const logo = 'https://grupodgala.com/LogoDGala.png'
 
+        const styleLogo = {
+            //width:"130px",
+            width:"8em",
+            height:"90px"
+        }
+
+        const styleBody = {
+            width: "100vw",
+            height: "100vh",
+            background: "gainsboro"
+        }
+
+        const styleContainer = {
+            display: "flex",
+            justifyContent: "center",
+            height: "60vh",
+            alignItems: "center"
+
+        }
+        const styleForm = {
+            width: "250px",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            height: "80vh",
+            alignItems: "center"
+        }
+
+        const styleInput = {
+            margin: "1px",
+            width: "250px",
+            height: "40px",
+            padding:"0 0 0 10px" 
+        }
+
         return(
-        <React.Fragment>
-            <div className="body-center text-center">
-                <form className="form-signin" onSubmit={this.someMethod}>
-                <img className="mb-4" src={'https://grupodgala.com/LogoDGala.png'} alt="" width="122" height="92" />
-                {/* <h1 className="h3 mb-3 font-weight-normal">Please sign in</h1> */}
-                <h1 className="h3 mb-3 font-weight-bold" style={{color:"darkblue"}}><i>Limpiaduría D'Gala</i></h1>
-                <label for="inputEmail" className="sr-only">Email address</label>
-                <input type="text" id="inputEmail" class="form-control" placeholder="Usuario" name="usuario" ref={this.usuarioInput} required autoFocus></input>
-                <label for="inputPassword" className="sr-only">Password</label>
-                <input type="password" id="inputPassword" className="form-control" placeholder="Password" name="password" required></input>
-                <div className="checkbox mb-3">
-                        {/* <label> */}
-                        {/* <input type="checkbox" value="remember-me"> Remember me */}
-                        {/* </label> */}
-                        <label>
-                             <input type="checkbox" value="remember-me" /> Remember me 
-                        </label>
-                        
+                <React.Fragment>
+                    <div style={styleBody}>
+                    <div className="container" style={styleContainer}>
+                        <form style={styleForm} onSubmit={this.someMethod}>
+                        <img src={logo} style={styleLogo} alt="logo" />
+                            <h3 className="font-weight-bold font-italic mt-4">Grupo D'Gala</h3>
+                            <input style={styleInput} type="text" placeholder="Usuario" name="usuario" ref={this.usuarioInput} autoFocus />
+                            <input style={styleInput} type="password" placeholder="Password" name="password" />
+                            <button type="submit" className="btn btn-primary btn-block m-4">Entrar</button>
+                            <p>&copy; 2020-10-09</p>
+                        </form>
+                    </div>
                 </div>
-                    <button className="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
-                    <p className="mt-5 mb-3 text-muted">&copy; 2017-2020</p>
-                </form>
-            </div>
-        </React.Fragment>
-
-
+                </React.Fragment>
         )
     }
 }
 
+export default Login
