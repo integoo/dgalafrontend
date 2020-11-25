@@ -8,22 +8,23 @@ class App extends React.Component{
     super(props)
 
     this.state={
-      isLoggedIn:false
+      isLoggedIn:false,
+      accessToken: ''
     }
 
   }
 
-  handlerAppState = (param) => {
+  handlerAppState = (param, param2) => {
     this.setState({
-      isLoggedIn: param
+      isLoggedIn: param,
+      accessToken: param2
     })
   }
-  
-  render(){
 
+  render(){
       return (
         <div className="App">
-          {this.state.isLoggedIn ? <Menu handler={this.handlerAppState}/> : <Login handler={this.handlerAppState} history={this.props.history}/>}
+          {this.state.isLoggedIn ? <Menu handler={this.handlerAppState} accessToken={this.state.accessToken} /> : <Login handler={this.handlerAppState} />}
         </div>
       );
 

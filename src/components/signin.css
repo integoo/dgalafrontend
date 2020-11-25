@@ -41,7 +41,9 @@ body {
   /* padding-bottom: 40px; */
   padding-bottom: 270px;
   /* height: 100vh; */
-  background-color: #f5f5f5;
+  /* background-color: #f5f5f5; */
+  background-color: #cccccc
+  /* background-color: #eaeffa */
 }
 
 .form-signin {
