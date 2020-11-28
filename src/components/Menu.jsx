@@ -10,9 +10,13 @@ import Shop from "./Shop";
 class Menu extends Component {
   constructor(props) {
     super(props);
-    // this.state = {
-    //   count: 0,
-    // };
+    this.state = {
+      accessToken: this.props.accessToken
+    };
+  }
+
+  componentWillUnmount(){
+    <Redirect to="/" />
   }
 
   signOut = () => {
@@ -105,7 +109,7 @@ class Menu extends Component {
 
         <Switch>
           <Route exact path="/" />
-          <Route path="/limpiaduria/ingresos" component={Ingresos} />
+          <Route path="/limpiaduria/ingresos" component={() => <Ingresos accessToken={this.state.accessToken} />} />
           <Route path="/home" component={Home} />
           <Route path="/about" component={About} />
           <Route path="/shop" component={Shop} />

@@ -1,146 +1,365 @@
-import React, { Component } from 'react';
+import React, { Component } from "react";
 
 class Ingresos extends Component {
-    constructor(props){
-        super(props)
-        
-        this.state = { 
-            count:0,
-            sucursales:["1"]
-        }
-    }
+  constructor(props) {
+    super(props);
 
-    async componentDidMount(){
-            let d = new Date()
-            let vfecha = ("0"+(d.getMonth()+1)).slice(-2)+'/'+("0"+d.getDate()).slice(-2)+'/'+ d.getFullYear()
-            document.getElementById("fecha").value = vfecha
+    this.state = {
+      count: 0,
+      fecha: '01/01/2020',
+      sucursales: [],
+      unidadesdenegocio: [],
+      cuentascontables: [],
+      subcuentascontables: [],
+      selectedValueSucursal: "1",
+      selectedValueUnidadDeNegocio: "1",
+      selectedValueCuentaContable: "10000",
+      selectedValueSubcuentaContable: "001"
+    };
 
-            //Sucursales
-            try{
-                const url = 'http://decorafiestas.com:3001/ingresos'
-                const response = await fetch(url)
-                const data = await response.json()
-                this.setState({
-                    sucursales:data
-                })
-            }catch(error){
-                console.log(error.message)
-                alert("Error 1: "+error.message)
+    this.onHandleFecha = this.onHandleFecha.bind(this);
+    this.onHandleSucursales = this.onHandleSucursales.bind(this);
+    this.onHandleUnidadesDeNegocio = this.onHandleUnidadesDeNegocio.bind(this);
+    this.onHandleCuentasContables = this.onHandleCuentasContables.bind(this);
+    this.onHandleSubcuentasContables = this.onHandleSubcuentasContables.bind(this);
+
+    this.ingresoInput = React.createRef();
+  }
+  
+  async componentDidMount() {
+    const d = new Date();
+    const vfecha =
+      ("0" + (d.getMonth() + 1)).slice(-2) +
+      "/" +
+      ("0" + d.getDate()).slice(-2) +
+      "/" +
+      d.getFullYear();
+
+    //   this.setState({
+    //       fecha: vfecha
+    //   }, () =>{document.getElementById("fecha").value = this.state.fecha})
+
+
+
+      const dataSucursales = await this.getSucursales()
+      const dataUnidadesNegocio = await this.getUnidadesNegocio(dataSucursales[1].SucursalId)
+      const dataCuentasContables = await this.getCuentasContables(dataSucursales[1].SucursalId,dataUnidadesNegocio[0].UnidadDeNegocioId)
+      const dataSubcuentasContables = await this.getSubcuentasContables(dataSucursales[1].SucursalId,dataUnidadesNegocio[0].UnidadDeNegocioId,dataCuentasContables[0].CuentaContableId)
+
+      this.setState({
+        // fecha: vfecha, 
+        fecha:d,
+        sucursales: dataSucursales,
+        unidadesdenegocio:dataUnidadesNegocio,
+        cuentascontables: dataCuentasContables,
+        subcuentascontables: dataSubcuentasContables,
+        selectedValueSucursal: dataSucursales[1].SucursalId,
+        selectedValueUnidadDeNegocio: dataUnidadesNegocio[0].UnidadDeNegocioId,
+        selectedValueCuentaContable: dataCuentasContables[0].CuentaContableId,
+        selectedValueSubcuentaContable: dataSubcuentasContables[0].SubcuentaContableId
+      })
+      this.ingresoInput.current.focus()
+  }
+
+  async getSucursales(){
+       const url = `http://decorafiestas.com:3001/ingresos/sucursales`
+       try{
+            const response = await fetch(url,{
+                headers:{
+                    'Authorization': `Bearer ${this.props.accessToken}`
+                }
+            })
+            const data = await response.json()
+            return data
+       }catch(error){
+           console.log(error.message)
+           alert(error.message)
+       }
+       
+  }
+
+  async getUnidadesNegocio(vsucursal){
+      const url = `http://decorafiestas.com:3001/ingresos/unidadesdenegocio/${vsucursal}`
+      try{
+            const response = await fetch(url,{
+                headers:{
+                    'Authorization': `Bearer ${this.props.accessToken}`
+                }
+            })
+            const data = await response.json()
+            return data
+      }catch(error){
+          console.log(error.message)
+          alert(error.message)
+      }
+  }
+
+
+async getCuentasContables(vsucursal, vunidadnegocio){
+    const url = `http://decorafiestas.com:3001/ingresos/cuentascontables/${vsucursal}/${vunidadnegocio}`
+    try{
+        const response = await fetch(url,{
+            headers:{
+                'Authorization': `Bearer ${this.props.accessToken}`
             }
-        }
-
-    
-
-    async onHandleSucursales(){
-        alert("onHandleSucursales")
-        
-
-    }
-
-    onHandleUnidadesDeNegocio(){
-        alert("onHandleUnidadesDeNegocio")
-    }
-
-    onHandleCuentasContables(){
-        alert("onHandleCuentasContables")
-    }
-
-    onHandleSubmit(e){
-        e.preventDefault()
-    }
-     
-
-    render() { 
-        const styleForm = {
-            backgroundColor: "lightgray",
-            border: "5px solid gray",
-            height: 450,
-            width: "90vw",
-            padding: 10,
-            margin: 10
-            
-        }
-
-        const styleLabel={
-            display: "inlineBlock",
-            width: 180,
-            padding:"0 10px 0 10px"
-        }
-
-        const styleIngresoInput = {
-            textAlign:"right",
-            margin: "0 0 10px 0"
-        }
-
-        const styleFecha={
-            display: "inlineBlock",
-            width:115
-        }
-
-        
-        return ( 
-            <React.Fragment>
-                {/* <p className="badge badge-warning h1">Ingresos Page</p>  */}
-                {/* <h2><span className="badge badge-warning m-4">Ingresos</span></h2> */}
-                <div className="container">
-                    <form style={styleForm} onSubmit={this.onHandleSubmit}>
-                        <h2><span className="badge badge-warning mb-1">Ingresos</span></h2>
-                        <label forHtml="fecha" style={styleLabel}>Fecha :</label>
-                        <input type="date" style={styleFecha} name="fecha" id="fecha" />
-                        <br />
-
-                        {/* <label forHtml="sucursales"  style={styleLabel}>Sucursal:</label>
-                        <select onChange={this.onHandleSucursales} id="sucursales" name="sucursales">
-                        <option value="1">00 Empresa</option>
-                        <option value="1" selected>01 San Pedro</option>
-                        <option value="2">02 Limón</option>
-                        <option value="3">03 Santa María</option>
-                        </select> */}
-
-                        {/* <ul>
-                    {this.state.sucursales.map((element)=>{<li>{element[0].Sucursal}</li>})}
-                        </ul> */}
-                        {this.state.sucursales.map((element,i) =><li key={i}>{element.Sucursal}</li>)}
-
-                        <br />
-                        <label forHtml="unidadesdenegocio"  style={styleLabel}>Unidad de Negocio:</label>
-                        <select onChange={this.onHandleUnidadesDeNegocio} id="unidadesdenegocio" name="unidadesdenegocio">
-                        <option value="1">00 Empresa</option>
-                        <option value="1">01 Limpiaduría</option>
-                        <option value="2">02 Melate</option>
-                        </select>
-                        <br />
-                        {/* <label style = {styleLabel}forHtml="cuentaContable"  style={{"padding":"0 10px 0 10px"}}>Cuenta Contable:</label> */}
-                        <label style = {styleLabel}forHtml="cuentaContable">Cuenta Contable:</label>
-                        <select onChange={this.onHandleCuentasContables} id="cuentas" name="cuentas">
-                        <option value="1">01 Ventas</option>
-                        <option value="2">02 Otros Ingresos</option>
-                        </select>
-                        <br />
-                        <label forHtml="subcuentaContable"  style={styleLabel}>SubCuenta Contable:</label>
-                        <select id="subcuentas" name="subcuentas">
-                        <option value="1">01 Ventas</option>
-                        <option value="2">02 Otros Ingresos</option>
-                        </select>
-                        <br />
-
-                        <label forHtml="ingresoInput" style={styleLabel}>Monto Pesos</label>
-                        <input style={styleIngresoInput} type="numeric" step="0.01" placeholder="Monto $$$" id="ingresoInput" name="ingresoInput" autocomplete="off" min="0.01" max="99999" size="12" maxlength="9"/>
-                        <br />
-                        {/* <label forHtml="comentariosInput" style={styleLabel}>Comentarios</label> */}
-                        {/* <input type="text" id="comentariosInput" name="comentariosInput" size="40" maxlength="40" /> */}
-                        <textarea id="comentariosTextaera" name="comentariosTextarea" cols="30" row="2" maxlength="75" placeholder="Comentarios..."></textarea>
-                        <br />
-                        <br />
-
-                        <button className = "btn btn-primary btn-lg btn-block mb-3" type="submit">Save</button>
-                        <button className = "btn btn-primary btn-lg btn-block mb-3" type="reset">Clear</button>
-
-                    </form>
-                </div>
-            </React.Fragment>
-        );
+        })
+        const data = await response.json()
+        return data
+    }catch(error){
+        console.log(error.message)
+        alert(error.message)
     }
 }
- 
+
+async getSubcuentasContables(vsucursal,vunidadnegocio,vcuentacontable){
+    const url = `http://decorafiestas.com:3001/ingresos/subcuentascontables/${vsucursal}/${vunidadnegocio}/${vcuentacontable}`
+    try{
+        const response = await fetch(url,{
+            headers:{
+                'Authorization': `Bearer ${this.props.accessToken}`
+            }
+        })
+        const data = await response.json()
+        return data
+    }catch(error){
+        console.log(error.message)
+        alert(error.message)
+    }
+}
+
+onHandleFecha(event){
+    let x = 0
+}
+
+onHandleSucursales(event) {
+    this.setState({ selectedValueSucursal: event.target.value},
+        async ()=>{
+            const dataUnidadesNegocio = await this.getUnidadesNegocio(this.state.selectedValueSucursal)
+            const dataCuentasContables = await this.getCuentasContables(this.state.selectedValueSucursal,dataUnidadesNegocio[0].UnidadDeNegocioId)
+            const dataSubcuentasContables = await this.getSubcuentasContables(this.state.selectedValueSucursal,dataUnidadesNegocio[0].UnidadDeNegocioId,dataCuentasContables[0].CuentaContableId)
+
+            this.setState({
+                unidadesdenegocio:dataUnidadesNegocio,
+                cuentascontables: dataCuentasContables,
+                subcuentascontables: dataSubcuentasContables,
+                selectedValueUnidadDeNegocio: dataUnidadesNegocio[0].UnidadDeNegocioId,
+                selectedValueCuentaContable: dataCuentasContables[0].CuentaContableId,
+                selectedValueSubcuentaContable: dataSubcuentasContables[0].SubcuentaContableId
+            })
+        }
+        );
+        this.ingresoInput.current.focus()
+  }
+
+  onHandleUnidadesDeNegocio(event) {
+    this.setState({
+      selectedValueUnidadDeNegocio: event.target.value}, async()=>{
+
+        const dataCuentasContables = await this.getCuentasContables(this.state.selectedValueSucursal,this.state.selectedValueUnidadDeNegocio)
+        const dataSubcuentasContables = await this.getSubcuentasContables(this.state.selectedValueSucursal,this.state.selectedValueUnidadDeNegocio,dataCuentasContables[0].CuentaContableId)
+
+        this.setState({
+            cuentascontables: dataCuentasContables,
+            subcuentascontables: dataSubcuentasContables,
+            selectedValueCuentaContable: dataCuentasContables[0].CuentaContableId,
+            selectedValueSubcuentaContable: dataSubcuentasContables[0].SubcuentaContableId
+        })
+      });
+      this.ingresoInput.current.focus()
+  }
+
+  onHandleCuentasContables(event) {
+    this.setState({
+      selectedValueCuentaContable: event.target.value}, async ()=>{
+        const dataSubcuentasContables = await this.getSubcuentasContables(this.state.selectedValueSucursal,this.state.selectedValueUnidadDeNegocio,this.state.selectedValueCuentaContable)
+
+        this.setState({
+            subcuentascontables: dataSubcuentasContables,
+            selectedValueSubcuentaContable: dataSubcuentasContables[0].SubcuentaContableId
+        })
+      });
+      this.ingresoInput.current.focus()
+  }
+
+
+
+  componentDidUpdate(prevProps, prevState){
+    if(prevState.selectedValueSucursal !== this.state.selectedValueSucursal) {
+        //alert("prevState = "+prevState.selectedValueSucursal+"  this.state.selectedValueSucursal = "+this.state.selectedValueSucursal)
+    }
+  }
+
+
+
+  onHandleSubcuentasContables(event) {
+    this.setState({
+      selectedValueSubcuentaContable: event.target.value});
+      this.ingresoInput.current.focus()
+  }
+
+
+  onHandleSubmit(e) {
+    e.preventDefault();
+  }
+
+  render() {
+    const styleForm = {
+      backgroundColor: "lightgray",
+      border: "5px solid gray",
+      height: 500,
+      width: "90vw",
+      padding: 10,
+      margin: 10,
+    };
+
+    const styleLabel = {
+      display: "inlineBlock",
+      width: 180,
+      padding: "0 10px 0 10px",
+    };
+
+    const styleIngresoInput = {
+      textAlign: "right",
+      margin: "0 0 10px 0",
+    };
+
+    const styleFecha = {
+      display: "inlineBlock",
+      width: 115,
+    };
+
+    return (
+      <React.Fragment>
+        <div className="container">
+          <form style={styleForm} onSubmit={this.onHandleSubmit}>
+            <h2>
+              <span className="badge badge-warning mb-1">Ingresos</span>
+            </h2>
+            <label forhtml="fecha" style={styleLabel}>
+              Fecha :
+            </label>
+    {/* <input onChange={this.onHandleFecha} type="date" style={styleFecha} name="fecha" id="fecha" value={this.state.fecha} /> */}
+    <input onChange={this.onHandleFecha} type="date" name="fecha" id="fecha" value={this.state.fecha} />
+            <br />
+
+            <label forhtml="sucursales" style={styleLabel}>
+              Sucursal:
+            </label>
+            <select
+              onChange={this.onHandleSucursales}
+              id="sucursal"
+              name="sucursal"
+              value={this.state.selectedValueSucursal}
+            >
+              {this.state.sucursales.map((element, i) => (
+                <option key={i} value={element.SucursalId}>
+                  {element.Sucursal}
+                </option>
+              ))}
+            </select>
+
+            <br />
+            <label forhtml="unidadesdenegocio" style={styleLabel}>
+              Unidad de Negocio:
+            </label>
+            
+            <select
+              onChange={this.onHandleUnidadesDeNegocio}
+              id="unidadesdenegocio"
+              name="unidadesdenegocio"
+              value={this.state.selectedValueUnidadDeNegocio}
+            >
+              {this.state.unidadesdenegocio.map((element, i) => (
+                <option key={i} value={element.UnidadDeNegocioId}>
+                  {element.UnidadDeNegocio}
+                </option>
+              ))}
+            </select>
+
+            <br />
+            <label style={styleLabel} forhtml="cuentaContable">
+              Cuenta Contable:
+            </label>
+            
+            <select
+              onChange={this.onHandleCuentasContables}
+              id="cuentaContable"
+              name="cuentaContable"
+              value={this.state.selectedValueCuentaContable}
+            >
+              {this.state.cuentascontables.map((element, i) => (
+                <option key={i} value={element.CuentaContableId}>
+                  {element.CuentaContable}
+                </option>
+              ))}
+            </select>
+
+            <br />
+            <label forhtml="subcuentaContable" style={styleLabel}>
+              SubCuenta Contable:
+            </label>
+           
+            <select
+              onChange={this.onHandleSubcuentasContables}
+              id="subcuentaContable"
+              name="subcuentaContable"
+              value={this.state.selectedValueSubcuentaContable}
+            >
+              {this.state.subcuentascontables.map((element, i) => (
+                <option key={i} value={element.SubcuentaContableId}>
+                  {element.SubcuentaContable}
+                </option>
+              ))}
+            </select>
+            <br />
+
+            <label forhtml="ingresoInput" style={styleLabel}>
+              Monto Pesos
+            </label>
+            <input
+              style={styleIngresoInput}
+              type="numeric"
+              step="0.01"
+              placeholder="Monto $$$"
+              id="ingresoInput"
+              name="ingresoInput"
+              autoComplete="off"
+              min="0.01"
+              max="99999"
+              size="12"
+              maxLength="9"
+              required
+              ref={this.ingresoInput}
+            />
+            <br />
+            <textarea
+              id="comentariosTextaera"
+              name="comentariosTextarea"
+              cols="30"
+              row="2"
+              maxLength="75"
+              placeholder="Comentarios..."
+            ></textarea>
+            <br />
+            <br />
+
+            <button
+              className="btn btn-primary btn-lg btn-block mb-3"
+              type="submit"
+            >
+              Save
+            </button>
+            <button
+              className="btn btn-primary btn-lg btn-block mb-3"
+              type="reset"
+            >
+              Clear
+            </button>
+          </form>
+        </div>
+      </React.Fragment>
+    );
+  }
+}
+
 export default Ingresos;
