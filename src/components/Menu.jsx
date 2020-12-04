@@ -63,7 +63,7 @@ class Menu extends Component {
                     aria-haspopup="true"
                     aria-expanded="false"
                   >
-                    Limpiaduría
+                    Contabilidad
                   </span>
                   <div
                     className="dropdown-menu"

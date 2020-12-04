@@ -6,7 +6,8 @@ class Ingresos extends Component {
 
     this.state = {
       count: 0,
-      fecha: '01/01/2020',
+      fecha: "",
+      ingresoInput:"",
       sucursales: [],
       unidadesdenegocio: [],
       cuentascontables: [],
@@ -17,48 +18,84 @@ class Ingresos extends Component {
       selectedValueSubcuentaContable: "001"
     };
 
-    this.onHandleFecha = this.onHandleFecha.bind(this);
+    this.handleFecha = this.handleFecha.bind(this);
     this.onHandleSucursales = this.onHandleSucursales.bind(this);
     this.onHandleUnidadesDeNegocio = this.onHandleUnidadesDeNegocio.bind(this);
     this.onHandleCuentasContables = this.onHandleCuentasContables.bind(this);
     this.onHandleSubcuentasContables = this.onHandleSubcuentasContables.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this)
 
-    this.ingresoInput = React.createRef();
-  }
-  
-  async componentDidMount() {
+    // this.ingresoInput = React.createRef();
+}
+
+//  formatDate(date) {
+//     var d = new Date(date),
+//         month = '' + (d.getMonth() + 1),
+//         day = '' + d.getDate(),
+//         year = d.getFullYear();
+
+//     if (month.length < 2) 
+//         month = '0' + month;
+//     if (day.length < 2) 
+//         day = '0' + day;
+
+//     return [year, month, day].join('-');
+// }
+
+fechaActual(){
     const d = new Date();
-    const vfecha =
+    let vfecha = d.getFullYear()+"-"+
       ("0" + (d.getMonth() + 1)).slice(-2) +
-      "/" +
-      ("0" + d.getDate()).slice(-2) +
-      "/" +
-      d.getFullYear();
+      "-" +
+      ("0" + d.getDate()).slice(-2);
 
-    //   this.setState({
-    //       fecha: vfecha
-    //   }, () =>{document.getElementById("fecha").value = this.state.fecha})
+      return vfecha
+}
 
+async componentDidMount() {
+    this.ingresoInput = React.createRef();
 
+        const dataSucursales = await this.getSucursales()
+        if(dataSucursales.error){
+            alert(dataSucursales.error)
+            return
+        }
+        const dataUnidadesNegocio = await this.getUnidadesNegocio(dataSucursales[1].SucursalId)
+        if(dataUnidadesNegocio.error){
+            alert(dataUnidadesNegocio.error)
+            return
+        }
+        const dataCuentasContables = await this.getCuentasContables(dataSucursales[1].SucursalId,dataUnidadesNegocio[0].UnidadDeNegocioId)
+        if(dataCuentasContables.error){
+            alert(dataCuentasContables.error)
+            return
+        }
+        const dataSubcuentasContables = await this.getSubcuentasContables(dataSucursales[1].SucursalId,dataUnidadesNegocio[0].UnidadDeNegocioId,dataCuentasContables[0].CuentaContableId)
+        if(dataSubcuentasContables.error){
+            alert(dataSubcuentasContables.error)
+            return
+        }
+        this.setState({
+          //fecha: vfecha, 
+          //fecha:d,
+          //fecha: new Date(vfecha),
+          fecha: this.fechaActual(),
+          sucursales: dataSucursales,
+          unidadesdenegocio:dataUnidadesNegocio,
+          cuentascontables: dataCuentasContables,
+          subcuentascontables: dataSubcuentasContables,
+          selectedValueSucursal: dataSucursales[1].SucursalId,
+          selectedValueUnidadDeNegocio: dataUnidadesNegocio[0].UnidadDeNegocioId,
+          selectedValueCuentaContable: dataCuentasContables[0].CuentaContableId,
+          selectedValueSubcuentaContable: dataSubcuentasContables[0].SubcuentaContableId
+        })
+        try{
+            this.ingresoInput.current.focus()
+        }catch(error){
+            console.log(error.message)
+            alert(error.message)
+        }
 
-      const dataSucursales = await this.getSucursales()
-      const dataUnidadesNegocio = await this.getUnidadesNegocio(dataSucursales[1].SucursalId)
-      const dataCuentasContables = await this.getCuentasContables(dataSucursales[1].SucursalId,dataUnidadesNegocio[0].UnidadDeNegocioId)
-      const dataSubcuentasContables = await this.getSubcuentasContables(dataSucursales[1].SucursalId,dataUnidadesNegocio[0].UnidadDeNegocioId,dataCuentasContables[0].CuentaContableId)
-
-      this.setState({
-        // fecha: vfecha, 
-        fecha:d,
-        sucursales: dataSucursales,
-        unidadesdenegocio:dataUnidadesNegocio,
-        cuentascontables: dataCuentasContables,
-        subcuentascontables: dataSubcuentasContables,
-        selectedValueSucursal: dataSucursales[1].SucursalId,
-        selectedValueUnidadDeNegocio: dataUnidadesNegocio[0].UnidadDeNegocioId,
-        selectedValueCuentaContable: dataCuentasContables[0].CuentaContableId,
-        selectedValueSubcuentaContable: dataSubcuentasContables[0].SubcuentaContableId
-      })
-      this.ingresoInput.current.focus()
   }
 
   async getSucursales(){
@@ -127,8 +164,11 @@ async getSubcuentasContables(vsucursal,vunidadnegocio,vcuentacontable){
     }
 }
 
-onHandleFecha(event){
-    let x = 0
+handleFecha(event){
+    const vfecha = event.target.value
+    this.setState({
+        fecha: vfecha
+    })
 }
 
 onHandleSucursales(event) {
@@ -197,10 +237,87 @@ onHandleSucursales(event) {
       this.ingresoInput.current.focus()
   }
 
-
-  onHandleSubmit(e) {
-    e.preventDefault();
+  handleChange = (event) =>{
+    let {value, min, max, step} = event.target
+    this.setState({ingresoInput: value})
   }
+
+  handleKeyPress = (event) =>{
+
+  }
+
+  handleSubmit(event) {
+      event.preventDefault();
+      
+      //#################################### VALIDA INPUT FLOAT #################################
+      let value = event.target.ingresoInput.value
+      let bandera = true
+
+        //Valida que no haya más de un punto (.)
+      let count=0
+      for(let i =0; i<value.toString().length; i++){
+          if(value.charAt(i) === "."){
+              count++
+          }
+      }
+      if(count>1){
+          bandera=false
+      }
+        //Valida que si tiene un solo caracter que no sea punto (.)
+      if (count === 1){
+       if(value.length === 1){
+         bandera=false
+        }
+
+      }
+
+        //Valida que el último caracter no sea un punto (.)
+      if(value.charAt(value.length-1) === "."){
+            bandera = false
+      }
+
+        //Valida que solo haya números y punto
+      const arreglo = ['0','1','2','3','4','5','6','7','8','9','.']
+      for(let i=0;i<value.toString().length; i++){
+          let arregloFiltro = arreglo.filter(element => element === value.charAt(i).toString())
+          if (!arregloFiltro.length){
+              bandera=false
+          }
+      }
+      if(!bandera){
+          alert("Error en Monto Pesos")
+          this.setState({ingresoInput:""})
+          this.ingresoInput.current.focus()
+          return
+      }
+      //#######################################################################################
+
+      try{
+          const url = `http://decorafiestas.com:3001/ingresos/grabaingresos`
+          const response = await fetch(url,{
+              method: 'POST',
+              headers:{
+                  'Authorization': `Bearer ${this.props.accessToken}`
+              }
+          })
+          //const data = await response.json()
+          const data = await response.text()
+
+      }catch(error){
+          console.log(error.message)
+          alert(error.message)
+      }
+
+    alert("Procesar Ingreso")
+  }
+
+  deleteItem(event){
+      alert(event.target.value)
+      alert("Si borra")
+    //alert(event.target.value)
+    console.log(event)
+  }
+  
 
   render() {
     const styleForm = {
@@ -228,24 +345,33 @@ onHandleSucursales(event) {
       width: 115,
     };
 
+    const styleSelect = {
+        display: "inlineBlock",
+        width: 215
+    }
+
     return (
       <React.Fragment>
         <div className="container">
-          <form style={styleForm} onSubmit={this.onHandleSubmit}>
+        {/* <button className="btn btn-danger btn-lg" onClick={() => { if (window.confirm('Are you sure you wish to delete this item?')) this.onCancel(item) } } >Borrar</button>  */}
+        <button name="deleteButton" id="deleteButton" onClick={(e) => { if (window.confirm('Are you sure you wish to delete this item?')) this.deleteItem(e) } }>Delete</button>
+          <form style={styleForm} onSubmit={this.handleSubmit}>
             <h2>
-              <span className="badge badge-warning mb-1">Ingresos</span>
+              <span className="badge badge-success mb-1">Ingresos</span>
             </h2>
             <label forhtml="fecha" style={styleLabel}>
               Fecha :
             </label>
-    {/* <input onChange={this.onHandleFecha} type="date" style={styleFecha} name="fecha" id="fecha" value={this.state.fecha} /> */}
-    <input onChange={this.onHandleFecha} type="date" name="fecha" id="fecha" value={this.state.fecha} />
+    {/* <input onChange={this.handleFecha} type="date" style={styleFecha} name="fecha" id="fecha" value={this.state.fecha} /> */}
+    <input onChange={this.handleFecha} type="date" name="fecha" id="fecha" value={this.state.fecha} />
+    {/* <input onChange={this.handleFecha} type="date" name="fecha" id="fecha" /> */}
             <br />
 
             <label forhtml="sucursales" style={styleLabel}>
               Sucursal:
             </label>
             <select
+              style={styleSelect}
               onChange={this.onHandleSucursales}
               id="sucursal"
               name="sucursal"
@@ -264,6 +390,7 @@ onHandleSucursales(event) {
             </label>
             
             <select
+              style={styleSelect}
               onChange={this.onHandleUnidadesDeNegocio}
               id="unidadesdenegocio"
               name="unidadesdenegocio"
@@ -282,6 +409,7 @@ onHandleSucursales(event) {
             </label>
             
             <select
+              style={styleSelect}
               onChange={this.onHandleCuentasContables}
               id="cuentaContable"
               name="cuentaContable"
@@ -300,6 +428,7 @@ onHandleSucursales(event) {
             </label>
            
             <select
+              style={styleSelect}
               onChange={this.onHandleSubcuentasContables}
               id="subcuentaContable"
               name="subcuentaContable"
@@ -321,6 +450,9 @@ onHandleSucursales(event) {
               type="numeric"
               step="0.01"
               placeholder="Monto $$$"
+              onChange={this.handleChange}
+              onKeyPress={this.handleKeyPress}
+              value={this.state.ingresoInput}
               id="ingresoInput"
               name="ingresoInput"
               autoComplete="off"
