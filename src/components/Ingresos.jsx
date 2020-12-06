@@ -15,7 +15,8 @@ class Ingresos extends Component {
       selectedValueSucursal: "1",
       selectedValueUnidadDeNegocio: "1",
       selectedValueCuentaContable: "10000",
-      selectedValueSubcuentaContable: "001"
+      selectedValueSubcuentaContable: "001",
+      comentarios:""
     };
 
     this.handleFecha = this.handleFecha.bind(this);
@@ -242,11 +243,16 @@ onHandleSucursales(event) {
     this.setState({ingresoInput: value})
   }
 
+  handleComentarios = (event) =>{
+      let { value } = event.target
+      this.setState({comentarios: value})
+  }
+
   handleKeyPress = (event) =>{
 
   }
 
-  handleSubmit(event) {
+  async handleSubmit(event) {
       event.preventDefault();
       
       //#################################### VALIDA INPUT FLOAT #################################
@@ -292,27 +298,40 @@ onHandleSucursales(event) {
       }
       //#######################################################################################
 
+      let json = {
+        "SucursalId": this.state.selectedValueSucursal,
+        "UnidadDeNegocioId": this.state.selectedValueUnidadDeNegocio,
+        "CuentaContableId": this.state.selectedValueCuentaContable,
+        "SubcuentaContableId": this.state.selectedValueSubcuentaContable,
+        "Fecha": this.state.fecha,
+        "Monto": this.state.ingresoInput,
+        "Comentarios": this.state.comentarios
+      }
+
       try{
           const url = `http://decorafiestas.com:3001/ingresos/grabaingresos`
-          const response = await fetch(url,{
+          const response = await fetch(url, {
               method: 'POST',
+              body: JSON.stringify(json), //JSON.stringify(data)
               headers:{
-                  'Authorization': `Bearer ${this.props.accessToken}`
-              }
+                  'Authorization': `Bearer ${this.props.accessToken}`,
+                  'Content-Type': 'application/json'
+              },
           })
           //const data = await response.json()
           const data = await response.text()
+          alert(data)
 
       }catch(error){
           console.log(error.message)
           alert(error.message)
       }
 
-    alert("Procesar Ingreso")
   }
 
   deleteItem(event){
       alert(event.target.value)
+      alert(event.target.name)
       alert("Si borra")
     //alert(event.target.value)
     console.log(event)
@@ -320,14 +339,30 @@ onHandleSucursales(event) {
   
 
   render() {
+
+    const styleMain = {
+        display:"flex"
+    };
+
     const styleForm = {
       backgroundColor: "lightgray",
       border: "5px solid gray",
       height: 500,
-      width: "90vw",
+      width: "40vw",
+      minWidth: "430px",
       padding: 10,
       margin: 10,
     };
+
+    const styleDisplayIngresos = {
+        backgroundColor: "lightblue",
+        border: "5px solid gray",
+        height: 500,
+        width: "40vw",
+        minWidth: "430px",
+        padding: 10,
+        margin: 10,
+    }
 
     const styleLabel = {
       display: "inlineBlock",
@@ -352,9 +387,7 @@ onHandleSucursales(event) {
 
     return (
       <React.Fragment>
-        <div className="container">
-        {/* <button className="btn btn-danger btn-lg" onClick={() => { if (window.confirm('Are you sure you wish to delete this item?')) this.onCancel(item) } } >Borrar</button>  */}
-        <button name="deleteButton" id="deleteButton" onClick={(e) => { if (window.confirm('Are you sure you wish to delete this item?')) this.deleteItem(e) } }>Delete</button>
+        <div className="container" style={styleMain}>
           <form style={styleForm} onSubmit={this.handleSubmit}>
             <h2>
               <span className="badge badge-success mb-1">Ingresos</span>
@@ -362,9 +395,7 @@ onHandleSucursales(event) {
             <label forhtml="fecha" style={styleLabel}>
               Fecha :
             </label>
-    {/* <input onChange={this.handleFecha} type="date" style={styleFecha} name="fecha" id="fecha" value={this.state.fecha} /> */}
-    <input onChange={this.handleFecha} type="date" name="fecha" id="fecha" value={this.state.fecha} />
-    {/* <input onChange={this.handleFecha} type="date" name="fecha" id="fecha" /> */}
+            <input onChange={this.handleFecha} type="date" name="fecha" id="fecha" value={this.state.fecha} />
             <br />
 
             <label forhtml="sucursales" style={styleLabel}>
@@ -465,12 +496,13 @@ onHandleSucursales(event) {
             />
             <br />
             <textarea
-              id="comentariosTextaera"
+              id="comentariosTextarea"
               name="comentariosTextarea"
               cols="30"
               row="2"
               maxLength="75"
               placeholder="Comentarios..."
+              onChange={this.handleComentarios}
             ></textarea>
             <br />
             <br />
@@ -488,6 +520,9 @@ onHandleSucursales(event) {
               Clear
             </button>
           </form>
+          <div style={styleDisplayIngresos}>
+              <p>Hola Ingresos</p>
+          </div>
         </div>
       </React.Fragment>
     );
