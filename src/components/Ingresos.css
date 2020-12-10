@@ -1,0 +1,64 @@
+* {
+    box-sizing: border-box;
+    margin:0;
+    padding:0;
+}
+
+.seccionIngresos {
+    background-color: lightgray;
+    border: 5px solid gray;
+    border-radius: 10px;
+    height: 580px;
+    padding: 10px;
+    margin: 10px;
+    min-width: 420px;
+
+}
+
+ .seccionDespliegaIngresos {
+    background-color:lightblue;
+    border: 5px solid gray;
+    border-radius: 10px;
+    height: 580px;
+    padding: 10px;
+    margin: 10px;
+    min-width: 420px;
+    overflow: auto;
+} 
+
+table {
+  font-size: .7em;
+}
+
+td, th {
+  border: 1px solid #dddddd;
+  padding: 1px;
+}
+
+
+
+
+
+/* 
+.main {
+    display:flex;
+    flex-direction: row;
+}
+
+
+@media (max-width: 800px) {
+    
+    .main{
+      flex-direction: column;
+    }
+
+    label {
+        display: inline-block;
+        width: 190px;
+      };
+
+
+      input {
+        margin: "0 0 12px 0",
+      };
+  } */
