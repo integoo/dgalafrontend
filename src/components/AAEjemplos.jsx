@@ -2,6 +2,9 @@ import React, { Component } from 'react'
 
 class AAEjemplos extends React.Component{
 
+//select CASE WHEN (exists(select 1 where 1=2))='f' THEN '0' ELSE '1'end;
+
+
     //  formatDate(date) {
   //     var d = new Date(date),
   //         month = '' + (d.getMonth() + 1),

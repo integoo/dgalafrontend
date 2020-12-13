@@ -7,19 +7,26 @@ class Ingresos extends Component {
     super(props);
 
     this.state = {
-      count: 0,
+      //count: 0,
       fecha: "",
       monto: "",
       ingresos: [],
+      ingresosCadena:[],
+      ingresosTotal:0,
       sucursales: [],
+      sucursalnombre:"",
       unidadesdenegocio: [],
+      unidadesdenegociocatalogo:[],
       cuentascontables: [],
+      cuentascontablescatalogo:[],
       subcuentascontables: [],
+      subcuentascontablescatalogo:[],
       selectedValueSucursal: "1",
       selectedValueUnidadDeNegocio: "1",
       selectedValueCuentaContable: "10000",
       selectedValueSubcuentaContable: "001",
       comentarios: "",
+      periodoabierto:""
     };
 
     this.handleFecha = this.handleFecha.bind(this);
@@ -30,6 +37,7 @@ class Ingresos extends Component {
     this.handleSubmit = this.handleSubmit.bind(this);
 
     // this.monto = React.createRef();
+    
   }
 
   fechaActual() {
@@ -55,55 +63,94 @@ class Ingresos extends Component {
       alert(dataSucursales.error);
       return;
     }
+    const vsucursalnombre = dataSucursales[0].SucursalNombre
 
-    const dataUnidadesNegocio = await this.getUnidadesNegocio(
-      dataSucursales[0].SucursalId
-    );
-    if (dataUnidadesNegocio.error) {
-      alert(dataUnidadesNegocio.error);
+    // const dataUnidadesNegocio = await this.getUnidadesNegocio(
+    //   dataSucursales[0].SucursalId
+    // );
+    // if (dataUnidadesNegocio.error) {
+    //   alert(dataUnidadesNegocio.error);
+    //   return;
+    // }
+
+    const dataUnidadesNegocioCatalogo = await this.getUnidadesNegocioCatalogo();
+    if (dataUnidadesNegocioCatalogo.error){
+      alert(dataUnidadesNegocioCatalogo.error)
       return;
     }
+    const dataUnidadesNegocio = dataUnidadesNegocioCatalogo.filter(element => element.SucursalId === dataSucursales[0].SucursalId)
 
-    const dataCuentasContables = await this.getCuentasContables(
-      dataSucursales[0].SucursalId,
-      dataUnidadesNegocio[0].UnidadDeNegocioId
-    );
-    if (dataCuentasContables.error) {
-      alert(dataCuentasContables.error);
+    // const dataCuentasContables = await this.getCuentasContables(
+    //   dataSucursales[0].SucursalId,
+    //   dataUnidadesNegocio[0].UnidadDeNegocioId
+    // );
+    // if (dataCuentasContables.error) {
+    //   alert(dataCuentasContables.error);
+    //   return;
+    // }
+
+    const dataCuentasContablesCatalogo = await this.getCuentasContablesCatalogo();
+    if (dataCuentasContablesCatalogo.error) {
+      alert(dataCuentasContablesCatalogo.error);
       return;
     }
+    const dataCuentasContables = dataCuentasContablesCatalogo.filter(element => element.SucursalId === dataSucursales[0].SucursalId && element.UnidadDeNegocioId === dataUnidadesNegocio[0].UnidadDeNegocioId)
 
-    const dataSubcuentasContables = await this.getSubcuentasContables(
-      dataSucursales[0].SucursalId,
-      dataUnidadesNegocio[0].UnidadDeNegocioId,
-      dataCuentasContables[0].CuentaContableId
-    );
-    if (dataSubcuentasContables.error) {
-      alert(dataSubcuentasContables.error);
+
+    // const dataSubcuentasContables = await this.getSubcuentasContables(
+    //   dataSucursales[0].SucursalId,
+    //   dataUnidadesNegocio[0].UnidadDeNegocioId,
+    //   dataCuentasContables[0].CuentaContableId
+    // );
+    // if (dataSubcuentasContables.error) {
+    //   alert(dataSubcuentasContables.error);
+    //   return;
+    // }
+
+    const dataSubcuentasContablesCatalogo = await this.getSubcuentasContablesCatalogo()
+    if (dataSubcuentasContablesCatalogo.error) {
+      alert(dataSubcuentasContablesCatalogo.error);
       return;
     }
+    const dataSubcuentasContables = dataSubcuentasContablesCatalogo.filter( element => element.SucursalId === dataSucursales[0].SucursalId && element.UnidadDeNegocioId === dataUnidadesNegocio[0].UnidadDeNegocioId && element.CuentaContableId === dataCuentasContables[0].CuentaContableId )
 
-    const dataGetIngresos = await this.getIngresos(
-      dataSucursales[0].SucursalId,
+    const dataGetIngresosCadena = await this.getIngresos(
       this.fechaActual()
     );
-    if (dataGetIngresos.error) {
-      alert(dataGetIngresos.error);
+    if (dataGetIngresosCadena.error) {
+      alert(dataGetIngresosCadena.error);
       return;
     }
+    const dataGetIngresos = dataGetIngresosCadena.filter(element => element.SucursalId === dataSucursales[0].SucursalId)
+    let vtotal=parseFloat(0.0)
+    dataGetIngresos.map(element => vtotal+= parseFloat(element.Monto))
+
+    const dataPeriodoAbierto = await this.getPeriodoAbierto()
+    if (dataPeriodoAbierto.error){
+      alert(dataPeriodoAbierto.error)
+      return;
+    }
+
 
     this.setState({
       fecha: this.fechaActual(),
       sucursales: dataSucursales,
+      sucursalnombre: vsucursalnombre,
       unidadesdenegocio: dataUnidadesNegocio,
+      unidadesdenegociocatalogo: dataUnidadesNegocioCatalogo,
       cuentascontables: dataCuentasContables,
+      cuentascontablescatalogo: dataCuentasContablesCatalogo,
       subcuentascontables: dataSubcuentasContables,
+      subcuentascontablescatalogo: dataSubcuentasContablesCatalogo,
       selectedValueSucursal: dataSucursales[0].SucursalId,
       selectedValueUnidadDeNegocio: dataUnidadesNegocio[0].UnidadDeNegocioId,
       selectedValueCuentaContable: dataCuentasContables[0].CuentaContableId,
       selectedValueSubcuentaContable:
         dataSubcuentasContables[0].SubcuentaContableId,
       ingresos: dataGetIngresos,
+      ingresosCadena: dataGetIngresosCadena,
+      ingresosTotal: vtotal,
+      periodoabierto:dataPeriodoAbierto.rows[0].Periodo
     });
 
     try {
@@ -112,6 +159,7 @@ class Ingresos extends Component {
       console.log(error.message);
       alert(error.message);
     }
+
   }
 
   async getSucursales() {
@@ -130,8 +178,57 @@ class Ingresos extends Component {
     }
   }
 
-  async getUnidadesNegocio(vsucursal) {
-    const url = `http://decorafiestas.com:3001/ingresos/unidadesdenegocio/${vsucursal}`;
+  // async getUnidadesNegocio(vsucursal) {
+  //   const url = `http://decorafiestas.com:3001/ingresos/unidadesdenegocio/${vsucursal}`;
+  //   try {
+  //     const response = await fetch(url, {
+  //       headers: {
+  //         Authorization: `Bearer ${this.props.accessToken}`,
+  //       },
+  //     });
+  //     const data = await response.json();
+  //     return data;
+  //   } catch (error) {
+  //     console.log(error.message);
+  //     alert(error.message);
+  //   }
+  // }
+
+  
+  async getUnidadesNegocioCatalogo(){
+    const url = `http://decorafiestas.com:3001/ingresos/unidadesdenegociocatalogo`;
+    try{
+      const response = await fetch(url, {
+        headers: {
+          Authorization: `Bearer ${this.props.accessToken}`,
+        },
+      });
+      const data = await response.json();
+      return data;
+    }catch(error){
+      console.log(error.message)
+      alert(error.message)
+    }
+  }
+
+  // async getCuentasContables(vsucursal, vunidadnegocio) {
+  //   const url = `http://decorafiestas.com:3001/ingresos/cuentascontables/${vsucursal}/${vunidadnegocio}`;
+  //   try {
+  //     const response = await fetch(url, {
+  //       headers: {
+  //         Authorization: `Bearer ${this.props.accessToken}`,
+  //       },
+  //     });
+  //     const data = await response.json();
+  //     return data;
+  //   } catch (error) {
+  //     console.log(error.message);
+  //     alert(error.message);
+  //   }
+  // }
+
+  async getCuentasContablesCatalogo() {
+    const url = `http://decorafiestas.com:3001/ingresos/cuentascontablescatalogo`;
     try {
       const response = await fetch(url, {
         headers: {
@@ -146,8 +243,24 @@ class Ingresos extends Component {
     }
   }
 
-  async getCuentasContables(vsucursal, vunidadnegocio) {
-    const url = `http://decorafiestas.com:3001/ingresos/cuentascontables/${vsucursal}/${vunidadnegocio}`;
+  // async getSubcuentasContables(vsucursal, vunidadnegocio, vcuentacontable) {
+  //   const url = `http://decorafiestas.com:3001/ingresos/subcuentascontables/${vsucursal}/${vunidadnegocio}/${vcuentacontable}`;
+  //   try {
+  //     const response = await fetch(url, {
+  //       headers: {
+  //         Authorization: `Bearer ${this.props.accessToken}`,
+  //       },
+  //     });
+  //     const data = await response.json();
+  //     return data;
+  //   } catch (error) {
+  //     console.log(error.message);
+  //     alert(error.message);
+  //   }
+  // }
+
+  async getSubcuentasContablesCatalogo() {
+    const url = `http://decorafiestas.com:3001/ingresos/subcuentascontablescatalogo`;
     try {
       const response = await fetch(url, {
         headers: {
@@ -162,8 +275,8 @@ class Ingresos extends Component {
     }
   }
 
-  async getSubcuentasContables(vsucursal, vunidadnegocio, vcuentacontable) {
-    const url = `http://decorafiestas.com:3001/ingresos/subcuentascontables/${vsucursal}/${vunidadnegocio}/${vcuentacontable}`;
+  async getIngresos(vfecha) {
+    const url = `http://decorafiestas.com:3001/ingresos/getingresos/${vfecha}`;
     try {
       const response = await fetch(url, {
         headers: {
@@ -178,53 +291,89 @@ class Ingresos extends Component {
     }
   }
 
-  async getIngresos(vsucursal,vfecha) {
-    const url = `http://decorafiestas.com:3001/ingresos/getingresos/${vsucursal}/${vfecha}`;
-    try {
-      const response = await fetch(url, {
-        headers: {
-          Authorization: `Bearer ${this.props.accessToken}`,
+  async getPeriodoAbierto(){
+    const url = `http://decorafiestas.com:3001/periodoabierto`
+    try{
+      const response = await fetch(url,{
+        headers:{
+          Authorization: `Bearer ${this.props.accessToken}`
         },
       });
       const data = await response.json();
       return data;
-    } catch (error) {
-      console.log(error.message);
-      alert(error.message);
+    }catch(error){
+      console.log(error.message)
+      alert(error.message)
     }
   }
 
-  handleFecha(event) {
+  async handleFecha(event) {
     const vfecha = event.target.value;
-    this.setState({
-      fecha: vfecha,
-    });
+      const dataGetIngresosCadena = await this.getIngresos(
+        // event.target.value
+        vfecha
+      );
+      if (dataGetIngresosCadena.error) {
+        alert(dataGetIngresosCadena.error);
+        return;
+      }
+      // const dataGetIngresos = dataGetIngresosCadena.filter(element => element.SucursalId === dataSucursales[0].SucursalId)
+      const dataGetIngresos = dataGetIngresosCadena.filter(element => element.SucursalId === parseInt(this.state.selectedValueSucursal))
+      let vtotal=parseFloat(0.0)
+      dataGetIngresos.map(element => vtotal+= parseFloat(element.Monto))
+  
+  
+      this.setState({
+        fecha: vfecha,
+        ingresosCadena: dataGetIngresosCadena,
+        ingresos: dataGetIngresos,
+        ingresosTotal: vtotal
+      });
   }
 
   HandleSucursales(event) {
-    this.setState({ selectedValueSucursal: event.target.value }, async () => {
-      const dataUnidadesNegocio = await this.getUnidadesNegocio(
-        this.state.selectedValueSucursal
-      );
-      const dataCuentasContables = await this.getCuentasContables(
-        this.state.selectedValueSucursal,
-        dataUnidadesNegocio[0].UnidadDeNegocioId
-      );
-      const dataSubcuentasContables = await this.getSubcuentasContables(
-        this.state.selectedValueSucursal,
-        dataUnidadesNegocio[0].UnidadDeNegocioId,
-        dataCuentasContables[0].CuentaContableId
-      );
+    // this.setState({ selectedValueSucursal: event.target.value }, async () => {
+    //   const dataUnidadesNegocio = await this.getUnidadesNegocio(
+    //     this.state.selectedValueSucursal
+    //   );
+    let vsucursalnombre="";
+    const datasucursales = this.state.sucursales
+    datasucursales.map(element => {
+      if(element.SucursalId === parseInt(event.target.value)){
+        vsucursalnombre = element.SucursalNombre
+      }
+    })
 
+    this.setState({ selectedValueSucursal: event.target.value,
+                    sucursalnombre: vsucursalnombre }, async () => {
+        const dataUnidadesNegocio = this.state.unidadesdenegociocatalogo.filter(element => parseInt(element.SucursalId) === parseInt(this.state.selectedValueSucursal))
+  
 
-      const dataGetIngresos = await this.getIngresos(
-        this.state.selectedValueSucursal,
-        this.state.fecha
-      );
+      // const dataCuentasContables = await this.getCuentasContables(
+      //   this.state.selectedValueSucursal,
+      //   dataUnidadesNegocio[0].UnidadDeNegocioId
+      // );
 
+      const dataCuentasContables = this.state.cuentascontablescatalogo.filter(element => parseInt(element.SucursalId) ===  parseInt(this.state.selectedValueSucursal) && parseInt(element.UnidadDeNegocioId) === parseInt(dataUnidadesNegocio[0].UnidadDeNegocioId) )
+      
+      // const dataSubcuentasContables = await this.getSubcuentasContables(
+        //   this.state.selectedValueSucursal,
+        //   dataUnidadesNegocio[0].UnidadDeNegocioId,
+        //   dataCuentasContables[0].CuentaContableId
+        // );
+        const dataSubcuentasContables = this.state.subcuentascontablescatalogo.filter(element => parseInt(element.SucursalId) ===  parseInt(this.state.selectedValueSucursal) && parseInt(element.UnidadDeNegocioId) === parseInt(dataUnidadesNegocio[0].UnidadDeNegocioId) && parseInt(element.CuentaContableId) === parseInt(dataCuentasContables[0].CuentaContableId) )
 
-
-
+      // const dataGetIngresos = await this.getIngresos(
+      //   this.state.selectedValueSucursal,
+      //   this.state.fecha
+      // );
+      const dataGetIngresos = this.state.ingresosCadena.filter(element => element.SucursalId === parseInt(this.state.selectedValueSucursal))
+      
+      let vtotal=parseFloat(0.0)
+      dataGetIngresos.map(element => vtotal+= parseFloat(element.Monto))
+  
+      
+      
       this.setState({
         unidadesdenegocio: dataUnidadesNegocio,
         cuentascontables: dataCuentasContables,
@@ -233,7 +382,8 @@ class Ingresos extends Component {
         selectedValueCuentaContable: dataCuentasContables[0].CuentaContableId,
         selectedValueSubcuentaContable:
           dataSubcuentasContables[0].SubcuentaContableId,
-        ingresos: dataGetIngresos
+        ingresos: dataGetIngresos,
+        ingresosTotal: vtotal
       });
     });
     this.monto.current.focus();
@@ -243,17 +393,22 @@ class Ingresos extends Component {
     this.setState(
       {
         selectedValueUnidadDeNegocio: event.target.value,
-      },
-      async () => {
-        const dataCuentasContables = await this.getCuentasContables(
-          this.state.selectedValueSucursal,
-          this.state.selectedValueUnidadDeNegocio
-        );
-        const dataSubcuentasContables = await this.getSubcuentasContables(
-          this.state.selectedValueSucursal,
-          this.state.selectedValueUnidadDeNegocio,
-          dataCuentasContables[0].CuentaContableId
-        );
+      },() => {
+        // const dataCuentasContables = await this.getCuentasContables(
+        //   this.state.selectedValueSucursal,
+        //   this.state.selectedValueUnidadDeNegocio
+        // );
+
+        const dataCuentasContables = this.state.cuentascontablescatalogo.filter(element => parseInt(element.SucursalId) === parseInt(this.state.selectedValueSucursal) && parseInt(element.UnidadDeNegocioId) === parseInt(this.state.selectedValueUnidadDeNegocio))
+
+
+        // const dataSubcuentasContables = await this.getSubcuentasContables(
+        //   this.state.selectedValueSucursal,
+        //   this.state.selectedValueUnidadDeNegocio,
+        //   dataCuentasContables[0].CuentaContableId
+        // );
+
+        const dataSubcuentasContables = this.state.subcuentascontablescatalogo.filter(element => parseInt(element.SucursalId) === parseInt(this.state.selectedValueSucursal) && parseInt(element.UnidadDeNegocioId) === parseInt(this.state.selectedValueUnidadDeNegocio) && parseInt(element.CuentaContableId) === parseInt(dataCuentasContables[0].CuentaContableId))
 
         this.setState({
           cuentascontables: dataCuentasContables,
@@ -272,12 +427,15 @@ class Ingresos extends Component {
       {
         selectedValueCuentaContable: event.target.value,
       },
-      async () => {
-        const dataSubcuentasContables = await this.getSubcuentasContables(
-          this.state.selectedValueSucursal,
-          this.state.selectedValueUnidadDeNegocio,
-          this.state.selectedValueCuentaContable
-        );
+      // async () => {
+      //   const dataSubcuentasContables = await this.getSubcuentasContables(
+      //     this.state.selectedValueSucursal,
+      //     this.state.selectedValueUnidadDeNegocio,
+      //     this.state.selectedValueCuentaContable
+      //   );
+
+      () =>{
+      const dataSubcuentasContables = this.state.subcuentascontablescatalogo.filter(element => parseInt(element.SucursalId) === parseInt(this.state.selectedValueSucursal) && parseInt(element.UnidadDeNegocioId) === parseInt(this.state.selectedValueUnidadDeNegocio))
 
         this.setState({
           subcuentascontables: dataSubcuentasContables,
@@ -383,7 +541,28 @@ class Ingresos extends Component {
       });
       //const data = await response.json()
       const data = await response.text();
-      this.setState({ monto: "" });
+
+      //####### Actualiza Ingresos #########
+      const dataGetIngresosCadena = await this.getIngresos(
+        //this.state.selectedValueSucursal,
+        this.state.fecha
+      );
+      if (dataGetIngresosCadena.error) {
+        alert(dataGetIngresosCadena.error);
+        return;
+      }
+
+      const dataGetIngresos = dataGetIngresosCadena.filter(element => element.SucursalId === parseInt(this.state.selectedValueSucursal))
+
+      let vtotal=parseFloat(0.0)
+      dataGetIngresos.map(element => vtotal+= parseFloat(element.Monto))
+
+      //####################################
+      this.setState({ monto: "", 
+                      ingresosCadena:dataGetIngresosCadena,
+                      ingresos: dataGetIngresos,
+                      ingresosTotal: vtotal
+                    });
       this.monto.current.focus();
       alert(data);
     } catch (error) {
@@ -398,6 +577,14 @@ class Ingresos extends Component {
     alert("Si borra");
     //alert(event.target.value)
     console.log(event);
+  }
+
+//   function numberWithCommas(x) {
+//     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+// }
+
+  numberWithCommas(x) {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   }
 
   render() {
@@ -451,7 +638,7 @@ class Ingresos extends Component {
                 <span className="badge badge-secondary mr-1">
                   Periodo Abierto:
                 </span>
-                <span className="badge badge-warning">{this.state.fecha}</span>
+                <span className="badge badge-warning">{this.state.periodoabierto}</span>
               </div>
               <br />
               <label forhtml="fecha" style={styleLabel}>
@@ -590,9 +777,15 @@ class Ingresos extends Component {
 
             <div className="col-md-5 seccionDespliegaIngresos">
               <h2>
-                <span className="badge badge-success">Ingresos San Pedro</span>
+                <span className="badge badge-success">Ingresos {this.state.sucursalnombre}</span>
               </h2>
-              <br />
+              <div className="text-right">
+                <span className="badge badge-secondary mr-1">Fecha:</span>
+                <span className="badge badge-warning">{this.state.fecha}</span>
+                <span className="badge badge-secondary mr-1">Total:</span>
+                <span className="badge badge-warning">$ {this.numberWithCommas(this.state.ingresosTotal)}</span>
+              </div>
+              {/* <br /> */}
               <table>
                 <thead>
                   <tr>
@@ -613,7 +806,7 @@ class Ingresos extends Component {
                       <td>{element.CuentaContable}</td>
                       <td>{element.SubcuentaContable}</td>
                       <td>{element.Fecha.substr(0,10)}</td>
-                      <td>{element.Monto}</td>
+                      <td className="text-right">$ {this.numberWithCommas(element.Monto)}</td>
                       <td><button className="btn btn-danger btn-sm">Eliminar</button></td>
                     </tr>
                   ))}
