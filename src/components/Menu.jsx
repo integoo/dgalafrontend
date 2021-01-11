@@ -5,13 +5,15 @@ import Ingresos from './Ingresos';
 import Home from "./Home";
 import About from "./Ingresos";
 import Shop from "./Shop";
+import Productos from "./Productos"
 
 
 class Menu extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      accessToken: this.props.accessToken
+      accessToken: this.props.accessToken,
+      url: "http://decorafiestas.com:3001"
     };
   }
 
@@ -63,6 +65,41 @@ class Menu extends Component {
                     aria-haspopup="true"
                     aria-expanded="false"
                   >
+                    Catalogos
+                  </span>
+                  <div
+                    className="dropdown-menu"
+                    aria-labelledby="navbarDropdown"
+                  >
+                    <Link to="/catalogos/productos" style={linkStyle}>
+                        <span className="dropdown-item">Productos</span>
+                    </Link>
+                      
+                    <div className="dropdown-divider"></div>
+                    <Link to="/limpiaduria/estadoderesultados" style={linkStyle}>
+                      <span className="dropdown-item">Estado de Resultados</span>
+                    </Link>
+                  </div>
+                </li>
+              </Link>
+
+
+
+
+
+
+
+              <Link to="/" style={linkStyle}>
+                {/* <li className="nav-item dropdown"> */}
+                <li className="nav-item dropdown" data-toggle="collapse" data-target=".navbar-collapse.show">
+                  <span
+                    className="nav-link dropdown-toggle"
+                    id="navbarDropdown"
+                    role="button"
+                    data-toggle="dropdown"
+                    aria-haspopup="true"
+                    aria-expanded="false"
+                  >
                     Contabilidad
                   </span>
                   <div
@@ -72,10 +109,10 @@ class Menu extends Component {
                     <Link to="/limpiaduria/catalogo" style={linkStyle}>
                         <span className="dropdown-item">Catalogo</span>
                       </Link>
-                      <Link to="/limpiaduria/ingresos" style={linkStyle}>
+                      <Link to="/contabilidad/ingresos" style={linkStyle}>
                         <span className="dropdown-item">Ingresos</span>
                       </Link>
-                      <Link to="/limpiaduria/egresos" style={linkStyle}>
+                      <Link to="/contabilidad/egresos" style={linkStyle}>
                         <span className="dropdown-item">Egresos</span>
                       </Link>
                     {/* <span className="dropdown-item">Another action</span> */}
@@ -86,6 +123,14 @@ class Menu extends Component {
                   </div>
                 </li>
               </Link>
+
+
+
+
+
+
+
+
 
               <Link to="/puntodeventa" style={linkStyle}>
                 {/* <li className="nav-item"> */}
@@ -100,7 +145,8 @@ class Menu extends Component {
                 {/* <button onClick={() => {alert("Hello Hello")}} href="#" className="btn btn-light btn-sm mt-1 ml-2">Salir</button> */}
                 {/* <button onClick={this.signOut} href="#" className="btn btn-link" style={linkStyle}>Salir</button> */}
                 <Link to="/">
-                  <button onClick={this.signOut} href="#" className="btn btn-light btn-md mt-1 ml-2">Salir</button>
+                  {/* <button onClick={this.signOut} href="#" className="btn btn-light btn-md mt-1 ml-2">Salir</button> */}
+                  <button onClick={this.signOut} className="btn btn-light btn-md mt-1 ml-2">Salir</button>
                 </Link>
               </li>
             </ul>
@@ -109,11 +155,13 @@ class Menu extends Component {
 
         <Switch>
           <Route exact path="/" />
-          <Route path="/limpiaduria/ingresos" component={() => <Ingresos accessToken={this.state.accessToken} />} />
-          <Route path="/home" component={Home} />
-          <Route path="/about" component={About} />
-          <Route path="/shop" component={Shop} />
-          <Route path="/dropdown/action" component={Shop} />
+          <Route exac path="/catalogos/productos" component={() => <Productos accessToken={this.state.accessToken} url={this.state.url}/>} />
+          <Route exac path="/contabilidad/ingresos" component={() => <Ingresos accessToken={this.state.accessToken} naturalezaCC="1" />} />
+          <Route exac path="/contabilidad/egresos" component={() => <Ingresos accessToken={this.state.accessToken} naturalezaCC="-1" />} />
+          <Route exac path="/home" component={Home} />
+          <Route exac path="/about" component={About} />
+          <Route exac path="/shop" component={Shop} />
+          <Route exac path="/dropdown/action" component={Shop} />
         </Switch>
       </Router>
     );

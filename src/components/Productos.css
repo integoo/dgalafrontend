@@ -1,0 +1,27 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+label {
+    display:inline-block;
+    width:155px;
+    margin-right:10px;
+}
+
+.main-productos{
+    margin:10px 5px;
+    padding: 10px;
+    background-color:lightgray;
+    border: 5px solid gray;
+    border-radius: 10px;
+}
+
+.consulta-productos{
+    margin: 10px 5px;
+    padding: 10px;
+    background-color:lightblue;
+    border: 5px solid gray;
+    border-radius: 10px;
+}
