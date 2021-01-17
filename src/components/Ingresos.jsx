@@ -152,7 +152,7 @@ class Ingresos extends Component {
 
   async getSucursales() {
     const  naturalezaCC = this.props.naturalezaCC;
-    const url = `http://decorafiestas.com:3001/ingresos/sucursales/${naturalezaCC}`;
+    const url = `http://decorafiestas.com:3001/api/sucursales/${naturalezaCC}`;
     try {
       const response = await fetch(url, {
         headers: {
@@ -572,7 +572,7 @@ class Ingresos extends Component {
                 <span className="badge badge-warning">{this.state.periodoabierto}</span>
               </div>
               <br />
-              <label forhtml="fecha" style={styleLabel}>
+              <label htmlFor="fecha" style={styleLabel}>
                 Fecha :
               </label>
               <input
@@ -584,7 +584,7 @@ class Ingresos extends Component {
               />
               <br />
 
-              <label forhtml="sucursales" style={styleLabel}>
+              <label htmlFor="sucursales" style={styleLabel}>
                 Sucursal:
               </label>
               <select
@@ -602,7 +602,7 @@ class Ingresos extends Component {
               </select>
 
               <br />
-              <label forhtml="unidadesdenegocio" style={styleLabel}>
+              <label htmlFor="unidadesdenegocio" style={styleLabel}>
                 Unidad de Negocio:
               </label>
 
@@ -621,7 +621,7 @@ class Ingresos extends Component {
               </select>
 
               <br />
-              <label style={styleLabel} forhtml="cuentaContable">
+              <label style={styleLabel} htmlFor="cuentaContable">
                 Cuenta Contable:
               </label>
 
@@ -640,7 +640,7 @@ class Ingresos extends Component {
               </select>
 
               <br />
-              <label forhtml="subcuentaContable" style={styleLabel}>
+              <label htmlFor="subcuentaContable" style={styleLabel}>
                 SubCuenta Contable:
               </label>
 
@@ -659,7 +659,7 @@ class Ingresos extends Component {
               </select>
               <br />
 
-              <label forhtml="monto" style={styleLabel}>
+              <label htmlFor="monto" style={styleLabel}>
                 Monto Pesos
               </label>
               <input

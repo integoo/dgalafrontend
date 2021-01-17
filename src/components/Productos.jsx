@@ -334,60 +334,60 @@ class Productos extends React.Component{
                             <form onSubmit={this.handleSubmit}>
                                 <span className="badge badge-success "><h3>Productos</h3></span>
                                 <br />
-                                <label forhtml="codigo">Código</label>
+                                <label htmlFor="codigo">Código</label>
                                 {/* <input onChange={this.handleCodigo} value={this.state.CodigoId} id="codigo" name="codigo" size="6" style={{backgroundColor:"lightgray"}} autoComplete="off" readOnly/> */}
                                 <input value={this.state.CodigoId} id="codigo" name="codigo" size="6" style={{backgroundColor:"lightgray"}} autoComplete="off" readOnly/>
                                 <br />
-                                <label forhtml="codigobarras">Código Barras</label>
+                                <label htmlFor="codigobarras">Código Barras</label>
                                 <input onChange={this.handleCodigoBarras} value={this.state.CodigoBarras} id="codigobarras" name="codigobarras" size="15" maxLength="13" autoComplete="off" ref={this.codigobarras} required />
                                 <br/>
-                                <label forhtml="descripcion">Descripcion</label>
+                                <label htmlFor="descripcion">Descripcion</label>
                                 <input onChange={this.handleDescripcion} value={this.state.Descripcion} id="descripcion" name="descripcion" size="40" autoComplete="off" style={{textTransform:"uppercase"}} required />
                                 <br/>
-                                <label forhtml="categorias">Categorías</label>
+                                <label htmlFor="categorias">Categorías</label>
                                 <select onChange={this.handleCategorias} id="categorias" name="categorias" value={this.state.CategoriaId}>
                                     {this.state.categorias.map((element,i) => (<option key={i} value={element.CategoriaId}>{element.Categoria}</option>) )}
                                 </select>
                                 <br/>
-                                <label forhtml="subcategorias">Subcategorías</label>
+                                <label htmlFor="subcategorias">Subcategorías</label>
                                 <select onChange={this.handleSubcategorias} id="subcategorias" name="subcategorias" value={this.state.SubcategoriaId}>
                                     {this.state.subcategorias.map((element,i) => (<option key={i} value={element.SubcategoriaId}>{element.Subcategoria}</option>))}
                                 </select>
                                 <br />
                                 
-                                <label forhtml="unidadesCapacidad">Unidades Capacidad</label>
+                                <label htmlFor="unidadesCapacidad">Unidades Capacidad</label>
                                 <input  onChange={this.handleUnidadesCapacidad} value={this.state.UnidadesCapacidad} id="unidadesCapacidad" name="unidadesCapacidad" size="6" autoComplete="off" required />
                                 <select onChange={this.handleMedidaCapacidad} id="MedidaCapacidad" name="MedidaCapacidad" value={this.state.MedidaCapacidadId}>
                                     {this.state.medidasCapacidad.map((element,i) => (<option key={i} value={element.MedidaCapacidadId}>{element.MedidaCapacidad}</option>))}
                                 </select>
                                 <br />
-                                <label forhtml="unidadesVenta">Unidades Venta</label>
+                                <label htmlFor="unidadesVenta">Unidades Venta</label>
                                 <input onChange={this.handleMedidaVenta}  value={this.state.UnidadesVenta} id="unidadesVenta" name="unidadesVenta" size="6" autoComplete="off" required/>
                                 <select onChange={this.handleUnidadesVenta} id="unidadesVenta" name="unidadesVenta" value={this.state.MedidaVentaId}>
                                     {this.state.medidasVenta.map((element,i) =>(<option key={i} value={element.MedidaVentaId}>{element.MedidaVenta}</option>))}
                                 </select>
                                 <br />
-                                <label forhtml="marca">Marca</label>
+                                <label htmlFor="marca">Marca</label>
                                 <select onChange={this.handleMarca} id="marca" name="marca" value={this.state.MarcaId}>
                                     {this.state.marcas.map((element,i)=>(<option key={i} value={element.MarcaId}>{element.Marca}</option>))}
                                 </select>
                                 <br />
-                                <label forhtml="color">Color</label>
+                                <label htmlFor="color">Color</label>
                                 <select onChange={this.handleColor} id="color" name="color" value={this.state.ColorId}>
                                     {this.state.colores.map((element,i) => (<option key={i} value={element.ColorId}>{element.Color}</option>))}
                                 </select>
                                 <br />
-                                <label forhtml="sabor">Sabor</label>
+                                <label htmlFor="sabor">Sabor</label>
                                 <select onChange={this.handleSabor} id="sabor" name="sabor" value={this.state.SaborId}>
                                     {this.state.sabores.map((element,i) => (<option key={i} value={element.SaborId}>{element.Sabor}</option>))}
                                 </select>
                                 <br />
-                                <label forhtml="iva">IVA</label>
+                                <label htmlFor="iva">IVA</label>
                                 <select onChange={this.handleIVA} id="iva" name="iva"  value={this.state.IVAId}>
                                     {this.state.ivas.map((element,i) =>(<option key={i} value={element.IVAId}>{element.Descripcion}</option>))}
                                 </select>
                                 <br />
-                                <label forhtml="ieps">IEPS</label>
+                                <label htmlFor="ieps">IEPS</label>
                                 <select onChange={this.handleIEPS} id="ieps" name="ieps" value={this.state.IEPSId}> 
                                     {this.state.iepss.map((element,i) =>(<option key={i} value={element.IEPSId}>{element.Descripcion}</option>))}
                                 </select>

@@ -6,6 +6,7 @@ import Home from "./Home";
 import About from "./Ingresos";
 import Shop from "./Shop";
 import Productos from "./Productos"
+import ComprasRecepcion from "./ComprasRecepcion"
 
 
 class Menu extends Component {
@@ -54,6 +55,7 @@ class Menu extends Component {
 
           <div className="collapse navbar-collapse" id="navbarSupportedContent">
             <ul className="navbar-nav mr-auto">
+
             <Link to="/" style={linkStyle}>
                 {/* <li className="nav-item dropdown"> */}
                 <li className="nav-item dropdown" data-toggle="collapse" data-target=".navbar-collapse.show">
@@ -129,6 +131,38 @@ class Menu extends Component {
 
 
 
+              <Link to="/" style={linkStyle}>
+                {/* <li className="nav-item dropdown"> */}
+                <li className="nav-item dropdown" data-toggle="collapse" data-target=".navbar-collapse.show">
+                  <span
+                    className="nav-link dropdown-toggle"
+                    id="navbarDropdown"
+                    role="button"
+                    data-toggle="dropdown"
+                    aria-haspopup="true"
+                    aria-expanded="false"
+                  >
+                    Compras
+                  </span>
+                  <div
+                    className="dropdown-menu"
+                    aria-labelledby="navbarDropdown"
+                  >
+                    <Link to="/compras/recepcion" style={linkStyle}>
+                        <span className="dropdown-item">Compras Recepcion</span>
+                      </Link>
+                      
+                    {/* <span className="dropdown-item">Another action</span> */}
+                    <div className="dropdown-divider"></div>
+                    <Link to="/compras/estadoderesultados" style={linkStyle}>
+                      <span className="dropdown-item">Reportes</span>
+                    </Link>
+                  </div>
+                </li>
+              </Link>
+              
+
+
 
 
 
@@ -158,6 +192,7 @@ class Menu extends Component {
           <Route exac path="/catalogos/productos" component={() => <Productos accessToken={this.state.accessToken} url={this.state.url}/>} />
           <Route exac path="/contabilidad/ingresos" component={() => <Ingresos accessToken={this.state.accessToken} naturalezaCC="1" />} />
           <Route exac path="/contabilidad/egresos" component={() => <Ingresos accessToken={this.state.accessToken} naturalezaCC="-1" />} />
+          <Route path="/compras/recepcion" component={() => <ComprasRecepcion accessToken={this.state.accessToken} url={this.state.url} />} />
           <Route exac path="/home" component={Home} />
           <Route exac path="/about" component={About} />
           <Route exac path="/shop" component={Shop} />
