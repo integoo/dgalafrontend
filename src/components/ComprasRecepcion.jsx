@@ -13,13 +13,24 @@ class ComprasRecepcion extends React.Component{
             ProveedorId: 1,
             NumeroFactura:"",
             TotalFactura:"",
+            CodigoId:0,
+            IVAId:0,
+            IVA:0,
+            IVAMonto:0.0,
+            extIVAMonto:0.0,
+            IEPSId:0,
+            IEPS:0,
+            IEPSMonto:0.0,
+            extIEPSMonto:0.0,
             CodigoBarras:"",
             Descripcion:"",
             Unidades:"",
             CostoCompraSinIva:"",
+            extCostoCompraSinImpuestos:0.0,
+            extCostoCompraConImpuestos:0.0
         }
         this.unidadesInput = React.createRef();
-        this.costocompraInput = React.createRef();
+        this.costoCompraInput = React.createRef();
         this.codigoBarrasInput = React.createRef();
         this.facturaInput = React.createRef();
     }
@@ -156,7 +167,12 @@ class ComprasRecepcion extends React.Component{
             return
         }
         this.setState({
-            Descripcion:arreglo[0].Descripcion
+            CodigoId: arreglo[0].CodigoId,
+            Descripcion:arreglo[0].Descripcion,
+            IVAId: arreglo[0].IVAId,
+            IVA: arreglo[0].IVA,
+            IEPSId: arreglo[0].IEPSId,
+            IEPS: arreglo[0].IEPS
         })
         document.querySelector("#codigobarras").disabled=true
         this.unidadesInput.current.focus();
@@ -165,6 +181,7 @@ class ComprasRecepcion extends React.Component{
     handleAgregarCancelar = (e) =>{
         e.preventDefault()
         this.setState({
+            CodigoId:0,
             CodigoBarras:"",
             Descripcion:"",
             Unidades:"",
@@ -175,17 +192,17 @@ class ComprasRecepcion extends React.Component{
     }
 
     handleUnidades = (e) =>{
-        const Unidades = e.target.value
-        if(!Number(Unidades)){
-            return;
+        const re = /^[0-9\b]+$/;
+        if (e.target.value === '' || re.test(e.target.value)) {
+            const Unidades = e.target.value
+            if(Unidades < 0){
+                alert("No se permite recibir Unidades NEGATIVAS")
+                return
+            }
+            this.setState({
+                Unidades: Unidades
+            })
         }
-        if(Unidades < 0){
-            alert("No se permite recibir Unidades NEGATIVAS")
-            return
-        }
-        this.setState({
-            Unidades: Unidades
-        })
     }
     
     handleUnidadesEnter = (e) =>{
@@ -210,34 +227,75 @@ class ComprasRecepcion extends React.Component{
             alert("Error en Dato. Revise los campos de la Forma")
             return;
         }
-        const detallesAux = this.state.detalles
+        let detallesAux = this.state.detalles
+
+
+
+        //Valida si ya existe el producto en el proceso de recepción
+        // for(let i=0; i < detallesAux.length; i++){
+        //     if(detallesAux[i].CodigoBarras === this.state.CodigoBarras){
+        //         alert("El Producto ya existe en el Proceso de Recepción")
+        //         return;
+        //     }
+        // }
+
+        
+        
+
         const json = {
+            CodigoId: this.state.CodigoId,
             CodigoBarras: this.state.CodigoBarras,
             Descripcion: this.state.Descripcion,
             UnidadesRecibidas: this.state.Unidades,
             CostoCompraSinIva: this.state.CostoCompraSinIva,
+            IVAId: this.state.IVAId,
+            IVA: this.state.IVA,
+            IVAMonto: parseFloat(this.state.CostoCompraSinIva) * parseFloat(this.state.Unidades) * parseFloat(this.state.IVA)/100,
+            IEPSId: this.state.IEPSId,
+            IEPS: this.state.IEPS,
+            IEPSMonto: parseFloat(this.state.CostoCompraSinIva) * parseFloat(this.state.Unidades) * parseFloat(this.stateIEPS)/100 ,
         }
 
         detallesAux.push(json)
+        alert(JSON.stringify(detallesAux))
 
         this.setState({
             detalles: detallesAux
         })
+        let extCostoCompraSinImpuestos = 0
+        let extIVAMonto = 0
+        let extIEPSMonto = 0
+        let extCostoCompraConImpuestos = 0
+        detallesAux.map((element,i) =>{
+            extCostoCompraSinImpuestos += parseInt(element.UnidadesRecibidas) * parseFloat(element.CostoCompraSinIva)
+            extIVAMonto += parseInt(element.UnidadesRecibidas) * parseFloat(element.CostoCompraSinIva) * (parseFloat(element.IVA)/100)
+            extIEPSMonto += parseInt(element.UnidadesRecibidas) * parseFloat(element.CostoCompraSinIva) * (parseFloat(element.IEPS)/100)
+        })
+
         document.querySelector("#sucursales").disabled= true;
         document.querySelector("#proveedores").disabled= true;
         document.querySelector("#factura").disabled= true;
         document.querySelector("#totalfactura").disabled= true;
         this.setState({
+            CodigoId: 0,
             CodigoBarras:"",
             Descripcion:"",
             Unidades:"",
-            CostoCompraSinIva:""
+            CostoCompraSinIva:"",
+            extCostoCompraSinImpuestos: extCostoCompraSinImpuestos,
+            extIVAMonto: extIVAMonto,
+            extIEPSMonto: extIEPSMonto,
+            extCostoCompraConImpuestos: extCostoCompraSinImpuestos + extIVAMonto + extIEPSMonto,
         })
 
         document.querySelector("#codigobarras").disabled = false;
 
         this.codigoBarrasInput.current.focus()
     }
+
+    numberWithCommas(x) {
+        return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+      }
 
     handleSubmit = (e) =>{
         e.preventDefault();
@@ -291,21 +349,31 @@ class ComprasRecepcion extends React.Component{
                                     <th>Código Barras</th>
                                     <th>Descripcion</th>
                                     <th>Unidades Recibidas</th>
-                                    <th>Costo Compra Sin IVA</th>
-                                    <th>Costo Extension</th>
+                                    <th>Costo Compra Sin Impuestos</th>
+                                    <th>Ext Costo Compra Sin Impuestos</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 {this.state.detalles.map((element,i) =>(<tr>
-                                    <td>1</td>
+                                    <td>{element.CodigoId}</td>
                                     <td>{element.CodigoBarras}</td>
                                     <td>{element.Descripcion}</td>
-                                    <td>{element.UnidadesRecibidas}</td>
-                                    <td style={{textAlign:"right"}}>{element.CostoCompraSinIva}</td>
-                                    <td style={{textAlign:"right"}}>{element.CostoCompraSinIva}</td>
+                                    <td style={{textAlign:"right"}}>{element.UnidadesRecibidas}</td>
+                                    <td style={{textAlign:"right"}}>$ {this.numberWithCommas(parseFloat(element.CostoCompraSinIva).toFixed(2))}</td>
+                                    <td style={{textAlign:"right"}}>$ {this.numberWithCommas(parseFloat(element.CostoCompraSinIva * parseInt(element.UnidadesRecibidas)).toFixed(2))}</td>
                                 </tr>))}
                             </tbody>
                         </table>
+                        <label>Ext Costo Compra Sin Impuestos</label>
+                        <label>Ext IVA</label>
+                        <label>Ext IEPS</label>
+                        <label>Ext Costo Compra Con Impuestos</label>
+                        <br />
+                        <input id="extCostoCompraSinImpuestos" name="extCostoCompraSinImpuestos" style={{textAlign:"right"}} value={"$ " +this.numberWithCommas(this.state.extCostoCompraSinImpuestos.toFixed(2))}/>
+                        <input id="extIVAMonto" name="extIVAMonto" style={{textAlign:"right"}} value={"$ "+this.state.extIVAMonto.toFixed(2)} />
+                        <input id="extIEPSMonto" name="extIEPSMonto" style={{textAlign:"right"}} value={"$ "+this.state.extIEPSMonto.toFixed(2)} />
+                        <input id="extCostoCompraConImpuestos" name="extCostoCompraConImpuestos" style={{textAlign:"right"}} value={"$ "+this.numberWithCommas(this.state.extCostoCompraConImpuestos.toFixed(2))} />
+                        <br />
                         <button type="submit" className="btn btn-success btn-lg m-2">Grabar</button>
                         <button className="btn btn-danger btn-lg">Cancelar</button>
                     </form>

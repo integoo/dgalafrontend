@@ -66,7 +66,7 @@ export default class Login extends React.Component{
                 {/* <img className="mb-4" src={'https://grupodgala.com/LogoDGala.png'} alt="" width="122" height="92" /> */}
                 <img className="mb-4" src={logo} alt="" width="122" height="92" />
                 {/* <h1 className="h3 mb-3 font-weight-normal">Please sign in</h1> */}
-                <h1 className="h3 mb-3 font-weight-bold" style={{color:"darkblue"}}><i>Limpiaduría D'Gala</i></h1>
+                <h1 className="h3 mb-3 font-weight-bold" style={{color:"darkblue"}}><i>Grupo D'Gala</i></h1>
                 <label htmlFor="inputEmail" className="sr-only">Email address</label>
                 <input type="text" id="inputEmail" className="form-control" placeholder="Username" name="usuario" ref={this.usuarioInput} required autoFocus></input>
                 <label htmlFor="inputPassword" className="sr-only">Password</label>
