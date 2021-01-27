@@ -7,3 +7,13 @@
 table{
     border: 5px solid gray;
 }
+
+#IVAProveedor {
+    width: 65px;
+    margin: 0 0 0 10px;
+}
+
+#labelivaproveedor {
+    width: 20px;
+    margin: 0 0 0 5px;
+}
