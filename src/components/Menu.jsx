@@ -7,6 +7,7 @@ import About from "./Ingresos";
 import Shop from "./Shop";
 import Productos from "./Productos"
 import ComprasRecepcion from "./ComprasRecepcion"
+import PuntoDeVenta from './PuntoDeVenta'
 
 
 class Menu extends Component {
@@ -165,6 +166,39 @@ class Menu extends Component {
 
 
 
+              <Link to="/" style={linkStyle}>
+                {/* <li className="nav-item dropdown"> */}
+                <li className="nav-item dropdown" data-toggle="collapse" data-target=".navbar-collapse.show">
+                  <span
+                    className="nav-link dropdown-toggle"
+                    id="navbarDropdown"
+                    role="button"
+                    data-toggle="dropdown"
+                    aria-haspopup="true"
+                    aria-expanded="false"
+                  >
+                    Inventario
+                  </span>
+                  <div
+                    className="dropdown-menu"
+                    aria-labelledby="navbarDropdown"
+                  >
+                    <Link to="/inventario/kardex" style={linkStyle}>
+                        <span className="dropdown-item">Kardex</span>
+                      </Link>
+                      
+                    {/* <span className="dropdown-item">Another action</span> */}
+                    <div className="dropdown-divider"></div>
+                    <Link to="/inventario/inventarioperpetuo" style={linkStyle}>
+                      <span className="dropdown-item">Inventario Perpetuo</span>
+                    </Link>
+                  </div>
+                </li>
+              </Link>
+
+
+
+
 
               <Link to="/puntodeventa" style={linkStyle}>
                 {/* <li className="nav-item"> */}
@@ -193,6 +227,7 @@ class Menu extends Component {
           <Route exac path="/contabilidad/ingresos" component={() => <Ingresos accessToken={this.state.accessToken} naturalezaCC="1" />} />
           <Route exac path="/contabilidad/egresos" component={() => <Ingresos accessToken={this.state.accessToken} naturalezaCC="-1" />} />
           <Route path="/compras/recepcion" component={() => <ComprasRecepcion accessToken={this.state.accessToken} url={this.state.url} />} />
+          <Route path="/puntodeventa" component={() => <PuntoDeVenta accessToken={this.state.accessToken} url={this.state.url} />} />
           <Route exac path="/home" component={Home} />
           <Route exac path="/about" component={About} />
           <Route exac path="/shop" component={Shop} />

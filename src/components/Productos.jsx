@@ -29,6 +29,7 @@ class Productos extends React.Component{
             ivas:[],
             IVAId:1,
             IVA:0,
+            IVACompra: "S",
             iepss:[],
             IEPSId:1,
             IEPS:0,
@@ -248,6 +249,13 @@ class Productos extends React.Component{
         })
     }
 
+    handleIVACompra =(e) =>{
+        const vIVACompra = e.target.value 
+        this.setState({
+            IVACompra: vIVACompra
+        })
+    }
+
     handleIEPS = (e)=>{
         const vIEPS = e.target.value 
         const arreglo = this.state.iepss.filter(element => element.IEPSId === parseInt(vIEPS))
@@ -273,6 +281,7 @@ class Productos extends React.Component{
             SaborId: this.state.SaborId,
             IVAId: this.state.IVAId,
             IVA: this.state.IVA,
+            IVACompra: this.state.IVACompra,
             IEPSId: this.state.IEPSId,
             IEPS: this.state.IEPS,
             Usuario: sessionStorage.getItem("user")
@@ -314,6 +323,7 @@ class Productos extends React.Component{
                     IVAId:1,
                     IEPSId: 1,
                     iva:1,
+                    IVACompra:"S",
                     ieps:1,
                 })
             }
@@ -385,6 +395,11 @@ class Productos extends React.Component{
                                 <label htmlFor="iva">IVA</label>
                                 <select onChange={this.handleIVA} id="iva" name="iva"  value={this.state.IVAId}>
                                     {this.state.ivas.map((element,i) =>(<option key={i} value={element.IVAId}>{element.Descripcion}</option>))}
+                                </select>
+                                <label htmlFor="ivacompra">IVA Compra</label>
+                                <select onChange={this.handleIVACompra} id="ivacompra" name="ivacompra" value={this.state.IVACompra}>
+                                    <option key={1} value="S">S</option>
+                                    <option key={2} value="N">N</option>
                                 </select>
                                 <br />
                                 <label htmlFor="ieps">IEPS</label>

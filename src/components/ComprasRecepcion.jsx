@@ -14,7 +14,9 @@ class ComprasRecepcion extends React.Component {
       UnidadDeNegocioId: 1,
       proveedores: [],
       ProveedorId: 1,
+      IVAProveedor: "",
       IVA: "",
+      IVACompra:"",
       NumeroFactura: "",
       TotalFactura: "",
       CodigoId: 0,
@@ -75,8 +77,9 @@ class ComprasRecepcion extends React.Component {
       unidadesdenegocioCatalogo: arregloUnidadesDeNegocioCatalogo,
       unidadesdenegocio: arregloUnidadesDeNegocio,
       proveedores: arregloProveedores,
-      IVA: arregloProveedores[0].IVA,
+      IVAProveedor: arregloProveedores[0].IVA,
       socios: arregloSocios,
+      SocioId: arregloSocios[0].SocioId,
     });
   }
 
@@ -199,7 +202,7 @@ class ComprasRecepcion extends React.Component {
 
     this.setState({
       ProveedorId: ProveedorId,
-      IVA: IVAProveedor.IVA
+      IVAProveedor: IVAProveedor.IVA
     });
     this.facturaInput.current.focus();
   };
@@ -235,7 +238,7 @@ class ComprasRecepcion extends React.Component {
 
   handleCodigoBarrasEnter = (e) => {
     if (e.key === "Enter") {
-      if (this.state.CodigoBarras != "") {
+      if (this.state.CodigoBarras !== "") {
         this.handleConsultar(e);
       } else {
         alert("Código de Barras Inválido");
@@ -247,7 +250,7 @@ class ComprasRecepcion extends React.Component {
   handleConsultar = async (e) => {
     e.preventDefault();
     let arreglo = [];
-    if (this.state.CodigoBarras != "") {
+    if (this.state.CodigoBarras !== "") {
       arreglo = await this.getProducto(this.state.CodigoBarras);
     } else {
       alert("Código de Barras Inválido");
@@ -268,7 +271,7 @@ class ComprasRecepcion extends React.Component {
       }
     }
 
-    if (vposicion != -1) {
+    if (vposicion !== -1) {
       if (
         window.confirm(
           "El Producto ya existe en en el Proceso de Recepción. Deseas Modificarlo?"
@@ -292,16 +295,25 @@ class ComprasRecepcion extends React.Component {
         return;
       }
     } else {
+        let vIVA=0
+        let vIVADescripcion = ""
+        if (this.state.IVACompra === 'S'){
+            vIVA = this.state.IVA
+            vIVADescripcion = "IVA "+this.state.IVA+"%"
+        }else{
+            vIVADescripcion = "NO IVA COMPRA"
+        }
       this.setState({
         CodigoId: arreglo[0].CodigoId,
         Descripcion: arreglo[0].Descripcion,
         //IVAId: arreglo[0].IVAId,
         //IVADescripcion: arreglo[0].IVADescripcion,
-        //IVA: arreglo[0].IVA,
-        IVADescripcion: "IVA "+this.state.IVA+"%",
+        IVA: vIVA,
+        IVADescripcion: vIVADescripcion,
         IEPSId: arreglo[0].IEPSId,
         IEPSDescripcion: arreglo[0].IEPSDescripcion,
         IEPS: arreglo[0].IEPS,
+        IVACompra: arreglo[0].IVACompra,
       });
     }
 
@@ -373,7 +385,8 @@ class ComprasRecepcion extends React.Component {
       this.state.CodigoBarras === "" ||
       this.state.Descripcion === "" ||
       this.state.Unidades === "" ||
-      this.state.CostoCompra === ""
+      this.state.CostoCompra === "" || 
+      this.state.COstoCompra < 0.10
     ) {
       alert("Error en Dato. Revise los campos de la Forma");
       return;
@@ -488,17 +501,18 @@ class ComprasRecepcion extends React.Component {
         return
     }
 
+    
     let json={SucursalId: this.state.SucursalId,
-            UnidadDeNegocioId: this.state.UnidadDeNegocioId,
-            ProveedorId: this.state.ProveedorId,
-            IVA: this.state.IVA,
-            NumeroFactura: this.state.NumeroFactura,
-            TotalFactura: this.state.TotalFactura,
-            SocioId: this.state.SocioId,
-            detalles: this.state.detalles
-        }
-
-
+        UnidadDeNegocioId: this.state.UnidadDeNegocioId,
+        ProveedorId: this.state.ProveedorId,
+        IVAProveedor: this.state.IVA,
+        NumeroFactura: this.state.NumeroFactura,
+        TotalFactura: this.state.TotalFactura,
+        SocioId: this.state.SocioId,
+        Usuario: sessionStorage.getItem('user'), 
+        detalles: this.state.detalles
+    }
+    
     if(window.confirm("Desea Recibir la Orden de Compra?")){
         try{
             const url = this.props.url+`/api/grabarecepcionordencompra`
@@ -511,6 +525,7 @@ class ComprasRecepcion extends React.Component {
                 },
             });
             const data = await response.text()
+            alert(JSON.stringify(data))
 
         }catch(error){
             console.log(error.message)
@@ -519,6 +534,51 @@ class ComprasRecepcion extends React.Component {
     }
 
   }
+
+  handleCancelar = () =>{
+    this.setState({
+        detalles: [],
+        //sucursales: [],
+        SucursalId: 1,
+        //unidadesdenegocioCatalogo:[],
+        //unidadesdenegocio: [],
+        UnidadDeNegocioId: 1,
+        //proveedores: [],
+        ProveedorId: 1,
+        //IVAProveedor: "",
+        //IVA: "",
+        //IVACompra:"",
+        NumeroFactura: "",
+        TotalFactura: "",
+        CodigoId: 0,
+        //IVAId: 0,
+        //IVADescripcion: "",
+        //IVA: 0,
+        IVAMonto: 0.0,
+        extIVAMonto: 0.0,
+        IEPSId: 0,
+        IEPSDescripcion: "",
+        IEPS: 0,
+        IEPSMonto: 0.0,
+        extIEPSMonto: 0.0,
+        CodigoBarras: "",
+        Descripcion: "",
+        Unidades: "",
+        CostoCompra: "",
+        extCostoCompraSinImpuestos: 0.0,
+        extCostoCompra: 0.0,
+        //socios:[],
+        //SocioId: "",
+    })
+    document.querySelector("#sucursales").disabled = false;
+    document.querySelector("#unidaddenegocio").disabled = false;
+    document.querySelector("#proveedores").disabled = false;
+    document.querySelector("#factura").disabled = false;
+    document.querySelector("#totalfactura").disabled = false;
+    document.querySelector("#socios").disabled = false;
+
+  }
+  
 
   handleRender = () => {
     return (
@@ -571,7 +631,7 @@ class ComprasRecepcion extends React.Component {
               ))}
             </select>
             <label id="labelivaproveedor">IVA</label>
-            <input id="IVAProveedor" name="IVAProveedor" value={this.state.IVA+"%"} disabled/>
+            <input id="IVAProveedor" name="IVAProveedor" value={this.state.IVAProveedor+"%"} disabled/>
             <br />
             <label htmlFor="factura">Factura</label>
             <input
@@ -773,14 +833,14 @@ class ComprasRecepcion extends React.Component {
             <button type="button" onClick={this.handleGrabar}  className="btn btn-success btn-lg m-2">
               Grabar
             </button>
-            <button className="btn btn-danger btn-lg">Cancelar</button>
+            <button type="reset" className="btn btn-danger btn-lg" onClick={this.handleCancelar}>Cancelar</button>
           </form>
         </div>
       </React.Fragment>
     );
   };
   render() {
-    return this.state.proveedores != "" ? (
+    return this.state.proveedores !== "" ? (
       <this.handleRender />
     ) : (
       <h3>Loading . . .</h3>
