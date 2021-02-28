@@ -1,0 +1,48 @@
+* {
+    box-sizing: border-box;
+    margin:0;
+    padding:0;
+}
+
+.header {
+    background-color: lightskyblue;
+    border:5px solid gray;
+    border-radius: 10px;
+}
+
+ .content {
+     border: 10px solid gray;
+    border-radius: 10px;
+     height: 360px;
+    overflow-y:scroll; 
+ }
+
+ .footer{
+    background-color: lightskyblue;
+    border:5px solid gray;
+    border-radius: 10px;
+    height: 80px;
+ }
+
+ #btn-registrarventa {
+     position: absolute;
+     top: 10px;
+     right: 10px;
+ }
+
+ label{
+     font-size: 1em;
+     display: inline-block;
+     width: 114px;
+ }
+
+ #totalTicket{
+     width: 85px;
+ }
+
+ .ventanaproductos{
+     display:block; /*none*/
+     background: white;
+     border-radius: 10px;
+     height: 300px;
+ }

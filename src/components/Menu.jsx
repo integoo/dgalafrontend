@@ -28,14 +28,22 @@ class Menu extends Component {
   }
 
   render() {
+    // const navStyle = {
+    //   position: "fixed",
+    //   top: 0,
+    //   left:60,
+    //   width: "90%",
+    //   zIndex:2
+    // }
     const linkStyle = {
-      color: "white",
+      color: "white"
     };
     return (
       <Router>
         {/* {true ? <Redirect to="/" /> : () =>{alert("hoy")} } */}
         <Redirect to="/" />
         {/* <nav className="navbar navbar-expand-lg navbar-light bg-light"> */}
+        {/* <nav className="navbar navbar-expand-lg navbar-white bg-primary" style={navStyle}> */}
         <nav className="navbar navbar-expand-lg navbar-white bg-primary">
             <Link to="/" style={linkStyle}>
                 {/* <span className="navbar-brand">D'Gala</span> */}
