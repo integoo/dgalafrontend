@@ -74,11 +74,72 @@ class PuntoDeVenta extends React.Component {
       alert(error.message);
     }
   }
+
+onGrabarVentas = async () =>{
+    if(this.state.detalles.length === 0){
+        alert("No hay productos")
+        return
+    }
+
+    const detalles = this.state.detalles 
+
+    
+    let arreglo=[]
+    detalles.map((element,i) =>{
+        let jsonDetalles={
+            SerialId: i+1,
+            CodigoId: element.CodigoId,
+            CodigoBarras: element.CodigoBarras,
+            Descripcion: element.Descripcion,
+            UnidadesVendidas: 1,
+            PrecioVentaConImpuesto : element.PrecioVentaConImpuesto
+        }
+        arreglo.push(jsonDetalles)
+    })
+
+
+    const json = {
+        SucursalId: this.state.SucursalId,
+        CajeroId: sessionStorage.getItem("ColaboradorId"),
+        VendedorId: sessionStorage.getItem("ColaboradorId"),
+        Usuario: sessionStorage.getItem("user"),
+        // detalles: this.state.detalles, 
+        detalles: arreglo,
+    }
+
+    try{
+            //if (window.config('Desea Cerrar la Venta')){
+                const url = this.props.url + `/api/grabaventas`;
+                const response = await fetch(url, {
+                    method: "POST",
+                    body: JSON.stringify(json),
+                    headers:{
+                        Authorization: `Bear ${this.props.accessToken}`,
+                        "Content-Type": "application/json"
+                    },
+                });
+                const data = await response.json()
+                alert("FOLIO VENTA: "+data.Success)
+                this.setState({
+                    CodigoBarras: "",
+                    detalles:[],
+                    totalTicket: 0.00,
+                })
+                this.CodigoBarrasInput.current.focus();
+            //}
+            }catch(error){
+                console.log(error.message)
+                alert(error.message)
+            }
+
+}
+
   handleSucursales = (e) =>{
     const SucursalId = e.target.value
     this.setState({
         SucursalId: SucursalId
     })
+    this.CodigoBarrasInput.current.focus();
   }
   
   handleCodigoBarras = (e) =>{
@@ -122,6 +183,22 @@ class PuntoDeVenta extends React.Component {
       let arreglo = []
       if(CodigoBarras !== ""){
         arreglo = await this.getProducto(CodigoBarras)
+        if(arreglo.error){
+            alert(arreglo.error)
+            this.setState({
+                CodigoBarras: ""
+            })
+            this.CodigoBarrasInput.current.focus()
+            return
+        }
+        if (arreglo[0].PrecioVentaConImpuesto <= 0){
+            alert("Este producto No tiene Precio de Venta")
+            this.setState({
+                CodigoBarras: ""
+            })
+            this.CodigoBarrasInput.current.focus()
+            return
+        }
       } else{
           //alert("Código de Barras Invalido")
           
@@ -192,23 +269,6 @@ class PuntoDeVenta extends React.Component {
     //arregloDetalles = arregloDetalles.filter(element => (element.Id !== parseInt(id)))
     arregloDetalles = arregloDetalles.filter((element,i) => (i !== parseInt(id)))
     
-    // let position = 0
-    // let arregloNuevo = []
-    // arregloDetalles.forEach(element =>{
-    //     if(position !== parseInt(id)){
-    //         let json={
-    //             CodigoId: element.CodigoId,
-    //             CodigoBarras: element.CodigoBarras,
-    //             Descripcion: element.Descripcion,
-    //             PrecioVentaConImpuesto: element.PrecioVentaConImpuesto,
-    //         }
-    //         arregloNuevo.push(json)
-    //         }
-    //         position = position+1
-    //     }
-    // )
-
-
         // const reducer = (accumulator , currentValue) => accumulator + currentValue;
         let vtotalTicket=0
         for (let i =0; i < arregloDetalles.length; i++){
@@ -288,9 +348,7 @@ class PuntoDeVenta extends React.Component {
             <label>Total Ticket</label>
                 <input id="totalTicket" name="totalTicket" size="8" maxLength="8" type="text" value={"$"+this.state.totalTicket} style={{textAlign:"right"}} readOnly/>
 
-
-
-                    <button className="btn btn-success btn-sm" id="btn-registrarventa">REGISTRAR VENTA</button>
+                    <button onClick={this.onGrabarVentas} className="btn btn-success btn-sm" id="btn-registrarventa">REGISTRAR VENTA</button>
             </div>
 
           {/* </div> */}

@@ -35,6 +35,7 @@ export default class Login extends React.Component{
                     /* ***************TOKEN*************************** */
                     sessionStorage.setItem('myToken', data.accessToken);
                     sessionStorage.setItem('user', data.user);
+                    sessionStorage.setItem('ColaboradorId', data.ColaboradorId)
                     /* *********************************************** */
                     this.props.handler(true, data.accessToken)
                 } else{
