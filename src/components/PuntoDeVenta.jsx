@@ -64,8 +64,12 @@ class PuntoDeVenta extends React.Component {
           Authorization: `Bearer ${this.props.accessToken}`,
         },
       });
-      let data = response.json();
-      if (data.lenght === 0) {
+      let data = await response.json();
+      const vSucursalAsignada = parseInt(sessionStorage.getItem('SucursalId'))
+      if (vSucursalAsignada !== 100){
+          data = data.filter(element => element.SucursalId === vSucursalAsignada)
+      }
+      if (data.length === 0) {
         data = { error: "Error en Sucursales" };
       }
       return data;
@@ -95,7 +99,9 @@ onGrabarVentas = async () =>{
             PrecioVentaConImpuesto : element.PrecioVentaConImpuesto
         }
         arreglo.push(jsonDetalles)
+        return null;
     })
+
 
 
     const json = {

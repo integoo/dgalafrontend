@@ -4,7 +4,7 @@ import { BrowserRouter as Router, Switch, Route, Link, Redirect } from "react-ro
 import Ingresos from './Ingresos';
 import Home from "./Home";
 import About from "./Ingresos";
-import Shop from "./Shop";
+//import Shop from "./Shop";
 import Productos from "./Productos"
 import ComprasRecepcion from "./ComprasRecepcion"
 import PuntoDeVenta from './PuntoDeVenta'
@@ -238,8 +238,8 @@ class Menu extends Component {
           <Route path="/puntodeventa" component={() => <PuntoDeVenta accessToken={this.state.accessToken} url={this.state.url} />} />
           <Route exac path="/home" component={Home} />
           <Route exac path="/about" component={About} />
-          <Route exac path="/shop" component={Shop} />
-          <Route exac path="/dropdown/action" component={Shop} />
+          <Route exac path="/shop" component={About} />
+          <Route exac path="/dropdown/action" component={About} />
         </Switch>
       </Router>
     );

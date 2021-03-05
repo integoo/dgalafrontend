@@ -1,5 +1,5 @@
-import { render } from '@testing-library/react';
-import React, { Component } from 'react';
+//import { render } from '@testing-library/react';
+import React from 'react';
 
 export default class Login extends React.Component{
     constructor(props){
@@ -36,6 +36,7 @@ export default class Login extends React.Component{
                     sessionStorage.setItem('myToken', data.accessToken);
                     sessionStorage.setItem('user', data.user);
                     sessionStorage.setItem('ColaboradorId', data.ColaboradorId)
+                    sessionStorage.setItem('SucursalId', data.SucursalId)
                     /* *********************************************** */
                     this.props.handler(true, data.accessToken)
                 } else{
@@ -73,13 +74,13 @@ export default class Login extends React.Component{
                 <label htmlFor="inputPassword" className="sr-only">Password</label>
                 <input type="password" id="inputPassword" className="form-control" placeholder="Password" name="password" ref={this.passwordInput} required></input>
                 <div className="checkbox mb-3">
-                        <label>
-                             <input type="checkbox" value="remember-me" /> Remember me 
+                        <label style={{fontSize: ".8em"}}>
+                             <input type="checkbox" value="remember-me"/> Remember me 
                         </label>
                         
                 </div>
                     <button className="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
-                    <p className="mt-5 mb-3 text-muted">&copy; 2017-2020</p>
+                    <p className="mt-5 mb-3 text-muted">&copy; 2021</p>
                 </form>
             </div>
         </React.Fragment>

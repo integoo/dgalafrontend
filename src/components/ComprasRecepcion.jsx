@@ -92,6 +92,10 @@ class ComprasRecepcion extends React.Component {
         },
       });
       let data = await response.json();
+      const vSucursalAsignada = parseInt(sessionStorage.getItem('SucursalId'))
+      if(vSucursalAsignada !== 100){
+          data = data.filter(element => element.SucursalId === vSucursalAsignada)
+      }
       if (data.length === 0) {
         data = { error: "Error en Sucursales" };
       }
@@ -451,6 +455,7 @@ class ComprasRecepcion extends React.Component {
         parseInt(element.UnidadesRecibidas) * parseFloat(element.IVAMonto);
       extIEPSMonto +=
         parseInt(element.UnidadesRecibidas) * parseFloat(element.IEPSMonto);
+        return null
     });
 
     document.querySelector("#sucursales").disabled = true;
