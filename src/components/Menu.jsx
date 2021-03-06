@@ -4,7 +4,6 @@ import { BrowserRouter as Router, Switch, Route, Link, Redirect } from "react-ro
 import Ingresos from './Ingresos';
 import Home from "./Home";
 import About from "./Ingresos";
-//import Shop from "./Shop";
 import Productos from "./Productos"
 import ComprasRecepcion from "./ComprasRecepcion"
 import PuntoDeVenta from './PuntoDeVenta'
@@ -94,6 +93,52 @@ class Menu extends Component {
                 </li>
               </Link>
 
+
+
+
+
+              <Link to="/puntodeventa" style={linkStyle}>
+                {/* <li className="nav-item"> */}
+                <li className="nav-item" data-toggle="collapse" data-target=".navbar-collapse.show">
+                  <span className="nav-link">
+                    Punto de Venta <span className="sr-only">(current)</span>
+                  </span>
+                </li>
+              </Link>
+
+
+
+
+
+
+              <Link to="/" style={linkStyle}>
+                {/* <li className="nav-item dropdown"> */}
+                <li className="nav-item dropdown" data-toggle="collapse" data-target=".navbar-collapse.show">
+                  <span
+                    className="nav-link dropdown-toggle"
+                    id="navbarDropdown"
+                    role="button"
+                    data-toggle="dropdown"
+                    aria-haspopup="true"
+                    aria-expanded="false"
+                  >
+                    Ventas
+                  </span>
+                  <div
+                    className="dropdown-menu"
+                    aria-labelledby="navbarDropdown"
+                  >
+                    <Link to="/ventas/consultaventas" style={linkStyle}>
+                        <span className="dropdown-item">Consulta Ventas</span>
+                    </Link>
+                      
+                    <div className="dropdown-divider"></div>
+                    <Link to="/ventas/estadoventas" style={linkStyle}>
+                      <span className="dropdown-item">Estado de Resultados</span>
+                    </Link>
+                  </div>
+                </li>
+              </Link>
 
 
 
@@ -208,15 +253,7 @@ class Menu extends Component {
 
 
 
-              <Link to="/puntodeventa" style={linkStyle}>
-                {/* <li className="nav-item"> */}
-                <li className="nav-item" data-toggle="collapse" data-target=".navbar-collapse.show">
-                  <span className="nav-link">
-                    Punto de Venta <span className="sr-only">(current)</span>
-                  </span>
-                </li>
-              </Link>
-
+            
               <li>
                 {/* <button onClick={() => {alert("Hello Hello")}} href="#" className="btn btn-light btn-sm mt-1 ml-2">Salir</button> */}
                 {/* <button onClick={this.signOut} href="#" className="btn btn-link" style={linkStyle}>Salir</button> */}

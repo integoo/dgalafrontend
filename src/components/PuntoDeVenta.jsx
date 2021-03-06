@@ -82,6 +82,7 @@ class PuntoDeVenta extends React.Component {
 onGrabarVentas = async () =>{
     if(this.state.detalles.length === 0){
         alert("No hay productos")
+        this.CodigoBarrasInput.current.focus()
         return
     }
 
@@ -249,6 +250,17 @@ onGrabarVentas = async () =>{
       }
   }
 
+  handleCancelar = (e) => {
+    e.preventDefault()
+    this.setState({
+        CodigoBarras:"",
+        totalTicket: 0.00,
+        detalles:[]
+    })
+
+    this.CodigoBarrasInput.current.focus()
+  }
+
   handleVentanaDescripcion = async(e)=>{
       const VentanaDescripcion = e.target.value.toUpperCase()
       this.setState({
@@ -303,7 +315,7 @@ onGrabarVentas = async () =>{
                 </select>
                 <br />
                 <label htmlFor="codigobarras">Código Barras</label>
-                <input onChange={this.handleCodigoBarras} onKeyPress={this.handleBuscarEnter} id="codigobarras" name="codigobarras" size="15" maxLength="13" value={this.state.CodigoBarras} ref={this.CodigoBarrasInput} />
+                <input onChange={this.handleCodigoBarras} onKeyPress={this.handleBuscarEnter} id="codigobarras" name="codigobarras" size="15" maxLength="13" value={this.state.CodigoBarras} ref={this.CodigoBarrasInput} autoComplete="off" />
                 <button onClick={this.handleBuscar} className="btn btn-primary btn-sm ml-3">Buscar</button>
                 <br />
 
@@ -339,7 +351,7 @@ onGrabarVentas = async () =>{
 
                 <label>Total Unidades</label>
                 <input id="totalUnidades" name="totalUnidades" size="3" maxLength="3" type="text" value={this.state.detalles.length} style={{textAlign:"right"}} readOnly/>
-                <button className="btn btn-danger btn-sm ml-5">CANCELAR TICKET</button>
+                <button onClick={this.handleCancelar} className="btn btn-danger btn-sm ml-5">CANCELAR TICKET</button>
                 <br />
             </div>
             <div className="col-md-5 content">
