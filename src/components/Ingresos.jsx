@@ -301,6 +301,7 @@ class Ingresos extends Component {
       if(element.SucursalId === parseInt(event.target.value)){
         vsucursalnombre = element.SucursalNombre
       }
+      return null;
     })
     this.setState({ selectedValueSucursal: event.target.value,
                     sucursalnombre: vsucursalnombre }, async () => {
@@ -536,7 +537,7 @@ class Ingresos extends Component {
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   }
 
-  render() {
+  handleRender = () =>{
     const styleLabel = {
       display: "inlineBlock",
       fontSize: ".8em",
@@ -555,7 +556,7 @@ class Ingresos extends Component {
     };
 
     return (
-      <React.Fragment>
+      // <React.Fragment>
         <div className="container">
           <div className="row">
             <form
@@ -750,8 +751,16 @@ class Ingresos extends Component {
             </div>
           </div>
         </div>
-      </React.Fragment>
+      // </React.Fragment>
     );
+  }
+
+  render() {
+    return(
+      <React.Fragment>
+        {this.state.periodoabierto!=="" ? <this.handleRender /> : <h3>Loading...</h3>}
+      </React.Fragment>
+    )
   }
 }
 

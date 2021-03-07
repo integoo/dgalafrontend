@@ -328,6 +328,17 @@ class Productos extends React.Component{
                 })
             }
 
+            const productosRecientes = await this.getProductosRecientes()
+            if(productosRecientes.error){
+                alert(productosRecientes.error)
+                return;
+            }
+
+            this.setState({
+                productosRecientes: productosRecientes
+            })
+
+
             this.codigobarras.current.focus();
 
         }catch(error){
