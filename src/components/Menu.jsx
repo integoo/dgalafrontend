@@ -6,7 +6,9 @@ import Home from "./Home";
 import About from "./Ingresos";
 import Productos from "./Productos"
 import ComprasRecepcion from "./ComprasRecepcion"
+import ComprasConsulta from "./ComprasConsulta"
 import PuntoDeVenta from './PuntoDeVenta'
+import VentasConsulta from './VentasConsulta'
 
 
 class Menu extends Component {
@@ -128,7 +130,7 @@ class Menu extends Component {
                     className="dropdown-menu"
                     aria-labelledby="navbarDropdown"
                   >
-                    <Link to="/ventas/consultaventas" style={linkStyle}>
+                    <Link to="/ventas/consulta" style={linkStyle}>
                         <span className="dropdown-item">Consulta Ventas</span>
                     </Link>
                       
@@ -204,8 +206,12 @@ class Menu extends Component {
                   >
                     <Link to="/compras/recepcion" style={linkStyle}>
                         <span className="dropdown-item">Compras Recepcion</span>
-                      </Link>
+                    </Link>
                       
+                    <Link to="/compras/consulta" style={linkStyle}>
+                        <span className="dropdown-item">Compras Consulta</span>
+                    </Link>
+
                     {/* <span className="dropdown-item">Another action</span> */}
                     <div className="dropdown-divider"></div>
                     <Link to="/compras/estadoderesultados" style={linkStyle}>
@@ -272,7 +278,9 @@ class Menu extends Component {
           <Route exac path="/contabilidad/ingresos" component={() => <Ingresos accessToken={this.state.accessToken} naturalezaCC="1" />} />
           <Route exac path="/contabilidad/egresos" component={() => <Ingresos accessToken={this.state.accessToken} naturalezaCC="-1" />} />
           <Route path="/compras/recepcion" component={() => <ComprasRecepcion accessToken={this.state.accessToken} url={this.state.url} />} />
+          <Route path="/compras/consulta" component={() => <ComprasConsulta accessToken={this.state.accessToken} url={this.state.url} />} />
           <Route path="/puntodeventa" component={() => <PuntoDeVenta accessToken={this.state.accessToken} url={this.state.url} />} />
+          <Route path='/ventas/consulta' component={() => <VentasConsulta accessToken={this.state.accessToken} url={this.state.url} />} />
           <Route exac path="/home" component={Home} />
           <Route exac path="/about" component={About} />
           <Route exac path="/shop" component={About} />

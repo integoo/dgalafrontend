@@ -360,7 +360,7 @@ class Productos extends React.Component{
                                 <input value={this.state.CodigoId} id="codigo" name="codigo" size="6" style={{backgroundColor:"lightgray"}} autoComplete="off" readOnly/>
                                 <br />
                                 <label htmlFor="codigobarras">Código Barras</label>
-                                <input onChange={this.handleCodigoBarras} value={this.state.CodigoBarras} id="codigobarras" name="codigobarras" size="15" maxLength="13" autoComplete="off" ref={this.codigobarras} required />
+                                <input onChange={this.handleCodigoBarras} value={this.state.CodigoBarras} id="codigobarras" name="codigobarras" size="15" maxLength="13" autoComplete="off" ref={this.codigobarras} required style={{"textTransform":"uppercase"}}/>
                                 <br/>
                                 <label htmlFor="descripcion">Descripcion</label>
                                 <input onChange={this.handleDescripcion} value={this.state.Descripcion} id="descripcion" name="descripcion" size="40" autoComplete="off" style={{textTransform:"uppercase"}} required />
