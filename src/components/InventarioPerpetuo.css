@@ -1,0 +1,18 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+.contenidoInventarioPerpetuo{
+    height: 85vh;
+    border: 5px solid blue;
+    border-radius: 10px;
+}
+
+.contentInventarioPerpetuoDetalles{
+    height: 35vh;
+    border: 5px solid green;
+    border-radius: 10px;
+    overflow:scroll;
+}

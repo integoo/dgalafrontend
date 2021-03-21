@@ -110,7 +110,6 @@ onGrabarVentas = async () =>{
         CajeroId: sessionStorage.getItem("ColaboradorId"),
         VendedorId: sessionStorage.getItem("ColaboradorId"),
         Usuario: sessionStorage.getItem("user"),
-        // detalles: this.state.detalles, 
         detalles: arreglo,
     }
 
@@ -126,6 +125,11 @@ onGrabarVentas = async () =>{
                     },
                 });
                 const data = await response.json()
+                if(data.error){
+                    console.log(data.error)
+                    alert(data.error)
+                    return;
+                }
                 alert("FOLIO VENTA: "+data.Success)
                 this.setState({
                     CodigoBarras: "",

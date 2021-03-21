@@ -2,13 +2,14 @@ import React, { Component } from "react";
 import { BrowserRouter as Router, Switch, Route, Link, Redirect } from "react-router-dom";
 
 import Ingresos from './Ingresos';
-import Home from "./Home";
-import About from "./Ingresos";
 import Productos from "./Productos"
 import ComprasRecepcion from "./ComprasRecepcion"
 import ComprasConsulta from "./ComprasConsulta"
 import PuntoDeVenta from './PuntoDeVenta'
 import VentasConsulta from './VentasConsulta'
+import Kardex from './Kardex'
+import AjustesInventario from './AjustesInventario'
+import InventarioPerpetuo from './InventarioPerpetuo'
 
 
 class Menu extends Component {
@@ -25,31 +26,21 @@ class Menu extends Component {
   }
 
   signOut = () => {
-    {this.props.handler(false)}
+    this.props.handler(false,null,null)
   }
 
   render() {
-    // const navStyle = {
-    //   position: "fixed",
-    //   top: 0,
-    //   left:60,
-    //   width: "90%",
-    //   zIndex:2
-    // }
     const linkStyle = {
       color: "white"
     };
     return (
       <Router>
-        {/* {true ? <Redirect to="/" /> : () =>{alert("hoy")} } */}
         <Redirect to="/" />
-        {/* <nav className="navbar navbar-expand-lg navbar-light bg-light"> */}
-        {/* <nav className="navbar navbar-expand-lg navbar-white bg-primary" style={navStyle}> */}
         <nav className="navbar navbar-expand-lg navbar-white bg-primary">
             <Link to="/" style={linkStyle}>
                 {/* <span className="navbar-brand">D'Gala</span> */}
                 {/* IMPORTANTE: SE AGREGARON LAS CLASES data-toggle="collapse" data-target=".navbar-collapse.show" PARA COLLAPSAR EL MENU MOBILE DESPUES DE DAR CLICK */}
-                <span className="navbar-brand" data-toggle="collapse" data-target=".navbar-collapse.show">D'Gala</span>
+                <span className="navbar-brand" data-toggle="collapse" data-target=".navbar-collapse.show">D'Gala {this.props.dbName.toUpperCase()}</span>
             </Link>
           <button
             className="navbar-toggler navbar-light bg-light"
@@ -66,8 +57,9 @@ class Menu extends Component {
           <div className="collapse navbar-collapse" id="navbarSupportedContent">
             <ul className="navbar-nav mr-auto">
 
+
+
             <Link to="/" style={linkStyle}>
-                {/* <li className="nav-item dropdown"> */}
                 <li className="nav-item dropdown" data-toggle="collapse" data-target=".navbar-collapse.show">
                   <span
                     className="nav-link dropdown-toggle"
@@ -100,7 +92,6 @@ class Menu extends Component {
 
 
               <Link to="/puntodeventa" style={linkStyle}>
-                {/* <li className="nav-item"> */}
                 <li className="nav-item" data-toggle="collapse" data-target=".navbar-collapse.show">
                   <span className="nav-link">
                     Punto de Venta <span className="sr-only">(current)</span>
@@ -114,7 +105,6 @@ class Menu extends Component {
 
 
               <Link to="/" style={linkStyle}>
-                {/* <li className="nav-item dropdown"> */}
                 <li className="nav-item dropdown" data-toggle="collapse" data-target=".navbar-collapse.show">
                   <span
                     className="nav-link dropdown-toggle"
@@ -148,7 +138,6 @@ class Menu extends Component {
 
 
               <Link to="/" style={linkStyle}>
-                {/* <li className="nav-item dropdown"> */}
                 <li className="nav-item dropdown" data-toggle="collapse" data-target=".navbar-collapse.show">
                   <span
                     className="nav-link dropdown-toggle"
@@ -166,14 +155,13 @@ class Menu extends Component {
                   >
                     <Link to="/limpiaduria/catalogo" style={linkStyle}>
                         <span className="dropdown-item">Catalogo</span>
-                      </Link>
-                      <Link to="/contabilidad/ingresos" style={linkStyle}>
+                    </Link>
+                    <Link to="/contabilidad/ingresos" style={linkStyle}>
                         <span className="dropdown-item">Ingresos</span>
-                      </Link>
-                      <Link to="/contabilidad/egresos" style={linkStyle}>
+                    </Link>
+                    <Link to="/contabilidad/egresos" style={linkStyle}>
                         <span className="dropdown-item">Egresos</span>
-                      </Link>
-                    {/* <span className="dropdown-item">Another action</span> */}
+                    </Link>
                     <div className="dropdown-divider"></div>
                     <Link to="/limpiaduria/estadoderesultados" style={linkStyle}>
                       <span className="dropdown-item">Estado de Resultados</span>
@@ -188,7 +176,6 @@ class Menu extends Component {
 
 
               <Link to="/" style={linkStyle}>
-                {/* <li className="nav-item dropdown"> */}
                 <li className="nav-item dropdown" data-toggle="collapse" data-target=".navbar-collapse.show">
                   <span
                     className="nav-link dropdown-toggle"
@@ -212,7 +199,6 @@ class Menu extends Component {
                         <span className="dropdown-item">Compras Consulta</span>
                     </Link>
 
-                    {/* <span className="dropdown-item">Another action</span> */}
                     <div className="dropdown-divider"></div>
                     <Link to="/compras/estadoderesultados" style={linkStyle}>
                       <span className="dropdown-item">Reportes</span>
@@ -226,7 +212,6 @@ class Menu extends Component {
 
 
               <Link to="/" style={linkStyle}>
-                {/* <li className="nav-item dropdown"> */}
                 <li className="nav-item dropdown" data-toggle="collapse" data-target=".navbar-collapse.show">
                   <span
                     className="nav-link dropdown-toggle"
@@ -244,9 +229,12 @@ class Menu extends Component {
                   >
                     <Link to="/inventario/kardex" style={linkStyle}>
                         <span className="dropdown-item">Kardex</span>
-                      </Link>
+                    </Link>
+
+                    <Link to="/inventario/ajustesinventario" style={linkStyle}>
+                        <span className="dropdown-item">Ajustes Inventario</span>
+                    </Link>
                       
-                    {/* <span className="dropdown-item">Another action</span> */}
                     <div className="dropdown-divider"></div>
                     <Link to="/inventario/inventarioperpetuo" style={linkStyle}>
                       <span className="dropdown-item">Inventario Perpetuo</span>
@@ -261,10 +249,7 @@ class Menu extends Component {
 
             
               <li>
-                {/* <button onClick={() => {alert("Hello Hello")}} href="#" className="btn btn-light btn-sm mt-1 ml-2">Salir</button> */}
-                {/* <button onClick={this.signOut} href="#" className="btn btn-link" style={linkStyle}>Salir</button> */}
                 <Link to="/">
-                  {/* <button onClick={this.signOut} href="#" className="btn btn-light btn-md mt-1 ml-2">Salir</button> */}
                   <button onClick={this.signOut} className="btn btn-light btn-md mt-1 ml-2">Salir</button>
                 </Link>
               </li>
@@ -281,10 +266,9 @@ class Menu extends Component {
           <Route path="/compras/consulta" component={() => <ComprasConsulta accessToken={this.state.accessToken} url={this.state.url} />} />
           <Route path="/puntodeventa" component={() => <PuntoDeVenta accessToken={this.state.accessToken} url={this.state.url} />} />
           <Route path='/ventas/consulta' component={() => <VentasConsulta accessToken={this.state.accessToken} url={this.state.url} />} />
-          <Route exac path="/home" component={Home} />
-          <Route exac path="/about" component={About} />
-          <Route exac path="/shop" component={About} />
-          <Route exac path="/dropdown/action" component={About} />
+          <Route path='/inventario/kardex' component={() => <Kardex accessToken={this.state.accessToken} url={this.state.url} />} />
+          <Route path='/inventario/ajustesinventario' component={() => <AjustesInventario accessToken={this.state.accessToken} url={this.state.url} />} />
+          <Route path='/inventario/inventarioperpetuo' component={() => <InventarioPerpetuo accessToken={this.state.accessToken} url={this.state.url} />} />
         </Switch>
       </Router>
     );

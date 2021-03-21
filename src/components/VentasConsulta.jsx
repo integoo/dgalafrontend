@@ -1,6 +1,7 @@
 import React from 'react';
 
 import SelectSucursales from './cmpnt/SelectSucursales'
+import './VentasConsulta.css'
 
 class VentasConsulta extends React.Component{
     constructor(props){
@@ -11,6 +12,7 @@ class VentasConsulta extends React.Component{
             SucursalId:"",
             FechaInicial: this.fechaActual(),
             FechaFinal: this.fechaActual(),
+            totalventa:0,
         }
     }
 
@@ -64,8 +66,13 @@ class VentasConsulta extends React.Component{
                 alert(data.error)
                 return
             }
+            let totalventas=0
+            for (let i =0; i< data.length; i++){
+                totalventas += parseFloat(data[i].ExtPrecioVentaConImpuesto)
+            }
             this.setState({
                 detalles: data,
+                totalventa: totalventas
             })
         } catch(error){
             console.log(error.message)
@@ -76,19 +83,27 @@ class VentasConsulta extends React.Component{
     handleRender = () =>{
         return (
         <div className="row">
-            <div className="col-md-5">
+            <div className="col-md-5 ventasconsultasmain">
                 <form>
                     <label htmlFor="">Sucursales</label>
                     <SelectSucursales accessToken={this.props.accessToken} url={this.props.url} SucursalAsignada={sessionStorage.getItem("SucursalId")} onhandleSucursal={this.handleSucursal} />
+                    <br />
                     <label htmlFor="">Fecha Inicial</label>
                     <input onChange={this.handleFechaInicial} type="date" id="fechaini" name="fechaini" value={this.state.FechaInicial} /> 
+                    <br />
                     <label htmlFor="">Fecha Final</label>
                     <input onChange={this.handleFechaFinal} type="date" id="fechafin" name="fechafin" value={this.state.FechaFinal} />
                     <button onClick={this.onhandleSubmit} className="btn btn-primary btn-block" type="submit">Consultar</button>
                 </form>
-                <ul>
-                    {this.state.detalles.map((element,i) => (<li key={i} value={element.FolioId}>{element.FolioId} {element.ExtPrecioVentaSinImpuesto} {element.ExtIVAMonto} {element.ExtIEPSMonto} {element.ExtPrecioVentaConImpuesto}</li>))}
-                </ul>
+                <br />
+                <div className="detalles">
+                    <ul>
+                        {this.state.detalles.map((element,i) => (<li key={i} value={element.Fecha}>{element.Fecha.substr(0,10)} {element.ExtPrecioVentaConImpuesto}</li>))}
+                    </ul>
+                </div>
+                <br />
+                <label htmlFor="">Total Venta</label>
+                <input id="totalventa" name="totalventa" value={this.state.totalventa} readOnly />
             </div>
         </div>
         )

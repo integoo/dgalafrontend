@@ -9,22 +9,25 @@ class App extends React.Component{
 
     this.state={
       isLoggedIn:false,
-      accessToken: ''
+      accessToken: '',
+      dbName: '',
     }
 
   }
 
-  handlerAppState = (param, param2) => {
+  handlerAppState = (param, param2,paramDB) => {
     this.setState({
       isLoggedIn: param,
-      accessToken: param2
+      accessToken: param2,
+      dbName: paramDB,
     })
   }
 
   render(){
       return (
         <div className="App">
-          {this.state.isLoggedIn ? <Menu handler={this.handlerAppState} accessToken={this.state.accessToken} /> : <Login handler={this.handlerAppState} />}
+          {this.state.isLoggedIn ? <Menu handler={this.handlerAppState} accessToken={this.state.accessToken} dbName={this.state.dbName} /> 
+                                  : <Login handler={this.handlerAppState} />}
         </div>
       );
 

@@ -179,6 +179,10 @@ class ComprasRecepcion extends React.Component {
 
   handleTotalFactura = (e) => {
     const TotalFactura = e.target.value;
+    if(TotalFactura > 9999999999){
+      alert("Error: El Dato de Total Factura está fuera de Rango")
+      return
+    }
     this.setState({
       TotalFactura: TotalFactura,
     });
@@ -482,7 +486,13 @@ class ComprasRecepcion extends React.Component {
                     "Content-Type": "application/json"
                 },
             });
-            const data = await response.text()
+            //const data = await response.text()
+            const data = await response.json()
+            if(data.error){
+              console.log(data.error)
+              alert(data.error)
+              return
+            }
             alert(JSON.stringify(data))
             this.setState({
               NumeroFactura:"",
