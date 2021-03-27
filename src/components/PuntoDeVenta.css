@@ -30,6 +30,12 @@
      right: 10px;
  }
 
+ #btn-cancelarventa {
+    position: absolute;
+    top: 80px;
+    right: 10px;
+ }
+
  label{
      font-size: 1em;
      display: inline-block;

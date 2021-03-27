@@ -318,9 +318,9 @@ onGrabarVentas = async () =>{
                 ))}
                 </select>
                 <br />
-                <label htmlFor="codigobarras">Código Barras</label>
+                <label htmlFor="codigobarras" style={{fontSize:".8em", width:"3em"}}>Código Barras</label>
                 <input onChange={this.handleCodigoBarras} onKeyPress={this.handleBuscarEnter} id="codigobarras" name="codigobarras" size="15" maxLength="13" value={this.state.CodigoBarras} ref={this.CodigoBarrasInput} autoComplete="off" />
-                <button onClick={this.handleBuscar} className="btn btn-primary btn-sm ml-3">Buscar</button>
+                <button onClick={this.handleBuscar} className="btn btn-primary btn-sm ml-2">Buscar</button>
                 <br />
 
 
@@ -353,9 +353,9 @@ onGrabarVentas = async () =>{
 
 
 
-                <label>Total Unidades</label>
+                <label style={{fontSize:".8em", width:"4em"}}>Total Unidades</label>
                 <input id="totalUnidades" name="totalUnidades" size="3" maxLength="3" type="text" value={this.state.detalles.length} style={{textAlign:"right"}} readOnly/>
-                <button onClick={this.handleCancelar} className="btn btn-danger btn-sm ml-5">CANCELAR TICKET</button>
+                <button onClick={this.handleCancelar} className="btn btn-danger btn-sm ml-5" id="btn-cancelarventa"><small>CANCELAR TICKET</small></button>
                 <br />
             </div>
             <div className="col-md-5 content">
@@ -367,10 +367,10 @@ onGrabarVentas = async () =>{
             <div className="col-md-5 footer">
 
 
-            <label>Total Ticket</label>
+            <label style={{width:"2em"}}><small>Total Ticket</small></label>
                 <input id="totalTicket" name="totalTicket" size="8" maxLength="8" type="text" value={"$"+this.state.totalTicket} style={{textAlign:"right"}} readOnly/>
 
-                    <button onClick={this.onGrabarVentas} className="btn btn-success btn-sm" id="btn-registrarventa">REGISTRAR VENTA</button>
+                    <button onClick={this.onGrabarVentas} className="btn btn-success btn-sm mt-2" id="btn-registrarventa">REGISTRAR VENTA</button>
             </div>
 
           {/* </div> */}
