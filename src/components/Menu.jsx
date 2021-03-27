@@ -33,14 +33,24 @@ class Menu extends Component {
     const linkStyle = {
       color: "white"
     };
+    
+//***  Aquí esta el nombre de la Base de Datos como constante producciondb ******/
+
+    let classes = "navbar navbar-expand-lg navbar-white bg-"
+    classes+= (this.props.dbName) === 'dgaladb' ? "primary" : "danger"
+
+    const ambientePruebas = (this.props.dbName) === 'dgaladb' ? '' : 'PRUEBAS'
+
+//******************************************************************************** */
+
     return (
       <Router>
         <Redirect to="/" />
-        <nav className="navbar navbar-expand-lg navbar-white bg-primary">
+        <nav className={classes} >
             <Link to="/" style={linkStyle}>
                 {/* <span className="navbar-brand">D'Gala</span> */}
                 {/* IMPORTANTE: SE AGREGARON LAS CLASES data-toggle="collapse" data-target=".navbar-collapse.show" PARA COLLAPSAR EL MENU MOBILE DESPUES DE DAR CLICK */}
-                <span className="navbar-brand" data-toggle="collapse" data-target=".navbar-collapse.show">D'Gala {this.props.dbName.toUpperCase()}</span>
+                <span className="navbar-brand" data-toggle="collapse" data-target=".navbar-collapse.show">D'Gala {ambientePruebas}</span>
             </Link>
           <button
             className="navbar-toggler navbar-light bg-light"

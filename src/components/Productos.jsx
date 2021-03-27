@@ -170,6 +170,22 @@ class Productos extends React.Component{
         })
     }
 
+    handleSinCodigoBarras =(e) =>{
+        if(e.target.checked){
+            document.querySelector('#codigobarras').disabled = true 
+            this.setState({
+                CodigoBarras:"I-CODE",
+            })
+            document.querySelector("#codigobarras").disabled = "true" 
+        }else{
+            document.querySelector('#codigobarras').disabled = false
+            this.setState({
+                CodigoBarras:"",
+            })
+        }
+        this.codigobarras.current.focus()
+    }
+
     handleDescripcion = (e)=>{
         const vDescripcion = e.target.value
         this.setState({
@@ -268,7 +284,7 @@ class Productos extends React.Component{
     async handleSubmit(event){
         event.preventDefault();
         const json={
-            CodigoBarras: this.state.CodigoBarras,
+            CodigoBarras: this.state.CodigoBarras.toUpperCase(),
             Descripcion: this.state.Descripcion.toUpperCase(),
             CategoriaId: this.state.CategoriaId,
             SubcategoriaId: this.state.SubcategoriaId,
@@ -361,6 +377,8 @@ class Productos extends React.Component{
                                 <br />
                                 <label htmlFor="codigobarras">Código Barras</label>
                                 <input onChange={this.handleCodigoBarras} value={this.state.CodigoBarras} id="codigobarras" name="codigobarras" size="15" maxLength="13" autoComplete="off" ref={this.codigobarras} required style={{"textTransform":"uppercase"}}/>
+                                <input onChange={this.handleSinCodigoBarras} type="checkbox" className="ml-2" />
+                                <lable htmlFor="" className="ml-1" style={{fontSize:".8rem"}}>Sin Código de Barras</lable>
                                 <br/>
                                 <label htmlFor="descripcion">Descripcion</label>
                                 <input onChange={this.handleDescripcion} value={this.state.Descripcion} id="descripcion" name="descripcion" size="40" autoComplete="off" style={{textTransform:"uppercase"}} required />

@@ -15,7 +15,7 @@ class ComprasRecepcion extends React.Component {
       IVA: "",
       IVACompra:"",
       NumeroFactura: "",
-      TotalFactura: "",
+      TotalFactura: 0.00,
       CodigoId: 0,
       //IVAId: 0,
       IVADescripcion: "",
@@ -148,13 +148,13 @@ class ComprasRecepcion extends React.Component {
   handleSucursales = (e) => {
     const SucursalId = e.target.value;
 
-    const arregloUnidadesDeNegocioCatalogo = this.state.unidadesdenegocioCatalogo
+    //const arregloUnidadesDeNegocioCatalogo = this.state.unidadesdenegocioCatalogo
     
-    const arregloUnidadesDeNegocio = arregloUnidadesDeNegocioCatalogo.filter(element => element.SucursalId === parseInt(SucursalId))
+    //const arregloUnidadesDeNegocio = arregloUnidadesDeNegocioCatalogo.filter(element => element.SucursalId === parseInt(SucursalId))
 
     this.setState({
       SucursalId: SucursalId,
-      unidadesdenegocio: arregloUnidadesDeNegocio,
+      //unidadesdenegocio: arregloUnidadesDeNegocio,
     });
   };
 
@@ -197,7 +197,7 @@ class ComprasRecepcion extends React.Component {
   }
 
   handleCodigoBarras = (e) => {
-    const vCodigoBarras = e.target.value;
+    const vCodigoBarras = e.target.value.toUpperCase();
     this.setState({
       CodigoBarras: vCodigoBarras,
     });
@@ -354,6 +354,10 @@ class ComprasRecepcion extends React.Component {
   }
 
   handleAgregar = (e) => {
+    if(this.state.TotalFactura === ""){
+      alert("Total Factura debe ser Número")
+      return
+    }
     if (
       this.state.CodigoBarras === "" ||
       this.state.Descripcion === "" ||
@@ -496,7 +500,7 @@ class ComprasRecepcion extends React.Component {
             alert(JSON.stringify(data))
             this.setState({
               NumeroFactura:"",
-              TotalFactura: "",
+              TotalFactura: 0.00,
               CodigoBarras: "",
               Descripcion: "",
               Unidades: "",
@@ -632,6 +636,7 @@ class ComprasRecepcion extends React.Component {
               name="codigobarras"
               size="15"
               maxLength="13"
+              style={{textTransform:"capitalize"}}
               value={this.state.CodigoBarras}
               ref={this.codigoBarrasInput}
               autoComplete="off"
