@@ -49,6 +49,7 @@ class PuntoDeVenta extends React.Component {
                     VentanaDescripcionDetalles: []
                 })
                 document.querySelector(".ventanaproductos").style.display = "none"
+                document.querySelector("#btn-cancelarventa").style.display="block";
                 this.CodigoBarrasInput.current.focus()
             };
         };
@@ -210,11 +211,20 @@ onGrabarVentas = async () =>{
             this.CodigoBarrasInput.current.focus()
             return
         }
+        if (arreglo[0].CostoPromedio <= 0){
+            alert("Este producto No tiene Costo o no se ha Recibido")
+            this.setState({
+                CodigoBarras: ""
+            })
+            this.CodigoBarrasInput.current.focus()
+            return
+        }
       } else{
           //alert("Código de Barras Invalido")
           
           if (document.querySelector(".ventanaproductos").style.display==="none"){
               document.querySelector(".ventanaproductos").style.display="block";
+              document.querySelector("#btn-cancelarventa").style.display="none";
               this.ventanadescripcionInput.current.focus();
             }else{
                 this.setState({
@@ -222,6 +232,7 @@ onGrabarVentas = async () =>{
                     VentanaDescripcionDetalles:[],
                 })
                 document.querySelector(".ventanaproductos").style.display="none";
+                document.querySelector("#btn-cancelarventa").style.display="block";
                 this.CodigoBarrasInput.current.focus();
           }
           return;
@@ -327,7 +338,7 @@ onGrabarVentas = async () =>{
 
 
                 <div className="ventanaproductos">
-                    <label htmlFor="ventanadescripcion">Descripcion</label>
+                    <label htmlFor="ventanadescripcion" style={{width:"5rem"}} >Descripcion</label>
                     <input onChange={this.handleVentanaDescripcion} id="ventanadescripcion" name="ventanadescripcion" value={this.state.VentanaDescripcion} ref={this.ventanadescripcionInput} autoComplete="off" />
                     <table id="table1" onClick={this.handlerRowClicked}>
                         <thead>
@@ -361,7 +372,7 @@ onGrabarVentas = async () =>{
             <div className="col-md-5 content">
                     <ul>
                         {/* {this.state.detalles.map((element,i) =>(<li key={i}>{element.CodigoBarras} <br /> {element.Descripcion} {element.PrecioVentaConImpuesto}<button onClick={this.handleEliminar} id={i} className="btn btn-danger btn-sm">Eliminar</button></li>))} */}
-                        {this.state.detalles.map((element,i) =>(<li key={i}>{element.CodigoBarras} <br /> {element.Descripcion} {element.PrecioVentaConImpuesto}<button onClick={(e) => {if (window.confirm('Are you sure you wish to delete this item?')) this.handleEliminar(e) }} id={i} className="btn btn-danger btn-sm">Eliminar</button></li>))}
+                        {this.state.detalles.map((element,i) =>(<li key={i}>{element.CodigoBarras} <br /> <small>{element.Descripcion}</small> <br /> <strong>{element.PrecioVentaConImpuesto}</strong><button onClick={(e) => {if (window.confirm('Are you sure you wish to delete this item?')) this.handleEliminar(e) }} id={i} className="btn btn-danger btn-sm ml-2">Eliminar</button></li>))}
                     </ul>
             </div>
             <div className="col-md-5 footer">

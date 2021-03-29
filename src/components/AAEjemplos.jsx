@@ -19,6 +19,8 @@ class AAEjemplos extends React.Component{
   //     return [year, month, day].join('-');
   // }
 
+//select "SucursalId","CodigoId", CAST((("CostoPromedio" /(1-("MargenReal"/100)))* "IVA"/100)- "IVAMonto" AS DEC(4,2) from inventario_perpetuo order by "SucursalId","CodigoId" ;
+
     deleteItem(event){
         alert(event.target.value)
         alert(event.target.name)
