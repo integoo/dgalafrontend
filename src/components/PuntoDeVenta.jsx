@@ -372,14 +372,14 @@ onGrabarVentas = async () =>{
             <div className="col-md-5 content">
                     <ul>
                         {/* {this.state.detalles.map((element,i) =>(<li key={i}>{element.CodigoBarras} <br /> {element.Descripcion} {element.PrecioVentaConImpuesto}<button onClick={this.handleEliminar} id={i} className="btn btn-danger btn-sm">Eliminar</button></li>))} */}
-                        {this.state.detalles.map((element,i) =>(<li key={i}>{element.CodigoBarras} <br /> <small>{element.Descripcion}</small> <br /> <strong>{element.PrecioVentaConImpuesto}</strong><button onClick={(e) => {if (window.confirm('Are you sure you wish to delete this item?')) this.handleEliminar(e) }} id={i} className="btn btn-danger btn-sm ml-2">Eliminar</button></li>))}
+                        {this.state.detalles.map((element,i) =>(<li key={i}>{element.CodigoBarras} <br /> <small>{element.Descripcion}</small> <br /> <strong>$ {element.PrecioVentaConImpuesto}</strong><button onClick={(e) => {if (window.confirm('Are you sure you wish to delete this item?')) this.handleEliminar(e) }} id={i} className="btn btn-danger btn-sm ml-2">Eliminar</button></li>))}
                     </ul>
             </div>
             <div className="col-md-5 footer">
 
 
             <label style={{width:"2em"}}><small>Total Ticket</small></label>
-                <input id="totalTicket" name="totalTicket" size="8" maxLength="8" type="text" value={"$"+this.state.totalTicket} style={{textAlign:"right"}} readOnly/>
+                <input id="totalTicket" name="totalTicket" size="8" maxLength="8" type="text" value={"$ "+this.state.totalTicket} style={{textAlign:"right"}} readOnly/>
 
                     <button onClick={this.onGrabarVentas} className="btn btn-success btn-sm mt-2" id="btn-registrarventa">REGISTRAR VENTA</button>
             </div>
