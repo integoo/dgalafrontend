@@ -10,6 +10,7 @@ import VentasConsulta from './VentasConsulta'
 import Kardex from './Kardex'
 import AjustesInventario from './AjustesInventario'
 import InventarioPerpetuo from './InventarioPerpetuo'
+import VentasConsultaFechaProducto from './VentasConsultaFechaProducto'
 
 
 class Menu extends Component {
@@ -79,7 +80,7 @@ class Menu extends Component {
                     aria-haspopup="true"
                     aria-expanded="false"
                   >
-                    Catalogos
+                    Catálogos
                   </span>
                   <div
                     className="dropdown-menu"
@@ -131,7 +132,11 @@ class Menu extends Component {
                     aria-labelledby="navbarDropdown"
                   >
                     <Link to="/ventas/consulta" style={linkStyle}>
-                        <span className="dropdown-item">Consulta Ventas</span>
+                        <span className="dropdown-item">Consulta Ventas (Fecha/Folio/Ticket)</span>
+                    </Link>
+
+                    <Link to="/ventas/consultafechaproductos" style={linkStyle}>
+                        <span className="dropdown-item">Consulta Ventas (Fecha/Producto)</span>
                     </Link>
                       
                     <div className="dropdown-divider"></div>
@@ -276,6 +281,7 @@ class Menu extends Component {
           <Route path="/compras/consulta" component={() => <ComprasConsulta accessToken={this.state.accessToken} url={this.state.url} />} />
           <Route path="/puntodeventa" component={() => <PuntoDeVenta accessToken={this.state.accessToken} url={this.state.url} />} />
           <Route path='/ventas/consulta' component={() => <VentasConsulta accessToken={this.state.accessToken} url={this.state.url} />} />
+          <Route path='/ventas/consultafechaproductos' component={() => <VentasConsultaFechaProducto accessToken={this.state.accessToken} url={this.state.url} />} />
           <Route path='/inventario/kardex' component={() => <Kardex accessToken={this.state.accessToken} url={this.state.url} />} />
           <Route path='/inventario/ajustesinventario' component={() => <AjustesInventario accessToken={this.state.accessToken} url={this.state.url} />} />
           <Route path='/inventario/inventarioperpetuo' component={() => <InventarioPerpetuo accessToken={this.state.accessToken} url={this.state.url} />} />

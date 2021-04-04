@@ -35,7 +35,7 @@ class AjustesInventario extends React.Component{
             <h4>Ajustes Inventario</h4>
             <SelectSucursales accessToken={this.props.accessToken} url={this.props.url} SucursalAsignada={sessionStorage.getItem("SucursalId")} onhandleSucursal={this.handleSucursal} />
             <InputCodigoBarras accessToken={this.props.accessToken} url={this.props.url} handleCodigoBarrasProp = {this.onhandleCodigoBarras} />               
-            <input id="descripcion" name="descripcion" size="40" maxLength="38" value={this.state.Descripcion} readOnly/>
+            {/* <input id="descripcion" name="descripcion" size="40" maxLength="38" value={this.state.Descripcion} readOnly/> */}
             <br />
             <label htmlFor="">Unidades Inventario</label>
             <input id="unidadesinventario" name="unidadesinventario" size="6" value={this.state.UnidadesInventario} readOnly/>

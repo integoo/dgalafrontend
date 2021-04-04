@@ -96,17 +96,11 @@ class InventarioPerpetuo extends React.Component{
     handleRender = () =>{
         return(
             <div className="contenidoInventarioPerpetuo">
+                        <span className="badge badge-success">Inventario Perpetuo</span>
                         <form>
-                            <h4>Inventario Perpetuo</h4>
                             <label htmlFor="">Sucursales</label>
                             <SelectSucursales accessToken={this.props.accessToken} url={this.props.url} SucursalAsignada={sessionStorage.getItem("SucursalId")} onhandleSucursal={this.handleSucursal} />
                             <br />
-                            {/* <label htmlFor="codigobarras">Código Barras</label>
-                            <input onChange={this.handleCodigoBarras} id="codigobarras" name="codigobarras" size="15" maxLength="13" value={this.state.CodigoBarras} style={{textTransform:"capitalize"}} ref={this.refCodigoBarras} autoComplete="off"/> */}
-                            {/* <label htmlFor="">Por Sucursal</label>
-                            <input type="radio" id="radiosucursal" name="TipoConsulta" value="1" checked/>
-                            <label htmlFor="">Por Código Barras</label>
-                            <input type="radio" id="radiocodigobarras" name="TipoConsulta" value="2"/> */}
                             <InputCodigoBarras accessToken={this.props.accessToken} url={this.props.url} handleCodigoBarrasProp = {this.onhandleCodigoBarras}/>
                             <br />
                             <button onClick={this.onhandleSubmit}className="btn btn-primary btn-sm" type="submit">Consultar</button>

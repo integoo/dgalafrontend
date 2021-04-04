@@ -7,11 +7,21 @@
 .ventasconsultasmain{
     height: 500px;
     border: 5px solid red;
+    border-radius: 10px;
+    background-color: rgb(203, 236, 181);
 }
 
-.detalles{
+.detallesFechas{
     height: 15rem;
     border: 5px solid green;
     border-radius: 10px;
     overflow-y:scroll;
+}
+
+.tabs{
+    text-align: center;
+}
+.tabs li{
+    display: inline;
+    cursor: pointer;
 }

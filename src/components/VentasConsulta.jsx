@@ -13,7 +13,19 @@ class VentasConsulta extends React.Component{
             FechaInicial: this.fechaActual(),
             FechaFinal: this.fechaActual(),
             totalventa:0,
+            totalVentaFecha:0,
+            totalVentaFolio:0,
+            totalVentaTicket:0,
+            detallesFolios:[],
+            detallesTicket:[],
         }
+    }
+
+    componentDidMount(){
+        document.querySelector('#btnFolio').disabled = true
+        document.querySelector('#btnTicket').disabled = true
+        document.querySelector('#table2').style.display = "none"
+        document.querySelector('#table3').style.display = "none"
     }
 
     fechaActual() {
@@ -48,6 +60,123 @@ class VentasConsulta extends React.Component{
         })
     }
 
+    handleTicket = async (FolioId) =>{
+        const SucursalId = this.state.SucursalId
+        const url = this.props.url+ `/api/ventasticket/${SucursalId}/${FolioId}`
+        const response = await fetch(url,{
+            headers:{
+                Authorization: `Bearer ${this.props.accessToken}`,
+            },
+        });
+        const data = await response.json()
+        if(data.error){
+            console.log(data.error)
+            alert(data.error)
+            return
+        }
+        let totalVentas = 0
+        for (let i=0; i<data.length; i++){
+            totalVentas+=parseFloat(data[i].Venta)
+        }
+        this.setState({
+            detallesTicket: data,
+            totalventa:totalVentas,
+            totalVentaTicket: totalVentas,
+        })
+    }
+
+    addRowHandlersFolios = ()=> {
+        const table = document.getElementById("table2");
+        const rows = table.getElementsByTagName("tr");
+        for (let i = 0; i < rows.length; i++) {
+         let currentRow = table.rows[i];
+         let createClickHandler =  (row) =>{
+             return () => {
+                 let cell = row.getElementsByTagName("td")[0];
+                 let FolioId = cell.innerHTML;
+                 this.handleTicket(FolioId)
+                 document.querySelector('#table1').style.display = "none"
+                 document.querySelector('#table2').style.display = "none"
+                 document.querySelector('#table3').style.display = "block"
+                 document.querySelector('#btnTicket').disabled = false;
+             };
+         };
+         currentRow.onclick = createClickHandler(currentRow);
+        }
+    }
+
+    handleFolios = async (Fecha) =>{
+        const SucursalId = this.state.SucursalId
+        const url = this.props.url+ `/api/ventasfolios/${SucursalId}/${Fecha}`
+        const response = await fetch(url,{
+            headers:{
+                Authorization: `Bearer ${this.props.accessToken}`,
+            },
+        });
+        const data = await response.json()
+        if(data.error){
+            console.log(data.error)
+            alert(data.error)
+            return
+        }
+        let totalVentas = 0
+        for (let i=0; i<data.length; i++){
+            totalVentas+=parseFloat(data[i].ExtVenta)
+        }
+        this.setState({
+            detallesFolios: data,
+            totalventa: totalVentas,
+            totalVentaFolio: totalVentas,
+        })
+        this.addRowHandlersFolios()
+    }
+
+    addRowHandlers = ()=> {
+        const table = document.getElementById("table1");
+        const rows = table.getElementsByTagName("tr");
+        for (let i = 0; i < rows.length; i++) {
+         let currentRow = table.rows[i];
+         let createClickHandler =  (row) =>{
+             return () => {
+                 let cell = row.getElementsByTagName("td")[0];
+                 let Fecha = cell.innerHTML;
+                 //alert(Fecha)
+                 this.handleFolios(Fecha)
+                 document.querySelector('#table1').style.display = "none"
+                 document.querySelector('#table2').style.display = "block"
+                 document.querySelector('#btnFolio').disabled = false;
+             };
+         };
+         currentRow.onclick = createClickHandler(currentRow);
+     }
+    }
+
+    handleBtnFecha =() =>{
+        document.querySelector("#table1").style.display="block"
+        document.querySelector("#table2").style.display = "none"
+        document.querySelector("#table3").style.display = "none"
+        this.setState({
+            totalventa: this.state.totalVentaFecha,
+        })
+    }
+
+    handleBtnFolio =()=>{
+        document.querySelector("#table1").style.display="none"
+        document.querySelector("#table2").style.display = "block"
+        document.querySelector("#table3").style.display = "none"
+        this.setState({
+            totalventa: this.state.totalVentaFolio,
+        })
+    }
+    handleBtnTicket =()=>{
+        document.querySelector("#table1").style.display="none"
+        document.querySelector("#table2").style.display = "none"
+        document.querySelector("#table3").style.display = "block"
+        this.setState({
+            totalventa: this.state.totalVentaTicket,
+        })
+    }
+
     onhandleSubmit = async (e)=>{
         e.preventDefault()
         const SucursalId = this.state.SucursalId
@@ -70,10 +199,19 @@ class VentasConsulta extends React.Component{
             for (let i =0; i< data.length; i++){
                 totalventas += parseFloat(data[i].ExtPrecioVentaConImpuesto)
             }
+            
             this.setState({
                 detalles: data,
-                totalventa: totalventas
+                totalventa: totalventas,
+                totalVentaFecha: totalventas,
             })
+            this.addRowHandlers()
+            document.querySelector("#btnFolio").disabled = true
+            document.querySelector("#btnTicket").disabled = true
+
+            document.querySelector("#table1").style.display="block"
+            document.querySelector("#table2").style.display = "none"
+            document.querySelector("#table3").style.display = "none"
         } catch(error){
             console.log(error.message)
             alert(error.message)
@@ -84,6 +222,7 @@ class VentasConsulta extends React.Component{
         return (
         <div className="row">
             <div className="col-md-5 ventasconsultasmain">
+                <span className="badge badge-danger">Consulta Ventas(Fecha/Folio/Ticket)</span>
                 <form>
                     <label htmlFor="">Sucursales</label>
                     <SelectSucursales accessToken={this.props.accessToken} url={this.props.url} SucursalAsignada={sessionStorage.getItem("SucursalId")} onhandleSucursal={this.handleSucursal} />
@@ -95,15 +234,70 @@ class VentasConsulta extends React.Component{
                     <input onChange={this.handleFechaFinal} type="date" id="fechafin" name="fechafin" value={this.state.FechaFinal} />
                     <button onClick={this.onhandleSubmit} className="btn btn-primary btn-block" type="submit">Consultar</button>
                 </form>
-                <br />
-                <div className="detalles">
-                    <ul>
-                        {this.state.detalles.map((element,i) => (<li key={i} value={element.Fecha}>{element.Fecha.substr(0,10)} {element.ExtPrecioVentaConImpuesto}</li>))}
-                    </ul>
+                <div className="detallesFechas">
+                    <div className="tabs">
+                        <ul>
+                            <li><button onClick={this.handleBtnFecha} id="btnFecha" className="btn btn-warning btn-sm">Fecha</button></li>
+                            <li><button onClick={this.handleBtnFolio} id="btnFolio" className="btn btn-warning btn-sm ml-1">Folio</button></li>
+                            <li><button onClick={this.handleBtnTicket} id="btnTicket" className="btn btn-warning btn-sm ml-1">Ticket</button></li>
+                        </ul>
+                    </div>
+                    <table id="table1">
+                        <thead>
+                            <tr>
+                                <th>Fecha</th>
+                                <th>Ext Venta Con Impuesto</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {this.state.detalles.map((element,i) => (<tr key={i}>
+                                <td>{element.Fecha.substr(0,10)}</td>
+                                <td style={{textAlign:"right"}}>{element.ExtPrecioVentaConImpuesto}</td>
+                                </tr>))}
+                        </tbody>
+                    </table>
+                    <table id="table2">
+                        <thead>
+                            <tr>
+                                <th>Folio</th>
+                                <th>Productos</th>
+                                <th>Unidades</th>
+                                <th>ExtVenta</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                                {this.state.detallesFolios.map((element,i) => (
+                                    <tr key={i}>
+                                    <td>{element.FolioId}</td>
+                                    <td style={{textAlign:"right"}}>{element.Productos}</td>
+                                    <td style={{textAlign:"right"}}>{element.Unidades}</td>
+                                    <td style={{textAlign:"right"}}>{element.ExtVenta}</td>
+                                </tr>))}
+                        </tbody>
+                    </table>
+                    <table id="table3">
+                        <thead>
+                            <tr>
+                                <th>CodigoId</th>
+                                <th>Descripcion</th>
+                                <th>Unidades</th>
+                                <th>Venta</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                                {this.state.detallesTicket.map((element,i) => (
+                                    <tr key={i}>
+                                    <td>{element.CodigoId}</td>
+                                    <td>{element.Descripcion}</td>
+                                    <td style={{textAlign:"right"}}>{element.UnidadesVendidas}</td>
+                                    <td style={{textAlign:"right"}}>{element.Venta}</td>
+                                </tr>))}
+                        </tbody>
+                    </table>
                 </div>
                 <br />
                 <label htmlFor="">Total Venta</label>
-                <input id="totalventa" name="totalventa" value={this.state.totalventa} readOnly />
+                <input id="totalventa" name="totalventa" style={{width:"5rem", textAlign:"right"}} value={"$ " +this.state.totalventa} readOnly />
             </div>
         </div>
         )

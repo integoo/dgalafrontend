@@ -1,0 +1,21 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+.consultaventafechaproductomain{
+    border: 5px solid green;
+    border-radius: 10px;
+    height: 500px;
+    background-color: rgb(203, 236, 181);
+
+}
+
+.detalles{
+    border: 5px solid green;
+    border-radius: 10px;
+    height: 200px;
+    margin-top: 10px;
+    overflow: scroll;
+}

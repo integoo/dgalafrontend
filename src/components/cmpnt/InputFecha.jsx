@@ -7,6 +7,9 @@ class InputFecha extends React.Component{
             Fecha: this.fechaActual(),
         }
     }
+    componentDidMount(){
+        this.props.onhandleFecha(this.state.Fecha)
+    }
     fechaActual() {
         const d = new Date();
         let vfecha =
@@ -23,6 +26,7 @@ class InputFecha extends React.Component{
         this.setState({
             Fecha: Fecha
         })
+        this.props.onhandleFecha(Fecha)
       }
 
     handleRender=()=>{
@@ -36,9 +40,7 @@ class InputFecha extends React.Component{
     render(){
         return(
             <React.Fragment>
-                <div className="content">
                     <this.handleRender />
-                </div>
             </React.Fragment>
         )
     }

@@ -136,6 +136,7 @@ class Kardex extends React.Component{
         return(
             <div className="row">
                 <div className="col-md-5 kardexmain">
+                    <span className="badge badge-success">Kardex</span>
                     <form>
                         <label htmlFor="">Sucursales</label>
                         <SelectSucursales accessToken={this.props.accessToken} url={this.props.url} SucursalAsignada={sessionStorage.getItem("SucursalId")} onhandleSucursal={this.handleSucursal} />
