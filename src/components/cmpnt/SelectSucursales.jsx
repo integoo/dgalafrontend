@@ -52,10 +52,10 @@ class SelectSucursales extends React.Component{
 
     handleSucursales = (e) =>{
         const SucursalId = e.target.value
+        this.props.onhandleSucursal(SucursalId)
         this.setState({
             SucursalId: SucursalId,
         })
-        this.props.onhandleSucursal(SucursalId)
     }
     handleRender = () =>{
         return(

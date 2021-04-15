@@ -263,6 +263,7 @@ class VentasConsulta extends React.Component{
                                 <th>Productos</th>
                                 <th>Unidades</th>
                                 <th>ExtVenta</th>
+                                <th>FechaHora</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -272,6 +273,7 @@ class VentasConsulta extends React.Component{
                                     <td style={{textAlign:"right"}}>{element.Productos}</td>
                                     <td style={{textAlign:"right"}}>{element.Unidades}</td>
                                     <td style={{textAlign:"right"}}>{element.ExtVenta}</td>
+                                    <td style={{textAlign:"left"}}>{element.FechaHora.substr(0,10)} {element.FechaHora.substr(11,8)}</td>
                                 </tr>))}
                         </tbody>
                     </table>

@@ -66,8 +66,11 @@ class VentasConsultaFechaProducto extends Component{
             <div className="row">
                 <div className="col-md-5 consultaventafechaproductomain">
                     <span className="badge badge-danger">Consulta Ventas(Fecha/Producto)</span>
+                    <br />
                     <label htmlFor="">Sucursales</label>
+                    <br />
                     <SelectSucursales accessToken={this.props.accessToken} url={this.props.url} SucursalAsignada={sessionStorage.getItem("SucursalId")} onhandleSucursal={this.handleSucursal} />
+                    <br />
                     <label htmlFor="">Fecha Inicial</label>
                     <InputFecha onhandleFecha={this.handleFechaInicial}/>
                     <label htmlFor="">Fecha Final</label>

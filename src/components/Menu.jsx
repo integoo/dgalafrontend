@@ -6,6 +6,7 @@ import Productos from "./Productos"
 import ComprasRecepcion from "./ComprasRecepcion"
 import ComprasConsulta from "./ComprasConsulta"
 import PuntoDeVenta from './PuntoDeVenta'
+import RetirosDeCaja from './RetirosDeCaja'
 import VentasConsulta from './VentasConsulta'
 import Kardex from './Kardex'
 import AjustesInventario from './AjustesInventario'
@@ -102,13 +103,48 @@ class Menu extends Component {
 
 
 
-              <Link to="/puntodeventa" style={linkStyle}>
+              <Link to="/" style={linkStyle}>
+                <li className="nav-item dropdown" data-toggle="collapse" data-target=".navbar-collapse.show">
+                  <span
+                    className="nav-link dropdown-toggle"
+                    id="navbarDropdown"
+                    role="button"
+                    data-toggle="dropdown"
+                    aria-haspopup="true"
+                    aria-expanded="false"
+                  >
+                    Punto de Venta
+                  </span>
+                  <div
+                    className="dropdown-menu"
+                    aria-labelledby="navbarDropdown"
+                  >
+                    <Link to="/puntodeventa/puntodeventa" style={linkStyle}>
+                        <span className="dropdown-item">Punto de Venta</span>
+                    </Link>
+                      
+                    <div className="dropdown-divider"></div>
+                    <Link to="/puntodeventa/retirosdecaja" style={linkStyle}>
+                      <span className="dropdown-item">Retiros de Caja</span>
+                    </Link>
+                  </div>
+                </li>
+              </Link>
+
+
+
+
+
+
+
+
+              {/* <Link to="/puntodeventa" style={linkStyle}>
                 <li className="nav-item" data-toggle="collapse" data-target=".navbar-collapse.show">
                   <span className="nav-link">
                     Punto de Venta <span className="sr-only">(current)</span>
                   </span>
                 </li>
-              </Link>
+              </Link> */}
 
 
 
@@ -279,7 +315,8 @@ class Menu extends Component {
           <Route exac path="/contabilidad/egresos" component={() => <Ingresos accessToken={this.state.accessToken} naturalezaCC="-1" />} />
           <Route path="/compras/recepcion" component={() => <ComprasRecepcion accessToken={this.state.accessToken} url={this.state.url} />} />
           <Route path="/compras/consulta" component={() => <ComprasConsulta accessToken={this.state.accessToken} url={this.state.url} />} />
-          <Route path="/puntodeventa" component={() => <PuntoDeVenta accessToken={this.state.accessToken} url={this.state.url} />} />
+          <Route path="/puntodeventa/puntodeventa" component={() => <PuntoDeVenta accessToken={this.state.accessToken} url={this.state.url} />} />
+          <Route path="/puntodeventa/retirosdecaja" component={() => <RetirosDeCaja accessToken={this.state.accessToken} url={this.state.url} />} />
           <Route path='/ventas/consulta' component={() => <VentasConsulta accessToken={this.state.accessToken} url={this.state.url} />} />
           <Route path='/ventas/consultafechaproductos' component={() => <VentasConsultaFechaProducto accessToken={this.state.accessToken} url={this.state.url} />} />
           <Route path='/inventario/kardex' component={() => <Kardex accessToken={this.state.accessToken} url={this.state.url} />} />

@@ -1,0 +1,26 @@
+* {
+    box-sizing: border-box;
+    margin:0;
+    padding:0;
+}
+
+.contentdetalles{
+    border: 3px solid gray;
+    border-radius: 10px;
+    margin-bottom: 5px;
+    background-color:rgb(238, 238, 238);
+}
+
+.contentRetirosProceso {
+    height: 6.6rem;
+}
+
+.contentRetirosEntregados{
+    height: 6.6rem;
+}
+
+.contentRetirosCancelados{
+    height: 6.6rem;
+    /* background-color: red; */
+    color: red
+}
