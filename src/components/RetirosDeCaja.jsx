@@ -4,7 +4,7 @@ import './RetirosDeCaja.css'
 
 import SelectSucursales from './cmpnt/SelectSucursales'
 
-class CortesDeCaja extends React.Component{
+class RetirosDeCaja extends React.Component{
     constructor(props){
         super(props)
 
@@ -16,7 +16,7 @@ class CortesDeCaja extends React.Component{
             Periodo:"",
             Year:0,
             Mes:0,
-            BaseYear:2021,
+            BaseYear:2021, //Este año no se debe modificar
             Years: [],
             VentaMensual:0,
             RetirosAcumulados:0,
@@ -169,9 +169,7 @@ class CortesDeCaja extends React.Component{
         return periodo
     }
 
-    // handleVentasRetiros = async(Periodo, SucursalId) =>{
     handleVentasRetiros = async(Periodo) =>{
-        // const url = this.props.url + `/api/cierremescantidades/${SucursalId}/${Periodo}`;
         const url = this.props.url + `/api/cierremescantidades/${Periodo}`;
         let data;
         try{
@@ -195,10 +193,8 @@ class CortesDeCaja extends React.Component{
         return data
     }
 
-    // handleRetiros = async(SucursalId,Periodo) =>{
     handleRetiros = async(Periodo) =>{
         let data;
-        // const url = this.props.url + `/api/consultaretiros/${SucursalId}/${Periodo}`
         const url = this.props.url + `/api/consultaretiros/${Periodo}`
         try{
             const response = await fetch(url, {
@@ -220,9 +216,7 @@ class CortesDeCaja extends React.Component{
         return data
     }
 
-    // handleSucursal = async(SucursalId) =>{
     handleSucursal = (SucursalId) =>{
-        //const Periodo = this.state.Periodo
         let ArregloCantidadesSucursal = [] 
         let ExtVenta = 0
         let CantidadRetiro = 0
@@ -350,7 +344,7 @@ class CortesDeCaja extends React.Component{
             return
         }
 
-        if (this.state.VentaMensual <= 0){
+        if (parseFloat(this.state.VentaMensual) <= 0){
             this.setState({
                 MontoRetiro:"",
             })
@@ -359,7 +353,7 @@ class CortesDeCaja extends React.Component{
             return
         }
 
-        if (this.state.MontoRetiro <= 0 ){
+        if (parseFloat(this.state.MontoRetiro) <= 0 ){
             this.setState({
                 MontoRetiro:"",
             })
@@ -368,7 +362,7 @@ class CortesDeCaja extends React.Component{
             return
         }
 
-        if(this.state.MontoPendiente < this.state.MontoRetiro){
+        if(parseFloat(this.state.MontoPendiente) < parseFloat(this.state.MontoRetiro)){
             if(!window.confirm("El MONTO DEL RETIRO excede el MONTO PENDIENTE a Retirar. ¿Desea Continuar?")){
                 this.setState({
                     MontoRetiro:"",
@@ -741,7 +735,7 @@ class CortesDeCaja extends React.Component{
                                             <div className="contentRetirosProceso">
                                                 <span  className="badge badge-primary mt-2 mb-3">Retiro Id = {element.FolioId}</span>
                                                 <br />
-                                                <span>Por Aceptar <strong>{"$ "+element.CantidadRetiro}</strong></span>
+                                                <span>Por Aceptar <strong>{"$ "+this.numberWithCommas(element.CantidadRetiro)}</strong></span>
                                                 <button onClick={() =>{this.handleAceptar(element.FolioId)}} id={element.FolioId} className="btn btn-success btn-sm ml-4">Aceptar</button>
                                                 <button onClick={() =>{this.handleCancelar(element.FolioId)}} className="btn btn-danger btn-sm ml-1">Cancelar</button>
                                             </div>
@@ -756,7 +750,7 @@ class CortesDeCaja extends React.Component{
                                                 <div className="contentRetirosEntregados">
                                                     <span  className="badge badge-primary m-2">Retiro Id = {element.FolioId}</span>
                                                     <br />
-                                                    <span>Retiro Recibido <strong>{"$ "+element.CantidadRetiro}</strong></span>
+                                                    <span>Retiro Recibido <strong>{"$ "+this.numberWithCommas(element.CantidadRetiro)}</strong></span>
                                                     <br />
                                                     {/* <span>Registrado: <strong>{element.UserGenera}</strong> {element.FechaHoraGenera.substr(0,10)} {element.FechaHoraGenera.substr(11,8)}</span> */}
                                                     <span>Registrado: <strong>{element.UserGenera}</strong> {element.FechaHoraGenera}</span>
@@ -769,7 +763,7 @@ class CortesDeCaja extends React.Component{
                                                     <div className="contentRetirosCancelados">
                                                         <span  className="badge badge-primary m-2">Retiro Id = {element.FolioId}</span>
                                                         <br />
-                                                        <span>Retiro Cancelado <strong>{"$ "+element.CantidadRetiro}</strong></span>
+                                                        <span>Retiro Cancelado <strong>{"$ "+this.numberWithCommas(element.CantidadRetiro)}</strong></span>
                                                         <br />
                                                         <span>Registrado: <strong>{element.UserGenera}</strong> {element.FechaHoraGenera}</span>
                                                         <br />
@@ -806,4 +800,4 @@ class CortesDeCaja extends React.Component{
         )
     }
 }
-export default CortesDeCaja;
+export default RetirosDeCaja;

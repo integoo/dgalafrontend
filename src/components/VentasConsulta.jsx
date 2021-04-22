@@ -218,6 +218,10 @@ class VentasConsulta extends React.Component{
         }
     }
 
+    numberWithCommas(x) {
+        return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+      }
+
     handleRender = () =>{
         return (
         <div className="row">
@@ -299,7 +303,7 @@ class VentasConsulta extends React.Component{
                 </div>
                 <br />
                 <label htmlFor="">Total Venta</label>
-                <input id="totalventa" name="totalventa" style={{width:"5rem", textAlign:"right"}} value={"$ " +this.state.totalventa} readOnly />
+                <input id="totalventa" name="totalventa" style={{width:"5rem", textAlign:"right"}} value={"$ " +this.numberWithCommas(this.state.totalventa)} readOnly />
             </div>
         </div>
         )

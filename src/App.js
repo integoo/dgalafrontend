@@ -8,11 +8,18 @@ class App extends React.Component{
     super(props)
 
     this.state={
+      url: "",
       isLoggedIn:false,
       accessToken: '',
       dbName: '',
     }
 
+  }
+
+  handleUrl = (url) =>{
+    this.setState({
+      url: url,
+    })
   }
 
   handlerAppState = (param, param2,paramDB) => {
@@ -26,8 +33,8 @@ class App extends React.Component{
   render(){
       return (
         <div className="App">
-          {this.state.isLoggedIn ? <Menu handler={this.handlerAppState} accessToken={this.state.accessToken} dbName={this.state.dbName} /> 
-                                  : <Login handler={this.handlerAppState} />}
+          {this.state.isLoggedIn && this.state.url ? <Menu handler={this.handlerAppState} accessToken={this.state.accessToken} dbName={this.state.dbName} url={this.state.url} /> 
+                                  : <Login handler={this.handlerAppState} onhandleUrl={this.handleUrl} />}
         </div>
       );
 

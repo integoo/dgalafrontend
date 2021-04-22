@@ -11,17 +11,35 @@
 }
 
  .content {
-     border: 10px solid gray;
+    height: 300px;
+    border: 10px solid gray;
     border-radius: 10px;
-     height: 360px;
     overflow-y:scroll; 
+ }
+
+ .notas{
+     height:70px;
+     display:flex;
+     flex-direction: column;
+     border: 10px solid gray;
+     border-radius: 10px;
+     overflow: scroll;
+ }
+
+ .notas > div > button{
+     width: 4rem;
+     height: 3rem;
+     /* border: 5px solid red; */
+     margin: 3px;
+     background-color: rgb(37, 220, 20);
+     border-radius: 10px;
  }
 
  .footer{
     background-color: lightskyblue;
     border:5px solid gray;
     border-radius: 10px;
-    height: 80px;
+    height: 120px;
  }
 
  #btn-registrarventa {
@@ -29,6 +47,14 @@
      top: 10px;
      right: 10px;
  }
+
+ #btn-nota {
+    width:8.8rem;
+    margin-top: 5px;
+    position: absolute;
+    top: 50px;
+    right: 10px;
+}
 
  #btn-cancelarventa {
     position: absolute;
@@ -53,4 +79,21 @@
      height: 300px;
      z-index: 1;
      overflow: scroll;
+ }
+
+ #notaspendientes{
+     display:flex;
+     justify-content:space-around;
+ }
+
+ .CatalogoClientes{
+     position: fixed;
+     top:1;
+     left:1;
+     width: 100%;
+     height: 90%;
+     border: 5px solid orangered;
+     border-radius: 10px;
+     background-color: yellow;
+     z-index: 1;
  }

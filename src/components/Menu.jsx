@@ -19,7 +19,8 @@ class Menu extends Component {
     super(props);
     this.state = {
       accessToken: this.props.accessToken,
-      url: "http://decorafiestas.com:3001"
+      //url: "http://decorafiestas.com:3001"
+      url: this.props.url,
     };
   }
 
@@ -35,7 +36,6 @@ class Menu extends Component {
     const linkStyle = {
       color: "white"
     };
-    
 //***  Aquí esta el nombre de la Base de Datos como constante producciondb ******/
 
     let classes = "navbar navbar-expand-lg navbar-white bg-"

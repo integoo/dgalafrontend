@@ -15,15 +15,28 @@ export default class Login extends React.Component{
 
     someMethod =  async (e) => {
         e.preventDefault();
-
+        const user = e.target.elements.usuario.value.toLowerCase()
         let json = {
             user: e.target.elements.usuario.value.toLowerCase(),
             password: e.target.elements.password.value
         };
 
-        const url = 'http://decorafiestas.com:3001/login'
+        let port;
+        if(user === 'desarrollo'){
+            port = 4001
+        }else{
+            port = 3001
+        }
+        //const url = 'http://decorafiestas.com:3001/login'
+        //const url = `http://decorafiestas.com:${port}/login`
+        const protocol = `http`
+        const domain = `decorafiestas.com`
+        const path = `/login`
+        
+        const url = `${protocol}://${domain}:${port}`
+
         try{
-                const response = await fetch(url, {
+                const response = await fetch(url+path, {
                     method:'POST',
                     body: JSON.stringify(json),
                     headers:{
@@ -39,6 +52,7 @@ export default class Login extends React.Component{
                     sessionStorage.setItem('SucursalId', data.SucursalId)
                     /* *********************************************** */
                     this.props.handler(true, data.accessToken,data.db_name)
+                    this.props.onhandleUrl(url)
                 } else{
                     console.log(data.error)
                     alert("Error: "+data.error)
