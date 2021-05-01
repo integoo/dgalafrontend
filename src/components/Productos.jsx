@@ -34,9 +34,12 @@ class Productos extends React.Component{
             IEPSId:1,
             IEPS:0,
             productosRecientes:[],
+            checked: false, //"checked" es para prender el checkbox
         }
         this.codigobarras = React.createRef();
+        this.DescripcionInput = React.createRef();
         this.handleSubmit = this.handleSubmit.bind(this)
+
     }
 
     async componentDidMount(){
@@ -112,7 +115,6 @@ class Productos extends React.Component{
                 productosRecientes: productosRecientes,
 
             })
-
             this.codigobarras.current.focus();
         }catch(error){
             console.log(error.message)
@@ -175,15 +177,18 @@ class Productos extends React.Component{
             document.querySelector('#codigobarras').disabled = true 
             this.setState({
                 CodigoBarras:"I-CODE",
+                checked:true,
             })
-            document.querySelector("#codigobarras").disabled = "true" 
+            //document.querySelector("#codigobarras").disabled = "true" 
+            this.DescripcionInput.current.focus();
         }else{
             document.querySelector('#codigobarras').disabled = false
             this.setState({
                 CodigoBarras:"",
+                checked:false
             })
+            this.codigobarras.current.focus()
         }
-        this.codigobarras.current.focus()
     }
 
     handleDescripcion = (e)=>{
@@ -316,13 +321,17 @@ class Productos extends React.Component{
             })
             const data = await response.json()
 
-            // this.setState({
-            //     CodigoId: data.Success
-            // })
-
             alert(JSON.stringify(data))
 
-            if(!data.error){
+            if(data.error){
+                alert ("Error antes de cargar productos")
+                return
+            }
+                const productosRecientes = await this.getProductosRecientes()
+                if(productosRecientes.error){
+                    alert(productosRecientes.error)
+                    return;
+                }
                 this.setState({
                     CodigoId:"",
                     CodigoBarras:"",
@@ -341,20 +350,18 @@ class Productos extends React.Component{
                     iva:1,
                     IVACompra:"S",
                     ieps:1,
+                    productosRecientes: productosRecientes,
+                    checked: true,
                 })
-            }
+            
 
-            const productosRecientes = await this.getProductosRecientes()
-            if(productosRecientes.error){
-                alert(productosRecientes.error)
-                return;
-            }
+            
+            
 
-            this.setState({
-                productosRecientes: productosRecientes
-            })
-
-
+            document.querySelector('#codigobarras').disabled = false
+            //document.querySelector('.checkboxsincodigobarras').checked =""
+            //document.querySelector('.checkboxsincodigobarras').defaultChecked = false
+            
             this.codigobarras.current.focus();
 
         }catch(error){
@@ -377,11 +384,12 @@ class Productos extends React.Component{
                                 <br />
                                 <label htmlFor="codigobarras">Código Barras</label>
                                 <input onChange={this.handleCodigoBarras} value={this.state.CodigoBarras} id="codigobarras" name="codigobarras" size="15" maxLength="13" autoComplete="off" ref={this.codigobarras} required style={{"textTransform":"uppercase"}}/>
-                                <input onChange={this.handleSinCodigoBarras} type="checkbox" className="ml-2" />
-                                <lable htmlFor="" className="ml-1" style={{fontSize:".8rem"}}>Sin Código de Barras</lable>
+                                {/* <input onChange={this.handleSinCodigoBarras} id="checked" name="checked" type="checkbox" className="ml-2" defaultChecked={this.state.checked} /> */}
+                                <input onChange={this.handleSinCodigoBarras} id="checked" name="checked" type="checkbox" className="ml-2" checked={this.state.checked} />
+                                <label htmlFor="" className="ml-1" style={{fontSize:".8rem"}}>Sin Código de Barras</label>
                                 <br/>
                                 <label htmlFor="descripcion">Descripcion</label>
-                                <input onChange={this.handleDescripcion} value={this.state.Descripcion} id="descripcion" name="descripcion" size="40" autoComplete="off" style={{textTransform:"uppercase"}} required />
+                                <input onChange={this.handleDescripcion} value={this.state.Descripcion} id="descripcion" name="descripcion" size="40" autoComplete="off" style={{textTransform:"uppercase"}} ref={this.DescripcionInput} required />
                                 <br/>
                                 <label htmlFor="categorias">Categorías</label>
                                 <select onChange={this.handleCategorias} id="categorias" name="categorias" value={this.state.CategoriaId}>

@@ -1,0 +1,165 @@
+
+//########## CLIENTES
+    CREATE TABLE clientes
+        ("ClienteId" INT,
+        "Nombre" VARCHAR(150) NOT NULL,
+        "ApellidoPaterno" VARCHAR(50),
+        "ApellidoMaterno" VARCHAR(50),
+        "Status" CHAR(1) NOT NULL DEFAULT 'A',
+        "Telefono" CHAR(10),
+        "RFC" CHAR(14),
+        "RazonSocial" VARCHAR(200),
+        "DomicilioFiscal" VARCHAR(200),
+        "Email" VARCHAR(60),
+        "campo1" VARCHAR(10),
+        "campo2" VARCHAR(10),
+        "campo3" VARCHAR(10),
+        "campo4" VARCHAR(10),
+        "campo5" VARCHAR(10),
+        "SucursalIdAlta" SMALLINT NOT NULL,
+        "FechaHora" TIMESTAMPTZ NOT NULL,
+        "Usuario" VARCHAR(30) NOT NULL
+        );
+        ALTER TABLE clientes ADD PRIMARY KEY("ClienteId");
+
+        INSERT INTO clientes("ClienteId","Nombre","SucursalIdAlta","FechaHora","Usuario") VALUES(0,'PUBLICO EN GENERAL',0,CLOCK_TIMESTAMP(),'eugalde');
+        INSERT INTO clientes("ClienteId","Nombre","SucursalIdAlta","FechaHora","Usuario") VALUES(1,'...',0,CLOCK_TIMESTAMP(),'eugalde');
+
+        CREATE VIEW vw_clientes AS
+        SELECT *,
+        "Nombre" ||' '|| CASE WHEN "ApellidoPaterno" IS NULL THEN '' ELSE "ApellidoPaterno" END||' '||
+        CASE WHEN "ApellidoMaterno" IS NULL THEN '' ELSE "ApellidoMaterno" END AS "Cliente"
+        FROM clientes;
+
+
+
+
+//#### VENTAS
+        ALTER TABLE ventas ADD COLUMN "ClienteId" TYPE INT;
+        UPDATE ventas SET "ClienteId" = 0;
+        ALTER TABLE ventas ALTER COLUMN "ClienteId" SET NOT NULL;
+        ALTER TABLE ventas ALTER COLUMN "ClienteId" SET DEFAULT 0;
+
+        ALTER TABLE ventas ADD COLUMN "FolioIdInventario" INT;
+        UPDATE ventas SET "FolioIdInventario" = "FolioId";
+        ALTER TABLE ventas ALTER COLUMN "FolioIdInventario" SET NOT NULL;
+        ALTER TABLE ventas ALTER COLUMN "FolioIdInventario" SET DEFAULT 0;
+
+        ALTER TABLE ventas ADD COLUMN "UnidadesRegistradas" SMALLINT;
+        UPDATE ventas SET "UnidadesRegistradas" = "UnidadesVendidas";
+        ALTER TABLE ventas ALTER COLUMN "UnidadesRegistradas" SET NOT NULL;
+        ALTER TABLE ventas ALTER COLUMN "UnidadesRegistradas" SET DEFAULT 0;
+
+        ALTER TABLE ventas ALTER COLUMN "Fecha" DROP NOT NULL;
+
+        ALTER TABLE ventas ADD COLUMN "FechaHoraAlta" TIMESTAMPTZ;
+        UPDATE ventas SET "FechaHoraAlta" = "Fecha"::TIMESTAMPTZ;
+        ALTER TABLE ventas ALTER COLUMN "FechaHoraAlta" SET NOT NULL;
+        ALTER TABLE ventas ALTER COLUMN "FechaHoraAlta" SET DEFAULT CLOCK_TIMESTAMP();
+
+        UPDATE ventas SET "Status" = 'V';
+
+
+//##### SUBCATEGORIAS
+        INSERT INTO subcategorias VALUES(3,4,'04 ACCESORIOS');
+        UPDATE subcategorias set "Subcategoria" = '03 SUAVIZANTES' WHERE "CategoriaId" = 3 AND "SubcategoriaId" = 3;
+        UPDATE subcategorias set "Subcategoria" = '02 DETERGENTES' WHERE "CategoriaId" = 3 AND "SubcategoriaId" = 2;
+        UPDATE subcategorias set "Subcategoria" = '01 LAVADO/SECADO' WHERE "CategoriaId" = 3 AND "SubcategoriaId" = 1;
+        update compras set "SubcategoriaId" = 4 where "CodigoId" = 20;
+        update ventas  set "SubcategoriaId" = 4 where "CodigoId" = 20;
+        update productos set "SubcategoriaId" = 4 where "CodigoId" = 20;
+
+
+
+//##### PRODUCTOS
+        ALTER TABLE productos ADD COLUMN "Inventariable" CHAR(1) DEFAULT 'S';
+        UPDATE productos SET "Inventariable" = 'S';
+        ALTER TABLE productos ALTER COLUMN "Inventariable" SET NOT NULL;
+
+        ALTER TABLE productos ADD COLUMN "CompraVenta" CHAR(1) DEFAULT 'A';
+        UPDATE productos SET "CompraVenta" = 'A';
+        ALTER TABLE productos ALTER COLUMN "CompraVenta" SET NOT NULL;
+
+        ALTA DE PRODUCTOS : 
+
+        ** IMPORTANTE: 
+        a) PONERLE IVA 16% A LOS PRODUCTOS (3)
+        b) IVA a la Compra NOOOOOOOOO
+
+        63: LAVADA 30 MIN
+        64: SECADA 15 MIN
+        65: SERVICIO POR ENCARGO
+
+        UPDATE productos SET "Inventariable" = 'N', "CompraVenta" = 'V' 
+        WHERE "CodigoId" IN (63,64,65);
+
+        drop view vw_productos_descripcion;
+
+        CREATE VIEW public.vw_productos_descripcion AS
+ SELECT p."CodigoId",
+    p."CodigoBarras",
+    (((((((((((((((p."Descripcion")::text || ' '::text) || (c."Color")::text) || ' '::text) || (s."Sabor")::text) || ' '::text) || (p."UnidadesCapacidad")::text) || ''::text) || (md."MedidaCapacidad")::text) || ' '::text) || p."UnidadesVenta") || ''::text) || (mv."MedidaVenta")::text) || ' '::text) || (m."Marca")::text) AS "Descripcion",
+    p."Inventariable",p."CompraVenta",p."CategoriaId"
+   FROM (((((public.productos p
+     JOIN public.medidas_capacidad md ON ((md."MedidaCapacidadId" = p."MedidaCapacidadId")))
+     JOIN public.medidas_venta mv ON ((mv."MedidaVentaId" = p."MedidaVentaId")))
+     JOIN public.marcas m ON ((m."MarcaId" = p."MarcaId")))
+     JOIN public.colores c ON ((c."ColorId" = p."ColorId")))
+     JOIN public.sabores s ON ((s."SaborId" = p."SaborId")));
+
+
+
+
+
+
+
+
+
+//###### INVENTARIO_PERPETUO
+        UPDATE inventario_perpetuo 
+        SET "CostoCompra" = 0.01,
+            "CostoPromedio"= 0.01,
+            "Margen" = 32,
+            "MargenReal" = 99.97,
+            "IVAId" = 3,
+            "IVA" = 16,
+            "IVAMonto" = 5.5173,
+            "PrecioVentaSinImpuesto" = 34.4827,
+            "PrecioVentaConImpuesto" = 40,
+            "FechaCambioPrecio"= CURRENT_DATE,
+            "CostoBasePrecioVenta" = 0.01,
+            "FechaHora" = CLOCK_TIMESTAMP()
+        WHERE "CodigoId" = 63
+        AND "SucursalId" IN (1,3);
+
+        UPDATE inventario_perpetuo 
+        SET "CostoCompra" = 0.01,
+            "CostoPromedio"= 0.01,
+            "Margen" = 32,
+            "MargenReal" = 99.94,
+            "IVAId" = 3,
+            "IVA" = 16,
+            "IVAMonto" = 2.7586,
+            "PrecioVentaSinImpuesto" = 17.2414,
+            "PrecioVentaConImpuesto" = 20,
+            "FechaCambioPrecio"= CURRENT_DATE,
+            "CostoBasePrecioVenta" = 0.01,
+            "FechaHora" = CLOCK_TIMESTAMP()
+        WHERE "CodigoId" = 64
+        AND "SucursalId" IN (1,3);
+
+UPDATE inventario_perpetuo 
+        SET "CostoCompra" = 0.01,
+            "CostoPromedio"= 0.01,
+            "Margen" = 32,
+            "MargenReal" = 0.00,
+            "IVAId" = 3,
+            "IVA" = 16,
+            "IVAMonto" = 0.0016,
+            "PrecioVentaSinImpuesto" = 0.01,
+            "PrecioVentaConImpuesto" = 0.0116,
+            "FechaCambioPrecio"= CURRENT_DATE,
+            "CostoBasePrecioVenta" = 0.01,
+            "FechaHora" = CLOCK_TIMESTAMP()
+        WHERE "CodigoId" = 65
+        AND "SucursalId" IN (1,3);

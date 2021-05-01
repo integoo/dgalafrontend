@@ -93,8 +93,8 @@ class RetirosDeCaja extends React.Component{
             CantidadesSucursal: ArregloCantidadesSucursal,
             alerta: alerta,
         })
-        
-        setTimeout(()=>{document.querySelector('.alert').style.display="none"},3000)
+
+        setTimeout(()=>{document.querySelector('.alert').style.display="none"},1000)
 
         this.retiroInput.current.focus()
     }

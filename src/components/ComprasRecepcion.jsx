@@ -147,14 +147,8 @@ class ComprasRecepcion extends React.Component {
 
   handleSucursales = (e) => {
     const SucursalId = e.target.value;
-
-    //const arregloUnidadesDeNegocioCatalogo = this.state.unidadesdenegocioCatalogo
-    
-    //const arregloUnidadesDeNegocio = arregloUnidadesDeNegocioCatalogo.filter(element => element.SucursalId === parseInt(SucursalId))
-
     this.setState({
       SucursalId: SucursalId,
-      //unidadesdenegocio: arregloUnidadesDeNegocio,
     });
   };
 
@@ -226,6 +220,14 @@ class ComprasRecepcion extends React.Component {
     if (arreglo.error) {
       alert(arreglo.error);
       return;
+    }
+    if(arreglo[0].CompraVenta === 'V'){
+      alert("Producto es solo para VENTA")
+      this.setState({
+        CodigoBarras:"",
+      })
+      this.codigoBarrasInput.current.focus()
+      return
     }
 
     const detallesAux = this.state.detalles;
