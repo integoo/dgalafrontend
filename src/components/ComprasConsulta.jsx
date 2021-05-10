@@ -85,7 +85,7 @@ class ComprasConsulta extends React.Component{
                 <div className="col-md-5 main-compras-consulta">
                     <form>
                         <label>Sucursal</label>
-                        <SelectSucursales accessToken={this.props.accessToken} url={this.props.url} SucursalAsignada={sessionStorage.getItem("SucursalId")} onhandleSucursal={this.handleSucursal} />
+                        <SelectSucursales accessToken={this.props.accessToken} url={this.props.url} SucursalAsignada={sessionStorage.getItem("SucursalId")} onhandleSucursal={this.handleSucursal} Administrador={this.props.Administrador} />
                         <br />
                         <label>Fecha Inicial</label>
                         <input onChange={this.handleFechaIni} type="date" id="fechaini" name="fechaini" value={this.state.FechaInicial} />

@@ -97,3 +97,11 @@
      background-color: lightblue;
      z-index: 1;
  }
+
+
+    @media only screen and (max-width: 387px) {
+        #sucursales, #clientes {
+            width: 9.7rem;
+            font-size: small;
+        }
+    }

@@ -313,15 +313,15 @@ class Menu extends Component {
           <Route exac path="/catalogos/productos" component={() => <Productos accessToken={this.state.accessToken} url={this.state.url}/>} />
           <Route exac path="/contabilidad/ingresos" component={() => <Ingresos accessToken={this.state.accessToken} naturalezaCC="1" />} />
           <Route exac path="/contabilidad/egresos" component={() => <Ingresos accessToken={this.state.accessToken} naturalezaCC="-1" />} />
-          <Route path="/compras/recepcion" component={() => <ComprasRecepcion accessToken={this.state.accessToken} url={this.state.url} />} />
-          <Route path="/compras/consulta" component={() => <ComprasConsulta accessToken={this.state.accessToken} url={this.state.url} />} />
-          <Route path="/puntodeventa/puntodeventa" component={() => <PuntoDeVenta accessToken={this.state.accessToken} url={this.state.url} />} />
-          <Route path="/puntodeventa/retirosdecaja" component={() => <RetirosDeCaja accessToken={this.state.accessToken} url={this.state.url} />} />
-          <Route path='/ventas/consulta' component={() => <VentasConsulta accessToken={this.state.accessToken} url={this.state.url} />} />
-          <Route path='/ventas/consultafechaproductos' component={() => <VentasConsultaFechaProducto accessToken={this.state.accessToken} url={this.state.url} />} />
-          <Route path='/inventario/kardex' component={() => <Kardex accessToken={this.state.accessToken} url={this.state.url} />} />
-          <Route path='/inventario/ajustesinventario' component={() => <AjustesInventario accessToken={this.state.accessToken} url={this.state.url} />} />
-          <Route path='/inventario/inventarioperpetuo' component={() => <InventarioPerpetuo accessToken={this.state.accessToken} url={this.state.url} />} />
+          <Route path="/compras/recepcion" component={() => <ComprasRecepcion accessToken={this.state.accessToken} url={this.state.url} Administrador={this.props.Administrador} />} />
+          <Route path="/compras/consulta" component={() => <ComprasConsulta accessToken={this.state.accessToken} url={this.state.url} Administrador={this.props.Administrador} />} />
+          <Route path="/puntodeventa/puntodeventa" component={() => <PuntoDeVenta accessToken={this.state.accessToken} url={this.state.url} Administrador={this.props.Administrador} />} />
+          <Route path="/puntodeventa/retirosdecaja" component={() => <RetirosDeCaja accessToken={this.state.accessToken} url={this.state.url} Administrador={this.props.Administrador} />} />
+          <Route path='/ventas/consulta' component={() => <VentasConsulta accessToken={this.state.accessToken} url={this.state.url} Administrador={this.props.Administrador}/>} />
+          <Route path='/ventas/consultafechaproductos' component={() => <VentasConsultaFechaProducto accessToken={this.state.accessToken} url={this.state.url} Administrador={this.props.Administrador}/>} />
+          <Route path='/inventario/kardex' component={() => <Kardex accessToken={this.state.accessToken} url={this.state.url} Administrador={this.props.Administrador} />} />
+          <Route path='/inventario/ajustesinventario' component={() => <AjustesInventario accessToken={this.state.accessToken} url={this.state.url} Administrador={this.props.Administrador} />} />
+          <Route path='/inventario/inventarioperpetuo' component={() => <InventarioPerpetuo accessToken={this.state.accessToken} url={this.state.url} Administrador={this.props.Administrador}/>} />
         </Switch>
       </Router>
     );

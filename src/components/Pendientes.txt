@@ -1,165 +1,104 @@
+1. Cambiar en Colaboradores mi "SucursalId" = 1
 
-//########## CLIENTES
-    CREATE TABLE clientes
-        ("ClienteId" INT,
-        "Nombre" VARCHAR(150) NOT NULL,
-        "ApellidoPaterno" VARCHAR(50),
-        "ApellidoMaterno" VARCHAR(50),
-        "Status" CHAR(1) NOT NULL DEFAULT 'A',
-        "Telefono" CHAR(10),
-        "RFC" CHAR(14),
-        "RazonSocial" VARCHAR(200),
-        "DomicilioFiscal" VARCHAR(200),
-        "Email" VARCHAR(60),
-        "campo1" VARCHAR(10),
-        "campo2" VARCHAR(10),
-        "campo3" VARCHAR(10),
-        "campo4" VARCHAR(10),
-        "campo5" VARCHAR(10),
-        "SucursalIdAlta" SMALLINT NOT NULL,
-        "FechaHora" TIMESTAMPTZ NOT NULL,
-        "Usuario" VARCHAR(30) NOT NULL
-        );
-        ALTER TABLE clientes ADD PRIMARY KEY("ClienteId");
 
-        INSERT INTO clientes("ClienteId","Nombre","SucursalIdAlta","FechaHora","Usuario") VALUES(0,'PUBLICO EN GENERAL',0,CLOCK_TIMESTAMP(),'eugalde');
-        INSERT INTO clientes("ClienteId","Nombre","SucursalIdAlta","FechaHora","Usuario") VALUES(1,'...',0,CLOCK_TIMESTAMP(),'eugalde');
+CREATE TABLE public.tipo_ajustes (
+    "TipoAjusteId" numeric NOT NULL PRIMARY KEY,
+    "Ajuste" character varying(50) NOT NULL,
+    "Movimiento" character varying(2) NOT NULL,
+    "Aplica" varchar(7) NOT NULL,
+    "AfectaCosto" char(1) NOT NULL CHECK("AfectaCosto" IN ('S','N')),
+    "FechaHora" timestamptz DEFAULT CLOCK_TIMESTAMP() NOT NULL,
+    "Usuario" varchar(30) DEFAULT user
+);
 
-        CREATE VIEW vw_clientes AS
-        SELECT *,
-        "Nombre" ||' '|| CASE WHEN "ApellidoPaterno" IS NULL THEN '' ELSE "ApellidoPaterno" END||' '||
-        CASE WHEN "ApellidoMaterno" IS NULL THEN '' ELSE "ApellidoMaterno" END AS "Cliente"
-        FROM clientes;
+INSERT INTO tipo_ajustes VALUES(1,'INVENTARIO CICLICO','+-','Manual','S',CLOCK_TIMESTAMP(),USER);
+INSERT INTO tipo_ajustes VALUES(2,'CAMBIO PRESENTACION','+-','Proceso','N',CLOCK_TIMESTAMP(),USER);
+INSERT INTO tipo_ajustes VALUES(3,'INVENTARIO FISICO','+-','Proceso','S',CLOCK_TIMESTAMP(),USER);
+INSERT INTO tipo_ajustes VALUES(4,'ADMINISTRATIVO','+-','Manual','S',CLOCK_TIMESTAMP(),USER);
 
 
 
+CREATE TABLE public.ajustes_inventario (
+    "SucursalId" smallint NOT NULL,
+    "CodigoId" integer NOT NULL,
+    "FolioId" integer NOT NULL,
+    "CodigoBarras" VARCHAR(13) NOT NULL,
+    "Fecha" date NOT NULL DEFAULT CURRENT_DATE,
+    "CategoriaId" smallint NOT NULL,
+    "SubcategoriaId" smallint NOT NULL,
+    "TipoAjusteId" smallint NOT NULL,
+    "AfectaCosto" char(1) CHECK("AfectaCosto" IN ('S','N')) NOT NULL,
+    "UnidadesAjustadas" integer NOT NULL,
+    "UnidadesInventarioAntes" smallint NOT NULL,
+    "UnidadesInventarioDespues" smallint NOT NULL,
+    "CostoCompra" numeric(8,4) NOT NULL,
+    "CostoPromedio" numeric(8,4) NOT NULL,
+    "PrecioVentaSinImpuesto" numeric(8,2) DEFAULT 0 NOT NULL,
+    "PrecioVentaConImpuesto" numeric(8,2) DEFAULT 0 NOT NULL,
+    "ColaboradorId" smallint NOT NULL,
+    "FechaHora" timestamptz NOT NULL,
+    "Usuario" varchar(30)
+);
 
-//#### VENTAS
-        ALTER TABLE ventas ADD COLUMN "ClienteId" TYPE INT;
-        UPDATE ventas SET "ClienteId" = 0;
-        ALTER TABLE ventas ALTER COLUMN "ClienteId" SET NOT NULL;
-        ALTER TABLE ventas ALTER COLUMN "ClienteId" SET DEFAULT 0;
+ALTER TABLE ajustes_inventario ADD PRIMARY KEY("SucursalId","CodigoId","FolioId");
 
-        ALTER TABLE ventas ADD COLUMN "FolioIdInventario" INT;
-        UPDATE ventas SET "FolioIdInventario" = "FolioId";
-        ALTER TABLE ventas ALTER COLUMN "FolioIdInventario" SET NOT NULL;
-        ALTER TABLE ventas ALTER COLUMN "FolioIdInventario" SET DEFAULT 0;
-
-        ALTER TABLE ventas ADD COLUMN "UnidadesRegistradas" SMALLINT;
-        UPDATE ventas SET "UnidadesRegistradas" = "UnidadesVendidas";
-        ALTER TABLE ventas ALTER COLUMN "UnidadesRegistradas" SET NOT NULL;
-        ALTER TABLE ventas ALTER COLUMN "UnidadesRegistradas" SET DEFAULT 0;
-
-        ALTER TABLE ventas ALTER COLUMN "Fecha" DROP NOT NULL;
-
-        ALTER TABLE ventas ADD COLUMN "FechaHoraAlta" TIMESTAMPTZ;
-        UPDATE ventas SET "FechaHoraAlta" = "Fecha"::TIMESTAMPTZ;
-        ALTER TABLE ventas ALTER COLUMN "FechaHoraAlta" SET NOT NULL;
-        ALTER TABLE ventas ALTER COLUMN "FechaHoraAlta" SET DEFAULT CLOCK_TIMESTAMP();
-
-        UPDATE ventas SET "Status" = 'V';
-
-
-//##### SUBCATEGORIAS
-        INSERT INTO subcategorias VALUES(3,4,'04 ACCESORIOS');
-        UPDATE subcategorias set "Subcategoria" = '03 SUAVIZANTES' WHERE "CategoriaId" = 3 AND "SubcategoriaId" = 3;
-        UPDATE subcategorias set "Subcategoria" = '02 DETERGENTES' WHERE "CategoriaId" = 3 AND "SubcategoriaId" = 2;
-        UPDATE subcategorias set "Subcategoria" = '01 LAVADO/SECADO' WHERE "CategoriaId" = 3 AND "SubcategoriaId" = 1;
-        update compras set "SubcategoriaId" = 4 where "CodigoId" = 20;
-        update ventas  set "SubcategoriaId" = 4 where "CodigoId" = 20;
-        update productos set "SubcategoriaId" = 4 where "CodigoId" = 20;
+ALTER TABLE ajustes_inventario ADD CONSTRAINT "SucursalId_fk" FOREIGN KEY("SucursalId") REFERENCES sucursales("SucursalId");
+ALTER TABLE ajustes_inventario ADD CONSTRAINT "CodigoId_fk" FOREIGN KEY("CodigoId") REFERENCES productos("CodigoId");
+ALTER TABLE ajustes_inventario ADD CONSTRAINT "Fecha_fk" FOREIGN KEY("Fecha") REFERENCES dim_catalogo_tiempo("Fecha");
+ALTER TABLE ajustes_inventario ADD CONSTRAINT "CategoriaId_fk" FOREIGN KEY("CategoriaId") REFERENCES categorias("CategoriaId");
+ALTER TABLE ajustes_inventario ADD CONSTRAINT "SubcategoriaId_fk" FOREIGN KEY("CategoriaId","SubcategoriaId") REFERENCES subcategorias("CategoriaId","SubcategoriaId");
+ALTER TABLE ajustes_inventario ADD CONSTRAINT "TipoAjusteId_fk" FOREIGN KEY("TipoAjusteId") REFERENCES tipo_ajustes("TipoAjusteId");
+ALTER TABLE ajustes_inventario ADD CONSTRAINT "ColaboradorId_fk" FOREIGN KEY("ColaboradorId") REFERENCES colaboradores("ColaboradorId");
 
 
 
-//##### PRODUCTOS
-        ALTER TABLE productos ADD COLUMN "Inventariable" CHAR(1) DEFAULT 'S';
-        UPDATE productos SET "Inventariable" = 'S';
-        ALTER TABLE productos ALTER COLUMN "Inventariable" SET NOT NULL;
+DROP VIEW vw_kardex;
 
-        ALTER TABLE productos ADD COLUMN "CompraVenta" CHAR(1) DEFAULT 'A';
-        UPDATE productos SET "CompraVenta" = 'A';
-        ALTER TABLE productos ALTER COLUMN "CompraVenta" SET NOT NULL;
-
-        ALTA DE PRODUCTOS : 
-
-        ** IMPORTANTE: 
-        a) PONERLE IVA 16% A LOS PRODUCTOS (3)
-        b) IVA a la Compra NOOOOOOOOO
-
-        63: LAVADA 30 MIN
-        64: SECADA 15 MIN
-        65: SERVICIO POR ENCARGO
-
-        UPDATE productos SET "Inventariable" = 'N', "CompraVenta" = 'V' 
-        WHERE "CodigoId" IN (63,64,65);
-
-        drop view vw_productos_descripcion;
-
-        CREATE VIEW public.vw_productos_descripcion AS
- SELECT p."CodigoId",
-    p."CodigoBarras",
-    (((((((((((((((p."Descripcion")::text || ' '::text) || (c."Color")::text) || ' '::text) || (s."Sabor")::text) || ' '::text) || (p."UnidadesCapacidad")::text) || ''::text) || (md."MedidaCapacidad")::text) || ' '::text) || p."UnidadesVenta") || ''::text) || (mv."MedidaVenta")::text) || ' '::text) || (m."Marca")::text) AS "Descripcion",
-    p."Inventariable",p."CompraVenta",p."CategoriaId"
-   FROM (((((public.productos p
-     JOIN public.medidas_capacidad md ON ((md."MedidaCapacidadId" = p."MedidaCapacidadId")))
-     JOIN public.medidas_venta mv ON ((mv."MedidaVentaId" = p."MedidaVentaId")))
-     JOIN public.marcas m ON ((m."MarcaId" = p."MarcaId")))
-     JOIN public.colores c ON ((c."ColorId" = p."ColorId")))
-     JOIN public.sabores s ON ((s."SaborId" = p."SaborId")));
-
-
-
-
-
-
-
-
-
-//###### INVENTARIO_PERPETUO
-        UPDATE inventario_perpetuo 
-        SET "CostoCompra" = 0.01,
-            "CostoPromedio"= 0.01,
-            "Margen" = 32,
-            "MargenReal" = 99.97,
-            "IVAId" = 3,
-            "IVA" = 16,
-            "IVAMonto" = 5.5173,
-            "PrecioVentaSinImpuesto" = 34.4827,
-            "PrecioVentaConImpuesto" = 40,
-            "FechaCambioPrecio"= CURRENT_DATE,
-            "CostoBasePrecioVenta" = 0.01,
-            "FechaHora" = CLOCK_TIMESTAMP()
-        WHERE "CodigoId" = 63
-        AND "SucursalId" IN (1,3);
-
-        UPDATE inventario_perpetuo 
-        SET "CostoCompra" = 0.01,
-            "CostoPromedio"= 0.01,
-            "Margen" = 32,
-            "MargenReal" = 99.94,
-            "IVAId" = 3,
-            "IVA" = 16,
-            "IVAMonto" = 2.7586,
-            "PrecioVentaSinImpuesto" = 17.2414,
-            "PrecioVentaConImpuesto" = 20,
-            "FechaCambioPrecio"= CURRENT_DATE,
-            "CostoBasePrecioVenta" = 0.01,
-            "FechaHora" = CLOCK_TIMESTAMP()
-        WHERE "CodigoId" = 64
-        AND "SucursalId" IN (1,3);
-
-UPDATE inventario_perpetuo 
-        SET "CostoCompra" = 0.01,
-            "CostoPromedio"= 0.01,
-            "Margen" = 32,
-            "MargenReal" = 0.00,
-            "IVAId" = 3,
-            "IVA" = 16,
-            "IVAMonto" = 0.0016,
-            "PrecioVentaSinImpuesto" = 0.01,
-            "PrecioVentaConImpuesto" = 0.0116,
-            "FechaCambioPrecio"= CURRENT_DATE,
-            "CostoBasePrecioVenta" = 0.01,
-            "FechaHora" = CLOCK_TIMESTAMP()
-        WHERE "CodigoId" = 65
-        AND "SucursalId" IN (1,3);
+CREATE VIEW public.vw_kardex AS
+ SELECT 'COMPRAS'::text AS "Movimiento",
+    c."FolioId",
+    c."UnidadesRecibidas" AS "Unidades",
+    c."UnidadesInventarioAntes",
+    c."UnidadesInventarioDespues",
+    c."CostoCompra",
+    c."CostoPromedio",
+    c."PrecioVentaSinImpuesto",
+    c."PrecioVentaConImpuesto",
+    to_char(c."FechaHora", 'yyyy-MM-dd HH24:MI:ss.ms.us'::text) AS "FechaHora",
+    c."SucursalId",
+    c."CodigoId",
+    c."ColaboradorId",
+    c."SerialId"
+   FROM public.compras c
+UNION ALL
+ SELECT 'VENTAS'::text AS "Movimiento",
+    v."FolioId",
+    v."UnidadesVendidas" AS "Unidades",
+    v."UnidadesInventarioAntes",
+    v."UnidadesInventarioDespues",
+    v."CostoCompra",
+    v."CostoPromedio",
+    v."PrecioVentaSinImpuesto",
+    v."PrecioVentaConImpuesto",
+    to_char(v."FechaHora", 'yyyy-MM-dd HH24:MI:ss.ms.us'::text) AS "FechaHora",
+    v."SucursalId",
+    v."CodigoId",
+    v."VendedorId" AS "ColaboradorId",
+    v."SerialId"
+   FROM public.ventas v
+   UNION ALL
+ SELECT 'AJUSTES INVENTARIO'::text AS "Movimiento",
+    ai."FolioId",
+    ai."UnidadesAjustadas" AS "Unidades",
+    ai."UnidadesInventarioAntes",
+    ai."UnidadesInventarioDespues",
+    ai."CostoCompra",
+    ai."CostoPromedio",
+    ai."PrecioVentaSinImpuesto",
+    ai."PrecioVentaConImpuesto",
+    to_char(ai."FechaHora", 'yyyy-MM-dd HH24:MI:ss.ms.us'::text) AS "FechaHora",
+    ai."SucursalId",
+    ai."CodigoId",
+    ai."ColaboradorId",
+    ai."FolioId" AS "SerialId"
+   FROM public.ajustes_inventario ai;

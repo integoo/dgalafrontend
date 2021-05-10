@@ -351,7 +351,7 @@ class Productos extends React.Component{
                     IVACompra:"S",
                     ieps:1,
                     productosRecientes: productosRecientes,
-                    checked: true,
+                    checked: false,
                 })
             
 
@@ -379,7 +379,6 @@ class Productos extends React.Component{
                                 <span className="badge badge-success "><h3>Productos</h3></span>
                                 <br />
                                 <label htmlFor="codigo">Código</label>
-                                {/* <input onChange={this.handleCodigo} value={this.state.CodigoId} id="codigo" name="codigo" size="6" style={{backgroundColor:"lightgray"}} autoComplete="off" readOnly/> */}
                                 <input value={this.state.CodigoId} id="codigo" name="codigo" size="6" style={{backgroundColor:"lightgray"}} autoComplete="off" readOnly/>
                                 <br />
                                 <label htmlFor="codigobarras">Código Barras</label>

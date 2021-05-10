@@ -2,6 +2,7 @@ import React from 'react';
 
 import './Kardex.css'
 import SelectSucursales from './cmpnt/SelectSucursales'
+import InputCodigoBarras from './cmpnt/InputCodigoBarras'
 
 class Kardex extends React.Component{
     constructor(props){
@@ -16,11 +17,12 @@ class Kardex extends React.Component{
             FechaInicial: this.fechaActual(),
             FechaFinal: this.fechaActual(),
         }
-        this.refCodigoBarras = React.createRef();
+        //this.refCodigoBarras = React.createRef();
+        this.CodigoBarrasInput = React.createRef();
     }
 
     componentDidMount(){
-        this.refCodigoBarras.current.focus()
+        //this.refCodigoBarras.current.focus()
     }
 
     fechaActual() {
@@ -66,7 +68,7 @@ class Kardex extends React.Component{
         e.preventDefault()
         const id = this.state.CodigoBarras
         if(!id){
-            this.refCodigoBarras.current.focus()
+            //this.refCodigoBarras.current.focus()
             return
         }
         const url = this.props.url + `/api/productodescripcion/${id}`
@@ -95,6 +97,23 @@ class Kardex extends React.Component{
         }
     }
 
+
+    onhandleCodigoBarras = (CodigoBarras) =>{
+        this.setState({
+            CodigoBarras: CodigoBarras,
+            Descripcion: "",
+            //UnidadesInventario:0,
+        })
+    }
+
+    onhandleConsulta = (CodigoBarras,Descripcion,UnidadesInventario) => {
+        const SucursalId = this.state.SucursalId
+        this.setState({
+            Descripcion: Descripcion,
+            //UnidadesInventario: UnidadesInventario,
+        })
+    }
+
     onhandCancel = (e) => {
         e.preventDefault()
         this.setState({
@@ -102,6 +121,7 @@ class Kardex extends React.Component{
             Descripcion: "",
             detalles:[],
         })
+        this.CodigoBarrasInput.current.handleRefCodigoBarrasInput()
     }
 
     onhandleSummit = async(e) =>{
@@ -139,12 +159,13 @@ class Kardex extends React.Component{
                     <span className="badge badge-success">Kardex</span>
                     <form>
                         <label htmlFor="">Sucursales</label>
-                        <SelectSucursales accessToken={this.props.accessToken} url={this.props.url} SucursalAsignada={sessionStorage.getItem("SucursalId")} onhandleSucursal={this.handleSucursal} />
-                        <br />
-                        <label htmlFor="codigobarras">Código Barras</label>
-                        <input onChange={this.handleCodigoBarras}id="codigobarras" name="codigobarras" size="15" maxLength="13" value={this.state.CodigoBarras} style={{textTransform:"capitalize"}} ref={this.refCodigoBarras} autoComplete="off" />
-                        <button onClick={this.onhandleBuscar} className="btn btn-primary btn-sm ml-1">Buscar</button>
-                        <br />
+                        <SelectSucursales accessToken={this.props.accessToken} url={this.props.url} SucursalAsignada={sessionStorage.getItem("SucursalId")} onhandleSucursal={this.handleSucursal} Administrador={this.props.Administrador} />
+
+                        {/* <label htmlFor="codigobarras">Código Barras</label>
+                        <input onChange={this.handleCodigoBarras}id="codigobarras" name="codigobarras" size="15" maxLength="13" value={this.state.CodigoBarras} style={{textTransform:"capitalize"}}  autoComplete="off" />
+                        <button onClick={this.onhandleBuscar} className="btn btn-primary btn-sm ml-1">Buscar</button> */}
+
+                        <InputCodigoBarras accessToken={this.props.accessToken} url={this.props.url} handleCodigoBarrasProp = {this.onhandleCodigoBarras} handleConsultaProp = {this.onhandleConsulta} CodigoBarrasProp = {this.state.CodigoBarras} ref={this.CodigoBarrasInput}/>
                         <label htmlFor="">Descripcion</label>
                         <input id="descripcion" name="descripcion" size="37" value={this.state.Descripcion} readOnly />
                         <br />

@@ -229,7 +229,7 @@ class VentasConsulta extends React.Component{
                 <span className="badge badge-danger">Consulta Ventas(Fecha/Folio/Ticket)</span>
                 <form>
                     <label htmlFor="">Sucursales</label>
-                    <SelectSucursales accessToken={this.props.accessToken} url={this.props.url} SucursalAsignada={sessionStorage.getItem("SucursalId")} onhandleSucursal={this.handleSucursal} />
+                    <SelectSucursales accessToken={this.props.accessToken} url={this.props.url} SucursalAsignada={sessionStorage.getItem("SucursalId")} onhandleSucursal={this.handleSucursal} Administrador={this.props.Administrador} />
                     <br />
                     <label htmlFor="">Fecha Inicial</label>
                     <input onChange={this.handleFechaInicial} type="date" id="fechaini" name="fechaini" value={this.state.FechaInicial} /> 

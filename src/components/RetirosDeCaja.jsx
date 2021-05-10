@@ -483,7 +483,7 @@ class RetirosDeCaja extends React.Component{
             let CantidadRetiroProceso=0
             const ArregloCantidadesEmpresa = await this.handleVentasRetiros(PeriodoAbierto)
             if (ArregloCantidadesEmpresa.length > 0){
-                ArregloCantidadesSucursal = ArregloCantidadesEmpresa.filter(element => element.SucursalId === this.state.SucursalId)
+                ArregloCantidadesSucursal = ArregloCantidadesEmpresa.filter(element => parseInt(element.SucursalId) === parseInt(this.state.SucursalId))
                 ExtVenta = ArregloCantidadesSucursal[0].ExtVenta
                 CantidadRetiro = ArregloCantidadesSucursal[0].CantidadRetiro
                 CantidadRetiroProceso = ArregloCantidadesSucursal[0].CantidadRetiroProceso
@@ -668,7 +668,7 @@ class RetirosDeCaja extends React.Component{
                             <div className="card-header text-center">
                                 <span className="badge badge-success"><h3>Retiros de Caja</h3></span>
                                 <br />
-                                <SelectSucursales accessToken={this.props.accessToken} url={this.props.url} SucursalAsignada={sessionStorage.getItem("SucursalId")} onhandleSucursal={this.handleSucursal} />
+                                <SelectSucursales accessToken={this.props.accessToken} url={this.props.url} SucursalAsignada={sessionStorage.getItem("SucursalId")} onhandleSucursal={this.handleSucursal} Administrador={this.state.Administrador}/>
                                 <select onChange={this.handleMes} className="m-2"id="mes" name="mes" value={this.state.Mes}>
                                         <option value="1">January</option>
                                         <option value="2">February</option>

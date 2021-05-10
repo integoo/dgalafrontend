@@ -69,7 +69,7 @@ class VentasConsultaFechaProducto extends Component{
                     <br />
                     <label htmlFor="">Sucursales</label>
                     <br />
-                    <SelectSucursales accessToken={this.props.accessToken} url={this.props.url} SucursalAsignada={sessionStorage.getItem("SucursalId")} onhandleSucursal={this.handleSucursal} />
+                    <SelectSucursales accessToken={this.props.accessToken} url={this.props.url} SucursalAsignada={sessionStorage.getItem("SucursalId")} onhandleSucursal={this.handleSucursal} Administrador={this.props.Administrador} />
                     <br />
                     <label htmlFor="">Fecha Inicial</label>
                     <InputFecha onhandleFecha={this.handleFechaInicial}/>

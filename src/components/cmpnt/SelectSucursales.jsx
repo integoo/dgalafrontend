@@ -13,7 +13,9 @@ class SelectSucursales extends React.Component{
     async componentDidMount(){
         let arregloSucursales = await this.getSucursales();
         const SucursalAsignada = parseInt(this.props.SucursalAsignada)
-        if(SucursalAsignada !== 100){
+        const Administrador = this.props.Administrador
+        // if(SucursalAsignada !== 100 && Administrador !== 'S'){
+        if(Administrador !== 'S'){
             arregloSucursales = arregloSucursales.filter(element => element.SucursalId === SucursalAsignada)
         }
         if(arregloSucursales.error){

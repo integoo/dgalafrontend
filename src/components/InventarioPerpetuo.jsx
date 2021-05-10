@@ -14,6 +14,7 @@ class InventarioPerpetuo extends React.Component{
             CodigoBarras: "",
             totalextcostopromedio: 0.0,
             totalunidadesinventario:0,
+            Administrador: this.props.Administrador,
         }
     }
 
@@ -99,7 +100,7 @@ class InventarioPerpetuo extends React.Component{
                         <span className="badge badge-success">Inventario Perpetuo</span>
                         <form>
                             <label htmlFor="">Sucursales</label>
-                            <SelectSucursales accessToken={this.props.accessToken} url={this.props.url} SucursalAsignada={sessionStorage.getItem("SucursalId")} onhandleSucursal={this.handleSucursal} />
+                            <SelectSucursales accessToken={this.props.accessToken} url={this.props.url} SucursalAsignada={sessionStorage.getItem("SucursalId")} onhandleSucursal={this.handleSucursal} Administrador={this.state.Administrador} />
                             <br />
                             <InputCodigoBarras accessToken={this.props.accessToken} url={this.props.url} handleCodigoBarrasProp = {this.onhandleCodigoBarras}/>
                             <br />

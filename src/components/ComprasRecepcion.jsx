@@ -1,6 +1,8 @@
 import React from "react";
 import "./ComprasRecepcion.css";
 
+import InputCodigoBarras from './cmpnt/InputCodigoBarras'
+
 class ComprasRecepcion extends React.Component {
   constructor(props) {
     super(props);
@@ -38,7 +40,7 @@ class ComprasRecepcion extends React.Component {
     };
     this.unidadesInput = React.createRef();
     this.costoCompraInput = React.createRef();
-    this.codigoBarrasInput = React.createRef();
+    this.CodigoBarrasInput = React.createRef();
     this.facturaInput = React.createRef();
   }
 
@@ -72,6 +74,7 @@ class ComprasRecepcion extends React.Component {
 
   async getSucursales() {
     const url = this.props.url + `/api/catalogos/10`;
+    const Administrador = this.props.Administrador
     try {
       const response = await fetch(url, {
         headers: {
@@ -80,7 +83,8 @@ class ComprasRecepcion extends React.Component {
       });
       let data = await response.json();
       const vSucursalAsignada = parseInt(sessionStorage.getItem('SucursalId'))
-      if(vSucursalAsignada !== 100){
+      // if(vSucursalAsignada !== 100){
+      if(Administrador !== 'S'){
           data = data.filter(element => element.SucursalId === vSucursalAsignada)
       }
       if (data.length === 0) {
@@ -187,7 +191,7 @@ class ComprasRecepcion extends React.Component {
       this.setState({
           SocioId: SocioId
       })
-      this.codigoBarrasInput.current.focus();
+      //this.CodigoBarrasInput.current.focus();
   }
 
   handleCodigoBarras = (e) => {
@@ -208,8 +212,9 @@ class ComprasRecepcion extends React.Component {
     }
   };
 
-  handleConsultar = async (e) => {
-    e.preventDefault();
+  //handleConsultar = async (e) => {
+  handleConsultar = async () => {
+    //e.preventDefault();
     let arreglo = [];
     if (this.state.CodigoBarras !== "") {
       arreglo = await this.getProducto(this.state.CodigoBarras);
@@ -226,7 +231,7 @@ class ComprasRecepcion extends React.Component {
       this.setState({
         CodigoBarras:"",
       })
-      this.codigoBarrasInput.current.focus()
+      //this.CodigoBarrasInput.current.focus()
       return
     }
 
@@ -308,7 +313,8 @@ class ComprasRecepcion extends React.Component {
       IEPSDescripcion: ""
     });
     document.querySelector("#codigobarras").disabled = false;
-    this.codigoBarrasInput.current.focus();
+    //this.CodigoBarrasInput.current.focus();
+    this.CodigoBarrasInput.current.handleRefCodigoBarrasInput()
   };
 
   handleUnidades = (e) => {
@@ -327,7 +333,6 @@ class ComprasRecepcion extends React.Component {
 
   handleUnidadesEnter = (e) => {
     if (e.key === "Enter") {
-
         if(e.target.value === "") return;
 
       this.costoCompraInput.current.focus();
@@ -453,12 +458,33 @@ class ComprasRecepcion extends React.Component {
 
     document.querySelector("#codigobarras").disabled = false;
 
-    this.codigoBarrasInput.current.focus();
+    //this.CodigoBarrasInput.current.focus();
+    this.CodigoBarrasInput.current.handleRefCodigoBarrasInput()
   };
 
   numberWithCommas(x) {
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   }
+
+  onhandleCodigoBarras = (CodigoBarras) =>{
+    this.setState({
+        CodigoBarras: CodigoBarras,
+        Descripcion: "",
+        //UnidadesInventario:0,
+    })
+}
+
+  onhandleConsulta = (CodigoBarras,Descripcion,UnidadesInventario) => {
+    //alert("Aqui tenemos que adecuar las funcionalidades de handleConsultar")
+    this.setState({
+        CodigoBarras: CodigoBarras,
+        Descripcion: Descripcion,
+        //UnidadesInventario: UnidadesInventario,
+    },()=>{
+      this.handleConsultar()
+      this.unidadesInput.current.focus()
+    })
+}
 
   handleSubmit = (e) => {
     e.preventDefault();
@@ -556,6 +582,7 @@ class ComprasRecepcion extends React.Component {
     document.querySelector("#totalfactura").disabled = false;
     document.querySelector("#socios").disabled = false;
 
+    this.CodigoBarrasInput.current.handleRefCodigoBarrasInput()
   }
   
 
@@ -629,7 +656,7 @@ class ComprasRecepcion extends React.Component {
                 ))}
             </select>
             <br />
-            <label htmlFor="codigoBarras">Código Barras</label>
+            {/* <label htmlFor="codigoBarras">Código Barras</label>
             <br />
             <input
               onChange={this.handleCodigoBarras}
@@ -640,7 +667,7 @@ class ComprasRecepcion extends React.Component {
               maxLength="13"
               style={{textTransform:"capitalize"}}
               value={this.state.CodigoBarras}
-              ref={this.codigoBarrasInput}
+              ref={this.CodigoBarrasInput}
               autoComplete="off"
             />
             <button
@@ -650,7 +677,14 @@ class ComprasRecepcion extends React.Component {
               className="btn btn-primary btn-sm m-1"
             >
               Consultar
-            </button>
+            </button> */}
+
+
+            <InputCodigoBarras accessToken={this.props.accessToken} url={this.props.url} handleCodigoBarrasProp = {this.onhandleCodigoBarras} handleConsultaProp = {this.onhandleConsulta} CodigoBarrasProp = {this.state.CodigoBarras} ref={this.CodigoBarrasInput}/>
+
+
+
+
             <br />
             <input
               id="iva"

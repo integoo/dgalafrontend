@@ -51,7 +51,7 @@ export default class Login extends React.Component{
                     sessionStorage.setItem('ColaboradorId', data.ColaboradorId)
                     sessionStorage.setItem('SucursalId', data.SucursalId)
                     /* *********************************************** */
-                    this.props.handler(true, data.accessToken,data.db_name)
+                    this.props.handler(true, data.accessToken,data.db_name,data.Administrador)
                     this.props.onhandleUrl(url)
                 } else{
                     console.log(data.error)

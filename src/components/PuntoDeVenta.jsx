@@ -76,6 +76,7 @@ class PuntoDeVenta extends React.Component {
 
   async getSucursales() {
     const url = this.props.url + `/api/catalogos/10`;
+    const Administrador = this.props.Administrador
     try {
       const response = await fetch(url, {
         headers: {
@@ -84,7 +85,8 @@ class PuntoDeVenta extends React.Component {
       });
       let data = await response.json();
       const vSucursalAsignada = parseInt(sessionStorage.getItem("SucursalId"));
-      if (vSucursalAsignada !== 100) {
+      // if (vSucursalAsignada !== 100) {
+      if (Administrador !== 'S') {
         data = data.filter(
           (element) => element.SucursalId === vSucursalAsignada
         );
