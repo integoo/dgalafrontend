@@ -154,6 +154,7 @@ class ComprasRecepcion extends React.Component {
     this.setState({
       SucursalId: SucursalId,
     });
+    this.CodigoBarrasInput.current.handleRefSucursalId(SucursalId)
   };
 
   handleProveedores = (e) => {

@@ -197,6 +197,12 @@ class InputCodigoBarras extends React.Component {
     //this.refCodigoBarras.current.focus()
   }
 
+  handleRefSucursalId = (SucursalId) =>{
+    this.setState({
+      SucursalId: SucursalId,
+    })
+  }
+
   handleRender = () => {
     return (
       <div className="mainInputCodigoBarras">

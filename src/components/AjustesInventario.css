@@ -5,14 +5,17 @@
 }
 
 .xheader{
-    height: 400px;
+    height: 460px;
     border: 5px solid darkgray;
     border-radius: 10px;
     overflow: scroll;
+    padding-bottom: 10px;
 }
 
 .xfooter{
     height: 150px;
+    margin-top: 5px;
+    padding-top: 5px;
     border: 5px solid darkgray;
     border-radius: 10px;
     overflow: scroll;
@@ -22,7 +25,3 @@
     display:flex;
     justify-content: center;
 }
-
-/* #buttonSubmit{
-    width:7rem;
-} */

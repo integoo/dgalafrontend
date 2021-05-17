@@ -12,6 +12,7 @@ import Kardex from './Kardex'
 import AjustesInventario from './AjustesInventario'
 import InventarioPerpetuo from './InventarioPerpetuo'
 import VentasConsultaFechaProducto from './VentasConsultaFechaProducto'
+import VentasConsultaCategorias from "./VentasConsultaCategorias";
 
 
 class Menu extends Component {
@@ -167,6 +168,10 @@ class Menu extends Component {
                     className="dropdown-menu"
                     aria-labelledby="navbarDropdown"
                   >
+                    <Link to="/ventas/consultaventascategorias" style={linkStyle}>
+                      <span className="dropdown-item">Consulta Ventas Categorías</span>
+                    </Link>
+                    
                     <Link to="/ventas/consulta" style={linkStyle}>
                         <span className="dropdown-item">Consulta Ventas (Fecha/Folio/Ticket)</span>
                     </Link>
@@ -174,6 +179,7 @@ class Menu extends Component {
                     <Link to="/ventas/consultafechaproductos" style={linkStyle}>
                         <span className="dropdown-item">Consulta Ventas (Fecha/Producto)</span>
                     </Link>
+
                       
                     <div className="dropdown-divider"></div>
                     <Link to="/ventas/estadoventas" style={linkStyle}>
@@ -317,6 +323,7 @@ class Menu extends Component {
           <Route path="/compras/consulta" component={() => <ComprasConsulta accessToken={this.state.accessToken} url={this.state.url} Administrador={this.props.Administrador} />} />
           <Route path="/puntodeventa/puntodeventa" component={() => <PuntoDeVenta accessToken={this.state.accessToken} url={this.state.url} Administrador={this.props.Administrador} />} />
           <Route path="/puntodeventa/retirosdecaja" component={() => <RetirosDeCaja accessToken={this.state.accessToken} url={this.state.url} Administrador={this.props.Administrador} />} />
+          <Route path='/ventas/consultaventascategorias' component={() => <VentasConsultaCategorias accessToken={this.state.accessToken} url={this.state.url} Administrador={this.props.Administrador} />} />
           <Route path='/ventas/consulta' component={() => <VentasConsulta accessToken={this.state.accessToken} url={this.state.url} Administrador={this.props.Administrador}/>} />
           <Route path='/ventas/consultafechaproductos' component={() => <VentasConsultaFechaProducto accessToken={this.state.accessToken} url={this.state.url} Administrador={this.props.Administrador}/>} />
           <Route path='/inventario/kardex' component={() => <Kardex accessToken={this.state.accessToken} url={this.state.url} Administrador={this.props.Administrador} />} />

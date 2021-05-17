@@ -16,6 +16,7 @@ class InventarioPerpetuo extends React.Component{
             totalunidadesinventario:0,
             Administrador: this.props.Administrador,
         }
+        this.CodigoBarrasInput = React.createRef();
     }
 
     componentDidMout(){
@@ -35,7 +36,12 @@ class InventarioPerpetuo extends React.Component{
             totalextcostopromedio:0,
             totalunidadesinventario:0
         })
+        this.CodigoBarrasInput.current.handleRefSucursalId(SucursalId)
     }
+
+    numberWithCommas(x) {
+        return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+      }
 
     onhandleSubmit = async (e) =>{
         e.preventDefault()
@@ -102,7 +108,7 @@ class InventarioPerpetuo extends React.Component{
                             <label htmlFor="">Sucursales</label>
                             <SelectSucursales accessToken={this.props.accessToken} url={this.props.url} SucursalAsignada={sessionStorage.getItem("SucursalId")} onhandleSucursal={this.handleSucursal} Administrador={this.state.Administrador} />
                             <br />
-                            <InputCodigoBarras accessToken={this.props.accessToken} url={this.props.url} handleCodigoBarrasProp = {this.onhandleCodigoBarras}/>
+                            <InputCodigoBarras accessToken={this.props.accessToken} url={this.props.url} handleCodigoBarrasProp = {this.onhandleCodigoBarras} ref={this.CodigoBarrasInput}/>
                             <br />
                             <button onClick={this.onhandleSubmit}className="btn btn-primary btn-sm" type="submit">Consultar</button>
                             <button onClick={this.onhandleCancel} className="btn btn-danger btn-sm ml-2">Cancelar</button>
@@ -134,7 +140,7 @@ class InventarioPerpetuo extends React.Component{
                         </div>
                         <div className="foot">
                             <label htmlFor="totalextcostopromedio">Total Ext Costo Promedio</label>
-                            <input id="totalextcostopromedio" name="totalextcostopromedio" value={this.state.totalextcostopromedio} style={{textAlign:"right"}} readOnly />
+                            <input id="totalextcostopromedio" name="totalextcostopromedio" value={"$ "+this.numberWithCommas(this.state.totalextcostopromedio.toFixed(2))} style={{textAlign:"right"}} readOnly />
                             <label htmlFor="totalunidadesinventario">Total Unidades Inventario</label>
                             <input id="totalunidadesinventario" name="totalunidadesinventario" value={this.state.totalunidadesinventario} style={{textAlign: "right"}} readOnly />
                         </div>

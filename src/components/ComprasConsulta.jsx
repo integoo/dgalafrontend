@@ -46,6 +46,10 @@ class ComprasConsulta extends React.Component{
         })
     }
 
+    numberWithCommas(x) {
+        return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+      }
+
      onhandleSubmit = async(e) =>{
          e.preventDefault()
         const SucursalId = this.state.SucursalId
@@ -84,6 +88,8 @@ class ComprasConsulta extends React.Component{
             <div className="row">
                 <div className="col-md-5 main-compras-consulta">
                     <form>
+                        <span className="badge badge-primary">Consulta Compras</span>
+                        <br />
                         <label>Sucursal</label>
                         <SelectSucursales accessToken={this.props.accessToken} url={this.props.url} SucursalAsignada={sessionStorage.getItem("SucursalId")} onhandleSucursal={this.handleSucursal} Administrador={this.props.Administrador} />
                         <br />
@@ -96,48 +102,51 @@ class ComprasConsulta extends React.Component{
                         <button onClick={this.onhandleSubmit} type="submit" className="btn btn-primary btn-block">Consultar</button>
                     </form>
                     <br />
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Folio</th>
-                                <th>Fecha Recepcion</th>
-                                {/* <th>ProveedorId</th> */}
-                                <th>Proveedor</th>
-                                {/* <th>Numero Factura</th> */}
-                                {/* <th>Total Factura</th> */}
-                                {/* <th>SocioId</th> */}
-                                {/* <th>Socio</th> */}
-                                <th>Ext Unidades Recibidas</th>
-                                {/* <th>ExtCostoCompraSinImpu</th> */}
-                                {/* <th>ExtIVACostoCompra</th> */}
-                                {/* <th>ExtIEPSCostoCompra</th> */}
-                                <th>Ext Costo Compra</th>
-                                <th>Detalles</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                                {this.state.detalles.map((element,i) => (<tr key={i}>
-                                    <td>{element.FolioId}</td>
-                                    <td>{element.FechaRecepcion.substr(0,10)}</td>
-                                    {/* <td>{element.ProveedorId}</td> */}
-                                    <td>{element.Proveedor}</td>
-                                    {/* <td>{element.NumeroFactura}</td> */}
-                                    {/* <td>{element.TotalFactura}</td> */}
-                                    {/* <td>{element.SocioId}</td> */}
-                                    {/* <td>{element.Socio}</td> */}
-                                    <td>{element.ExtUnidadesRecibidas}</td>
-                                    {/* <td>{element.ExtCostoCompraSinImp}</td> */}
-                                    {/* <td>{element.ExtIVACostoCompra}</td> */}
-                                    {/* <td>{element.ExtIEPSCostoCompra}</td> */}
-                                    <td>{element.ExtCostoCompra}</td>
-                                    <td><button className="btn btn-warning btn-sm">Productos</button></td>
-                                    </tr>
-                                    ))}
-                        </tbody>
-                    </table>
+                    <div className="contenttable">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Folio</th>
+                                    <th>Fecha Recepcion</th>
+                                    {/* <th>ProveedorId</th> */}
+                                    <th>Proveedor</th>
+                                    {/* <th>Numero Factura</th> */}
+                                    {/* <th>Total Factura</th> */}
+                                    {/* <th>SocioId</th> */}
+                                    {/* <th>Socio</th> */}
+                                    <th>Ext Unidades Recibidas</th>
+                                    {/* <th>ExtCostoCompraSinImpu</th> */}
+                                    {/* <th>ExtIVACostoCompra</th> */}
+                                    {/* <th>ExtIEPSCostoCompra</th> */}
+                                    <th>Ext Costo Compra</th>
+                                    <th>Detalles</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                    {this.state.detalles.map((element,i) => (<tr key={i}>
+                                        <td>{element.FolioId}</td>
+                                        <td>{element.FechaRecepcion.substr(0,10)}</td>
+                                        {/* <td>{element.ProveedorId}</td> */}
+                                        <td>{element.Proveedor}</td>
+                                        {/* <td>{element.NumeroFactura}</td> */}
+                                        {/* <td>{element.TotalFactura}</td> */}
+                                        {/* <td>{element.SocioId}</td> */}
+                                        {/* <td>{element.Socio}</td> */}
+                                        <td>{element.ExtUnidadesRecibidas}</td>
+                                        {/* <td>{element.ExtCostoCompraSinImp}</td> */}
+                                        {/* <td>{element.ExtIVACostoCompra}</td> */}
+                                        {/* <td>{element.ExtIEPSCostoCompra}</td> */}
+                                        <td>{element.ExtCostoCompra}</td>
+                                        <td><button className="btn btn-warning btn-sm">Productos</button></td>
+                                        </tr>
+                                        ))}
+                            </tbody>
+                        </table>
+
+                    </div>
                     <br />
                     <label>Total Ext Costo Compra</label>
-                    <input id="extcostocompra" name="extcostocompra" readOnly value={this.state.ExtCostoCompra} />
+                    <input id="extcostocompra" name="extcostocompra" style={{textAlign: "right"}}readOnly value={"$ "+this.numberWithCommas(this.state.ExtCostoCompra.toFixed(2))} />
                 </div>
             </div>
         )

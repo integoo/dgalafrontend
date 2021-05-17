@@ -81,6 +81,7 @@ class AjustesInventario extends React.Component{
         this.setState({
             SucursalId: SucursalId,
         })
+        this.CodigoBarrasInput.current.handleRefSucursalId(SucursalId)
     }
 
     onhandleCodigoBarras = (CodigoBarras) =>{
@@ -93,7 +94,6 @@ class AjustesInventario extends React.Component{
     }
 
     onhandleConsulta = (CodigoBarras,Descripcion,UnidadesInventario) =>{
-        const SucursalId = this.state.SucursalId
         this.setState({
             Descripcion: Descripcion,
             UnidadesInventario: UnidadesInventario,
