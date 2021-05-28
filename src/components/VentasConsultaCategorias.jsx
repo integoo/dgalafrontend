@@ -162,7 +162,7 @@ class VentasConsultaCategorias extends React.Component{
                         </table>
                         <hr />
                         <div className="cvcfooter">
-                            <label htmlFor="">Tota Venta</label>
+                            <label htmlFor="">Total Venta</label>
                             <input id="totalVenta" name="totalVenta" value={"$ "+this.numberWithCommas(this.state.totalVenta.toFixed(2))} readOnly />
                         </div>
                     </div>

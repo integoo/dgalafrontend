@@ -1,0 +1,34 @@
+ Descripcion = Descripcion.replace(/[^a-zA-Z0-9]/g,"")    //Valida que solamente incluya de a-z de A-Z de 0-9
+ CodigoBarras = CodigoBarras.replace(/[\\/.?]/g,"")    //Elimina los caracteres \ / . ? 
+
+SELECT '"'||"column_name"||'",' FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'traspasos' ORDER BY "ordinal_position";
+
+* Para editar y modificar una funcion: 
+   /ef actualizaprecioventa
+
+
+
+
+
+* En la pantalla de Compras validar que un producto ya exista en la Transaccion por el Codigo Interno
+  (CodigoId). Ahorita lo tengo por el Código de Barras y no es la mejor práctica.
+
+* En la Compra validar que sólo se pueda comprar productos con "Status" = 'A' 
+
+
+
+
+
+
+
+
+
+
+MEJORAS:
+1. Ya se ordenan los productos registrados en el Punto de Ventas
+2. Son más grande los renglones cuando se busca un producto por descripcion en Punto de Venta 
+3. Ya se puede registrar productos por Codigo Interno anteponiendo una "I" en el Punto de Venta
+4. Se agregó la pantalla para Traspasar Mercancía de una sucursal a otra.
+
+
+

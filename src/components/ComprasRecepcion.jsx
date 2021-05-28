@@ -37,6 +37,7 @@ class ComprasRecepcion extends React.Component {
       extCostoCompra: 0.0,
       socios:[],
       SocioId: "",
+      SoloInventariable: 'S',
     };
     this.unidadesInput = React.createRef();
     this.costoCompraInput = React.createRef();
@@ -230,8 +231,17 @@ class ComprasRecepcion extends React.Component {
     if(arreglo[0].CompraVenta === 'V'){
       alert("Producto es solo para VENTA")
       this.setState({
-        CodigoBarras:"",
-      })
+        CodigoId: 0,
+        CodigoBarras: "",
+        Descripcion: "",
+        Unidades: "",
+        CostoCompra: "",
+        IVADescripcion:"",
+        IEPSDescripcion: ""
+      });
+
+      document.querySelector("#codigobarras").disabled = false;
+      this.CodigoBarrasInput.current.handleRefCodigoBarrasInput()
       //this.CodigoBarrasInput.current.focus()
       return
     }
@@ -681,7 +691,7 @@ class ComprasRecepcion extends React.Component {
             </button> */}
 
 
-            <InputCodigoBarras accessToken={this.props.accessToken} url={this.props.url} handleCodigoBarrasProp = {this.onhandleCodigoBarras} handleConsultaProp = {this.onhandleConsulta} CodigoBarrasProp = {this.state.CodigoBarras} ref={this.CodigoBarrasInput}/>
+            <InputCodigoBarras accessToken={this.props.accessToken} url={this.props.url} handleCodigoBarrasProp = {this.onhandleCodigoBarras} handleConsultaProp = {this.onhandleConsulta} CodigoBarrasProp = {this.state.CodigoBarras} SoloInventariable={this.state.SoloInventariable} ref={this.CodigoBarrasInput}/>
 
 
 

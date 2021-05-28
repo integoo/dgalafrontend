@@ -1,3 +1,11 @@
+Descripcion = Descripcion.replace(/[^a-zA-Z0-9]/g,"")
+
+//#### VALIDA QUE SEAN SOLO NUMEROS
+let numbers = /^[0-9]+$/;
+    if (CodigoBarras.match(numbers)){
+
+    }
+
 import React, { Component } from 'react'
 
 class AAEjemplos extends React.Component{

@@ -422,6 +422,23 @@ class PuntoDeVenta extends React.Component {
     });
   };
 
+async getCodigoBarraPrincipal(CodigoId){
+  let CodigoBarras="0"
+  const url = this.props.url + `/api/codigobarrasprincipal/${CodigoId}`
+  const response = await fetch(url,{
+    headers: {
+      Authorization: `Bearer ${this.props.accessToken}`,
+    },
+  });
+  let data = await response.json()
+  if(data.length === 0 ){
+    CodigoBarras = ""
+  }else{
+    CodigoBarras = data[0].CodigoBarras
+  }
+  return CodigoBarras
+}
+
   async getProducto(id) {
     const SucursalId = this.state.SucursalId;
     const url = this.props.url + `/api/productosdatosventa/${SucursalId}/${id}`;
@@ -453,7 +470,27 @@ class PuntoDeVenta extends React.Component {
     const SucursalId = this.state.SucursalId;
     const ClienteId = this.state.ClienteId;
     const FolioId = this.state.FolioId;
-    const CodigoBarras = this.state.CodigoBarras;
+    let CodigoBarras = this.state.CodigoBarras;
+
+    //####### Funcionalidad para Capturar Códigos Internos y lo convierte a su Codigo de Barras #######
+    // let numbers = /^[0-9]+$/;
+    // if (CodigoBarras.match(numbers) && CodigoBarras.length < 6){
+
+    //### Para Marcado Rápido productos que empiezan con I y que su longitud es menor que 6 lo toma como
+    //### código interno para buscar su Código de Barras Principal
+    if (CodigoBarras[0] === 'I' && CodigoBarras.length < 6){
+      CodigoBarras = CodigoBarras.substring(1)
+      CodigoBarras = await this.getCodigoBarraPrincipal(parseInt(CodigoBarras))
+      if(CodigoBarras === ""){
+        alert("Codigo Interno No Existen")
+        return
+      }
+      this.setState({
+        CodigoBarras: CodigoBarras,
+      })
+    }
+    //###############################################################################################
+
     let CategoriaId = 0
 
     let Unidades = 1; //Esto va a cambiar cuando se agregue la opción de multiplicar
@@ -765,6 +802,16 @@ class PuntoDeVenta extends React.Component {
     this.addRowHandlers();
   };
 
+  handleVentanaDescripcionKeyDown =(e)=>{
+    const descripcion = this.state.VentanaDescripcion
+    if(e.key==="Enter" && descripcion === ""){
+      //document.querySelector(".ventanaproductos").style.display = "none";
+      document.querySelector(".ventanaproductos").style.display = !document.querySelector(".ventanaproductos").style.display;
+      document.querySelector("#btn-cancelarventa").style.display = "block";
+      this.CodigoBarrasInput.current.focus();
+    }
+  }
+
   handleEliminar = async (e) => {
     e.preventDefault();
     const SerialId = parseInt(e.target.id);
@@ -1029,6 +1076,7 @@ class PuntoDeVenta extends React.Component {
               </label>
               <input
                 onChange={this.handleVentanaDescripcion}
+                onKeyDown={this.handleVentanaDescripcionKeyDown}
                 id="ventanadescripcion"
                 name="ventanadescripcion"
                 value={this.state.VentanaDescripcion}
@@ -1080,7 +1128,7 @@ class PuntoDeVenta extends React.Component {
           <div className="col-md-5">
             <div className="content">
               <ul>
-                {this.state.detalles.map((element, i) => (
+                {this.state.detalles.sort((a,b) => { return a.CodigoId - b.CodigoId}).map((element, i) => (
                   <li key={i}>
                     <small>{element.Descripcion}</small> {element.CodigoBarras}{" "}
                     <br /> <strong>$ {element.PrecioVentaConImpuesto}</strong>

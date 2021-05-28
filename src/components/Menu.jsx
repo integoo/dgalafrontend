@@ -10,6 +10,7 @@ import RetirosDeCaja from './RetirosDeCaja'
 import VentasConsulta from './VentasConsulta'
 import Kardex from './Kardex'
 import AjustesInventario from './AjustesInventario'
+import TraspasosSalida from './TraspasosSalida'
 import InventarioPerpetuo from './InventarioPerpetuo'
 import VentasConsultaFechaProducto from './VentasConsultaFechaProducto'
 import VentasConsultaCategorias from "./VentasConsultaCategorias";
@@ -291,7 +292,11 @@ class Menu extends Component {
                     <Link to="/inventario/ajustesinventario" style={linkStyle}>
                         <span className="dropdown-item">Ajustes Inventario</span>
                     </Link>
-                      
+
+                    <Link to="/inventario/traspasossalida" style={linkStyle}>
+                      <span className="dropdown-item">Traspasos Salida/Entrada</span>
+                    </Link>
+
                     <div className="dropdown-divider"></div>
                     <Link to="/inventario/inventarioperpetuo" style={linkStyle}>
                       <span className="dropdown-item">Inventario Perpetuo</span>
@@ -328,6 +333,7 @@ class Menu extends Component {
           <Route path='/ventas/consultafechaproductos' component={() => <VentasConsultaFechaProducto accessToken={this.state.accessToken} url={this.state.url} Administrador={this.props.Administrador}/>} />
           <Route path='/inventario/kardex' component={() => <Kardex accessToken={this.state.accessToken} url={this.state.url} Administrador={this.props.Administrador} />} />
           <Route path='/inventario/ajustesinventario' component={() => <AjustesInventario accessToken={this.state.accessToken} url={this.state.url} Administrador={this.props.Administrador} />} />
+          <Route path='/inventario/traspasossalida' component={() => <TraspasosSalida accessToken={this.state.accessToken} url={this.state.url} Administrador={this.props.Administrador}/>} />
           <Route path='/inventario/inventarioperpetuo' component={() => <InventarioPerpetuo accessToken={this.state.accessToken} url={this.state.url} Administrador={this.props.Administrador}/>} />
         </Switch>
       </Router>

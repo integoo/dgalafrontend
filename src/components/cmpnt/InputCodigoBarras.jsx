@@ -8,7 +8,8 @@ class InputCodigoBarras extends React.Component {
 
     this.state = {
       SucursalId: sessionStorage.getItem("SucursalId"),
-      CodigoBarras: this.props.vCodigoBarrasProp,
+      CodigoBarras: this.props.CodigoBarrasProp,
+      CodigoId: "",
       Descripcion: "",
       detalles: [],
       UnidadesInventario: 0,
@@ -24,7 +25,8 @@ class InputCodigoBarras extends React.Component {
 
   handleCodigoBarras = (e) => {
     e.preventDefault();
-    const CodigoBarras = e.target.value.toUpperCase();
+    let CodigoBarras = e.target.value.toUpperCase();
+    CodigoBarras = CodigoBarras.replace(/[\\/.?]/g,"")  //Valida que no tengan caracteres que marquen error en el API
     this.setState({
       CodigoBarras: CodigoBarras,
       detalles: [],
@@ -54,8 +56,10 @@ class InputCodigoBarras extends React.Component {
 
   getProductosDescripcion = async (Descripcion) => {
     const SucursalId = parseInt(this.state.SucursalId)
+    const SoloInventariable = this.props.SoloInventariable
+
     const url =
-      this.props.url + `/api/productosdescripcioncompraventa/${SucursalId}/${Descripcion}`;
+      this.props.url + `/api/productosdescripcioncompraventa/${SucursalId}/${Descripcion}/${SoloInventariable}`;
     try {
       const response = await fetch(url, {
         headers: {
@@ -72,9 +76,10 @@ class InputCodigoBarras extends React.Component {
 
   getProductoCodigoBarras = async (CodigoBarras) => {
     const SucursalId = this.state.SucursalId
+    const SoloInventariable = this.props.SoloInventariable
     const url =
       this.props.url +
-      `/api/productodescripcionporcodigobarras/${SucursalId}/${CodigoBarras}`;
+      `/api/productodescripcionporcodigobarras/${SucursalId}/${CodigoBarras}/${SoloInventariable}`;
     try {
       const response = await fetch(url, {
         headers: {
@@ -102,15 +107,21 @@ class InputCodigoBarras extends React.Component {
           let vdescripcion = cell.innerHTML;
           cell = row.getElementsByTagName("td")[3];
           let vUnidadesInventario = cell.innerHTML;
+          cell = row.getElementsByTagName("td")[4];
+          let vUnidadesDisponibles = cell.innerHTML;
+          cell = row.getElementsByTagName("td")[0];
+          let vCodigoId = cell.innerHTML;
           this.setState({
             CodigoBarras: vcodigobarras,
             Descripcion: vdescripcion,
             UnidadesInventario: vUnidadesInventario,
+            UnidadesDisponibles: vUnidadesDisponibles,
             disabled: true,
+            CodigoId: vCodigoId,
           });
 
           this.props.handleCodigoBarrasProp(vcodigobarras);
-          this.props.handleConsultaProp(vcodigobarras, vdescripcion, vUnidadesInventario);
+          this.props.handleConsultaProp(vcodigobarras, vdescripcion, vUnidadesInventario, vUnidadesDisponibles, vCodigoId);
           document.querySelector("#tableInputCodigoBarras").style.display =
             "none";
         };
@@ -121,7 +132,9 @@ class InputCodigoBarras extends React.Component {
 
   onhandleDescripcion = async (e) => {
     e.preventDefault();
-    const Descripcion = e.target.value.toUpperCase();
+    let Descripcion = e.target.value.toUpperCase();
+    Descripcion = Descripcion.replace(/[^a-zA-Z0-9]/g,"")
+
     this.setState({
       Descripcion: Descripcion,
     });
@@ -129,6 +142,18 @@ class InputCodigoBarras extends React.Component {
     if (Descripcion.length >= 3) {
       arreglo = await this.getProductosDescripcion(Descripcion);
     }
+
+    if(arreglo.message){
+      console.log(arreglo.message)
+      //alert(JSON.stringify(arreglo.message))
+      this.setState({
+        detalles: [],
+      })
+      //this.refCodigoBarras.current.focus()
+      return
+    }
+
+
     if (arreglo.error) {
       console.log(arreglo.error);
       alert(arreglo.error);
@@ -166,22 +191,27 @@ class InputCodigoBarras extends React.Component {
       const jsonProducto = await this.getProductoCodigoBarras(
         this.state.CodigoBarras
       );
-      if(jsonProducto.length == []){
-        alert("Producto no Existe")
-        this.setState({
-          CodigoBarras:"",
-          Descripcion:"",
-          UnidadesInventario: 0,
-        })
-        this.refCodigoBarras.current.focus()
-        return
-      }
+
+        if(jsonProducto.message){
+          alert(JSON.stringify(jsonProducto))
+          this.setState({
+            CodigoBarras:"",
+            Descripcion:"",
+            UnidadesInventario: 0,
+          })
+          this.refCodigoBarras.current.focus()
+          return
+       }
       const DescripcionParameter = jsonProducto[0].Descripcion;
       const UnidadesInventarioParameter = parseInt(jsonProducto[0].UnidadesInventario)
+      const UnidadesDisponiblesParameter = parseInt(jsonProducto[0].UnidadesDisponibles)
+      const CodigoId = parseInt(jsonProducto[0].CodigoId)
       this.props.handleConsultaProp(
         this.state.CodigoBarras,
         DescripcionParameter,
-        UnidadesInventarioParameter
+        UnidadesInventarioParameter,
+        UnidadesDisponiblesParameter,
+        CodigoId,
       );
       this.setState({
         disabled: true
@@ -245,6 +275,7 @@ class InputCodigoBarras extends React.Component {
                 <th>Código Barras</th>
                 <th>Descripción</th>
                 <th>Unidades Inventario</th>
+                <th>Unidades Disponibles</th>
               </tr>
             </thead>
             <tbody>
@@ -254,6 +285,7 @@ class InputCodigoBarras extends React.Component {
                   <td>{element.CodigoBarras}</td>
                   <td>{element.Descripcion}</td>
                   <td>{element.UnidadesInventario}</td>
+                  <td>{element.UnidadesDisponibles}</td>
                 </tr>
               ))}
             </tbody>

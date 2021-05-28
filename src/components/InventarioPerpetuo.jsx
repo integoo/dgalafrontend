@@ -15,6 +15,8 @@ class InventarioPerpetuo extends React.Component{
             totalextcostopromedio: 0.0,
             totalunidadesinventario:0,
             Administrador: this.props.Administrador,
+            SoloInventariable: 'S',
+            defaultChecked: true,
         }
         this.CodigoBarrasInput = React.createRef();
     }
@@ -39,6 +41,20 @@ class InventarioPerpetuo extends React.Component{
         this.CodigoBarrasInput.current.handleRefSucursalId(SucursalId)
     }
 
+    onhandleSoloConExistencia = (e) =>{
+        const soloConExistencia = !this.state.defaultChecked
+        this.setState({
+            defaultChecked: soloConExistencia
+        })
+    }
+
+    onhandleConsulta = (CodigoBarras,Descripcion,UnidadesInventario) =>{
+        this.setState({
+            Descripcion: Descripcion,
+            UnidadesInventario: UnidadesInventario,
+        })
+    }
+
     numberWithCommas(x) {
         return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
       }
@@ -53,10 +69,12 @@ class InventarioPerpetuo extends React.Component{
         }
         const SucursalId = this.state.SucursalId 
         let CodigoBarras = this.state.CodigoBarras 
+        const SoloConExistencia = this.state.defaultChecked
+
         if(!CodigoBarras || CodigoBarras === " "){
             CodigoBarras = 'novalor'
         }
-        const url = this.props.url + `/api/inventarioperpetuo/${SucursalId}/${CodigoBarras}`
+        const url = this.props.url + `/api/inventarioperpetuo/${SucursalId}/${CodigoBarras}/${SoloConExistencia}`
         try{
             const response = await fetch(url, {
                 headers:{
@@ -98,6 +116,8 @@ class InventarioPerpetuo extends React.Component{
             totalextcostopromedio:0,
             totalunidadesinventario:0,
         })
+
+        this.CodigoBarrasInput.current.handleRefCodigoBarrasInput()
     }
 
     handleRender = () =>{
@@ -108,7 +128,9 @@ class InventarioPerpetuo extends React.Component{
                             <label htmlFor="">Sucursales</label>
                             <SelectSucursales accessToken={this.props.accessToken} url={this.props.url} SucursalAsignada={sessionStorage.getItem("SucursalId")} onhandleSucursal={this.handleSucursal} Administrador={this.state.Administrador} />
                             <br />
-                            <InputCodigoBarras accessToken={this.props.accessToken} url={this.props.url} handleCodigoBarrasProp = {this.onhandleCodigoBarras} ref={this.CodigoBarrasInput}/>
+                            <InputCodigoBarras accessToken={this.props.accessToken} url={this.props.url} handleCodigoBarrasProp = {this.onhandleCodigoBarras} handleConsultaProp={this.onhandleConsulta} SoloInventariable={this.state.SoloInventariable} ref={this.CodigoBarrasInput}/>
+                            <input type="checkbox" onChange={this.onhandleSoloConExistencia} defaultChecked={this.state.defaultChecked}/>
+                            <label style={{width:"10rem",marginLeft:"5px"}}>Solo Con Existencia</label>
                             <br />
                             <button onClick={this.onhandleSubmit}className="btn btn-primary btn-sm" type="submit">Consultar</button>
                             <button onClick={this.onhandleCancel} className="btn btn-danger btn-sm ml-2">Cancelar</button>

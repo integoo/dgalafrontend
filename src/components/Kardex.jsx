@@ -16,6 +16,7 @@ class Kardex extends React.Component{
             Descripcion: "",
             FechaInicial: this.fechaActual(),
             FechaFinal: this.fechaActual(),
+            SoloInventariable: 'S',
         }
         //this.refCodigoBarras = React.createRef();
         this.CodigoBarrasInput = React.createRef();
@@ -167,7 +168,7 @@ class Kardex extends React.Component{
                         <input onChange={this.handleCodigoBarras}id="codigobarras" name="codigobarras" size="15" maxLength="13" value={this.state.CodigoBarras} style={{textTransform:"capitalize"}}  autoComplete="off" />
                         <button onClick={this.onhandleBuscar} className="btn btn-primary btn-sm ml-1">Buscar</button> */}
 
-                        <InputCodigoBarras accessToken={this.props.accessToken} url={this.props.url} handleCodigoBarrasProp = {this.onhandleCodigoBarras} handleConsultaProp = {this.onhandleConsulta} CodigoBarrasProp = {this.state.CodigoBarras} ref={this.CodigoBarrasInput}/>
+                        <InputCodigoBarras accessToken={this.props.accessToken} url={this.props.url} handleCodigoBarrasProp = {this.onhandleCodigoBarras} handleConsultaProp = {this.onhandleConsulta} CodigoBarrasProp = {this.state.CodigoBarras} SoloInventariable={this.state.SoloInventariable} ref={this.CodigoBarrasInput}/>
                         <label htmlFor="">Descripcion</label>
                         <input id="descripcion" name="descripcion" size="37" value={this.state.Descripcion} readOnly />
                         <br />

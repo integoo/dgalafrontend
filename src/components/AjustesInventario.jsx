@@ -24,6 +24,7 @@ class AjustesInventario extends React.Component{
             detallesAjustesRecientes: [],
             ColaboradorId: parseInt(sessionStorage.getItem("ColaboradorId")),
             Usuario: sessionStorage.getItem("user"),
+            SoloInventariable: 'S',
         }
         this.UnidadesAjustadasInput = React.createRef()
         this.CodigoBarrasInput = React.createRef()
@@ -222,7 +223,7 @@ class AjustesInventario extends React.Component{
                     <form onSubmit={this.onhandleSubmit}>
                         <h4>Ajustes Inventario</h4>
                         <SelectSucursales accessToken={this.props.accessToken} url={this.props.url} SucursalAsignada={this.state.SucursalId} onhandleSucursal={this.handleSucursal} Administrador={this.state.Administrador} />
-                        <InputCodigoBarras accessToken={this.props.accessToken} url={this.props.url} handleCodigoBarrasProp = {this.onhandleCodigoBarras} handleConsultaProp = {this.onhandleConsulta} CodigoBarrasProp = {this.state.CodigoBarras} ref={this.CodigoBarrasInput}/>               
+                        <InputCodigoBarras accessToken={this.props.accessToken} url={this.props.url} handleCodigoBarrasProp = {this.onhandleCodigoBarras} handleConsultaProp = {this.onhandleConsulta} CodigoBarrasProp = {this.state.CodigoBarras} SoloInventariable={this.state.SoloInventariable} ref={this.CodigoBarrasInput}/>               
                         <label htmlFor="">Descripcion</label>
                         <input id="descripcion" name="descripcion" size="40" maxLength="38" value={this.state.Descripcion} readOnly/>
                         <br />
