@@ -1,0 +1,26 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+.contentMain{
+    border: 5px solid lightgrey;
+    border-radius: 10px;
+}
+
+/* .botonesProceso{
+    display: flex;
+    justify-content: space-around;
+} */
+
+.contentDetalles {
+    height: 220px;
+    overflow: scroll;
+}
+
+.contentDetalesDiferencias{
+    border: 5px solid lightgrey;
+    border-radius: 10px;
+    overflow: scroll;
+}

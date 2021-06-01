@@ -11,6 +11,7 @@ import VentasConsulta from './VentasConsulta'
 import Kardex from './Kardex'
 import AjustesInventario from './AjustesInventario'
 import TraspasosSalida from './TraspasosSalida'
+import InventarioCiclico from './InventarioCiclico'
 import InventarioPerpetuo from './InventarioPerpetuo'
 import VentasConsultaFechaProducto from './VentasConsultaFechaProducto'
 import VentasConsultaCategorias from "./VentasConsultaCategorias";
@@ -43,7 +44,7 @@ class Menu extends Component {
     let classes = "navbar navbar-expand-lg navbar-white bg-"
     classes+= (this.props.dbName) === 'dgaladb' ? "primary" : "danger"
 
-    const ambientePruebas = (this.props.dbName) === 'dgaladb' ? '' : 'PRUEBAS'
+    const ambientePruebas = (this.props.dbName) === 'dgaladb' ? '' : 'PRUEBAS '+this.props.url
 
 //******************************************************************************** */
 
@@ -297,6 +298,10 @@ class Menu extends Component {
                       <span className="dropdown-item">Traspasos Salida/Entrada</span>
                     </Link>
 
+                    <Link to="/inventario/inventariociclico" style={linkStyle}>
+                      <span className="dropdown-item">Inventario Ciclico</span>
+                    </Link>
+
                     <div className="dropdown-divider"></div>
                     <Link to="/inventario/inventarioperpetuo" style={linkStyle}>
                       <span className="dropdown-item">Inventario Perpetuo</span>
@@ -334,6 +339,7 @@ class Menu extends Component {
           <Route path='/inventario/kardex' component={() => <Kardex accessToken={this.state.accessToken} url={this.state.url} Administrador={this.props.Administrador} />} />
           <Route path='/inventario/ajustesinventario' component={() => <AjustesInventario accessToken={this.state.accessToken} url={this.state.url} Administrador={this.props.Administrador} />} />
           <Route path='/inventario/traspasossalida' component={() => <TraspasosSalida accessToken={this.state.accessToken} url={this.state.url} Administrador={this.props.Administrador}/>} />
+          <Route path='/inventario/inventariociclico' component={() => <InventarioCiclico accessToken={this.state.accessToken} url={this.state.url} Administrador={this.props.Administrador} />} />
           <Route path='/inventario/inventarioperpetuo' component={() => <InventarioPerpetuo accessToken={this.state.accessToken} url={this.state.url} Administrador={this.props.Administrador}/>} />
         </Switch>
       </Router>

@@ -3,12 +3,16 @@
 
 SELECT '"'||"column_name"||'",' FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'traspasos' ORDER BY "ordinal_position";
 
+
+* Validar (asegurar) que en Compras Recepcion, si recibes una Compra y luego cambias la sucursal, se actualice la sucursal 
+  para Grabar correctamente la nueva Orden de Compra y el inventario.
+
+
 * Para editar y modificar una funcion: 
    /ef actualizaprecioventa
 
 
-
-
+* Poner "Status" en inventario_perpetuo y validarlo en Compras
 
 * En la pantalla de Compras validar que un producto ya exista en la Transaccion por el Codigo Interno
   (CodigoId). Ahorita lo tengo por el Código de Barras y no es la mejor práctica.
@@ -24,11 +28,9 @@ SELECT '"'||"column_name"||'",' FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME
 
 
 
-MEJORAS:
-1. Ya se ordenan los productos registrados en el Punto de Ventas
-2. Son más grande los renglones cuando se busca un producto por descripcion en Punto de Venta 
-3. Ya se puede registrar productos por Codigo Interno anteponiendo una "I" en el Punto de Venta
-4. Se agregó la pantalla para Traspasar Mercancía de una sucursal a otra.
+
+
+
 
 
 

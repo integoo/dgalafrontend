@@ -6,6 +6,10 @@ let numbers = /^[0-9]+$/;
 
     }
 
+if(window.confirm('Are you sure?')) {
+
+}
+
 import React, { Component } from 'react'
 
 class AAEjemplos extends React.Component{

@@ -502,6 +502,7 @@ class ComprasRecepcion extends React.Component {
   };
 
   handleGrabar = async () => {
+    const SucursalId = this.state.SucursalId
     if(this.state.detalles.length === 0){
         alert("No hay Productos Recibidos")
         return
@@ -518,7 +519,7 @@ class ComprasRecepcion extends React.Component {
         detalles: this.state.detalles
     }
     
-    if(window.confirm("Desea Recibir la Orden de Compra?")){
+    if(window.confirm("Desea Recibir la Orden de Compra en Sucursal "+SucursalId+"?")){
         try{
             const url = this.props.url+`/api/grabarecepcionordencompra`
             const response = await fetch(url,{

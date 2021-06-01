@@ -22,6 +22,7 @@ class TraspasosSalida extends React.Component{
             UnidadesPedidas: "",
             detalles: [],
             SoloInventariable: 'S',
+            IsDisabled: false,
         }
 
         this.CodigoBarrasInput = React.createRef(); 
@@ -98,6 +99,7 @@ class TraspasosSalida extends React.Component{
         this.setState({
             SucursalIdDestino: SucursalIdDestino,
         })
+        this.CodigoBarrasInput.current.handleRefCodigoBarrasInput()
     }
 
     onhandleCodigoBarras = (CodigoBarras) =>{
@@ -177,6 +179,7 @@ class TraspasosSalida extends React.Component{
             UnidadesPedidas: this.state.UnidadesPedidas,
         }
         arreglo.push(json)
+        
 
         this.setState({
             Descripcion: "",
@@ -184,6 +187,7 @@ class TraspasosSalida extends React.Component{
             UnidadesDisponibles: 0,
             UnidadesPedidas: "",
             detalles: arreglo,
+            IsDisabled: true,
         })
         this.CodigoBarrasInput.current.handleRefCodigoBarrasInput()
     }
@@ -207,11 +211,14 @@ class TraspasosSalida extends React.Component{
         let jsonPost;
         let detalles = this.state.detalles
         const CodigoBarras = this.state.CodigoBarras
-
+        
         if(detalles.length === 0){
             if(CodigoBarras === ""){
                 this.CodigoBarrasInput.current.handleRefCodigoBarrasInput()
             }
+            return
+        }
+        if (!window.confirm('Desea Cerrar el Traspaso?')){
             return
         }
 
@@ -257,6 +264,7 @@ class TraspasosSalida extends React.Component{
                 UnidadesPedidas: "",
                 detalles:[],
                 CodigoId: "",
+                IsDisabled:false,
             })
             this.CodigoBarrasInput.current.handleRefCodigoBarrasInput()
 
@@ -276,6 +284,7 @@ class TraspasosSalida extends React.Component{
             UnidadesPedidas: "",
             detalles:[],
             CodigoId: "",
+            IsDisabled: false,
         })
         this.CodigoBarrasInput.current.handleRefCodigoBarrasInput()
     }
@@ -289,11 +298,13 @@ class TraspasosSalida extends React.Component{
                         <div className="card">
                             <div className="card-body">
                                 <div className="form-group">
+                                    <span className="badge badge-primary">Traspasos Salida/Entrada</span>
+                                    <br />
                                     <label htmlFor="" style={{width:"8rem"}}>Sucursal Origen</label>
                                     <SelectSucursales accessToken={this.props.accessToken} url={this.props.url} SucursalAsignada={this.state.SucursalId} onhandleSucursal={this.handleSucursal} Administrador={this.state.Administrador} />
                                     <br />
                                     <label htmlFor="" style={{width:"8rem"}}>Sucursal Destino</label>
-                                    <select onChange={this.onhandleSucursalDestino} id="sucursaldestino" name="sucursaldestino" value={this.state.SucursalIdDestino}>
+                                    <select onChange={this.onhandleSucursalDestino} id="sucursaldestino" name="sucursaldestino" value={this.state.SucursalIdDestino} disabled={this.state.IsDisabled}>
                                         {this.state.Sucursales.map((element,i) => (
                                             <option key={i} value={element.SucursalId}>{element.Sucursal}</option>
                                         ))}

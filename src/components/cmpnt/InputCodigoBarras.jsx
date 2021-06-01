@@ -44,12 +44,12 @@ class InputCodigoBarras extends React.Component {
         detalles: [],
     });
     this.props.handleCodigoBarrasProp(CodigoBarras);
-    }
-  };
+  }
+};
 
-  onhandleDescripcionKeyPress = (e) => {
-    if (e.key === "Enter") {
-        this.refCodigoBarras.current.focus();
+onhandleDescripcionKeyPress = (e) => {
+  if (e.key === "Enter") {
+      this.handleConsulta(e);
     }
   };
 
@@ -133,7 +133,7 @@ class InputCodigoBarras extends React.Component {
   onhandleDescripcion = async (e) => {
     e.preventDefault();
     let Descripcion = e.target.value.toUpperCase();
-    Descripcion = Descripcion.replace(/[^a-zA-Z0-9]/g,"")
+    Descripcion = Descripcion.replace(/[^a-zA-Z0-9-]/g,"")
 
     this.setState({
       Descripcion: Descripcion,
