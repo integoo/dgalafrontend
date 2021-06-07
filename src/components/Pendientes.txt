@@ -1,11 +1,17 @@
- Descripcion = Descripcion.replace(/[^a-zA-Z0-9]/g,"")    //Valida que solamente incluya de a-z de A-Z de 0-9
+ Descripcion = Descripcion.replace(/[^a-zA-Z0-9- ]/g,"")    //Valida que solamente incluya de a-z de A-Z de 0-9, guiones y espacios
  CodigoBarras = CodigoBarras.replace(/[\\/.?]/g,"")    //Elimina los caracteres \ / . ? 
 
 SELECT '"'||"column_name"||'",' FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'traspasos' ORDER BY "ordinal_position";
 
 
-* Validar (asegurar) que en Compras Recepcion, si recibes una Compra y luego cambias la sucursal, se actualice la sucursal 
-  para Grabar correctamente la nueva Orden de Compra y el inventario.
+* En la compra FolioId = 34 SucursalId=3 CodigoId=299 y CodigoId= 300 ProveedorId = 4 
+  puso que el IVAProveedor = 0????
+
+* Revisar y asegurar que todos los chocolates y dulce tengan que no aplican IVA a la compra porque yo creo que 
+están tomando el IVA que tiene el proveedor (El Milkyway ya lo puse así Código 300).
+
+
+* PM2 desde start y server.js 2) Certificado de DecoraFiestas.com
 
 
 * Para editar y modificar una funcion: 
@@ -19,8 +25,13 @@ SELECT '"'||"column_name"||'",' FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME
 
 * En la Compra validar que sólo se pueda comprar productos con "Status" = 'A' 
 
+* Auditorías en Python (Kardex, Márgenes de Utilidad, Costo Promedio)
 
+* En ventas no puse IEPSId
 
+* Auditar IVA e IEPS en Productos, InventarioPerpetuo, Compras, Ventas y Ajustes Inventario (Para Comprar(Proveedores) y Vender)
+
+* Trigger y Function para que cuando se modifique el IVA e IEPS en productos actualice inventario_perpetuo
 
 
 

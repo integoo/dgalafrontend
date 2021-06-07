@@ -10,6 +10,8 @@ class PuntoDeVenta extends React.Component {
       SucursalId: "",
       detalles: [],
       CodigoBarras: "",
+      UnidadesDisponibles: "",
+      Inventariable: "",
       totalTicket: 0.0,
       VentanaDescripcion: "",
       VentanaDescripcionDetalles: [],
@@ -60,10 +62,13 @@ class PuntoDeVenta extends React.Component {
         return () => {
           let cell = row.getElementsByTagName("td")[1];
           let vcodigobarras = cell.innerHTML;
+          cell = row.getElementsByTagName("td")[3];
+          let vUnidadesDisponibles = cell.innerHTML;
           this.setState({
             CodigoBarras: vcodigobarras,
             VentanaDescripcion: "",
             VentanaDescripcionDetalles: [],
+            UnidadesDisponibles: vUnidadesDisponibles,
           });
           document.querySelector(".ventanaproductos").style.display = "none";
           document.querySelector("#btn-cancelarventa").style.display = "block";
@@ -455,13 +460,36 @@ async getCodigoBarraPrincipal(CodigoId){
   }
 
   async getProductosDescripcion(desc) {
-    const url = this.props.url + `/api/productosdescripcion/${desc}`;
+    const SucursalId = this.state.SucursalId
+
+    //IMPORTANTE: AQUI HAY QUE RESTARLE A UNIDADES DISPONIBLES LAS PIEZAS EN PROCESO DE VENTA. 
+    // HAY QUE ENVIAR POR PARÁMETRO LAS UNIDADES EN PROCESO DE VENTA DE DICHO PRODUCTO Y 
+    // RESTARSELAS AL INVENTARIO DISPONIBLES (SOLO INFORMATIVO)
+
+
+
+    const url = this.props.url + `/api/productosdescripcion/${desc}/${SucursalId}`;
     const response = await fetch(url, {
       headers: {
         Authorization: `Bearer ${this.props.accessToken}`,
       },
     });
     let data = await response.json();
+
+//########## ACTUALIZA TEMPORALMENTE LAS UNIDADES INVENATRIO DISPONBILES A MOSTRAR ########## 
+    this.state.detalles.forEach(element =>{
+      if(element.Inventariable === 'S'){
+        data.forEach((element2,i) =>{
+          if(element.CodigoId === element2.CodigoId){
+            data[i].UnidadesDisponibles = data[i].UnidadesDisponibles - element.Unidades
+          }
+        })
+      }
+    })
+
+
+//############################################################################################
+
     return data;
   }
 
@@ -471,6 +499,7 @@ async getCodigoBarraPrincipal(CodigoId){
     const ClienteId = this.state.ClienteId;
     const FolioId = this.state.FolioId;
     let CodigoBarras = this.state.CodigoBarras;
+    let UnidadesDisponibles = this.state.UnidadesDisponibles;
 
     //####### Funcionalidad para Capturar Códigos Internos y lo convierte a su Codigo de Barras #######
     // let numbers = /^[0-9]+$/;
@@ -487,6 +516,7 @@ async getCodigoBarraPrincipal(CodigoId){
       }
       this.setState({
         CodigoBarras: CodigoBarras,
+        Inventariable: "",
       })
     }
     //###############################################################################################
@@ -506,15 +536,40 @@ async getCodigoBarraPrincipal(CodigoId){
         alert(arreglo.error);
         this.setState({
           CodigoBarras: "",
+          UnidadesDisponibles: "",
         });
         this.CodigoBarrasInput.current.focus();
         return;
       }
 
+
+      //########## ACTUALIZA TEMPORALMENTE LAS UNIDADES INVENATRIO DISPONBILES A MOSTRAR ##########
+
+      if(arreglo[0].Inventariable === 'S'){
+        arreglo[0].UnidadesDisponibles = arreglo[0].UnidadesDisponibles - Unidades
+        this.state.detalles.forEach((element) =>{
+          if(element.CodigoId === arreglo[0].CodigoId){
+            arreglo[0].UnidadesDisponibles = arreglo[0].UnidadesDisponibles - element.Unidades
+          }
+        })
+      }
+
+      //########################################################################################
+
+      this.setState({
+        UnidadesDisponibles: parseInt(arreglo[0].UnidadesDisponibles),
+        Inventariable: arreglo[0].Inventariable,
+      });
+
+
+
+
+
       if (arreglo[0].PrecioVentaConImpuesto <= 0) {
         alert("Este producto No tiene Precio de Venta");
         this.setState({
           CodigoBarras: "",
+          UnidadesDisponibles: "",
         });
         this.CodigoBarrasInput.current.focus();
         return;
@@ -524,6 +579,7 @@ async getCodigoBarraPrincipal(CodigoId){
         alert("Este producto No tiene Costo o no se ha Recibido");
         this.setState({
           CodigoBarras: "",
+          UnidadesDisponibles: "",
         });
         this.CodigoBarrasInput.current.focus();
         return;
@@ -626,6 +682,8 @@ async getCodigoBarraPrincipal(CodigoId){
       CodigoBarras: this.state.CodigoBarras,
       Descripcion: arreglo[0].Descripcion,
       Unidades: Unidades,
+      Inventariable: this.state.Inventariable,
+      UnidadesDisponibles: this.state.UnidadesDisponibles,
       PrecioVentaConImpuesto: arreglo[0].PrecioVentaConImpuesto,
       CategoriaId: CategoriaId,
       Usuario: sessionStorage.getItem("user"),
@@ -702,6 +760,7 @@ async getCodigoBarraPrincipal(CodigoId){
       detalles: detalles,
       totalTicket: totalTicket,
       CodigoBarras: "",
+      UnidadesDisponibles: "",
     });
 
     this.CodigoBarrasInput.current.focus();
@@ -1089,6 +1148,8 @@ async getCodigoBarraPrincipal(CodigoId){
                     <th>Codigo</th>
                     <th>Codigo Barras</th>
                     <th>Descripcion</th>
+                    <th>Unidades Inventario Disponible</th>
+                    <th>Precio Venta Con Impuesto</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -1097,6 +1158,8 @@ async getCodigoBarraPrincipal(CodigoId){
                       <td>{element.CodigoId}</td>
                       <td>{element.CodigoBarras}</td>
                       <td>{element.Descripcion}</td>
+                      <td>{element.UnidadesDisponibles}</td>
+                      <td>{element.PrecioVentaConImpuesto}</td>
                     </tr>
                   ))}
                 </tbody>
@@ -1132,6 +1195,7 @@ async getCodigoBarraPrincipal(CodigoId){
                   <li key={i}>
                     <small>{element.Descripcion}</small> {element.CodigoBarras}{" "}
                     <br /> <strong>$ {element.PrecioVentaConImpuesto}</strong>
+                    <span style={{fontSize:".5rem",color:"red"}}>{" UnidInvDisp "}<strong style={{color:"black"}}>{element.UnidadesDisponibles}</strong></span>
                     <button
                       onClick={(e) => {
                         if (

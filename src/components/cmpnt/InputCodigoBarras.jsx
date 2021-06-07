@@ -133,7 +133,7 @@ onhandleDescripcionKeyPress = (e) => {
   onhandleDescripcion = async (e) => {
     e.preventDefault();
     let Descripcion = e.target.value.toUpperCase();
-    Descripcion = Descripcion.replace(/[^a-zA-Z0-9-]/g,"")
+    Descripcion = Descripcion.replace(/[^a-zA-Z0-9- ]/g,"")
 
     this.setState({
       Descripcion: Descripcion,
