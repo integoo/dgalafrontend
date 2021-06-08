@@ -4,9 +4,6 @@
 SELECT '"'||"column_name"||'",' FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'traspasos' ORDER BY "ordinal_position";
 
 
-* En la compra FolioId = 34 SucursalId=3 CodigoId=299 y CodigoId= 300 ProveedorId = 4 
-  puso que el IVAProveedor = 0????
-
 * Revisar y asegurar que todos los chocolates y dulce tengan que no aplican IVA a la compra porque yo creo que 
 están tomando el IVA que tiene el proveedor (El Milkyway ya lo puse así Código 300).
 
@@ -19,9 +16,6 @@ están tomando el IVA que tiene el proveedor (El Milkyway ya lo puse así Códig
 
 
 * Poner "Status" en inventario_perpetuo y validarlo en Compras
-
-* En la pantalla de Compras validar que un producto ya exista en la Transaccion por el Codigo Interno
-  (CodigoId). Ahorita lo tengo por el Código de Barras y no es la mejor práctica.
 
 * En la Compra validar que sólo se pueda comprar productos con "Status" = 'A' 
 

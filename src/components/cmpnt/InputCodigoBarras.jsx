@@ -57,7 +57,7 @@ onhandleDescripcionKeyPress = (e) => {
   getProductosDescripcion = async (Descripcion) => {
     const SucursalId = parseInt(this.state.SucursalId)
     const SoloInventariable = this.props.SoloInventariable
-
+    let data = []
     const url =
       this.props.url + `/api/productosdescripcioncompraventa/${SucursalId}/${Descripcion}/${SoloInventariable}`;
     try {
@@ -66,12 +66,13 @@ onhandleDescripcionKeyPress = (e) => {
           Authorization: `Bearer ${this.props.accessToken}`,
         },
       });
-      const data = await response.json();
-      return data;
+      data = await response.json();
     } catch (error) {
       console.log(error.message);
+      data = []
       alert(error.message);
     }
+    return data;
   };
 
   getProductoCodigoBarras = async (CodigoBarras) => {
@@ -133,36 +134,44 @@ onhandleDescripcionKeyPress = (e) => {
   onhandleDescripcion = async (e) => {
     e.preventDefault();
     let Descripcion = e.target.value.toUpperCase();
-    Descripcion = Descripcion.replace(/[^a-zA-Z0-9- ]/g,"")
+    Descripcion = Descripcion.replace(/[^a-zA-Z0-9- &]/g,"")
 
     this.setState({
       Descripcion: Descripcion,
     });
-    let arreglo = [];
-    if (Descripcion.length >= 3) {
-      arreglo = await this.getProductosDescripcion(Descripcion);
-    }
-
-    if(arreglo.message){
-      console.log(arreglo.message)
-      //alert(JSON.stringify(arreglo.message))
+    try {
+      let arreglo = [];
+      if (Descripcion.length >= 3) {
+        arreglo = await this.getProductosDescripcion(Descripcion);
+      }
+      
+      if(arreglo.message){
+        console.log(arreglo.message)
+        //alert(JSON.stringify(arreglo.message))
+        this.setState({
+          detalles: [],
+        })
+        //this.refCodigoBarras.current.focus()
+        return
+      }
+      
+      
+      if (arreglo.error) {
+        console.log(arreglo.error);
+        alert(arreglo.error);
+        return;
+      }
+      this.setState({
+        detalles: arreglo,
+      });
+      this.addRowHandlers();
+    }catch(error){
       this.setState({
         detalles: [],
       })
-      //this.refCodigoBarras.current.focus()
+      alert("Error POSIBLEMENTE DE RED")
       return
     }
-
-
-    if (arreglo.error) {
-      console.log(arreglo.error);
-      alert(arreglo.error);
-      return;
-    }
-    this.setState({
-      detalles: arreglo,
-    });
-    this.addRowHandlers();
   };
 
 

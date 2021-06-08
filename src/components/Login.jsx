@@ -6,7 +6,7 @@ export default class Login extends React.Component{
         super(props)
 
         this.state = {
-            SignIn: false
+            SignIn: false,
         }
 
         this.usuarioInput = React.createRef();
@@ -94,7 +94,7 @@ export default class Login extends React.Component{
                         
                 </div>
                     <button className="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
-                    <p className="mt-5 mb-3 text-muted">&copy; 2021 Ver 1.6 (Jun-07)</p>
+                    <p className="mt-5 mb-3 text-muted">&copy;2021 {this.props.Version}</p>
                 </form>
             </div>
         </React.Fragment>

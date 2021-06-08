@@ -13,6 +13,7 @@ class App extends React.Component{
       accessToken: '',
       dbName: '',
       Administrador: "",
+      Version: "v1.7Jun08",
     }
 
   }
@@ -35,8 +36,8 @@ class App extends React.Component{
   render(){
       return (
         <div className="App">
-          {this.state.isLoggedIn && this.state.url ? <Menu handler={this.handlerAppState} accessToken={this.state.accessToken} dbName={this.state.dbName} url={this.state.url} Administrador={this.state.Administrador} /> 
-                                  : <Login handler={this.handlerAppState} onhandleUrl={this.handleUrl} />}
+          {this.state.isLoggedIn && this.state.url ? <Menu handler={this.handlerAppState} accessToken={this.state.accessToken} dbName={this.state.dbName} url={this.state.url} Administrador={this.state.Administrador} Version={this.state.Version}/> 
+                                  : <Login handler={this.handlerAppState} onhandleUrl={this.handleUrl} Version={this.state.Version} />}
         </div>
       );
 

@@ -18,7 +18,8 @@ class ComprasRecepcion extends React.Component {
       IVACompra:"",
       NumeroFactura: "",
       TotalFactura: 0.00,
-      CodigoId: 0,
+      CodigoId: "",
+      UnidadesInventario:"",
       //IVAId: 0,
       IVADescripcion: "",
       //IVA: 0,
@@ -231,7 +232,7 @@ class ComprasRecepcion extends React.Component {
     if(arreglo[0].CompraVenta === 'V'){
       alert("Producto es solo para VENTA")
       this.setState({
-        CodigoId: 0,
+        CodigoId: "",
         CodigoBarras: "",
         Descripcion: "",
         Unidades: "",
@@ -250,7 +251,8 @@ class ComprasRecepcion extends React.Component {
     //Valida si ya existe el producto en el proceso de recepción
     let vposicion = -1;
     for (let i = 0; i < detallesAux.length; i++) {
-      if (detallesAux[i].CodigoBarras === this.state.CodigoBarras) {
+      //if (detallesAux[i].CodigoBarras === this.state.CodigoBarras) {
+      if (detallesAux[i].CodigoId === arreglo[0].CodigoId) {
         vposicion = i;
         continue;
       }
@@ -274,6 +276,15 @@ class ComprasRecepcion extends React.Component {
           CostoCompra: detallesAux[vposicion].CostoCompra,
         });
       } else {
+        this.setState({
+          CodigoId: "",
+          CodigoBarras: "",
+          Descripcion: "",
+          UnidadesInventario:"",
+          IVADescripcion:"",
+          IEPSDescripcion: "",
+        })
+        this.CodigoBarrasInput.current.handleRefCodigoBarrasInput()
         return;
       }
     } else {
@@ -315,9 +326,10 @@ class ComprasRecepcion extends React.Component {
   handleAgregarCancelar = (e) => {
     e.preventDefault();
     this.setState({
-      CodigoId: 0,
+      CodigoId: "",
       CodigoBarras: "",
       Descripcion: "",
+      UnidadesInventario: "",
       Unidades: "",
       CostoCompra: "",
       IVADescripcion:"",
@@ -377,6 +389,7 @@ class ComprasRecepcion extends React.Component {
       return
     }
     if (
+      this.state.CodigoId === "" || this.state.CodigoId == 0 ||
       this.state.CodigoBarras === "" ||
       this.state.Descripcion === "" ||
       this.state.Unidades === "" ||
@@ -410,15 +423,15 @@ class ComprasRecepcion extends React.Component {
         CodigoId: this.state.CodigoId,
         CodigoBarras: this.state.CodigoBarras,
         Descripcion: this.state.Descripcion,
-        UnidadesRecibidas: this.state.Unidades,
-        CostoCompra: this.state.CostoCompra,
-        CostoCompraSinImpuestos: vCostoCompraSinImpuestos,
+        UnidadesRecibidas: parseInt(this.state.Unidades),
+        CostoCompra: parseFloat(this.state.CostoCompra),
+        CostoCompraSinImpuestos: parseFloat(vCostoCompraSinImpuestos),
         IVADescripcion: this.state.IVADescripcion,
         IEPSDescripcion: this.state.IEPSDescripcion,
-        IVA: this.state.IVA,
+        IVA: parseFloat(this.state.IVA),
         IVAMonto: vIVAMonto,
         IEPSId: this.state.IEPSId,
-        IEPS: this.state.IEPS,
+        IEPS: parseFloat(this.state.IEPS),
         IEPSMonto: vIEPSMonto,
       };
 
@@ -454,10 +467,11 @@ class ComprasRecepcion extends React.Component {
     document.querySelector("#totalfactura").disabled = true;
     document.querySelector("#socios").disabled = true;
     this.setState({
-      CodigoId: 0,
+      CodigoId: "",
       CodigoBarras: "",
       Descripcion: "",
       Unidades: "",
+      UnidadesInventario: "",
       CostoCompra: "",
       extCostoCompraSinImpuestos: extCostoCompra - extIVAMonto - extIEPSMonto,
       extIVAMonto: extIVAMonto,
@@ -490,6 +504,7 @@ class ComprasRecepcion extends React.Component {
     this.setState({
         CodigoBarras: CodigoBarras,
         Descripcion: Descripcion,
+        UnidadesInventario: UnidadesInventario,
         //UnidadesInventario: UnidadesInventario,
     },()=>{
       this.handleConsultar()
@@ -507,11 +522,11 @@ class ComprasRecepcion extends React.Component {
         alert("No hay Productos Recibidos")
         return
     }
-
     
     let json={SucursalId: this.state.SucursalId,
         ProveedorId: this.state.ProveedorId,
-        IVAProveedor: this.state.IVA,
+        //IVAProveedor: this.state.IVA,
+        IVAProveedor: this.state.IVAProveedor,  //Junio 8 2021
         NumeroFactura: this.state.NumeroFactura,
         TotalFactura: this.state.TotalFactura,
         SocioId: this.state.SocioId,
@@ -572,8 +587,9 @@ class ComprasRecepcion extends React.Component {
         UnidadDeNegocioId: 1,
         ProveedorId: 1,
         NumeroFactura: "",
-        TotalFactura: "",
-        CodigoId: 0,
+        TotalFactura: 0,
+        CodigoId: "",
+        UnidadesInventario: "",
         IVAMonto: 0.0,
         extIVAMonto: 0.0,
         IEPSId: 0,
@@ -693,7 +709,11 @@ class ComprasRecepcion extends React.Component {
 
 
             <InputCodigoBarras accessToken={this.props.accessToken} url={this.props.url} handleCodigoBarrasProp = {this.onhandleCodigoBarras} handleConsultaProp = {this.onhandleConsulta} CodigoBarrasProp = {this.state.CodigoBarras} SoloInventariable={this.state.SoloInventariable} ref={this.CodigoBarrasInput}/>
-
+           
+            <label htmlFor="">Código</label>
+            <input value={this.state.CodigoId} style={{width:"4rem"}} disabled="true" readOnly/>
+            <label htmlFor="" className="ml-2" style={{width: "5rem"}}>Unidades Inventario</label>
+            <input value={this.state.UnidadesInventario} style={{width:"4rem"}} disabled="true" readOnly/>
 
 
 
@@ -708,6 +728,7 @@ class ComprasRecepcion extends React.Component {
               id="ieps"
               name="ieps"
               value={this.state.IEPSDescripcion}
+              className="ml-2"
               readOnly
             />
             <br />
@@ -722,7 +743,7 @@ class ComprasRecepcion extends React.Component {
             />
             <br />
             <label htmlFor="unidades">Unidades</label>
-            <label htmlFor="costocompra">
+            <label htmlFor="costocompra" style={{width:"10rem",marginLeft:"6rem"}}>
               Costo Compra Unitario C/Impuesto
             </label>
             <br />
@@ -745,6 +766,7 @@ class ComprasRecepcion extends React.Component {
               id="costocompra"
               name="costocompra"
               size="15"
+              style={{marginLeft:".5rem"}}
               autoComplete="off"
               value={this.state.CostoCompra}
               ref={this.costoCompraInput}
@@ -804,10 +826,10 @@ class ComprasRecepcion extends React.Component {
                 ))}
               </tbody>
             </table>
-            <label>Ext Costo Compra Sin Impuestos</label>
-            <label>Ext IEPS</label>
-            <label>Ext IVA</label>
-            <label>Ext Costo Compra</label>
+            <label htmlFor="" style={{marginLeft:"4rem"}}>Ext Costo Compra Sin Impuestos</label>
+            <label htmlFor="" style={{marginLeft:"5rem"}}>Ext IEPS</label>
+            <label htmlFor="" style={{marginLeft:"5rem"}}>Ext IVA</label>
+            <label htmlFor="" style={{marginLeft:"5rem"}}>Ext Costo Compra</label>
             <br />
             <input
               id="extCostoCompraSinImpuestos"

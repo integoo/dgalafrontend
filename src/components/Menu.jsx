@@ -44,7 +44,8 @@ class Menu extends Component {
     let classes = "navbar navbar-expand-lg navbar-white bg-"
     classes+= (this.props.dbName) === 'dgaladb' ? "primary" : "danger"
 
-    const ambientePruebas = (this.props.dbName) === 'dgaladb' ? '' : 'PRUEBAS '+this.props.url
+    // const ambientePruebas = (this.props.dbName) === 'dgaladb' ? '' : 'PRUEBAS '+this.props.url
+    const ambientePruebas = (this.props.dbName) === 'dgaladb' ? <span style={{fontSize:".5rem"}}>{this.props.Version}</span> : 'PRUEBAS '+this.props.url
 
 //******************************************************************************** */
 
