@@ -17,6 +17,7 @@ class InventarioPerpetuo extends React.Component{
             Administrador: this.props.Administrador,
             SoloInventariable: 'S',
             defaultChecked: true,
+            radiovalue: "porcodigo",
         }
         this.CodigoBarrasInput = React.createRef();
     }
@@ -59,6 +60,12 @@ class InventarioPerpetuo extends React.Component{
         return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
       }
 
+      handleradiovalue = (e) =>{
+        this.setState({
+            radiovalue: e.target.id
+        })
+      }
+
     onhandleSubmit = async (e) =>{
         e.preventDefault()
         // if(document.querySelector("#radiosucursal").checked === false){
@@ -70,11 +77,12 @@ class InventarioPerpetuo extends React.Component{
         const SucursalId = this.state.SucursalId 
         let CodigoBarras = this.state.CodigoBarras 
         const SoloConExistencia = this.state.defaultChecked
+        const radiovalue = this.state.radiovalue
 
         if(!CodigoBarras || CodigoBarras === " "){
             CodigoBarras = 'novalor'
         }
-        const url = this.props.url + `/api/inventarioperpetuo/${SucursalId}/${CodigoBarras}/${SoloConExistencia}`
+        const url = this.props.url + `/api/inventarioperpetuo/${SucursalId}/${CodigoBarras}/${SoloConExistencia}/${radiovalue}`
         try{
             const response = await fetch(url, {
                 headers:{
@@ -129,6 +137,18 @@ class InventarioPerpetuo extends React.Component{
                             <SelectSucursales accessToken={this.props.accessToken} url={this.props.url} SucursalAsignada={sessionStorage.getItem("SucursalId")} onhandleSucursal={this.handleSucursal} Administrador={this.state.Administrador} />
                             <br />
                             <InputCodigoBarras accessToken={this.props.accessToken} url={this.props.url} handleCodigoBarrasProp = {this.onhandleCodigoBarras} handleConsultaProp={this.onhandleConsulta} SoloInventariable={this.state.SoloInventariable} ref={this.CodigoBarrasInput}/>
+
+                            {/* RadioButton Group para Ordenamiento de Inventario */}
+                            <div className="radioborder">
+                                <input type="radio" onChange={this.handleradiovalue} id="porcodigo" name="ordenamiento" value={this.state.radiovalue} defaultChecked/>
+                                <label htmlFor="" style={{fontSize:".7rem"}}>Por Código</label>
+                                <input type="radio" onChange={this.handleradiovalue} id="porunidadesinventario" name="ordenamiento" value={this.state.radiovalue} />
+                                <label htmlFor="" style={{fontSize:".7rem"}}>Por Unidades Inventario</label>
+                                <input type="radio" onChange={this.handleradiovalue} id="porcategoriaunidadesinventario" name="ordenamiento" value={this.state.radiovalue} />
+                                <label htmlFor="" style={{fontSize:".7rem"}}>Por Categoria / Unidades Inventario</label>
+
+                            </div>
+
                             <input type="checkbox" onChange={this.onhandleSoloConExistencia} defaultChecked={this.state.defaultChecked}/>
                             <label style={{width:"10rem",marginLeft:"5px"}}>Solo Con Existencia</label>
                             <br />
@@ -143,6 +163,7 @@ class InventarioPerpetuo extends React.Component{
                                         <th>Codigo Barras</th>
                                         <th>Codigo</th>
                                         <th>Descripcion</th>
+                                        <th>CategoriaId</th>
                                         <th>Unidades Inventario</th>
                                         <th>Costo Promedio</th>
                                         <th>Ext Costo Promedio</th>
@@ -153,6 +174,7 @@ class InventarioPerpetuo extends React.Component{
                                                                                 <td>{element.CodigoBarras}</td>
                                                                                 <td>{element.CodigoId}</td>
                                                                                 <td>{element.Descripcion}</td>
+                                                                                <td>{element.CategoriaId}</td>
                                                                                 <td>{element.UnidadesInventario}</td>
                                                                                 <td>{element.CostoPromedio}</td>
                                                                                 <td>{element.ExtCostoPromedio}</td>

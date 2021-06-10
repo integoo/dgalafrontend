@@ -1,4 +1,4 @@
-Descripcion = Descripcion.replace(/[^a-zA-Z0-9]/g,"")
+Descripcion = Descripcion.replace(/[^a-zA-Z0-9 &]/g,"")
 
 //#### VALIDA QUE SEAN SOLO NUMEROS
 let numbers = /^[0-9]+$/;
@@ -9,6 +9,11 @@ let numbers = /^[0-9]+$/;
 if(window.confirm('Are you sure?')) {
 
 }
+
+numberWithCommas(x) {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  }
+  
 
 import React, { Component } from 'react'
 

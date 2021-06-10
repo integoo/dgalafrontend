@@ -17,3 +17,7 @@
     border-radius: 10px;
     overflow:scroll;
 }
+
+.radioborder{
+    border: 2px solid lightgrey;
+}

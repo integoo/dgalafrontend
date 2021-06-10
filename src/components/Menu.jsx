@@ -7,6 +7,7 @@ import ComprasRecepcion from "./ComprasRecepcion"
 import ComprasConsulta from "./ComprasConsulta"
 import PuntoDeVenta from './PuntoDeVenta'
 import RetirosDeCaja from './RetirosDeCaja'
+import VentasConsultaSucursalesHoy from './VentasConsultaSucursalesHoy'
 import VentasConsulta from './VentasConsulta'
 import Kardex from './Kardex'
 import AjustesInventario from './AjustesInventario'
@@ -171,10 +172,13 @@ class Menu extends Component {
                     className="dropdown-menu"
                     aria-labelledby="navbarDropdown"
                   >
+                    <Link to="/ventas/ventasconsultasucursaleshoy" style={linkStyle}>
+                      <span className="dropdown-item">Consulta Ventas Sucursales Hoy</span>
+                    </Link>
+                    
                     <Link to="/ventas/consultaventascategorias" style={linkStyle}>
                       <span className="dropdown-item">Consulta Ventas Categorías</span>
                     </Link>
-                    
                     <Link to="/ventas/consulta" style={linkStyle}>
                         <span className="dropdown-item">Consulta Ventas (Fecha/Folio/Ticket)</span>
                     </Link>
@@ -334,6 +338,7 @@ class Menu extends Component {
           <Route path="/compras/consulta" component={() => <ComprasConsulta accessToken={this.state.accessToken} url={this.state.url} Administrador={this.props.Administrador} />} />
           <Route path="/puntodeventa/puntodeventa" component={() => <PuntoDeVenta accessToken={this.state.accessToken} url={this.state.url} Administrador={this.props.Administrador} />} />
           <Route path="/puntodeventa/retirosdecaja" component={() => <RetirosDeCaja accessToken={this.state.accessToken} url={this.state.url} Administrador={this.props.Administrador} />} />
+          <Route path="/ventas/ventasconsultasucursaleshoy" component={() => <VentasConsultaSucursalesHoy accessToken={this.state.accessToken} url={this.state.url} Administrador={this.props.Administrador} />} />
           <Route path='/ventas/consultaventascategorias' component={() => <VentasConsultaCategorias accessToken={this.state.accessToken} url={this.state.url} Administrador={this.props.Administrador} />} />
           <Route path='/ventas/consulta' component={() => <VentasConsulta accessToken={this.state.accessToken} url={this.state.url} Administrador={this.props.Administrador}/>} />
           <Route path='/ventas/consultafechaproductos' component={() => <VentasConsultaFechaProducto accessToken={this.state.accessToken} url={this.state.url} Administrador={this.props.Administrador}/>} />
