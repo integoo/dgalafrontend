@@ -1,7 +1,42 @@
- Descripcion = Descripcion.replace(/[^a-zA-Z0-9- ]/g,"")    //Valida que solamente incluya de a-z de A-Z de 0-9, guiones y espacios
- CodigoBarras = CodigoBarras.replace(/[\\/.?]/g,"")    //Elimina los caracteres \ / . ? 
 
-SELECT '"'||"column_name"||'",' FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'traspasos' ORDER BY "ordinal_position";
+call stpr_calcula_costodeventas ('2021/05/01','2021/05/31');
+
+
+* Revisar en tipos_ajustes los que afectan al costo e indicarlo en la pantalla de Ajustes.
+
+INSERT INTO inventario_perpetuo
+select 99 ,"CodigoId","UnidadesInventario","UnidadesTransito","UnidadesComprometidas","CostoCompra","CostoPromedio","Margen",    "MargenReal"    ,"PrecioVentaSinImpuesto","IVAId", "IVA" ,"IVAMonto","IEPSId","IEPS","IEPSMonto","PrecioVentaConImpuesto","Maximo","Minimo","FechaCambioPrecio","FechaUltimaVenta","FechaUltimaCompra","CostoBasePrecioVenta",        "FechaHora"         ,"Usuario","FechaUltimoTraspasoSalida","FechaUltimoTraspasoEntrada","Status","FechaUltimoAjuste"
+FROM inventario_perpetuo
+WHERE "SucursalId" = 2;
+;
+
+UPDATE inventario_perpetuo
+SET "UnidadesInventario" = 0,
+"CostoCompra" = 0,
+"CostoPromedio" = 0,
+"MargenReal" = 0,
+"FechaUltimaVenta" = null,
+"FechaUltimaCompra" = null
+WHERE "SucursalId" = 99;
+
+UPDATE inventario_perpetuo 
+SET "PrecioVentaConImpuesto" =575 
+WHERE "CodigoId" = 301;
+
+UPDATE inventario_perpetuo 
+SET "PrecioVentaConImpuesto" =68 
+WHERE "CodigoId" = 302;
+
+1. Recibir 2 cajas de Toallitas Húmedas en Sucursal 99 CEDIS
+2. Traspasar 1 caja de Toallitas Húmedas de 99 CEDIS a 3 Santa Maria
+3. Hacer cambio de presentación de 1 Caja de Toallitas Húmedas a 9 paquetes de Toallitas Húmedas.
+
+
+
+
+
+
+
 
 
 * Revisar y asegurar que todos los chocolates y dulce tengan que no aplican IVA a la compra porque yo creo que 

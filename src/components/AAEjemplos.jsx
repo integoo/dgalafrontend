@@ -2,9 +2,9 @@ Descripcion = Descripcion.replace(/[^a-zA-Z0-9 &]/g,"")
 
 //#### VALIDA QUE SEAN SOLO NUMEROS
 let numbers = /^[0-9]+$/;
-    if (CodigoBarras.match(numbers)){
+if (UnidadesConvertir.match(numbers) || UnidadesConvertir === ""){
 
-    }
+}
 
 if(window.confirm('Are you sure?')) {
 
@@ -14,6 +14,13 @@ numberWithCommas(x) {
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   }
   
+
+  Descripcion = Descripcion.replace(/[^a-zA-Z0-9-  &]/g,"")    //Valida que solamente incluya de a-z de A-Z de 0-9, guiones y espacios
+  CodigoBarras = CodigoBarras.replace(/[\\/.?]/g,"")    //Elimina los caracteres \ / . ? 
+ 
+ SELECT '"'||"column_name"||'",' FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'traspasos' ORDER BY "ordinal_position";
+ 
+ 
 
 import React, { Component } from 'react'
 
