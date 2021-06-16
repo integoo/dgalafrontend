@@ -22,15 +22,18 @@ export default class Login extends React.Component{
         };
 
         let port;
+        let domain;
         if(user === 'desarrollo'){
+            domain=`localhost`
             port = 4001
         }else{
             port = 3001
+            domain=`decorafiestas.com`
         }
         //const url = 'http://decorafiestas.com:3001/login'
         //const url = `http://decorafiestas.com:${port}/login`
         const protocol = `http`
-        const domain = `decorafiestas.com`
+        //const domain = `decorafiestas.com`
         const path = `/login`
         
         const url = `${protocol}://${domain}:${port}`
