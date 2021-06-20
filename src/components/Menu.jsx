@@ -9,6 +9,7 @@ import PuntoDeVenta from './PuntoDeVenta'
 import RetirosDeCaja from './RetirosDeCaja'
 import VentasConsultaSucursalesHoy from './VentasConsultaSucursalesHoy'
 import VentasConsulta from './VentasConsulta'
+import ConsultaArticulo from './ConsultaArticulo'
 import Kardex from './Kardex'
 import AjustesInventario from './AjustesInventario'
 import CambiosDePresentacion from './CambiosDePresentacion'
@@ -292,6 +293,11 @@ class Menu extends Component {
                     className="dropdown-menu"
                     aria-labelledby="navbarDropdown"
                   >
+
+                    <Link to="/inventario/consultaarticulo" style={linkStyle}>
+                        <span className="dropdown-item">Consulta Artículo</span>
+                    </Link>
+
                     <Link to="/inventario/kardex" style={linkStyle}>
                         <span className="dropdown-item">Kardex</span>
                     </Link>
@@ -346,6 +352,7 @@ class Menu extends Component {
           <Route path='/ventas/consultaventascategorias' component={() => <VentasConsultaCategorias accessToken={this.state.accessToken} url={this.state.url} Administrador={this.props.Administrador} />} />
           <Route path='/ventas/consulta' component={() => <VentasConsulta accessToken={this.state.accessToken} url={this.state.url} Administrador={this.props.Administrador}/>} />
           <Route path='/ventas/consultafechaproductos' component={() => <VentasConsultaFechaProducto accessToken={this.state.accessToken} url={this.state.url} Administrador={this.props.Administrador}/>} />
+          <Route path="/inventario/consultaarticulo" component={() => <ConsultaArticulo accessToken={this.state.accessToken} url={this.state.url} Administrador={this.props.Administrador} />} />
           <Route path='/inventario/kardex' component={() => <Kardex accessToken={this.state.accessToken} url={this.state.url} Administrador={this.props.Administrador} />} />
           <Route path='/inventario/ajustesinventario' component={() => <AjustesInventario accessToken={this.state.accessToken} url={this.state.url} Administrador={this.props.Administrador} />} />
           <Route path="/inventario/cambiosdepresentacion" component={() => <CambiosDePresentacion accessToken={this.state.accessToken} url={this.state.url} Administrador={this.props.Administrador} />} />

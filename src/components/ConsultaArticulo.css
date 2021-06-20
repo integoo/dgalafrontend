@@ -1,0 +1,29 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    height: 550px;
+    border: 5px solid red;
+    border-radius: 10px;
+    background-color: rgba(222, 245, 237, 0.596);
+    overflow:scroll;
+}
+
+.col-md-4{
+    font-size:0.5rem;
+}
+
+.containerTable1{
+    width:15rem;
+    height:10rem;
+    overflow: scroll;
+}
+
+/* .table1className{
+    width: 15rem;
+    height: 10rem;
+    overflow:scroll;
+} */

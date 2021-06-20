@@ -61,8 +61,10 @@ export default class Login extends React.Component{
                     alert("Error: "+data.error)
                     if(data.error === 'Usuario No Existe'){
                         this.usuarioInput.current.focus();
+                        this.usuarioInput.current.select();
                     }else{
                         this.passwordInput.current.focus();
+                        this.passwordInput.current.select();
                     }
                 }
         } catch(error){
