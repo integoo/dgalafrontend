@@ -84,7 +84,6 @@ class ConsultaArticulo extends React.Component {
       this.setState({
         CodigoBarrasDisplay: CodigoBarras,
         Descripcion: Descripcion,
-        UnidadesInventario: UnidadesInventario,
         CodigoId: CodigoId,
         Categoria: detalles[0].Categoria,
         Subcategoria: detalles[0].Subcategoria,
@@ -138,7 +137,6 @@ class ConsultaArticulo extends React.Component {
     this.setState({
       CodigoBarrasDisplay: "",
       Descripcion: "",
-      UnidadesInventario: "",
       CodigoId: "",
       Categoria: "",
       Subcategoria: "",

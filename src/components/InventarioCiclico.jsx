@@ -18,7 +18,6 @@ class InventarioCiclico extends React.Component {
       UnidadesDiferencia: 0,
       Administrador: "",
       detalles: [],
-      CodigoBarras: "",
       SoloInventariable: "S",
       IsDisabled: false,
       IsDisabled2: false,

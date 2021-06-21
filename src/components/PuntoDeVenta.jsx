@@ -499,7 +499,7 @@ async getCodigoBarraPrincipal(CodigoId){
     const ClienteId = this.state.ClienteId;
     const FolioId = this.state.FolioId;
     let CodigoBarras = this.state.CodigoBarras;
-    let UnidadesDisponibles = this.state.UnidadesDisponibles;
+    //let UnidadesDisponibles = this.state.UnidadesDisponibles;
 
     //####### Funcionalidad para Capturar Códigos Internos y lo convierte a su Codigo de Barras #######
     // let numbers = /^[0-9]+$/;

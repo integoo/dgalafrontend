@@ -389,7 +389,7 @@ class ComprasRecepcion extends React.Component {
       return
     }
     if (
-      this.state.CodigoId === "" || this.state.CodigoId == 0 ||
+      this.state.CodigoId === "" || parseInt(this.state.CodigoId) === 0 ||
       this.state.CodigoBarras === "" ||
       this.state.Descripcion === "" ||
       this.state.Unidades === "" ||

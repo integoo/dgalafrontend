@@ -110,7 +110,7 @@ class Kardex extends React.Component{
     }
 
     onhandleConsulta = (CodigoBarras,Descripcion,UnidadesInventario) => {
-        const SucursalId = this.state.SucursalId
+        //const SucursalId = this.state.SucursalId
         this.setState({
             Descripcion: Descripcion,
             //UnidadesInventario: UnidadesInventario,
