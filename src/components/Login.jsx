@@ -78,7 +78,8 @@ export default class Login extends React.Component{
 
     render(){
 
-        const logo = 'https://grupodgala.com/LogoDGala.png'
+        //const logo = 'https://grupodgala.com/LogoDGala.png'
+        const logo = 'LogoDGala.png'
 
         return(
         <React.Fragment>
