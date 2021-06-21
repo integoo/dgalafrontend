@@ -306,7 +306,7 @@ class CambiosDePresentacion extends React.Component{
                             <input onChange={this.onhandleCodigoBarrasPadre} onKeyDown={this.onhandleCodigoBarraPadreKeyDown} id="codigobarraspadre" name="codigobarraspadre" value={this.state.CodigoBarrasPadre} ref={this.CodigoBarrasInput} disabled={this.state.disabledPadre}/>
                             <button onClick={this.handleBuscar} className="btn btn-success btn-sm ml-2" disabled={this.state.disabledPadreBuscar}>Buscar</button>
                             <label htmlFor="descripcion">Descripción</label>
-                            <input onChange={this.onhandleDescripcion} value={this.state.DescripcionPadre} id="descripcion" name="descripcion" style={{width:"100%"}} style={{textTransfor:"uppercase"}} ref={this.DescripcionInput} />
+                            <input onChange={this.onhandleDescripcion} value={this.state.DescripcionPadre} id="descripcion" name="descripcion" style={{width:"100%",textTransfor:"uppercase"}} ref={this.DescripcionInput} />
                             <div className="tablaBusquedaProductos mt-2">
                                 <table id="table1">
                                     <thead>
