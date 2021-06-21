@@ -2,6 +2,8 @@
 call stpr_calcula_costodeventas ('2021/05/01','2021/05/31');
 
 
+* Hay una mejora en CambiosDePresentacion que me marca cuando hago el npm run build (detallesHijos)
+
 * Revisar en tipos_ajustes los que afectan al costo e indicarlo en la pantalla de Ajustes.
 
 

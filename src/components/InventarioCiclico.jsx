@@ -21,7 +21,6 @@ class InventarioCiclico extends React.Component {
       SoloInventariable: "S",
       IsDisabled: false,
       IsDisabled2: false,
-      detalles: [],
       detallesDiferencias: [],
       message: ""
     };
