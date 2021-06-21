@@ -14,7 +14,7 @@ class App extends React.Component{
       dbName: '',
       Administrador: "",
       Version: "v1.11",
-      VersionFecha: "Jun20",
+      VersionFecha: "Jun21",
     }
 
   }
