@@ -119,30 +119,13 @@ class AjustesInventario extends React.Component{
     onChange =(e) =>{
         const UnidadesAjustadas = e.target.value
         const Movimiento = this.state.Movimiento
-        const UnidadesInventario = this.state.UnidadesInventario
-
+        
         if(UnidadesAjustadas > 10 || UnidadesAjustadas < -10){
             if(!window.confirm("El Ajuste es por más de 10 piezas. ¿Desea Continuar?")){
                 return
             }
         }
 
-        if(UnidadesInventario < 0){
-            if(UnidadesAjustadas < 0){
-                this.setState({
-                    UnidadesAjustadas: "",
-                })
-                alert("No se permite un Ajuste Negativo porque el Inventario es Negativo")
-                return
-            }
-        }
-        if((parseInt(UnidadesInventario) + parseInt(UnidadesAjustadas)) < 0 ){
-            alert("Error....El Ajuste da Inventario Negativo")
-            this.setState({
-                UnidadesAjustadas: "",
-            })
-            return
-        }
 
         let re = /^[-0-9\b]+$/; //Permite números ENTEROS POSITIVOS Y NEGATIVOS
 
@@ -165,6 +148,28 @@ class AjustesInventario extends React.Component{
 
      onhandleSubmit = async(e) => {
         e.preventDefault()
+        const UnidadesAjustadas = this.state.UnidadesAjustadas
+        const UnidadesInventario = this.state.UnidadesInventario
+
+
+        if(UnidadesInventario < 0){
+            if(UnidadesAjustadas < 0){
+                this.setState({
+                    UnidadesAjustadas: "",
+                })
+                alert("No se permite un Ajuste Negativo porque el Inventario es Negativo")
+                return
+            }
+        }
+        if((parseInt(UnidadesInventario) + parseInt(UnidadesAjustadas)) < 0 ){
+            alert("Error....El Ajuste da Inventario Negativo")
+            this.setState({
+                UnidadesAjustadas: "",
+            })
+            return
+        }
+
+
         const json={
             SucursalId: this.state.SucursalId,
             CodigoBarras: this.state.CodigoBarras,
