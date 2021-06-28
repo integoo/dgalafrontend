@@ -404,7 +404,7 @@ class PuntoDeVenta extends React.Component {
   handleClientes = (e) => {
     //const ClienteId = e.target.value;
     //const arregloClientes = this.state.clientes;
-    alert("EN CONSTRUCCION ...(PROXIMAMENTE!!!")
+    alert("EN CONSTRUCCION ...PROXIMAMENTE!!!")
     return
     // const arreglo2Clientes = arregloClientes.filter(
     //   (element) => parseInt(element.ClienteId) === parseInt(ClienteId)
@@ -1258,7 +1258,7 @@ async getCodigoBarraPrincipal(CodigoId){
           </div>
 
           <div className="col-md-5 footer">
-            <label style={{ width: "2em" }}>
+            <label style={{ width: "2.5rem" }}>
               <small>
                 <strong>Total Ticket</strong>
               </small>
