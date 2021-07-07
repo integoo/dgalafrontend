@@ -2,6 +2,10 @@
 call stpr_calcula_costodeventas ('2021/05/01','2021/05/31');
 
 
+* Falta aplicar el Gasto o Costo de la Comisión de $ 100 que se le paga a Juan Francisquito
+en el mes de Junio por logro de cuota. (Crear las cuentas contables)
+
+* Agregar en la alta de productos, el algoritmo para validar el Dígito Verificador.
 
 alter table registro_contable add column "Status" char(1) default 'A';
 alter table registro_contable add column "FechaHoraCancelacion" timestamptz;
@@ -10,7 +14,7 @@ alter table registro_contable add column "UsuarioCancelacion" varchar(30);
 
 * Hay una mejora en CambiosDePresentacion que me marca cuando hago el npm run build (detallesHijos)
 
-* Revisar en tipos_ajustes los que afectan al costo e indicarlo en la pantalla de Ajustes.
+
 
 
 

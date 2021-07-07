@@ -1,5 +1,7 @@
 import React from 'react'
 
+import InputFecha from './cmpnt/InputFecha'
+
 class VentasConsultaSucursalesHoy extends React.Component{
     constructor(props){
         super(props)
@@ -7,6 +9,16 @@ class VentasConsultaSucursalesHoy extends React.Component{
         this.state = {
             detalles: [],
             GranTotalVenta:0,
+            Periodos: [],
+            PeriodoActual:"",
+            Periodo: "",
+            Hoy:"",
+            Ayer:"",
+            PrimerDiaMes: "",
+            UltimoDiaMes:"",
+            VentasTendencia:[],
+            checkboxvalue: false,
+            disabledvalue: false,
         }
     }
 
@@ -35,6 +47,109 @@ class VentasConsultaSucursalesHoy extends React.Component{
             alert(error.message)
             return
         }
+
+        await this.handleConsultaPeriodos()
+        await this.handleVentasMesYTendencia(this.state.checkboxvalue)
+    }
+
+    handleConsultaPeriodos = async() =>{
+        const url = this.props.url + `/api/consultaperiodos`
+        try{
+            const response = await fetch(url, {
+                headers:{
+                    Authorization: `Bearer ${this.props.accessToken}`,
+                },
+            });
+            const data = await response.json()
+            this.setState({
+                Periodos: data,
+                Hoy: data[0].Hoy,
+                Ayer: data[0].Ayer,
+                PeriodoActual: data[0].Periodo,
+
+                
+                Periodo: data[0].Periodo,
+                PrimerDiaMes: data[0].PrimerDiaMes,
+                UltimoDiaMes: data[0].UltimoDiaMes,
+            })
+        }catch(error){
+            console.log(error.message)
+            alert(error.message)
+        }
+
+    }
+
+    handleVentasMesYTendencia = async(incluyeHoy)=>{
+
+        //SI EL PERIODO ES EL ACTUAL
+        const FechaInicial = this.state.PrimerDiaMes 
+        let FechaFinal = this.state.Ayer
+        const Hoy = this.state.Hoy
+        const PeriodoActual = this.state.PeriodoActual
+        const Periodo = this.state.Periodo
+        const d = new Date(this.state.UltimoDiaMes)
+        const DiasMes = parseInt(d.getDate())  //Dias que tiene el mes
+        //SI es periodo actual y se quiere consultar la tendencia incluyendo el día de hoy
+        if (incluyeHoy === true && PeriodoActual === Periodo ){
+            FechaFinal = Hoy
+        }
+
+
+        // Si hoy es primero de mes
+        if (FechaInicial === Hoy){
+            FechaFinal = Hoy
+        }
+        
+        // Si se quiere consultar un periodo anterior
+        if(PeriodoActual !== Periodo){
+            FechaFinal=this.state.UltimoDiaMes
+        }
+
+        const url = this.props.url + `/api/ventassucursalesperiodo/${FechaInicial}/${FechaFinal}/${DiasMes}`
+        try{
+            const response = await fetch(url,{
+                headers:{
+                    Authorization: `Bearer ${this.props.accessToken}`,
+                },
+            });
+            const data = await response.json()
+            this.setState({
+                VentasTendencia: data,
+            })
+
+        }catch(error){
+            console.log(error.message)
+            alert(error.message)
+        }
+    }
+
+    handlePeriodo =(e)=>{
+        const Periodo = e.target.value
+        const PeriodoActual = this.state.PeriodoActual
+        const arregloTemp = this.state.Periodos.filter(element => element.Periodo === Periodo)
+        let banderaValue = false
+        let checkboxValue = this.state.checkboxvalue
+
+
+        if (Periodo !== PeriodoActual){
+            banderaValue= true
+            checkboxValue = false
+        }
+
+        this.setState({
+            Periodo: Periodo,
+            PrimerDiaMes: arregloTemp[0].PrimerDiaMes,
+            UltimoDiaMes: arregloTemp[0].UltimoDiaMes,
+            disabledvalue: banderaValue,
+            checkboxvalue: checkboxValue,
+        },()=>this.handleVentasMesYTendencia(this.state.checkboxvalue))
+    }
+
+    handlecheckbox =(e)=>{
+        this.setState({
+            checkboxvalue:!this.state.checkboxvalue,
+        }, ()=> this.handleVentasMesYTendencia(this.state.checkboxvalue) )
+        
     }
 
     numberWithCommas(x) {
@@ -47,7 +162,7 @@ class VentasConsultaSucursalesHoy extends React.Component{
                 <div className="col-md-5">
                     <div className="card">
                         <div className="card-header">
-                            <span className="badge badge-primary">Consulta Ventas Por Sucursal</span>
+                            <span className="badge badge-primary">Consulta Ventas De HOY Por Sucursal</span>
                             <table>
                                 <thead>
                                     <tr>
@@ -68,6 +183,44 @@ class VentasConsultaSucursalesHoy extends React.Component{
                                 <label htmlFor="" style={{fontSize:"0.7rem"}}><strong>Gran Total Venta</strong></label>
                                 <input value={"$ "+this.numberWithCommas(this.state.GranTotalVenta.toFixed(2))} id="grantotalventa" name="grantotalventa" style={{width:"7rem", textAlign:"right"}} readOnly />
                             </div>
+                            <hr />
+                            <span className="badge badge-primary mb-2">Consulta Ventas y Tendencia del Mes por Sucursal</span>
+                            <div>
+                            <label htmlFor="" style={{width:"3rem",fontSize:".8rem"}}>Periodo</label>
+                            <select onChange={this.handlePeriodo} value={this.state.Periodo}>
+                                {this.state.Periodos.map((element,i) =>(
+                                    <option key={i} value={element.Periodo}>{element.Periodo}</option>
+                                    ))}
+                            </select>
+                                <input onChange={this.handlecheckbox} className="ml-3 mr-2" type="checkbox" defaultChecked={this.state.checkboxvalue} disabled={this.state.disabledvalue}/>
+                                <label style={{fontSize:".7rem"}} htmlFor="">Incluir hoy en Tendencia</label>
+
+                            </div>
+
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Sucursal</th>
+                                        <th>Venta</th>
+                                        <th>Venta Proyectada</th>
+                                        <th>Cuota Mes</th>
+                                        <th>Diferencia $</th>
+                                        <th>Diferencia %</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                        {this.state.VentasTendencia.map((element,i) =>(
+                                            <tr key={i}>
+                                                <td>{element.Sucursal}</td>
+                                                <td style={{textAlign:"right"}}>{this.numberWithCommas(parseInt(element.Venta))}</td>
+                                                <td style={{textAlign:"right"}}>{this.numberWithCommas(parseInt(element.VentaProyectada))}</td>
+                                                <td style={{textAlign:"right"}}>{this.numberWithCommas(parseInt(element.Cuota))}</td>
+                                                <td style={{textAlign:"right"}}>{this.numberWithCommas(parseInt(element.DiferenciaDinero))}</td>
+                                                <td style={{textAlign:"right"}}>{element.DiferenciaPorcentaje}</td>
+                                            </tr>
+                                        ))}
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>

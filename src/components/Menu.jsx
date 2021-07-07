@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { BrowserRouter as Router, Switch, Route, Link, Redirect } from "react-router-dom";
 
 import Ingresos from './Ingresos';
+import VentasIngresos from './VentasIngresos'
 import Productos from "./Productos"
 import ComprasRecepcion from "./ComprasRecepcion"
 import ComprasConsulta from "./ComprasConsulta"
@@ -40,7 +41,7 @@ class Menu extends Component {
 
   render() {
     const linkStyle = {
-      color: "white"
+      color: "white",
     };
 //***  Aquí esta el nombre de la Base de Datos como constante producciondb ******/
 
@@ -342,7 +343,8 @@ class Menu extends Component {
         <Switch>
           <Route exact path="/" />
           <Route exac path="/catalogos/productos" component={() => <Productos accessToken={this.state.accessToken} url={this.state.url}/>} />
-          <Route exac path="/contabilidad/ingresos" component={() => <Ingresos accessToken={this.state.accessToken} naturalezaCC="1" url={this.state.url} Administrador={this.props.Administrador} />} />
+          {/* <Route exac path="/contabilidad/ingresos" component={() => <Ingresos accessToken={this.state.accessToken} naturalezaCC="1" url={this.state.url} Administrador={this.props.Administrador} />} /> */}
+          <Route exac path="/contabilidad/ingresos" component={() => <VentasIngresos accessToken={this.state.accessToken} naturalezaCC="1" url={this.state.url} Administrador={this.props.Administrador} />} />
           <Route exac path="/contabilidad/egresos" component={() => <Ingresos accessToken={this.state.accessToken} naturalezaCC="-1" url={this.state.url} Administrador={this.props.Administrador} />} />
           <Route path="/compras/recepcion" component={() => <ComprasRecepcion accessToken={this.state.accessToken} url={this.state.url} Administrador={this.props.Administrador} />} />
           <Route path="/compras/consulta" component={() => <ComprasConsulta accessToken={this.state.accessToken} url={this.state.url} Administrador={this.props.Administrador} />} />

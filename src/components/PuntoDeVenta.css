@@ -102,6 +102,14 @@
     font-size:1.2rem;
 }
 
+#table1 td{
+    font-size: 1.2rem;
+}
+
+#table1, th, td{
+    border:3px solid grey;
+}
+
     @media only screen and (max-width: 387px) {
         #sucursales, #clientes {
             width: 9.7rem;
