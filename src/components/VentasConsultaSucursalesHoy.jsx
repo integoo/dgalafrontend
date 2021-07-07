@@ -9,6 +9,7 @@ class VentasConsultaSucursalesHoy extends React.Component{
         this.state = {
             detalles: [],
             GranTotalVenta:0,
+            GranTotalVentaProyectada:0,
             Periodos: [],
             PeriodoActual:"",
             Periodo: "",
@@ -113,8 +114,15 @@ class VentasConsultaSucursalesHoy extends React.Component{
                 },
             });
             const data = await response.json()
+            //####################################
+            let GranTotalVentaProyectada = 0
+            for (let i =0; i < data.length; i++){
+                GranTotalVentaProyectada += parseInt(data[i].VentaProyectada)
+            }
+            //####################################
             this.setState({
                 VentasTendencia: data,
+                GranTotalVentaProyectada: GranTotalVentaProyectada,
             })
 
         }catch(error){
@@ -163,7 +171,7 @@ class VentasConsultaSucursalesHoy extends React.Component{
                     <div className="card">
                         <div className="card-header">
                             <span className="badge badge-primary">Consulta Ventas De HOY Por Sucursal</span>
-                            <table>
+                            <table style={{marginBottom:"10px"}}>
                                 <thead>
                                     <tr>
                                         <th>Sucursal</th>
@@ -193,11 +201,11 @@ class VentasConsultaSucursalesHoy extends React.Component{
                                     ))}
                             </select>
                                 <input onChange={this.handlecheckbox} className="ml-3 mr-2" type="checkbox" defaultChecked={this.state.checkboxvalue} disabled={this.state.disabledvalue}/>
-                                <label style={{fontSize:".7rem"}} htmlFor="">Incluir hoy en Tendencia</label>
+                                <label style={{fontSize:".7rem"}} htmlFor="">Incluir HOY en Tendencia</label>
 
                             </div>
 
-                            <table>
+                            <table style={{marginBottom:"10px"}}>
                                 <thead>
                                     <tr>
                                         <th>Sucursal</th>
@@ -205,7 +213,7 @@ class VentasConsultaSucursalesHoy extends React.Component{
                                         <th>Venta Proyectada</th>
                                         <th>Cuota Mes</th>
                                         <th>Diferencia $</th>
-                                        <th>Diferencia %</th>
+                                        <th>Logro %</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -221,6 +229,10 @@ class VentasConsultaSucursalesHoy extends React.Component{
                                         ))}
                                 </tbody>
                             </table>
+                            <div className="totalventaproyectada text-right" >
+                                <label htmlFor="" style={{width:"12rem"}}><strong>Total Venta Proyectada</strong></label>
+                                <input value={"$ "+this.numberWithCommas(this.state.GranTotalVentaProyectada.toFixed(2))} id="grantotalventaproyectada" name="grantotalventaproyectada" style={{width:"7rem", textAlign:"right"}} readOnly />
+                            </div>
                         </div>
                     </div>
                 </div>

@@ -1,3 +1,16 @@
+Actualizar la Base de Datos de Desarrollo 
+
+
+pg_restore -d desarrollodb dgaladb_$fecha.dump
+
+INSERT INTO colaboradores VALUES (0, 'desarrollo', 'desarrollo', '$2b$10$PEBBj5HGAysvCnPEAh282uXTvEYieLEnYWf049swgaRTKqfOP4p4e', 99, USER,CLOCK_TIMESTAMP(), 'S');
+UPDATE colaboradores SET "Password" = 'dfjiejoijeijfjgjrjojijg837439dkK' WHERE "ColaboradorId" <> 0;
+#####################################################################################
+
+alter table cuotas_mes owner to ubuntu;
+#####################################################################################
+
+
 Descripcion = Descripcion.replace(/[^a-zA-Z0-9 &]/g,"")
 
 //#### VALIDA QUE SEAN SOLO NUMEROS
