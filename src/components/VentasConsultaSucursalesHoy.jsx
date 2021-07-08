@@ -10,6 +10,8 @@ class VentasConsultaSucursalesHoy extends React.Component{
             detalles: [],
             GranTotalVenta:0,
             GranTotalVentaProyectada:0,
+            CuotaTotal:0,
+            LogroTotal:0,
             Periodos: [],
             PeriodoActual:"",
             Periodo: "",
@@ -116,13 +118,24 @@ class VentasConsultaSucursalesHoy extends React.Component{
             const data = await response.json()
             //####################################
             let GranTotalVentaProyectada = 0
+            let CuotaTotal = 0
+            let LogroTotal = 0
             for (let i =0; i < data.length; i++){
                 GranTotalVentaProyectada += parseInt(data[i].VentaProyectada)
+                CuotaTotal+= parseInt(data[i].Cuota)
+            }
+
+            if(CuotaTotal > 0){
+                LogroTotal = GranTotalVentaProyectada / CuotaTotal * 100
+            }else{
+                LogroTotal = 100
             }
             //####################################
             this.setState({
                 VentasTendencia: data,
                 GranTotalVentaProyectada: GranTotalVentaProyectada,
+                CuotaTotal: CuotaTotal,
+                LogroTotal: LogroTotal,
             })
 
         }catch(error){
@@ -230,8 +243,12 @@ class VentasConsultaSucursalesHoy extends React.Component{
                                 </tbody>
                             </table>
                             <div className="totalventaproyectada text-right" >
-                                <label htmlFor="" style={{width:"12rem"}}><strong>Total Venta Proyectada</strong></label>
+                                <label htmlFor="" style={{width:"12rem"}}><strong>Total Cuota</strong></label>
+                                <input value={"$ "+this.numberWithCommas(this.state.CuotaTotal.toFixed(2))} id="grantotalventaproyectada" name="grantotalventaproyectada" style={{width:"7rem", textAlign:"right"}} readOnly />
+                                <label htmlFor="" style={{width:"12rem"}}><strong>Total Venta</strong></label>
                                 <input value={"$ "+this.numberWithCommas(this.state.GranTotalVentaProyectada.toFixed(2))} id="grantotalventaproyectada" name="grantotalventaproyectada" style={{width:"7rem", textAlign:"right"}} readOnly />
+                                <label htmlFor="" style={{width:"12rem"}}><strong>Logro %</strong></label>
+                                <input value={"% "+this.numberWithCommas(this.state.LogroTotal.toFixed(2))} id="grantotalventaproyectada" name="grantotalventaproyectada" style={{width:"7rem", textAlign:"right"}} readOnly />
                             </div>
                         </div>
                     </div>
@@ -245,7 +262,7 @@ class VentasConsultaSucursalesHoy extends React.Component{
         return(
             <React.Fragment>
                 <div className="container">
-                    {this.state.detalles ? <this.handleRender /> : <h1>Loading ...</h1>}
+                    {this.state.VentasTendencia ? <this.handleRender /> : <h1>Loading ...</h1>}
                 </div>
             </React.Fragment>
         )
