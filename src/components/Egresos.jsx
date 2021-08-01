@@ -172,6 +172,7 @@ class Egresos extends Component {
 
   getPeriodoAbierto = async () => {
     const url = this.props.url + `/periodoabierto`;
+    let Fecha = this.state.Fecha
     let PeriodoAbierto;
     let PeriodoAbiertoPrimerDia;
     let PeriodoAbiertoUltimoDia;
@@ -191,10 +192,14 @@ class Egresos extends Component {
       PeriodoAbiertoPrimerDia = data.rows[0].PrimerDiaMes.substring(0, 10);
       PeriodoAbiertoUltimoDia = data.rows[0].UltimoDiaMes.substring(0, 10);
 
+      if(Fecha > PeriodoAbiertoUltimoDia){
+        Fecha = PeriodoAbiertoUltimoDia
+      }
       this.setState({
         PeriodoAbierto: PeriodoAbierto,
         PeriodoAbiertoPrimerDia: PeriodoAbiertoPrimerDia,
         PeriodoAbiertoUltimoDia: PeriodoAbiertoUltimoDia,
+        Fecha: Fecha,
       });
     } catch (error) {
       console.log(error.message);
