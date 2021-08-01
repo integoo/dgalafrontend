@@ -937,10 +937,12 @@ for(let i=0;i < dataFilter.length;i++){
               </div>
             ))}
             <div className="totalesMesDia" style={{display:"flex",justifyContent:"center"}}>
-              <label htmlFor="" style={{width:"2.8rem"}}><strong style={{fontSize:".6rem"}}>Total Día</strong></label>
+              {/* <label htmlFor="" style={{width:"2.8rem"}}><strong style={{fontSize:".6rem"}}>Total Día</strong></label> */}
+              <label htmlFor="" style={{width:"3.8rem"}}><strong style={{fontSize:".6rem"}}>Total Día</strong></label>
               <input style={{fontSize:".6rem",width:"3.8rem",position:"relative",left:"-10px", textAlign:"right"}} value={this.numberWithCommas(this.state.TotalDia.toFixed(0))} readOnly/>
 
-              <label htmlFor="" style={{width:"3.0rem"}}><strong style={{fontSize:".6rem"}}>Total Mes</strong></label>
+              {/* <label htmlFor="" style={{width:"3.0rem"}}><strong style={{fontSize:".6rem"}}>Total Mes</strong></label> */}
+              <label htmlFor="" style={{width:"3.8rem"}}><strong style={{fontSize:".6rem"}}>Total Mes</strong></label>
               <input style={{fontSize:".6rem",width:"4.8rem",position:"relative",left:"-10px", textAlign:"right"}} value={this.numberWithCommas(this.state.TotalMes.toFixed(0))} readOnly/>
             </div>
 
