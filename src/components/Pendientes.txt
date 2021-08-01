@@ -2,6 +2,21 @@
 call stpr_calcula_costodeventas ('2021/05/01','2021/05/31');
 
 
+
+
+
+
+
+
+* Cambiar PAPAS de categoria "02 DULCES Y CHOCOLATES" a "05 ABARROTES"
+
+* Ingresos / Egresos
+* Devoluciones de Venta 
+* Devoluciones de Compra
+* Auditorias
+* BackOffice D'Gala
+* Permisos, accesos y atributos para diferentes usuarios.
+
 * Falta aplicar el Gasto o Costo de la Comisión de $ 100 que se le paga a Juan Francisquito
 en el mes de Junio por logro de cuota. (Crear las cuentas contables)
 

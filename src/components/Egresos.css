@@ -6,23 +6,40 @@
 }
 
 
-.seccionIngresos {
+.seccionEgresos {
     background-color: lightgray;
     border: 5px solid gray;
     border-radius: 10px;
-    height: 580px;
+    height: 305px;
     /* padding: 5px;
     margin: 5px; */
     /* min-width: 420px; */
-    
+}
 
+.seccionEgresosModifica{
+  background-color: lightgray;
+  border: 5px solid gray;
+  border-radius: 10px;
+  height: 305px;
+  padding: 10px;
+  font-size: .7rem;
+}
+
+.botones{
+  display: flex;
+}
+
+.consultaDia {
+  border:5px solid gray;
+  height: 160px;
+  border-radius: 10px;
 }
 
  .seccionDespliegaIngresos {
     background-color:lightblue;
     border: 5px solid gray;
     border-radius: 10px;
-    height: 580px;
+    height: 480px;
     /* padding: 10px; */
     /* margin-top: 52px; */
     /* min-width: 420px; */
@@ -41,26 +58,17 @@ td, th {
 
 
 
-/* 
-.main {
+ 
+/* .main {
     display:flex;
     flex-direction: row;
-}
+} */
 
 
 @media (max-width: 800px) {
+
+  .child{
+    font-size: .78rem;
+  }
     
-    .main{
-      flex-direction: column;
-    }
-
-    label {
-        display: inline-block;
-        width: 190px;
-      };
-
-
-      input {
-        margin: "0 0 12px 0",
-      };
-  } */
+  } 

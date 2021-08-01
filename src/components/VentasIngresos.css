@@ -5,19 +5,34 @@
 }
 
 .Principal{
-    margin-top: 10px;
-    height: 320px;
+    margin: 10px 0 10px 0;
+    height: 310px;
     padding: 10px;
     border: 5px solid green;
     border-radius: 10px;
 }
+
+.PrincipalModifica{
+    height: 280px;
+    border: 5px solid yellowgreen;
+    border-radius: 10px;
+}
+
 .PrincipalDia{
-    margin-top: 10px;
-    padding: 10px;
-    height: 180px;
+    margin-top: 0;
+    padding: 0;
+    /* height: 210px; */
+    height: 190px;
     border: 5px solid green;
     border-radius: 10px;
+    /* overflow: scroll; */
 }
+
+.PrincipalDiaTabla01{
+    height: 137px;
+    overflow:scroll;
+}
+
 .Secundario{
     margin-top: 10px;
     padding: 10px;
@@ -26,6 +41,60 @@
     border-radius: 10px;
 }
 
+.SecundarioTabla02{
+    height: 431px;
+    overflow:scroll;
+}
+
 table th {
     text-align: center;
 }
+
+table.table01  td {
+    font-size: .56rem;
+}
+
+
+select {
+    max-width: 10rem;
+}
+
+.botonesPrincipal{
+    display:flex;
+    justify-content:space-around;
+    margin-top: 10px;
+}
+
+
+@media screen and (max-width: 600px) {
+    /* .PrincipalDia{
+        background-color:deeppink;
+    } */
+
+    table th {
+        font-size: 0.6rem;
+    }
+    table  td {
+        font-size: .56rem;
+    }
+
+    .Secundario {
+        padding:0;
+    }
+
+    .Secundario h5{
+        padding:10px 0 0 10px;
+    }
+
+    .PrincipalDiaTabla01{
+        height: 131px;
+        overflow:scroll;
+    }
+
+    .SecundarioTabla02{
+        height: 450px;
+        overflow:scroll;
+    }
+
+   
+  }

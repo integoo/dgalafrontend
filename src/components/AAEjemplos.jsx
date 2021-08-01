@@ -1,14 +1,76 @@
-Actualizar la Base de Datos de Desarrollo 
 
 
+Cómo hacer un respaldo de una Postresql DATABASE
+a) Local:
+pg_dump -Fc dgaladb > /home/ubuntu/backups/backup_dgaladb/dgaladb_$fecha.dump
+
+b) Remota:
+1) pg_dump -h decorafiestas.com -Fc -U ubuntu dgaladb > desarrollodb.dump
+
+2) ssh user@remote_machine "pg_dump -U dbuser -h localhost -C --column-inserts" \
+ > backup_file_on_your_local_machine.sql
+
+
+Recuperar la Base de Datos de Desarrollo 
 pg_restore -d desarrollodb dgaladb_$fecha.dump
 
-INSERT INTO colaboradores VALUES (0, 'desarrollo', 'desarrollo', '$2b$10$PEBBj5HGAysvCnPEAh282uXTvEYieLEnYWf049swgaRTKqfOP4p4e', 99, USER,CLOCK_TIMESTAMP(), 'S');
 UPDATE colaboradores SET "Password" = 'dfjiejoijeijfjgjrjojijg837439dkK' WHERE "ColaboradorId" <> 0;
+INSERT INTO colaboradores VALUES (0, 'desarrollo', 'desarrollo', '$2b$10$PEBBj5HGAysvCnPEAh282uXTvEYieLEnYWf049swgaRTKqfOP4p4e', 99, USER,CLOCK_TIMESTAMP(), 'S');
 #####################################################################################
 
-alter table cuotas_mes owner to ubuntu;
+ALTER TABLE cuotas_mes OWNER TO ubuntu;
 #####################################################################################
+
+
+<div className="PrincipalModifica" style={{display: this.state.disabledBotonesModifica ? "block" : "none"}}>
+            <input />
+</div>
+
+//#####################################################################################
+CREATE OR REPLACE FUNCTION public.fn_registro_contable_actualizaciones()
+ RETURNS trigger
+ LANGUAGE plpgsql
+AS $function$
+BEGIN
+IF (TG_OP = 'UPDATE') THEN
+INSERT INTO registro_contable_actualizaciones 
+SELECT OLD.*,NEW."Usuario";
+RETURN OLD;
+END IF;
+RETURN NULL;
+END;
+$function$;
+
+CREATE TRIGGER trg_registro_contable_actualizaciones 
+AFTER UPDATE  ON registro_contable FOR EACH ROW EXECUTE PROCEDURE fn_registro_contable_actualizaciones();
+
+//#####################################################################################
+Para cargar un excel a Postgresql:
+1. Grabar el archivo en formato csv 
+2. Ponerle Encabezado a las columnas en el primer renglón.
+
+COPY mytable FROM '/path/to/csv/file' WITH CSV HEADER; -- must be superuser
+//#####################################################################################
+Para desacargar o exportar un query de POSTGRESQL a un archivo csv
+copy (select "CuentaContableId","SubcuentaContable" from subcuentas_contables order by 1,2) to '/Users/eugalde/sql/subcuentas_contables.csv' with csv delimiter ',' header ;
+//#####################################################################################
+
+My Public IP from Linux command line:
+curl ifconfig.me
+curl ipinfo.io/ip
+
+curl ident.me
+//#####################################################################################
+Para conectarse de manera remota a un sevidor POSTGRESQL
+
+psql -h decorafiestas.com -p 5432 -U ubuntu dgaladb
+
+
+
+//#####################################################################################
+Para tomar un número random para cargarlo como "FolioId"
+select floor(random()*100000)+1000 as "FolioId"
+//#####################################################################################
 
 
 Descripcion = Descripcion.replace(/[^a-zA-Z0-9 &]/g,"")
@@ -32,7 +94,46 @@ numberWithCommas(x) {
   CodigoBarras = CodigoBarras.replace(/[\\/.?]/g,"")    //Elimina los caracteres \ / . ? 
  
  SELECT '"'||"column_name"||'",' FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'traspasos' ORDER BY "ordinal_position";
+ //###############################################################
+ arreglo = [1,2,3,4,5,6,7,8,9]
+
+const total = arreglo.reduce((suma, element)=>{
+  return suma + element
+},0)
+
+console.log(total)
+ //###############################################################
+ Elimina $ y , y valida que acepte números y punto 
  
+ let Monto = e.target.value.replace(/[$ ,]/g,"")
+    Monto = Monto.replace(/[^0-9 .]/g,"")
+ //###############################################################
+
+ ALTER TABLE registro_contable ALTER COLUMN "FechaHoraAlta" TYPE timestamptz;
+
+ALTER TABLE child_table ADD CONSTRAINT constraint_name 
+FOREIGN KEY (fk_columns) 
+REFERENCES parent_table (parent_key_columns);
+
+ALTER TABLE registro_contable ADD COLUMN "Id" serial;
+
+DROP TRIGGER trg_registro_contable_actualizaciones ON registro_contable;
+
+ALTER TABLE registro_contable DROP CONSTRAINT registro_contable_pkey;
+
+ALTER TABLE registro_contable DROP COLUMN "FolioId"            ;
+
+ALTER TABLE registro_contable RENAME COLUMN "xFolioId"            TO "FolioId";
+
+ALTER TABLE registro_contable ADD PRIMARY KEY("FolioId","SucursalId");
+ALTER TABLE registro_contable ADD CONSTRAINT fk_cuentascontable     FOREIGN KEY ("CuentaContableId") REFERENCES cuentas_contables("CuentaContableId");
+
+ALTER TABLE registro_contable ALTER COLUMN "FolioId"            SET  not null ;
+
+CREATE trigger trg_registro_contable_actualizaciones AFTER UPDATE ON registro_contable FOR EACH ROW EXECUTE FUNCTION fn_registro_contable_actualizaciones();
+
+
+ //###############################################################
  
 
 import React, { Component } from 'react'

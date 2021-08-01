@@ -29,6 +29,7 @@ class InputFecha extends React.Component{
         this.props.onhandleFecha(Fecha)
       }
 
+
     handleRender=()=>{
         return(
             <React.Fragment className="mainInputFecha">

@@ -1,7 +1,5 @@
 import React from 'react'
 
-import InputFecha from './cmpnt/InputFecha'
-
 class VentasConsultaSucursalesHoy extends React.Component{
     constructor(props){
         super(props)
