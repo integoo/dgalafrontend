@@ -51,12 +51,13 @@ class VentasIngresos extends Component {
   }
 
   async componentDidMount() {
-    await this.getFechaHoy();
-    await this.getPeriodoAbierto();
-    await this.getUnidadesDeNegocio();
-    await this.getCuentasContables();
-    await this.getSubcuentasContables();
-    await this.getSucursales();
+    if (await this.getFechaHoy() === false) return
+
+    if (await this.getPeriodoAbierto() === false) return
+    if (await this.getUnidadesDeNegocio() === false) return
+    if (await this.getCuentasContables() === false) return
+    if (await this.getSubcuentasContables() === false) return
+    if (await this.getSucursales() === false) return
 
     const UnidadDeNegocioId = this.state.UnidadDeNegocioId 
     const CuentaContableId = this.state.CuentaContableId 
@@ -136,6 +137,7 @@ class VentasIngresos extends Component {
 
   getFechaHoy = async () => {
     const url = this.props.url + `/api/fechahoy`;
+    let bandera = false
     try {
       const response = await fetch(url, {
         headers: {
@@ -146,14 +148,17 @@ class VentasIngresos extends Component {
       this.setState({
         Fecha: data[0].FechaHoy.substring(0, 10),
       });
+      bandera = true
     } catch (error) {
       console.log(error.message);
       alert(error.message);
     }
+    return bandera
   };
 
   getPeriodoAbierto = async () => {
     const url = this.props.url + `/periodoabierto`;
+    let bandera = false
     try {
       const response = await fetch(url, {
         headers: {
@@ -166,14 +171,17 @@ class VentasIngresos extends Component {
         PeriodoAbiertoPrimerDia: data.rows[0].PrimerDiaMes.substring(0,10),
         PeriodoAbiertoUltimoDia: data.rows[0].UltimoDiaMes.substring(0,10),
       });
+      bandera = true
     } catch (error) {
       console.log(error.message);
       alert(error.message);
     }
+    return bandera
   };
 
   getUnidadesDeNegocio = async () => {
     const naturalezaCC = this.props.naturalezaCC;
+    let bandera = false
     const url =
       this.props.url + `/ingresos/unidadesdenegociocatalogo/${naturalezaCC}`;
     try {
@@ -203,14 +211,17 @@ class VentasIngresos extends Component {
         unidadesDeNegocioCatalogo: catalogo, //Formé un catálogo para este Component
         UnidadDeNegocioId: catalogo[0].UnidadDeNegocioId, //Valor Inicial al cargar el Component
       });
+      bandera = true
     } catch (error) {
       console.log(error.message);
       alert(error.message);
     }
+    return bandera
   };
 
   getCuentasContables = async () => {
     const naturalezaCC = this.props.naturalezaCC;
+    let bandera = false
     const url =
       this.props.url + `/ingresos/cuentascontablescatalogo/${naturalezaCC}`;
     try {
@@ -242,14 +253,17 @@ class VentasIngresos extends Component {
         cuentasContablesCatalogo: catalogo,
         CuentaContableId: catalogo[0].CuentaContableId,
       });
+      bandera = true
     } catch (error) {
       console.log(error.message);
       alert(error.message);
     }
+    return bandera
   };
 
   getSubcuentasContables = async () => {
     const naturalezaCC = this.props.naturalezaCC;
+    let bandera = false
     const url =
       this.props.url + `/ingresos/subcuentascontablescatalogo/${naturalezaCC}`;
     try {
@@ -283,14 +297,17 @@ class VentasIngresos extends Component {
         subcuentasContablesCatalogo: catalogo,
         SubcuentaContableId: catalogo[0].SubcuentaContableId,
       });
+      bandera = true
     } catch (error) {
       console.log(error.message);
       alert(error.message);
     }
+    return bandera
   };
 
   getSucursales = async () => {
     const naturalezaCC = this.props.naturalezaCC;
+    let bandera = false
     const url = this.props.url + `/api/sucursales/${naturalezaCC}`;
     try {
       const response = await fetch(url, {
@@ -302,10 +319,12 @@ class VentasIngresos extends Component {
       this.setState({
         SucursalesCatalogo: data,
       });
+      bandera = true
     } catch (error) {
       console.log(error.message);
       alert(error.message);
     }
+    return bandera
   };
 
   handleDespliegaSucursales = (

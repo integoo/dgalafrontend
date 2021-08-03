@@ -18,6 +18,7 @@ class Egresos extends Component {
       egresosCadenaMes: [],
       TotalEgresosMes: 0,
       TotalEgresosDia: 0,
+      TotalEgresosGrupoUnidades: 0,
 
       sucursales: [],
       Sucursal: "",
@@ -58,12 +59,12 @@ class Egresos extends Component {
   }
 
   async componentDidMount() {
-    await this.fechaActual();
-    await this.getSucursales();
-    await this.getUnidadesNegocioCatalogo();
-    await this.getCuentasContablesCatalogo();
-    await this.getSubcuentasContablesCatalogo();
-    await this.getPeriodoAbierto();
+    if (await this.fechaActual() === false) return;
+    if (await this.getSucursales() === false) return;
+    if (await this.getUnidadesNegocioCatalogo() === false) return;
+    if (await this.getCuentasContablesCatalogo() === false) return;
+    if (await this.getSubcuentasContablesCatalogo() === false) return;
+    if (await this.getPeriodoAbierto() === false) return;
 
     const Fecha = this.state.Fecha;
     const Periodo = Fecha.substring(0, 4) + Fecha.substring(5, 7);
@@ -147,6 +148,7 @@ class Egresos extends Component {
 
   fechaActual = async () => {
     let Fecha;
+    let bandera = false
     const url = this.props.url + `/api/fechaactual`;
     try {
       const response = await fetch(url, {
@@ -164,10 +166,12 @@ class Egresos extends Component {
       this.setState({
         Fecha: Fecha,
       });
+      bandera = true
     } catch (error) {
       console.log(error.message);
       alert(error.message);
     }
+    return bandera
   };
 
   getPeriodoAbierto = async () => {
@@ -176,6 +180,7 @@ class Egresos extends Component {
     let PeriodoAbierto;
     let PeriodoAbiertoPrimerDia;
     let PeriodoAbiertoUltimoDia;
+    let bandera = false
     try {
       const response = await fetch(url, {
         headers: {
@@ -201,15 +206,18 @@ class Egresos extends Component {
         PeriodoAbiertoUltimoDia: PeriodoAbiertoUltimoDia,
         Fecha: Fecha,
       });
+      bandera = true
     } catch (error) {
       console.log(error.message);
       alert(error.message);
     }
+    return bandera
   };
 
   getSucursales = async () => {
     const naturalezaCC = this.props.naturalezaCC;
     const url = this.props.url + `/api/sucursales/${naturalezaCC}`;
+    let bandera = false
     try {
       const response = await fetch(url, {
         headers: {
@@ -226,14 +234,17 @@ class Egresos extends Component {
         SucursalId: data[0].SucursalId,
         Sucursal: data[0].Sucursal,
       });
+      bandera = true
     } catch (error) {
       console.log(error.message);
       alert(error.message);
     }
+    return bandera
   };
 
   getUnidadesNegocioCatalogo = async () => {
     const naturalezaCC = this.props.naturalezaCC;
+    let bandera = false
     const url =
       this.props.url + `/ingresos/unidadesdenegociocatalogo/${naturalezaCC}`;
     try {
@@ -252,14 +263,17 @@ class Egresos extends Component {
         UnidadDeNegocioId: data[0].UnidadDeNegocioId,
         UnidadDeNegocio: data[0].UnidadDeNegocio,
       });
+      bandera = true
     } catch (error) {
       console.log(error.message);
       alert(error.message);
     }
+    return bandera
   };
 
   getCuentasContablesCatalogo = async () => {
     const naturalezaCC = this.props.naturalezaCC;
+    let bandera = false
     const url =
       this.props.url + `/ingresos/cuentascontablescatalogo/${naturalezaCC}`;
     try {
@@ -278,14 +292,17 @@ class Egresos extends Component {
         CuentaContableId: data[0].CuentaContableId,
         CuentaContable: data[0].CuentaContable,
       });
+      bandera = true
     } catch (error) {
       console.log(error.message);
       alert(error.message);
     }
+    return bandera
   };
 
   getSubcuentasContablesCatalogo = async () => {
     const naturalezaCC = this.props.naturalezaCC;
+    let bandera = false
     const url =
       this.props.url + `/ingresos/subcuentascontablescatalogo/${naturalezaCC}`;
     try {
@@ -304,10 +321,12 @@ class Egresos extends Component {
         SubcuentaContableId: data[0].SubcuentaContableId,
         SubcuentaContable: data[0].SubcuentaContable,
       });
+      bandera = true
     } catch (error) {
       console.log(error.message);
       alert(error.message);
     }
+    return bandera
   };
 
   getEgresos = async (vfecha, accesoDB, SucursalId,UnidadDeNegocioId) => {
@@ -365,16 +384,33 @@ class Egresos extends Component {
         TotalEgresosMes += parseFloat(data[i].Monto);
       }
     }
+
+    let TotalEgresosGrupoUnidades = 0
+      for(let i = 0; i < data.length; i++){
+        if(UnidadDeNegocioId === 1 || UnidadDeNegocioId === 2 || UnidadDeNegocioId === 10 || UnidadDeNegocioId === 11){
+          if(data[i].UnidadDeNegocioId === 1 || data[i].UnidadDeNegocioId === 2 || data[i].UnidadDeNegocioId === 10 || data[i].UnidadDeNegocioId === 11){
+            TotalEgresosGrupoUnidades += parseFloat(data[i].Monto)
+          }
+        }else{
+          if(data[i].UnidadDeNegocioId !== 1 && data[i].UnidadDeNegocioId !== 2 && data[i].UnidadDeNegocioId !== 10 && data[i].UnidadDeNegocioId !== 11){
+            TotalEgresosGrupoUnidades += parseFloat(data[i].Monto)
+          }
+        }
+      }
+      
+
     if (accesoDB === "mes" || accesoDB === "dia") {
       this.setState({
         egresosCadenaMes: data,
         TotalEgresosDia: TotalEgresosDia,
         TotalEgresosMes: TotalEgresosMes,
+        TotalEgresosGrupoUnidades: TotalEgresosGrupoUnidades.toFixed(0),
       });
     } else {
       this.setState({
         TotalEgresosDia: TotalEgresosDia,
         TotalEgresosMes: TotalEgresosMes,
+        TotalEgresosGrupoUnidades: TotalEgresosGrupoUnidades.toFixed(0),
       });
     }
   };
@@ -558,7 +594,7 @@ class Egresos extends Component {
   };
 
   handleComentarios = (event) => {
-    let { value } = event.target;
+    let  value  = event.target.value.toUpperCase();
     this.setState({ comentarios: value });
   };
 
@@ -891,6 +927,13 @@ class Egresos extends Component {
                 <span className="badge badge-warning">
                   {this.state.PeriodoAbierto}
                 </span>
+                <span className="badge badge-secondary mr-1">
+                  Total Egresos MES:
+                </span>
+                <span className="badge badge-primary">
+                  {/* {this.numberWithCommas(this.state.egresosCadenaMes.reduce((suma, element) => {return suma + parseFloat(element.Monto)},0).toFixed(0))} */}
+                  {this.numberWithCommas(this.state.TotalEgresosGrupoUnidades)}
+                </span>
               </div>
               <br />
               <label htmlFor="fecha" style={styleLabel}>
@@ -1012,7 +1055,7 @@ class Egresos extends Component {
                 placeholder="Comentarios..."
                 onChange={this.handleComentarios}
                 value={this.state.comentarios}
-                style={{ marginLeft: "10px" }}
+                style={{ marginLeft: "10px", textTransform:"uppercase"}}
               ></textarea>
               <br />
               <div className="botones">

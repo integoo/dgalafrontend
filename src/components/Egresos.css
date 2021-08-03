@@ -33,6 +33,7 @@
   border:5px solid gray;
   height: 160px;
   border-radius: 10px;
+  overflow: scroll;
 }
 
  .seccionDespliegaIngresos {

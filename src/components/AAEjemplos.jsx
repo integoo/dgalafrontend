@@ -20,6 +20,10 @@ INSERT INTO colaboradores VALUES (0, 'desarrollo', 'desarrollo', '$2b$10$PEBBj5H
 
 ALTER TABLE cuotas_mes OWNER TO ubuntu;
 #####################################################################################
+For example, select a random number from between 5 and 105:
+
+SELECT floor(random() * (105 - 5 + 1)) + 5 AS random_no;
+#####################################################################################
 
 
 <div className="PrincipalModifica" style={{display: this.state.disabledBotonesModifica ? "block" : "none"}}>
@@ -188,3 +192,7 @@ class AAEjemplos extends React.Component{
 }
 
 export default AAEjemplos 
+//############################################################################################## 
+
+<div style={{ display: showInfo ? "block" : "none" }}>info</div>
+//############################################################################################## 

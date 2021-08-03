@@ -2,8 +2,15 @@
 call stpr_calcula_costodeventas ('2021/05/01','2021/05/31');
 
 
-
-
+0. Falta crear la Sucursal de Servicio a Domicilio con su Estructura Contable.
+00. Falta registrar los Egresos de Pagos de Melate de Enero a Julio 2021 (José Ángel)
+000. Falta registrar el cobro de las RENTAS de Julio 2021.
+1. 
+2
+3. 
+4. 
+5. En EGRESOS secciones DIA y MES sacar los subencabezados para que no se pierdan en el scroll
+6. En EGRESOS sección DIA la tabla se sale de la sección
 
 
 
