@@ -658,6 +658,7 @@ for(let i=0;i < dataFilter.length;i++){
   }
 
   handleModifica = (e) =>{
+    e.preventDefault()
     const posicion = parseInt(e.target.name)
     const SucursalesIngresos = this.state.SucursalesIngresos
     const Fecha = this.state.Fecha  
@@ -685,6 +686,7 @@ for(let i=0;i < dataFilter.length;i++){
   }
 
   handleGrabar = async (e) => {
+    e.preventDefault()
     const Fecha = this.state.Fecha 
     const PeriodoAbiertoPrimerDia = this.state.PeriodoAbiertoPrimerDia
     if(Fecha < PeriodoAbiertoPrimerDia){
@@ -748,7 +750,8 @@ for(let i=0;i < dataFilter.length;i++){
     }
   };
 
-  handleCancelar=()=>{
+  handleCancelar=(e)=>{
+    e.preventDefault()
     const TotalDia = this.state.TotalDia
     const Fecha = this.state.Fecha 
     const PeriodoAbiertoPrimerDia = this.state.PeriodoAbiertoPrimerDia
@@ -912,35 +915,37 @@ for(let i=0;i < dataFilter.length;i++){
             />
             <br />
 
-            <div style={{ textAlign: "right", marginRight: "15px" }}>
+            <div style={{ textAlign: "right", marginRight: "40px" }}>
               <label htmlFor="" style={{ marginBottom: "0px",fontSize:".7rem" }}>
                 Comentarios
               </label>
             </div>
-
+            <form>
             {this.state.SucursalesIngresos.map((element, i) => (
               <div key={1 + i} className="sucursalesDiv">
                 <label
                   htmlFor=""
                   key={100 + i}
                   style={{ width: "6.8rem", fontSize: ".8rem" }}
-                >
+                  >
                   {element.Sucursal}
                 </label>
                   <span key={200 + i}>
                     <input
+                      type="text"
+                      pattern="[0-9]*"
                       key={300 + i}
                       onChange={this.handleMonto}
                       value={this.numberWithCommas(
                         element.Monto
-                      )}
-                      id={100 + i}
-                      className="SucursalInputPrimera"
-                      name={element.SucursalId}
-                      style={{ width: "5rem", textAlign: "right" }}
-                      autoComplete="off"
-                      disabled={this.state.disabledFlag}
-                    />
+                        )}
+                        id={100 + i}
+                        className="SucursalInputPrimera"
+                        name={element.SucursalId}
+                        style={{ width: "5rem", textAlign: "right" }}
+                        autoComplete="off"
+                        disabled={this.state.disabledFlag}
+                        />
                     <input
                       key={400 + i}
                       onChange={this.handleComentarios}
@@ -950,7 +955,7 @@ for(let i=0;i < dataFilter.length;i++){
                       autoComplete="off"
                       style={{ width: "6rem", textTransform: "uppercase",marginRight:"1px" }}
                       disabled={this.state.disabledFlag}
-                    />
+                      />
                     <button key={800 + i} name={i} onClick={this.handleModifica} className="btn btn-warning btn-sm" disabled={this.state.disabledBotonesModifica} >*</button>
                   </span>
               </div>
@@ -966,11 +971,12 @@ for(let i=0;i < dataFilter.length;i++){
             </div>
 
             <div className="botonesPrincipal">
-              <button onClick={this.handleGrabar} className="btn btn-success" disabled={this.state.disabledBotonGrabar}>
+              <button  type="submit" onClick={this.handleGrabar} className="btn btn-success" disabled={this.state.disabledBotonGrabar}>
                 Grabar
               </button>
               <button onClick={this.handleCancelar} className="btn btn-danger ">Cancelar</button>
             </div>
+            </form>
           </div>
 
           <div className="PrincipalDia">
