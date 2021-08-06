@@ -2,6 +2,11 @@
 call stpr_calcula_costodeventas ('2021/05/01','2021/05/31');
 
 
+
+npm install react-number-format --save
+
+
+
 0. Falta crear la Sucursal de Servicio a Domicilio con su Estructura Contable.
 00. Falta registrar los Egresos de Pagos de Melate de Enero a Julio 2021 (José Ángel)
 000. Falta registrar el cobro de las RENTAS de Julio 2021.

@@ -10,6 +10,9 @@ b) Remota:
 2) ssh user@remote_machine "pg_dump -U dbuser -h localhost -C --column-inserts" \
  > backup_file_on_your_local_machine.sql
 
+ 3) Sacar una copia de la base de datos local:
+ CREATE DATABASE desarrollodb WITH TEMPLATE dgaladb;
+
 
 Recuperar la Base de Datos de Desarrollo 
 pg_restore -d desarrollodb dgaladb_$fecha.dump
@@ -78,6 +81,7 @@ select floor(random()*100000)+1000 as "FolioId"
 
 
 Descripcion = Descripcion.replace(/[^a-zA-Z0-9 &]/g,"")
+value = value.toString().replace(/["$" "," " " ]/g, "");
 
 //#### VALIDA QUE SEAN SOLO NUMEROS
 let numbers = /^[0-9]+$/;
@@ -96,7 +100,7 @@ numberWithCommas(x) {
 
   Descripcion = Descripcion.replace(/[^a-zA-Z0-9-  &]/g,"")    //Valida que solamente incluya de a-z de A-Z de 0-9, guiones y espacios
   CodigoBarras = CodigoBarras.replace(/[\\/.?]/g,"")    //Elimina los caracteres \ / . ? 
- 
+  value = value.toString().replace(/["$" "," " " ]/g, "");
  SELECT '"'||"column_name"||'",' FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'traspasos' ORDER BY "ordinal_position";
  //###############################################################
  arreglo = [1,2,3,4,5,6,7,8,9]
@@ -111,6 +115,7 @@ console.log(total)
  
  let Monto = e.target.value.replace(/[$ ,]/g,"")
     Monto = Monto.replace(/[^0-9 .]/g,"")
+    value = value.toString().replace(/["$" "," " " ]/g, "");
  //###############################################################
 
  ALTER TABLE registro_contable ALTER COLUMN "FechaHoraAlta" TYPE timestamptz;
@@ -196,3 +201,41 @@ export default AAEjemplos
 
 <div style={{ display: showInfo ? "block" : "none" }}>info</div>
 //############################################################################################## 
+https://www.npmjs.com/package/react-number-format
+npm install react-number-format --save
+Prefix and thousand separator : Format currency as text
+var NumberFormat = require('react-number-format');
+<NumberFormat value={2456981} allowNegative={false} displayType={'text'} thousandSeparator={true} prefix={'$'} />
+
+
+Format with pattern : Format credit card as text
+<NumberFormat value={4111111111111111} displayType={'text'} format="#### #### #### ####" />
+
+Prefix and thousand separator : Format currency in input
+<NumberFormat thousandSeparator={true} prefix={'$'} />
+
+Format with mask : Format credit card in an input
+<NumberFormat format="#### #### #### ####" mask="_"/>
+
+Format with mask as array
+Mask can also be a array of string. Each item corresponds to the same index #.
+
+<NumberFormat format="##/##" placeholder="MM/YY" mask={['M', 'M', 'Y', 'Y']}/>
+//#################################################################################################
+Ejemplo 1
+const arreglo = [{id="20",name="Ezequil"},{id="1",name="Francisco"},{id:"10",name:"Jose"}]
+
+ES6 version:
+const arregloOrdenado = arreglo.sort((a, b) => parseFloat(a.id) - parseFloat(b.id)); //Ordenamiento ASC
+const arregloOrdenado = arreglo.sort((a, b) => parseFloat(b.id) - parseFloat(a.id)); //Ordenamiento DESC
+
+const arregloOrdendado = arreglo.sort(function(a, b) {
+  return parseFloat(a.id) - parseFloat(b.id);
+});
+
+Ejemplo 2
+const fruits = ["Banana", "Orange", "Apple", "Mango"];
+fruits.sort();
+
+
+//#################################################################################################

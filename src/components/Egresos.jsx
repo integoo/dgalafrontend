@@ -2,6 +2,8 @@ import React, { Component } from "react";
 
 import "./Egresos.css";
 
+import NumberFormat from 'react-number-format'
+
 class Egresos extends Component {
   constructor(props) {
     super(props);
@@ -15,6 +17,7 @@ class Egresos extends Component {
       PeriodoAbiertoUltimoDia: "",
 
       Monto: "",
+      Comentarios: "",
       egresosCadenaMes: [],
       TotalEgresosMes: 0,
       TotalEgresosDia: 0,
@@ -35,10 +38,8 @@ class Egresos extends Component {
       CuentaContable: "",
       SubcuentaContableId: "",
       SubcuentaContable: "",
-      comentarios: "",
       disabledMonto: false,
       showSeccionEgresos: true,
-      disableBontonModifica: true,
 
       FechaModifica: "",
       SucursalIdModifica: "",
@@ -55,7 +56,6 @@ class Egresos extends Component {
 
     };
 
-    this.monto = React.createRef();
   }
 
   async componentDidMount() {
@@ -98,7 +98,6 @@ class Egresos extends Component {
       cuentascontables: dataCuentasContables,
       subcuentascontables: dataSubcuentasContables,
     });
-    this.monto.current.focus();
   }
 
   sincronizaUnidadesDeNegocio = (SucursalId) => {
@@ -332,13 +331,14 @@ class Egresos extends Component {
   getEgresos = async (vfecha, accesoDB, SucursalId,UnidadDeNegocioId) => {
     const naturalezaCC = this.props.naturalezaCC;
     let dataGetEgresosCadena = this.state.egresosCadenaMes;
+    const trans="Egresos"
 
     let data = [];
 
     if (accesoDB === "mes" || accesoDB === "dia") {
       const url =
         this.props.url +
-        `/ingresos/getIngresosEgresos/${vfecha}/${naturalezaCC}/${accesoDB}`;
+        `/ingresos/getIngresosEgresos/${vfecha}/${naturalezaCC}/${accesoDB}/${trans}`;
       try {
         const response = await fetch(url, {
           headers: {
@@ -398,7 +398,6 @@ class Egresos extends Component {
         }
       }
       
-
     if (accesoDB === "mes" || accesoDB === "dia") {
       this.setState({
         egresosCadenaMes: data,
@@ -494,7 +493,6 @@ class Egresos extends Component {
       CuentaContableId: CuentaContableId,
       SubcuentaContableId: SubcuentaContableId,
     });
-    this.monto.current.focus();
   };
 
   HandleUnidadesDeNegocio = (event) => {
@@ -533,7 +531,6 @@ class Egresos extends Component {
           CuentaContableId: CuentaContableId,
           SubcuentaContableId: SubcuentaContableId,
         });
-    this.monto.current.focus();
   };
 
   HandleCuentasContables = (event) => {
@@ -550,9 +547,6 @@ class Egresos extends Component {
         );
     
     const SubcuentaContableId = dataSubcuentasContables[0].SubcuentaContableId;
-    
-    // const accesoDB = 'NO'
-    // this.getEgresos(Fecha,accesoDB,SucursalId,UnidadDeNegocioId)
 
     this.setState({
           CuentaContableId: CuentaContableId,
@@ -560,7 +554,6 @@ class Egresos extends Component {
           subcuentascontables: dataSubcuentasContables,
           SubcuentaContableId: SubcuentaContableId,
         });
-    this.monto.current.focus();
   };
 
   HandleSubcuentasContables = (event) => {
@@ -568,34 +561,30 @@ class Egresos extends Component {
     const subcuentascontablescatalogo = this.state.subcuentascontablescatalogo
     const SubcuentaContable = subcuentascontablescatalogo.find(element => element.SubcuentaContableId === SubcuentaContableId).SubcuentaContable
 
-     // const accesoDB = 'NO'
-    // this.getEgresos(Fecha,accesoDB,SucursalId,UnidadDeNegocioId)
-
     this.setState({
       SubcuentaContableId: SubcuentaContableId,
       SubcuentaContable: SubcuentaContable,
     });
-    this.monto.current.focus();
   };
 
-  handleChange = (event) => {
-    // let { value, min, max, step } = event.target;
-    let { value } = event.target;
-    value = value.toString().replace(",", "");
+  // handleChange = (event) => {
+  //   // let { value, min, max, step } = event.target;
+  //   let { value } = event.target;
+  //   value = value.toString().replace(",", "");
 
-    if (value[0] === " ") {
-      return;
-    }
+  //   if (value[0] === " ") {
+  //     return;
+  //   }
 
-    let numbers = /^[0-9 .]+$/;
-    if (value.match(numbers) || value === "") {
-      this.setState({ Monto: value });
-    }
-  };
+  //   let numbers = /^[0-9 .]+$/;
+  //   if (value.match(numbers) || value === "") {
+  //     this.setState({ Monto: value });
+  //   }
+  // };
 
   handleComentarios = (event) => {
     let  value  = event.target.value.toUpperCase();
-    this.setState({ comentarios: value });
+    this.setState({ Comentarios: value });
   };
 
   handleValidaMovimiento = async (
@@ -674,7 +663,7 @@ class Egresos extends Component {
       SubcuentaContableId: SubcuentaContableId,
       Fecha: Fecha,
       Monto: this.state.Monto * parseInt(this.props.naturalezaCC),
-      Comentarios: this.state.comentarios,
+      Comentarios: this.state.Comentarios,
       Usuario: sessionStorage.getItem("user"),
     };
 
@@ -702,23 +691,18 @@ class Egresos extends Component {
       //####################################
       this.setState({
         Monto: "",
-        comentarios: "",
+        Comentarios: "",
       });
       alert(JSON.stringify(data));
-      this.monto.current.focus();
     } catch (error) {
       console.log(error.message);
       alert(error.message);
     }
   };
 
-  handleMontoModifica = (e) =>{
-    const MontoModifica = e.target.value 
-    if(MontoModifica > 0){
-      return
-    }
+  handleMontoModifica = (MontoModifica) =>{
     this.setState({
-      MontoModifica: MontoModifica,
+      MontoModifica: Math.abs(MontoModifica) * -1,
       disableBontonModifica: false,
     })
   }
@@ -727,17 +711,24 @@ class Egresos extends Component {
     const ComentariosModifica = e.target.value.toUpperCase() 
     this.setState({
       ComentariosModifica: ComentariosModifica,
-      disableBontonModifica: false,
     })
   }
 
   handleActualizarMontoComentarios = async(e) =>{
+    e.preventDefault()
     const Fecha = this.state.FechaModifica
     const SucursalIdModifica = this.state.SucursalIdModifica
     const UnidadDeNegocioIdModifica = this.state.UnidadDeNegocioIdModifica
     const FolioIdModifica = this.state.FolioIdModifica 
     const MontoModifica = this.state.MontoModifica
+    const Monto = this.state.Monto
     const ComentariosModifica = this.state.ComentariosModifica
+    const Comentarios = this.state.Comentarios
+
+
+    if(parseFloat(Monto) === parseFloat(Math.abs(MontoModifica)) && Comentarios === ComentariosModifica ){
+      return
+    }
 
     const url = this.props.url + `/api/actualizaingresosegresos`
 
@@ -784,6 +775,8 @@ class Egresos extends Component {
       FolioIdModifica: "",
       MontoModifica: "",
       ComentariosModifica: "",
+      Monto:"",
+      Comentarios: "",
     })
   }
 
@@ -802,7 +795,8 @@ class Egresos extends Component {
       FolioIdModifica: "",
       MontoModifica: "",
       ComentariosModifica: "",
-      disableBontonModifica: true,
+      Monto: "",
+      Comentarios: "",
     })
 
   }
@@ -839,8 +833,11 @@ class Egresos extends Component {
       SubcuentaContableModifica: SubcuentaContableModifica,
       FolioIdModifica: FolioIdModifica,
       MontoModifica: MontoModifica,
+      Monto: MontoModifica,
       ComentariosModifica: ComentariosModifica,
+      Comentarios: ComentariosModifica,
       disableBontonModifica: true,
+      
     })
   };
 
@@ -848,7 +845,6 @@ class Egresos extends Component {
     this.setState({
       Monto: "",
     });
-    this.monto.current.focus();
   };
 
   numberWithCommas = (x) => {
@@ -876,7 +872,6 @@ class Egresos extends Component {
     };
 
     const styleSelect = {
-      //display: "inlineBlock",
       width: "170px",
       maxWidth: "170px",
     };
@@ -909,7 +904,23 @@ class Egresos extends Component {
                 <input value={this.state.FolioIdModifica} readOnly/>
                 <br />
                 <label htmlFor="">Monto</label>
-                <input onChange={this.handleMontoModifica} value={this.state.MontoModifica} style={{textAlign:"right"}} />
+               
+                <NumberFormat 
+                  thousandSeparator={true}
+                  prefix={'$ '}
+                  onValueChange = {(values) =>{
+                    // const {formattedValue, value} = values
+                    const { value} = values
+                    let value2 = value
+                    if(value2 > 0){
+                      value2 = value
+                    }
+                    this.handleMontoModifica(value2)
+                  }}
+                  value={Math.abs(this.state.MontoModifica)} 
+                  style={{textAlign:"rigth"}} 
+                  
+                />
                 <br />
                 <label htmlFor="">Comentarios</label>
                 <input onChange={this.handleComentariosModifica} value={this.state.ComentariosModifica} style={{textTransform:"uppercase"}} />
@@ -931,7 +942,6 @@ class Egresos extends Component {
                   Total Egresos MES:
                 </span>
                 <span className="badge badge-primary">
-                  {/* {this.numberWithCommas(this.state.egresosCadenaMes.reduce((suma, element) => {return suma + parseFloat(element.Monto)},0).toFixed(0))} */}
                   {this.numberWithCommas(this.state.TotalEgresosGrupoUnidades)}
                 </span>
               </div>
@@ -1026,25 +1036,34 @@ class Egresos extends Component {
               <label htmlFor="monto" style={styleLabel}>
                 Monto Pesos
               </label>
-              <input
+
+              <NumberFormat
+                thousandSeparator={true}
+                prefix={'$ '}
+                allowNegative={false}
                 style={styleMonto}
-                //type="numeric"
-                step="0.01"
                 placeholder="Monto $$$"
-                onChange={this.handleChange}
-                onKeyPress={this.handleKeyPress}
-                value={this.numberWithCommas(this.state.Monto)}
+                onValueChange = {(values) =>{
+                  // const { formattedValue, value} = values 
+                  const { value} = values 
+                  this.setState({
+                    Monto: value,
+                  })
+                }}
+                value={this.state.Monto}
                 id="monto"
                 name="monto"
                 autoComplete="off"
-                min="0.01"
+                min="0.00"
                 max="99999"
                 size="12"
-                maxLength="9"
-                required
-                ref={this.monto}
+                maxLength="11"
                 disabled={this.state.disabledMonto}
+                autoFocus
+                required
               />
+
+
               <br />
               <textarea
                 id="comentariosTextarea"
@@ -1054,7 +1073,7 @@ class Egresos extends Component {
                 maxLength="75"
                 placeholder="Comentarios..."
                 onChange={this.handleComentarios}
-                value={this.state.comentarios}
+                value={this.state.Comentarios}
                 style={{ marginLeft: "10px", textTransform:"uppercase"}}
               ></textarea>
               <br />
@@ -1191,7 +1210,6 @@ class Egresos extends Component {
                 <thead>
                   <tr>
                     <th>Folio</th>
-                    {/* <th>Unidad de Negocio</th> */}
                     <th>Cuenta Contable</th>
                     <th>Subcuenta Contable</th>
                     <th>Fecha</th>
@@ -1206,11 +1224,10 @@ class Egresos extends Component {
                         parseInt(e.SucursalId) === this.state.SucursalId &&
                         parseInt(e.UnidadDeNegocioId) ===
                           this.state.UnidadDeNegocioId
-                    )
+                    ).sort((a,b) => parseInt(b.FolioId) -  parseInt(a.FolioId)) //Ordenamiento DESC
                     .map((element, i) => (
                       <tr key={i}>
                         <td>{element.FolioId}</td>
-                        {/* <td>{element.UnidadDeNegocioNombre}</td> */}
                         <td>{element.CuentaContable}</td>
                         <td>{element.SubcuentaContable}</td>
                         <td>{element.Fecha.substr(0, 10)}</td>
