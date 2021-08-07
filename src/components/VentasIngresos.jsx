@@ -557,6 +557,11 @@ class VentasIngresos extends Component {
     } else {
       newDisabledFlag = true;
     }
+
+    if(Fecha >= PeriodoAbiertoPrimerDia && TotalDia > 0){
+      disabledBotonesModifica = false
+    }
+
     if (accesoDB === "mes" || accesoDB === "dia") {
 
       this.setState(
@@ -699,16 +704,21 @@ class VentasIngresos extends Component {
     if (Fecha < PeriodoAbiertoPrimerDia) {
       disabledBandera = true;
     }
-    this.setState({
-      disabledVentaModifica: false,
-      disabledBotonActualiza: disabledBandera,
-      SucursalId: SucursalesIngresos[posicion].SucursalId,
-      Sucursal: SucursalesIngresos[posicion].Sucursal,
-      FolioId: SucursalesIngresos[posicion].FolioId,
-      Monto: SucursalesIngresos[posicion].Monto,
-      Comentarios: SucursalesIngresos[posicion].Comentarios,
-      Posicion: posicion,
-    });
+
+    if (SucursalesIngresos[posicion].FolioId > 0){
+      this.setState({
+        disabledVentaModifica: false,
+        disabledBotonActualiza: disabledBandera,
+        SucursalId: SucursalesIngresos[posicion].SucursalId,
+        Sucursal: SucursalesIngresos[posicion].Sucursal,
+        FolioId: SucursalesIngresos[posicion].FolioId,
+        Monto: SucursalesIngresos[posicion].Monto,
+        Comentarios: SucursalesIngresos[posicion].Comentarios,
+        Posicion: posicion,
+      });
+    }else{
+      alert("Este Registro no tiene Folio Asignado")
+    }
   };
 
   numberWithCommas(x) {

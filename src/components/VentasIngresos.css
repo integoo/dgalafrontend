@@ -6,7 +6,8 @@
 
 .Principal{
     margin: 10px 0 10px 0;
-    height: 310px;
+    /* height: 310px; */
+    height: 350px;
     padding: 10px;
     border: 5px solid green;
     border-radius: 10px;
@@ -21,8 +22,8 @@
 .PrincipalDia{
     margin-top: 0;
     padding: 0;
-    /* height: 210px; */
-    height: 190px;
+    /* height: 190px; */
+    height: 200px;
     border: 5px solid green;
     border-radius: 10px;
     /* overflow: scroll; */
