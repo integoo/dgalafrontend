@@ -6,9 +6,6 @@ call stpr_calcula_costodeventas ('2021/05/01','2021/05/31');
 1. Poner height: 100 vh en VentasIngresos y Egresos (Probar en laptop y Mobile)
 
 
-
-00. Falta registrar los Egresos de Pagos de Melate de Enero a Julio 2021 (José Ángel)
-000. Falta registrar el cobro de las RENTAS de Julio 2021.
 1. 
 2
 3. 

@@ -10,6 +10,20 @@ class VentasConsultaSucursalesHoy extends React.Component{
             GranTotalVentaProyectada:0,
             CuotaTotal:0,
             LogroTotal:0,
+
+            VentasTendenciaLimpiaduria: [],
+            GranTotalVentaProyectadaLimpiaduria: 0,
+            CuotaTotalLimpiaduria: 0,
+            LogroTotalLimpiaduria: 0,
+            FechaMaximaLimpiaduria:"",
+            
+            VentasTendenciaMelate: [],
+            GranTotalVentaProyectadaMelate: 0,
+            CuotaTotalMelate: 0,
+            LogroTotalMelate: 0,
+            FechaMaximaMelate:"",
+
+
             Periodos: [],
             PeriodoActual:"",
             Periodo: "",
@@ -51,6 +65,8 @@ class VentasConsultaSucursalesHoy extends React.Component{
 
         await this.handleConsultaPeriodos()
         await this.handleVentasMesYTendencia(this.state.checkboxvalue)
+        await this.handleVentasMesYTendenciaLimpiaduria()
+        await this.handleVentasMesYTendenciaMelate()
     }
 
     handleConsultaPeriodos = async() =>{
@@ -106,7 +122,7 @@ class VentasConsultaSucursalesHoy extends React.Component{
             FechaFinal=this.state.UltimoDiaMes
         }
 
-        const url = this.props.url + `/api/ventassucursalesperiodo/${FechaInicial}/${FechaFinal}/${DiasMes}`
+        const url = this.props.url + `/api/ventassucursalesperiodolavamatica/${FechaInicial}/${FechaFinal}/${DiasMes}`
         try{
             const response = await fetch(url,{
                 headers:{
@@ -141,6 +157,140 @@ class VentasConsultaSucursalesHoy extends React.Component{
             alert(error.message)
         }
     }
+
+    handleVentasMesYTendenciaLimpiaduria = async ()=>{
+        const UnidadDeNegocioId = 1 //Limpiaduria
+              //SI EL PERIODO ES EL ACTUAL
+              const FechaInicial = this.state.PrimerDiaMes 
+              let FechaFinal = this.state.Ayer
+              const Hoy = this.state.Hoy
+              const PeriodoActual = this.state.PeriodoActual
+              const Periodo = this.state.Periodo
+              const d = new Date(this.state.UltimoDiaMes)
+              const DiasMes = parseInt(d.getDate())  //Dias que tiene el mes
+              //SI es periodo actual y se quiere consultar la tendencia incluyendo el día de hoy
+              //if (incluyeHoy === true && PeriodoActual === Periodo ){
+              //    FechaFinal = Hoy
+              //}
+      
+      
+              // Si hoy es primero de mes
+              if (FechaInicial === Hoy){
+                  FechaFinal = Hoy
+              }
+              
+              // Si se quiere consultar un periodo anterior
+              if(PeriodoActual !== Periodo){
+                  FechaFinal=this.state.UltimoDiaMes
+              }
+
+        const url = this.props.url + `/api/ventassucursalesperiodounidaddenegocio/${FechaInicial}/${FechaFinal}/${DiasMes}/${UnidadDeNegocioId}`
+        try{
+            const response = await fetch(url,{
+                headers:{
+                    Authorization: `Bearer ${this.props.accessToken}`
+                }
+            })
+            const data = await response.json()
+            if(data.error){
+                console.log(data.error)
+                alert(data.error)
+                return
+            }
+            let GranTotalVentaProyectada = 0
+            let CuotaTotal = 0 
+            let LogroTotal = 0
+            data.forEach((element) =>{
+                GranTotalVentaProyectada += parseFloat(element.VentaProyectada)
+                CuotaTotal += parseFloat(element.Cuota)
+            })
+            if(CuotaTotal === 0){
+                LogroTotal = 0 
+              }else{
+                LogroTotal = GranTotalVentaProyectada /CuotaTotal * 100 
+            }
+
+            this.setState({
+                VentasTendenciaLimpiaduria: data,
+                GranTotalVentaProyectadaLimpiaduria: GranTotalVentaProyectada,
+                CuotaTotalLimpiaduria: CuotaTotal,
+                LogroTotalLimpiaduria: LogroTotal,
+                FechaMaximaLimpiaduria: data[0].FechaMaxima,
+
+            })
+
+        }catch(error){
+            console.log(error.message)
+            alert(error.message)
+        }
+    }
+
+    handleVentasMesYTendenciaMelate = async ()=>{
+        const UnidadDeNegocioId = 2 //Melate
+
+        //SI EL PERIODO ES EL ACTUAL
+        const FechaInicial = this.state.PrimerDiaMes 
+        let FechaFinal = this.state.Ayer
+        const Hoy = this.state.Hoy
+        const PeriodoActual = this.state.PeriodoActual
+        const Periodo = this.state.Periodo
+        const d = new Date(this.state.UltimoDiaMes)
+        const DiasMes = parseInt(d.getDate())  //Dias que tiene el mes
+        //SI es periodo actual y se quiere consultar la tendencia incluyendo el día de hoy
+        //if (incluyeHoy === true && PeriodoActual === Periodo ){
+        //    FechaFinal = Hoy
+        //}
+
+
+        // Si hoy es primero de mes
+        if (FechaInicial === Hoy){
+            FechaFinal = Hoy
+        }
+        
+        // Si se quiere consultar un periodo anterior
+        if(PeriodoActual !== Periodo){
+            FechaFinal=this.state.UltimoDiaMes
+        }
+
+  const url = this.props.url + `/api/ventassucursalesperiodounidaddenegocio/${FechaInicial}/${FechaFinal}/${DiasMes}/${UnidadDeNegocioId}`
+  try{
+      const response = await fetch(url,{
+          headers:{
+              Authorization: `Bearer ${this.props.accessToken}`
+          }
+      })
+      const data = await response.json()
+      if(data.error){
+          console.log(data.error)
+          alert(data.error)
+          return
+      }
+      let GranTotalVentaProyectada = 0
+      let CuotaTotal = 0 
+      let LogroTotal = 0
+      data.forEach((element) =>{
+          GranTotalVentaProyectada += parseFloat(element.VentaProyectada)
+          CuotaTotal += parseFloat(element.Cuota)
+      })
+      if(CuotaTotal === 0){
+          LogroTotal = 0 
+        }else{
+          LogroTotal = GranTotalVentaProyectada /CuotaTotal * 100 
+      }
+
+      this.setState({
+          VentasTendenciaMelate: data,
+          GranTotalVentaProyectadaMelate: GranTotalVentaProyectada,
+          CuotaTotalMelate: CuotaTotal,
+          LogroTotalMelate: LogroTotal,
+          FechaMaximaMelate: data[0].FechaMaxima,
+      })
+
+  }catch(error){
+      console.log(error.message)
+      alert(error.message)
+  }
+}
 
     handlePeriodo =(e)=>{
         const Periodo = e.target.value
@@ -178,10 +328,10 @@ class VentasConsultaSucursalesHoy extends React.Component{
     handleRender = () =>{
         return(
             <div className="row">
-                <div className="col-md-5">
+                <div className="col-md-4">
                     <div className="card">
                         <div className="card-header">
-                            <span className="badge badge-primary">Consulta Ventas De HOY Por Sucursal</span>
+                            <span className="badge badge-primary">Lavamática/Tienda Venta HOY</span>
                             <table style={{marginBottom:"10px"}}>
                                 <thead>
                                     <tr>
@@ -203,7 +353,7 @@ class VentasConsultaSucursalesHoy extends React.Component{
                                 <input value={"$ "+this.numberWithCommas(this.state.GranTotalVenta.toFixed(2))} id="grantotalventa" name="grantotalventa" style={{width:"7rem", textAlign:"right"}} readOnly />
                             </div>
                             <hr />
-                            <span className="badge badge-primary mb-2">Consulta Ventas y Tendencia del Mes por Sucursal</span>
+                            <span className="badge badge-primary mb-2"> Lavamática/Tienda Venta y Tendencia Mes</span>
                             <div>
                             <label htmlFor="" style={{width:"3rem",fontSize:".8rem"}}>Periodo</label>
                             <select onChange={this.handlePeriodo} value={this.state.Periodo}>
@@ -248,6 +398,119 @@ class VentasConsultaSucursalesHoy extends React.Component{
                                 <label htmlFor="" style={{width:"12rem"}}><strong>Logro %</strong></label>
                                 <input value={"% "+this.numberWithCommas(this.state.LogroTotal.toFixed(2))} id="grantotalventaproyectada" name="grantotalventaproyectada" style={{width:"7rem", textAlign:"right"}} readOnly />
                             </div>
+                        </div>
+                    </div>
+                </div>
+                <div className="col-md-4">
+                    <div className="card">
+                        <div className="card-header">
+
+
+
+                            <span className="badge badge-primary">Limpiaduría Venta y Tendencia Mes</span>
+                            <table style={{marginBottom:"10px"}}>
+                                <thead>
+                                    <tr>
+                                        <th>Sucursal</th>
+                                        <th>Venta</th>
+                                        <th>Venta Proyectada</th>
+                                        <th>Cuota Mes</th>
+                                        <th>Diferencia $</th>
+                                        <th>Logro %</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                        {this.state.VentasTendenciaLimpiaduria.map((element,i) =>(
+                                            <tr key={i}>
+                                                <td>{element.Sucursal}</td>
+                                                <td style={{textAlign:"right"}}>{this.numberWithCommas(parseInt(element.Venta))}</td>
+                                                <td style={{textAlign:"right"}}>{this.numberWithCommas(parseInt(element.VentaProyectada))}</td>
+                                                <td style={{textAlign:"right"}}>{this.numberWithCommas(parseInt(element.Cuota))}</td>
+                                                <td style={{textAlign:"right"}}>{this.numberWithCommas(parseInt(element.DiferenciaDinero))}</td>
+                                                <td style={{textAlign:"right"}}>{element.DiferenciaPorcentaje}</td>
+                                            </tr>
+                                        ))}
+                                </tbody>
+                            </table>
+                            <div className="totalventaproyectada text-right" >
+                                <label htmlFor="" style={{width:"12rem"}}><strong>Total Cuota</strong></label>
+                                <input value={"$ "+this.numberWithCommas(this.state.CuotaTotalLimpiaduria.toFixed(2))} id="grantotalventaproyectada" name="grantotalventaproyectada" style={{width:"7rem", textAlign:"right"}} readOnly />
+                                <label htmlFor="" style={{width:"12rem"}}><strong>Total Venta</strong></label>
+                                <input value={"$ "+this.numberWithCommas(this.state.GranTotalVentaProyectadaLimpiaduria.toFixed(2))} id="grantotalventaproyectada" name="grantotalventaproyectada" style={{width:"7rem", textAlign:"right"}} readOnly />
+                                <label htmlFor="" style={{width:"12rem"}}><strong>Logro %</strong></label>
+                                <input value={"% "+this.numberWithCommas(this.state.LogroTotalLimpiaduria.toFixed(2))} id="grantotalventaproyectada" name="grantotalventaproyectada" style={{width:"7rem", textAlign:"right"}} readOnly />
+                                {this.state.Ayer === this.state.FechaMaximaLimpiaduria 
+                                ?
+                                <p style={{fontSize:".5rem" }}>Ultima Actualizacion : {this.state.FechaMaximaLimpiaduria.substr(0,10)}</p>
+                                :
+                                <p style={{fontSize:".5rem",color:"red" }}>Ultima Actualizacion : {this.state.FechaMaximaLimpiaduria.substr(0,10)}</p>
+                                }
+                            </div>
+
+
+
+
+
+                        </div>
+                    </div>
+                </div>
+                <div className="col-md-4">
+                    <div className="card">
+                        <div className="card-header">
+                            
+
+
+
+
+                        <span className="badge badge-primary">Melate Venta y Tendencia Mes</span>
+                            <table style={{marginBottom:"10px"}}>
+                                <thead>
+                                    <tr>
+                                        <th>Sucursal</th>
+                                        <th>Venta</th>
+                                        <th>Venta Proyectada</th>
+                                        <th>Cuota Mes</th>
+                                        <th>Diferencia $</th>
+                                        <th>Logro %</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                        {this.state.VentasTendenciaMelate.map((element,i) =>(
+                                            <tr key={i}>
+                                                <td>{element.Sucursal}</td>
+                                                <td style={{textAlign:"right"}}>{this.numberWithCommas(parseInt(element.Venta))}</td>
+                                                <td style={{textAlign:"right"}}>{this.numberWithCommas(parseInt(element.VentaProyectada))}</td>
+                                                <td style={{textAlign:"right"}}>{this.numberWithCommas(parseInt(element.Cuota))}</td>
+                                                <td style={{textAlign:"right"}}>{this.numberWithCommas(parseInt(element.DiferenciaDinero))}</td>
+                                                <td style={{textAlign:"right"}}>{element.DiferenciaPorcentaje}</td>
+                                            </tr>
+                                        ))}
+                                </tbody>
+                            </table>
+                            <div className="totalventaproyectada text-right" >
+                                <label htmlFor="" style={{width:"12rem"}}><strong>Total Cuota</strong></label>
+                                <input value={"$ "+this.numberWithCommas(this.state.CuotaTotalMelate.toFixed(2))} id="grantotalventaproyectada" name="grantotalventaproyectada" style={{width:"7rem", textAlign:"right"}} readOnly />
+                                <label htmlFor="" style={{width:"12rem"}}><strong>Total Venta</strong></label>
+                                <input value={"$ "+this.numberWithCommas(this.state.GranTotalVentaProyectadaMelate.toFixed(2))} id="grantotalventaproyectada" name="grantotalventaproyectada" style={{width:"7rem", textAlign:"right"}} readOnly />
+                                <label htmlFor="" style={{width:"12rem"}}><strong>Logro %</strong></label>
+                                <input value={"% "+this.numberWithCommas(this.state.LogroTotalMelate.toFixed(2))} id="grantotalventaproyectada" name="grantotalventaproyectada" style={{width:"7rem", textAlign:"right"}} readOnly />
+                                {this.state.Ayer === this.state.FechaMaximaMelate 
+                                ?
+                                <p style={{fontSize:".5rem" }}>Ultima Actualizacion : {this.state.FechaMaximaMelate.substr(0,10)}</p>
+                                :
+                                <p style={{fontSize:".5rem",color:"red" }}>Ultima Actualizacion : {this.state.FechaMaximaMelate.substr(0,10)}</p>
+                                }
+
+                            </div>
+
+
+
+
+
+
+
+
+
                         </div>
                     </div>
                 </div>
