@@ -511,7 +511,7 @@ class PuntoDeVenta extends React.Component {
       XTimesVentanaDisplay: false,
       CodigoBarras: "",
       Descripcion: "",
-      UnidadesXTimes: 1,
+      Unidades: 1,
       botonXColor: "secondary"
     },()=> this.CodigoBarrasInput.current.focus());
 
@@ -1270,6 +1270,7 @@ class PuntoDeVenta extends React.Component {
               <input value={this.state.CodigoBarras} readOnly />
               <br />
               <label htmlFor="">Descripcion</label>
+              <br />
               <input
                 value={this.state.Descripcion}
                 style={{ width: "21rem" }}
