@@ -239,3 +239,13 @@ fruits.sort();
 
 
 //#################################################################################################
+class Input extends React.Component {
+  handleFocus = (event) => event.target.select();
+  
+  render() {
+    return (
+      <input type="text" value="Some something" onFocus={this.handleFocus} />
+      );
+    }
+  }
+  //#################################################################################################

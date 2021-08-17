@@ -32,8 +32,10 @@ class InputFecha extends React.Component{
 
     handleRender=()=>{
         return(
-            <React.Fragment className="mainInputFecha">
-                <input onChange={this.handleFecha} type="date" id="fecha" name="fecha" value={this.state.Fecha} />
+            <React.Fragment>
+                <div className="mainInputFecha">
+                    <input onChange={this.handleFecha} type="date" id="fecha" name="fecha" value={this.state.Fecha} />
+                </div>
             </React.Fragment>
         )
     }

@@ -350,7 +350,7 @@ class Menu extends Component {
           <Route path="/puntodeventa/puntodeventa" component={() => <PuntoDeVenta accessToken={this.state.accessToken} url={this.state.url} Administrador={this.props.Administrador} />} />
           <Route path="/puntodeventa/retirosdecaja" component={() => <RetirosDeCaja accessToken={this.state.accessToken} url={this.state.url} Administrador={this.props.Administrador} />} />
           <Route path="/ventas/ventasconsultasucursaleshoy" component={() => <VentasConsultaSucursalesHoy accessToken={this.state.accessToken} url={this.state.url} Administrador={this.props.Administrador} />} />
-          <Route path='/ventas/consultaventascategorias' component={() => <VentasConsultaCategorias accessToken={this.state.accessToken} url={this.state.url} Administrador={this.props.Administrador} />} />
+          <Route path="/ventas/consultaventascategorias" component={() => <VentasConsultaCategorias accessToken={this.state.accessToken} url={this.state.url} Administrador={this.props.Administrador} />} />
           <Route path='/ventas/consulta' component={() => <VentasConsulta accessToken={this.state.accessToken} url={this.state.url} Administrador={this.props.Administrador}/>} />
           <Route path='/ventas/consultafechaproductos' component={() => <VentasConsultaFechaProducto accessToken={this.state.accessToken} url={this.state.url} Administrador={this.props.Administrador}/>} />
           <Route path="/inventario/consultaarticulo" component={() => <ConsultaArticulo accessToken={this.state.accessToken} url={this.state.url} Administrador={this.props.Administrador} />} />

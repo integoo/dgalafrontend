@@ -149,15 +149,13 @@ class VentasConsultaCategorias extends React.Component{
                                 </tr>
                             </thead>
                             <tbody>
-                                {this.state.ventasCategorias.length > 0 ?
-                                    this.state.ventasCategorias.map((element,i) =>(
+                                    {this.state.ventasCategorias.map((element,i) =>(
                                         <tr key={i}>
                                             <td>{element.Categoria}</td>
                                             <td style={{textAlign: "right"}}>{this.numberWithCommas(element.ExtVenta)}</td>
                                         </tr>
                                     )
-                                    )
-                                : null}
+                                    )}
                             </tbody>
                         </table>
                         <hr />
@@ -168,17 +166,14 @@ class VentasConsultaCategorias extends React.Component{
                     </div>
                 </div>
                 )
-
         
     }
     
     render(){
         return(
-            <React.Fragment>
                 <div className="container">
-                    {this.state.Administrador !== ''? <this.handleRender />: <h3>Loading . . .</h3>} 
+                    {this.state.Administrador !== '' ? <this.handleRender /> : <h3>Loading . . .</h3>} 
                 </div>
-            </React.Fragment>
         )
     }
 

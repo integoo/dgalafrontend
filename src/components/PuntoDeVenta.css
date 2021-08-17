@@ -29,7 +29,6 @@
  .notas > div > button{
      width: 4rem;
      height: 3rem;
-     /* border: 5px solid red; */
      margin: 3px;
      background-color: rgb(37, 220, 20);
      border-radius: 10px;
@@ -52,14 +51,14 @@
     width:8.8rem;
     margin-top: 5px;
     position: absolute;
-    top: 50px;
-    right: 10px;
+    top: 45px;
+    right: 12px;
 }
 
  #btn-cancelarventa {
     position: absolute;
-    top: 60px;
-    right: 10px;
+    top: 55px;
+    left: 17px;
  }
 
  label{
@@ -98,6 +97,16 @@
      z-index: 1;
  }
 
+ .XTimesVentana{
+    height: 300px;
+    border: 10px solid gray;
+    border-radius: 10px;
+    border: 5px solid orangered;
+    border-radius: 10px;
+    background-color: lightblue;
+    z-index: 1;
+}
+
  #table1 tr {
     font-size:1.2rem;
 }
@@ -110,11 +119,9 @@
     border:3px solid grey;
 }
 
-    @media only screen and (max-width: 387px) {
-        #sucursales, #clientes {
-            width: 9.7rem;
-            font-size: small;
-        }
-
-       
+@media only screen and (max-width: 387px) {
+    #sucursales, #clientes {
+        width: 9.0rem;
+        font-size:x-small;
     }
+}

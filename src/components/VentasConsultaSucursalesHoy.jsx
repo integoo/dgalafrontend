@@ -392,11 +392,11 @@ class VentasConsultaSucursalesHoy extends React.Component{
                             </table>
                             <div className="totalventaproyectada text-right" >
                                 <label htmlFor="" style={{width:"12rem"}}><strong>Total Cuota</strong></label>
-                                <input value={"$ "+this.numberWithCommas(this.state.CuotaTotal.toFixed(2))} id="grantotalventaproyectada" name="grantotalventaproyectada" style={{width:"7rem", textAlign:"right"}} readOnly />
+                                <input value={"$ "+this.numberWithCommas(this.state.CuotaTotal.toFixed(2))} id="grantotalventaproyectada1" name="grantotalventaproyectada1" style={{width:"7rem", textAlign:"right"}} readOnly />
                                 <label htmlFor="" style={{width:"12rem"}}><strong>Total Venta</strong></label>
-                                <input value={"$ "+this.numberWithCommas(this.state.GranTotalVentaProyectada.toFixed(2))} id="grantotalventaproyectada" name="grantotalventaproyectada" style={{width:"7rem", textAlign:"right"}} readOnly />
+                                <input value={"$ "+this.numberWithCommas(this.state.GranTotalVentaProyectada.toFixed(2))} id="grantotalventaproyectada2" name="grantotalventaproyectada2" style={{width:"7rem", textAlign:"right"}} readOnly />
                                 <label htmlFor="" style={{width:"12rem"}}><strong>Logro %</strong></label>
-                                <input value={"% "+this.numberWithCommas(this.state.LogroTotal.toFixed(2))} id="grantotalventaproyectada" name="grantotalventaproyectada" style={{width:"7rem", textAlign:"right"}} readOnly />
+                                <input value={"% "+this.numberWithCommas(this.state.LogroTotal.toFixed(2))} id="grantotalventaproyectada3" name="grantotalventaproyectada3" style={{width:"7rem", textAlign:"right"}} readOnly />
                             </div>
                         </div>
                     </div>
@@ -434,11 +434,11 @@ class VentasConsultaSucursalesHoy extends React.Component{
                             </table>
                             <div className="totalventaproyectada text-right" >
                                 <label htmlFor="" style={{width:"12rem"}}><strong>Total Cuota</strong></label>
-                                <input value={"$ "+this.numberWithCommas(this.state.CuotaTotalLimpiaduria.toFixed(2))} id="grantotalventaproyectada" name="grantotalventaproyectada" style={{width:"7rem", textAlign:"right"}} readOnly />
+                                <input value={"$ "+this.numberWithCommas(this.state.CuotaTotalLimpiaduria.toFixed(2))} id="grantotalventaproyectada4" name="grantotalventaproyectada4" style={{width:"7rem", textAlign:"right"}} readOnly />
                                 <label htmlFor="" style={{width:"12rem"}}><strong>Total Venta</strong></label>
-                                <input value={"$ "+this.numberWithCommas(this.state.GranTotalVentaProyectadaLimpiaduria.toFixed(2))} id="grantotalventaproyectada" name="grantotalventaproyectada" style={{width:"7rem", textAlign:"right"}} readOnly />
+                                <input value={"$ "+this.numberWithCommas(this.state.GranTotalVentaProyectadaLimpiaduria.toFixed(2))} id="grantotalventaproyectada5" name="grantotalventaproyectada5" style={{width:"7rem", textAlign:"right"}} readOnly />
                                 <label htmlFor="" style={{width:"12rem"}}><strong>Logro %</strong></label>
-                                <input value={"% "+this.numberWithCommas(this.state.LogroTotalLimpiaduria.toFixed(2))} id="grantotalventaproyectada" name="grantotalventaproyectada" style={{width:"7rem", textAlign:"right"}} readOnly />
+                                <input value={"% "+this.numberWithCommas(this.state.LogroTotalLimpiaduria.toFixed(2))} id="grantotalventaproyectada6" name="grantotalventaproyectada6" style={{width:"7rem", textAlign:"right"}} readOnly />
                                 {this.state.Ayer === this.state.FechaMaximaLimpiaduria 
                                 ?
                                 <p style={{fontSize:".5rem" }}>Ultima Actualizacion : {this.state.FechaMaximaLimpiaduria.substr(0,10)}</p>
@@ -489,11 +489,11 @@ class VentasConsultaSucursalesHoy extends React.Component{
                             </table>
                             <div className="totalventaproyectada text-right" >
                                 <label htmlFor="" style={{width:"12rem"}}><strong>Total Cuota</strong></label>
-                                <input value={"$ "+this.numberWithCommas(this.state.CuotaTotalMelate.toFixed(2))} id="grantotalventaproyectada" name="grantotalventaproyectada" style={{width:"7rem", textAlign:"right"}} readOnly />
+                                <input value={"$ "+this.numberWithCommas(this.state.CuotaTotalMelate.toFixed(2))} id="CuotaTotalMelate" name="CuotaTotalMelate" style={{width:"7rem", textAlign:"right"}} readOnly />
                                 <label htmlFor="" style={{width:"12rem"}}><strong>Total Venta</strong></label>
-                                <input value={"$ "+this.numberWithCommas(this.state.GranTotalVentaProyectadaMelate.toFixed(2))} id="grantotalventaproyectada" name="grantotalventaproyectada" style={{width:"7rem", textAlign:"right"}} readOnly />
+                                <input value={"$ "+this.numberWithCommas(this.state.GranTotalVentaProyectadaMelate.toFixed(2))} id="GranTotalVentaProyectadaMelate" name="GranTotalVentaProyectadaMelate" style={{width:"7rem", textAlign:"right"}} readOnly />
                                 <label htmlFor="" style={{width:"12rem"}}><strong>Logro %</strong></label>
-                                <input value={"% "+this.numberWithCommas(this.state.LogroTotalMelate.toFixed(2))} id="grantotalventaproyectada" name="grantotalventaproyectada" style={{width:"7rem", textAlign:"right"}} readOnly />
+                                <input value={"% "+this.numberWithCommas(this.state.LogroTotalMelate.toFixed(2))} id="LogroTotalMelate" name="LogroTotalMelate" style={{width:"7rem", textAlign:"right"}} readOnly />
                                 {this.state.Ayer === this.state.FechaMaximaMelate 
                                 ?
                                 <p style={{fontSize:".5rem" }}>Ultima Actualizacion : {this.state.FechaMaximaMelate.substr(0,10)}</p>

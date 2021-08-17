@@ -9,7 +9,10 @@ class PuntoDeVenta extends React.Component {
       sucursales: [],
       SucursalId: "",
       detalles: [],
+      arreglo: [],
       CodigoBarras: "",
+      Descripcion: "",
+      Unidades: 1,
       UnidadesDisponibles: "",
       Inventariable: "",
       totalTicket: 0.0,
@@ -20,14 +23,18 @@ class PuntoDeVenta extends React.Component {
       FolioId: 0,
       clientes: [],
       ClienteId: 0,
+      ventanaproductosdisabled: true,
+      botonXColor: "secondary",
+      XTimesVentanaDisplay: false,
       porcentajePorServicio: 70, //ESTE ES EL PORCENTAJE PARA COBRAR EL SERVICIO POR ENCARGO
     };
     this.CodigoBarrasInput = React.createRef();
     this.ventanadescripcionInput = React.createRef();
+    this.InputUnidadesXRef = React.createRef();
   }
 
   async componentDidMount() {
-    const arregloSucursales = await this.getSucursales();
+    const arregloSucursales = await this.getSucursales(); //Consulta Sucursales
     if (arregloSucursales.error) {
       alert(arregloSucursales.error);
       return;
@@ -47,7 +54,6 @@ class PuntoDeVenta extends React.Component {
       SucursalId: arregloSucursales[0].SucursalId,
       ventasPendientes: arregloVentasPendientes,
     });
-    document.querySelector(".ventanaproductos").style.display = "none";
     document.querySelector(".CatalogoClientes").style.display = "none";
     this.CodigoBarrasInput.current.focus();
   }
@@ -56,7 +62,7 @@ class PuntoDeVenta extends React.Component {
     const table = document.getElementById("table1");
     const rows = table.getElementsByTagName("tr");
     for (let i = 1; i < rows.length; i++) {
-      //EL for es desde el rengón 1 porque el 0 son los encabezados de las columnas y marca error si se seleccionan.
+      //El for es desde el rengón 1 porque el 0 son los encabezados de las columnas y marca error si se seleccionan.
       let currentRow = table.rows[i];
       let createClickHandler = (row) => {
         return () => {
@@ -69,9 +75,8 @@ class PuntoDeVenta extends React.Component {
             VentanaDescripcion: "",
             VentanaDescripcionDetalles: [],
             UnidadesDisponibles: vUnidadesDisponibles,
+            ventanaproductosdisabled: true,
           });
-          document.querySelector(".ventanaproductos").style.display = "none";
-          document.querySelector("#btn-cancelarventa").style.display = "block";
           this.CodigoBarrasInput.current.focus();
         };
       };
@@ -81,7 +86,7 @@ class PuntoDeVenta extends React.Component {
 
   async getSucursales() {
     const url = this.props.url + `/api/catalogos/10`;
-    const Administrador = this.props.Administrador
+    const Administrador = this.props.Administrador;
     try {
       const response = await fetch(url, {
         headers: {
@@ -90,8 +95,7 @@ class PuntoDeVenta extends React.Component {
       });
       let data = await response.json();
       const vSucursalAsignada = parseInt(sessionStorage.getItem("SucursalId"));
-      // if (vSucursalAsignada !== 100) {
-      if (Administrador !== 'S') {
+      if (Administrador !== "S") {
         data = data.filter(
           (element) => element.SucursalId === vSucursalAsignada
         );
@@ -179,20 +183,16 @@ class PuntoDeVenta extends React.Component {
     const ClienteId = this.state.ClienteId;
 
     if (detalles.length === 0) {
-      //alert("No hay productos");
       this.CodigoBarrasInput.current.focus();
       return;
     }
 
-    if (window.confirm('Desea Cerrar la Venta?')){ 
+    if (window.confirm("Desea Cerrar la Venta?")) {
       document.querySelector(".main").style.cursor = "progress"; //Cambia el cursos a "progress"
-    }else{
-      this.CodigoBarrasInput.current.focus()
+    } else {
+      this.CodigoBarrasInput.current.focus();
       return;
     }
-
-    
-    let UnidadesVendidas = 1; //Esto se va a modificar cuando se pueda multiplicar los productos
 
     //############ SECCION PARA HACER EL ARREGLO DE JSON ENCABEZADO Y DETALLES ##################
     let arreglo = [];
@@ -204,7 +204,7 @@ class PuntoDeVenta extends React.Component {
           CodigoId: element.CodigoId,
           CodigoBarras: element.CodigoBarras,
           Descripcion: element.Descripcion,
-          Unidades: UnidadesVendidas,
+          Unidades: element.Unidades,
           PrecioVentaConImpuesto: parseFloat(element.PrecioVentaConImpuesto),
           Accion: element.Accion,
         };
@@ -213,7 +213,7 @@ class PuntoDeVenta extends React.Component {
           SerialId: element.SerialId, //ESTE ES EL QUE CAMBIA
           CodigoId: element.CodigoId,
           CodigoBarras: element.CodigoBarras,
-          Unidades: UnidadesVendidas,
+          Unidades: element.Unidades,
           PrecioVentaConImpuesto: parseFloat(element.PrecioVentaConImpuesto),
           Accion: element.Accion,
         };
@@ -317,7 +317,6 @@ class PuntoDeVenta extends React.Component {
     if (parseInt(FolioId) === 0) {
       //Si FolioId es CERO es que no hay abierta ninguna venta en proceso
       if (detalles.length === 0) {
-        //alert("No hay productos");
         this.CodigoBarrasInput.current.focus();
         return;
       }
@@ -335,7 +334,6 @@ class PuntoDeVenta extends React.Component {
       };
 
       try {
-        //if (window.config('Desea Cerrar la Venta')){
         const url = this.props.url + `/api/grabaventas`;
         let response = await fetch(url, {
           method: "POST",
@@ -404,8 +402,8 @@ class PuntoDeVenta extends React.Component {
   handleClientes = (e) => {
     //const ClienteId = e.target.value;
     //const arregloClientes = this.state.clientes;
-    alert("EN CONSTRUCCION ...PROXIMAMENTE!!!")
-    return
+    alert("EN CONSTRUCCION ...PROXIMAMENTE!!!");
+    return;
     // const arreglo2Clientes = arregloClientes.filter(
     //   (element) => parseInt(element.ClienteId) === parseInt(ClienteId)
     // );
@@ -427,22 +425,22 @@ class PuntoDeVenta extends React.Component {
     });
   };
 
-async getCodigoBarraPrincipal(CodigoId){
-  let CodigoBarras="0"
-  const url = this.props.url + `/api/codigobarrasprincipal/${CodigoId}`
-  const response = await fetch(url,{
-    headers: {
-      Authorization: `Bearer ${this.props.accessToken}`,
-    },
-  });
-  let data = await response.json()
-  if(data.length === 0 ){
-    CodigoBarras = ""
-  }else{
-    CodigoBarras = data[0].CodigoBarras
+  async getCodigoBarraPrincipal(CodigoId) {
+    let CodigoBarras = "0";
+    const url = this.props.url + `/api/codigobarrasprincipal/${CodigoId}`;
+    const response = await fetch(url, {
+      headers: {
+        Authorization: `Bearer ${this.props.accessToken}`,
+      },
+    });
+    let data = await response.json();
+    if (data.length === 0) {
+      CodigoBarras = "";
+    } else {
+      CodigoBarras = data[0].CodigoBarras;
+    }
+    return CodigoBarras;
   }
-  return CodigoBarras
-}
 
   async getProducto(id) {
     const SucursalId = this.state.SucursalId;
@@ -460,78 +458,91 @@ async getCodigoBarraPrincipal(CodigoId){
   }
 
   async getProductosDescripcion(desc) {
-    const SucursalId = this.state.SucursalId
+    const SucursalId = this.state.SucursalId;
 
-    //IMPORTANTE: AQUI HAY QUE RESTARLE A UNIDADES DISPONIBLES LAS PIEZAS EN PROCESO DE VENTA. 
-    // HAY QUE ENVIAR POR PARÁMETRO LAS UNIDADES EN PROCESO DE VENTA DE DICHO PRODUCTO Y 
-    // RESTARSELAS AL INVENTARIO DISPONIBLES (SOLO INFORMATIVO)
-
-
-
-    const url = this.props.url + `/api/productosdescripcion/${desc}/${SucursalId}`;
+    const url =
+      this.props.url + `/api/productosdescripcion/${desc}/${SucursalId}`;
     const response = await fetch(url, {
       headers: {
         Authorization: `Bearer ${this.props.accessToken}`,
       },
     });
     let data = await response.json();
-
-//########## ACTUALIZA TEMPORALMENTE LAS UNIDADES INVENATRIO DISPONBILES A MOSTRAR ########## 
-    this.state.detalles.forEach(element =>{
-      if(element.Inventariable === 'S'){
-        data.forEach((element2,i) =>{
-          if(element.CodigoId === element2.CodigoId){
-            data[i].UnidadesDisponibles = data[i].UnidadesDisponibles - element.Unidades
+    //########## ACTUALIZA TEMPORALMENTE LAS UNIDADES INVENATRIO DISPONBILES A MOSTRAR ##########
+    this.state.detalles.forEach((element) => {
+      if (element.Inventariable === "S") {
+        data.forEach((element2, i) => {
+          if (element.CodigoId === element2.CodigoId) {
+            data[i].UnidadesDisponibles =
+              data[i].UnidadesDisponibles - element.Unidades;
           }
-        })
+        });
       }
-    })
+    });
 
-
-//############################################################################################
+    //############################################################################################
 
     return data;
   }
 
+  handleButtonXtimes = () => {
+    let botonXColor = this.state.botonXColor;
+    if (botonXColor === "secondary") {
+      botonXColor = "success";
+    } else {
+      botonXColor = "secondary";
+    }
+    this.setState({
+      botonXColor: botonXColor,
+    });
+    this.CodigoBarrasInput.current.focus();
+  };
+
+  handleProcesarXTimes = () => {
+    this.handleBuscarFinProceso();
+    this.setState({
+      XTimesVentanaDisplay: false,
+    });
+  };
+
+
+  handleCancelarXTimes = () => {
+    this.setState({
+      XTimesVentanaDisplay: false,
+      CodigoBarras: "",
+      Descripcion: "",
+      UnidadesXTimes: 1,
+      botonXColor: "secondary"
+    },()=> this.CodigoBarrasInput.current.focus());
+
+  };
+
   handleBuscar = async (e) => {
     e.preventDefault();
-    const SucursalId = this.state.SucursalId;
-    const ClienteId = this.state.ClienteId;
-    const FolioId = this.state.FolioId;
     let CodigoBarras = this.state.CodigoBarras;
-    //let UnidadesDisponibles = this.state.UnidadesDisponibles;
+    let Unidades = this.state.Unidades; //Al marcar un producto se toma 1 Unidad, si se escoge la opción de multiplicar cambia.
+    let arreglo = [];
 
     //####### Funcionalidad para Capturar Códigos Internos y lo convierte a su Codigo de Barras #######
-    // let numbers = /^[0-9]+$/;
-    // if (CodigoBarras.match(numbers) && CodigoBarras.length < 6){
-
     //### Para Marcado Rápido productos que empiezan con I y que su longitud es menor que 6 lo toma como
     //### código interno para buscar su Código de Barras Principal
-    if (CodigoBarras[0] === 'I' && CodigoBarras.length < 6){
-      CodigoBarras = CodigoBarras.substring(1)
-      CodigoBarras = await this.getCodigoBarraPrincipal(parseInt(CodigoBarras))
-      if(CodigoBarras === ""){
-        alert("Codigo Interno No Existen")
-        return
+    if (CodigoBarras[0] === "I" && CodigoBarras.length < 6) {
+      CodigoBarras = CodigoBarras.substring(1);
+      CodigoBarras = await this.getCodigoBarraPrincipal(parseInt(CodigoBarras));
+      if (CodigoBarras === "") {
+        alert("Codigo Interno No Existen");
+        return;
       }
       this.setState({
         CodigoBarras: CodigoBarras,
         Inventariable: "",
-      })
+      });
     }
     //###############################################################################################
 
-    let CategoriaId = 0
-
-    let Unidades = 1; //Esto va a cambiar cuando se agregue la opción de multiplicar
-
-    let arreglo = [];
-
     if (CodigoBarras !== "") {
       //Si se tiene un Código de Barras
-
       arreglo = await this.getProducto(CodigoBarras);
-
       if (arreglo.error) {
         alert(arreglo.error);
         this.setState({
@@ -541,29 +552,6 @@ async getCodigoBarraPrincipal(CodigoId){
         this.CodigoBarrasInput.current.focus();
         return;
       }
-
-
-      //########## ACTUALIZA TEMPORALMENTE LAS UNIDADES INVENATRIO DISPONBILES A MOSTRAR ##########
-
-      if(arreglo[0].Inventariable === 'S'){
-        arreglo[0].UnidadesDisponibles = arreglo[0].UnidadesDisponibles - Unidades
-        this.state.detalles.forEach((element) =>{
-          if(element.CodigoId === arreglo[0].CodigoId){
-            arreglo[0].UnidadesDisponibles = arreglo[0].UnidadesDisponibles - element.Unidades
-          }
-        })
-      }
-
-      //########################################################################################
-
-      this.setState({
-        UnidadesDisponibles: parseInt(arreglo[0].UnidadesDisponibles),
-        Inventariable: arreglo[0].Inventariable,
-      });
-
-
-
-
 
       if (arreglo[0].PrecioVentaConImpuesto <= 0) {
         alert("Este producto No tiene Precio de Venta");
@@ -584,186 +572,241 @@ async getCodigoBarraPrincipal(CodigoId){
         this.CodigoBarrasInput.current.focus();
         return;
       }
+      this.setState({
+        arreglo: arreglo,
+        Unidades: Unidades,
+        Descripcion: arreglo[0].Descripcion,
+      });
     } else {
       //Si no se tiene un Codigo de Barras se abre la Ventana de Búsqueda
-      if (
-        document.querySelector(".ventanaproductos").style.display === "none"
-      ) {
-        document.querySelector(".ventanaproductos").style.display = "block";
-        document.querySelector("#btn-cancelarventa").style.display = "none";
-        this.ventanadescripcionInput.current.focus();
-      } else {
-        this.setState({
+      //Abre o cierra la ventana para buscar productos por descripción y regresa/actualiza el
+      //código de barras en el this.state.CodigoBarras para buscarlo en este mismo método.
+      this.setState(
+        {
+          ventanaproductosdisabled: !this.state.ventanaproductosdisabled,
           VentanaDescripcion: "",
-          VentanaDescripcionDetalles: [],
-        });
-        document.querySelector(".ventanaproductos").style.display = "none";
-        document.querySelector("#btn-cancelarventa").style.display = "block";
-        this.CodigoBarrasInput.current.focus();
-      }
+          VentanaDescripcionDetalles:[],
+        },
+        () => {
+          if (this.state.ventanaproductosdisabled) {
+            this.CodigoBarrasInput.current.focus();
+          } else {
+            this.ventanadescripcionInput.current.focus();
+          }
+        }
+      );
       return;
     }
 
-    CategoriaId = arreglo[0].CategoriaId
     let detalles = this.state.detalles;
 
     //####################### VALIDACIONES DE "SERVICIO POR ENCARGO" ("CodigoId" = 65) ###############
-    if(parseInt(arreglo[0].CodigoId) === 65) {
+    if (parseInt(arreglo[0].CodigoId) === 65) {
       this.setState({
-        servicioPorEncargo:"S",
-      })
+        servicioPorEncargo: "S",
+      });
 
-      //### VALIDA QUE YA EXISTA EN LA VENTA UN PRODUCTO DE LA "CategoriaId" = 3 (03 LAVAMATICA)#### 
-      if(!detalles.find(element => parseInt(element.CategoriaId) === 3)){
-        alert("No existe ningún producto de Categoría \"03 LAVAMATICA\" ")
+      //### VALIDA QUE YA EXISTA EN LA VENTA UN PRODUCTO DE LA "CategoriaId" = 3 (03 LAVAMATICA)####
+      if (!detalles.find((element) => parseInt(element.CategoriaId) === 3)) {
+        alert('No existe ningún producto de Categoría "03 LAVAMATICA" ');
         this.setState({
           CodigoBarras: "",
-        })
-        this.CodigoBarrasInput.current.focus()
-        return
-      }
-      
-      //#### VALIDA QUE EL "SERVICIO POR ENCARGO" ("CodigoId" = 65) NO SE REGISTRE MAS DE UNA VEZ #####
-      if(detalles.find(element => parseInt(element.CodigoId) === 65)){
-        alert("El \"SERVICIO POR ENCARGO\" ya está registrado en esta Venta")
-        this.setState({
-          CodigoBarras: "",
-        })
-        this.CodigoBarrasInput.current.focus()
+          arreglo: [],
+          Unidades: 1,
+          Descripcion: "",
+        });
+        this.CodigoBarrasInput.current.focus();
         return;
       }
-      // //#### CALCULA EL MONTO $ DE VENTA DE PRODUCTOS DE CATEGORIA "03 LAVAMATICA" SIN CODIGO 65 #####
-      // let total = 0;
-      // detalles.forEach(element => {
-      //   if(parseInt(element.CategoriaId) === 3){
-      //     total = total + (parseFloat(element.PrecioVentaConImpuesto) * parseInt(element.Unidades))
-      //   }
-      //   return null
-      // })
-      // //arreglo[0].PrecioVentaConImpuesto = 1000
-      // //alert(JSON.stringify(arreglo))
-      // alert(JSON.stringify(total))
+
+      //#### VALIDA QUE EL "SERVICIO POR ENCARGO" ("CodigoId" = 65) NO SE REGISTRE MAS DE UNA VEZ #####
+      if (detalles.find((element) => parseInt(element.CodigoId) === 65)) {
+        alert('El "SERVICIO POR ENCARGO" ya está registrado en esta Venta');
+        this.setState({
+          CodigoBarras: "",
+          arreglo: [],
+          Unidades: 1,
+          Descripcion: "",
+        });
+        this.CodigoBarrasInput.current.focus();
+        return;
+      }
     }
 
-    //################### DETERMINA EL SerialId siguiente de detalles ###################
-    let nextSerialId = 0;
-    detalles.forEach((element) => {
-      if (parseInt(element.SerialId) > nextSerialId) {
-        nextSerialId = parseInt(element.SerialId);
-      }
+    //####################################################################################
+
+    const botonXColor = this.state.botonXColor;
+    if (botonXColor === "success") {
+      this.handleXtimesProcess();  //Activa proceso para Multiplicar "n" Piezas
+    } else {
+      this.handleBuscarFinProceso(); //Continua con el registro de 1 pieza para venta
+    }
+  };
+
+  handleXtimesProcess = () => {
+    this.setState({
+      XTimesVentanaDisplay: true,
     });
-    nextSerialId = nextSerialId + 1;
+    this.InputUnidadesXRef.current.focus();
+  };
 
-    //######### SECCION PARA GENERAR LOS json PARA GRABAR EN DB Y DESPLEGAR EN PANTALLA ##############
+  handleBuscarFinProceso = async () => {
+    let detalles = this.state.detalles;
+    let arreglo = this.state.arreglo;
+    const Unidades = this.state.Unidades;
+    const SucursalId = this.state.SucursalId;
+    const FolioId = this.state.FolioId;
+    const ClienteId = this.state.ClienteId;
+    const CategoriaId = this.state.arreglo[0].CategoriaId;
 
-    let json2 = {
-      //No incluye la Descripcion del Producto y es para el body de POST /api/agregaregistronota
-      SucursalId: SucursalId,
-      FolioId: FolioId,
-      ClienteId: ClienteId,
-      CajeroId: parseInt(sessionStorage.getItem("ColaboradorId")),
-      VendedorId: parseInt(sessionStorage.getItem("ColaboradorId")),
-      SerialId: nextSerialId,
-      CodigoId: arreglo[0].CodigoId,
-      CodigoBarras: this.state.CodigoBarras,
-      UnidadesRegistradas: Unidades,
-      PrecioVentaConImpuesto: parseFloat(arreglo[0].PrecioVentaConImpuesto),
-      CategoriaId: CategoriaId,
-      Usuario: sessionStorage.getItem("user"),
-    };
+      //################### DETERMINA EL SerialId siguiente de detalles ###################
+      let nextSerialId = 0;
+      detalles.forEach((element) => {
+        if (parseInt(element.SerialId) > nextSerialId) {
+          nextSerialId = parseInt(element.SerialId);
+        }
+      });
+      nextSerialId = nextSerialId + 1;
 
-    let json = {
-      //Sí incluye la Descripcion del Producto y es para guardar en this.state.detalles
-      SucursalId: SucursalId,
-      ClienteId: ClienteId,
-      FolioId: FolioId,
-      SerialId: nextSerialId,
-      CodigoId: arreglo[0].CodigoId,
-      CodigoBarras: this.state.CodigoBarras,
-      Descripcion: arreglo[0].Descripcion,
-      Unidades: Unidades,
-      Inventariable: this.state.Inventariable,
-      UnidadesDisponibles: this.state.UnidadesDisponibles,
-      PrecioVentaConImpuesto: arreglo[0].PrecioVentaConImpuesto,
-      CategoriaId: CategoriaId,
-      Usuario: sessionStorage.getItem("user"),
-      ColaboradorId: parseInt(sessionStorage.getItem("ColaboradorId")),
-    };
+      //########## ACTUALIZA TEMPORALMENTE LAS UNIDADES INVENATRIO DISPONBILES A MOSTRAR ##########
+      if (arreglo[0].Inventariable === "S") {
+        arreglo[0].UnidadesDisponibles =
+          arreglo[0].UnidadesDisponibles - Unidades;
+          detalles.forEach((element) => {
+            if (element.CodigoId === arreglo[0].CodigoId) {
+              arreglo[0].UnidadesDisponibles =
+                arreglo[0].UnidadesDisponibles - element.Unidades;
+            }
+          });
+      }
+      this.setState({
+        UnidadesDisponibles: parseInt(arreglo[0].UnidadesDisponibles),
+        Inventariable: arreglo[0].Inventariable,
+      });
 
-    //#########################################################################################
+      //######### SECCION PARA GENERAR LOS json PARA GRABAR EN DB Y DESPLEGAR EN PANTALLA ##############
+      let json2 = {
+        //No incluye la Descripcion del Producto y es para el body de POST /api/agregaregistronota
+        SucursalId: SucursalId,
+        FolioId: FolioId,
+        ClienteId: ClienteId,
+        CajeroId: parseInt(sessionStorage.getItem("ColaboradorId")),
+        VendedorId: parseInt(sessionStorage.getItem("ColaboradorId")),
+        SerialId: nextSerialId,
+        CodigoId: arreglo[0].CodigoId,
+        CodigoBarras: this.state.CodigoBarras,
+        UnidadesRegistradas: Unidades,
+        PrecioVentaConImpuesto: parseFloat(arreglo[0].PrecioVentaConImpuesto),
+        CategoriaId: CategoriaId,
+        Usuario: sessionStorage.getItem("user"),
+      };
 
-    if (FolioId > 0) {
-      //SI FOLIO ES MAYOR DE CERO INSERTA REGISTRO DE PRODUCTO EN LA DB
+      let json = {
+        //Sí incluye la Descripcion del Producto y es para guardar en this.state.detalles
+        SucursalId: SucursalId,
+        ClienteId: ClienteId,
+        FolioId: FolioId,
+        SerialId: nextSerialId,
+        CodigoId: arreglo[0].CodigoId,
+        CodigoBarras: this.state.CodigoBarras,
+        Descripcion: arreglo[0].Descripcion,
+        Unidades: Unidades,
+        Inventariable: arreglo[0].Inventariable,
+        UnidadesDisponibles: arreglo[0].UnidadesDisponibles,
+        PrecioVentaConImpuesto: arreglo[0].PrecioVentaConImpuesto,
+        CategoriaId: CategoriaId,
+        Usuario: sessionStorage.getItem("user"),
+        ColaboradorId: parseInt(sessionStorage.getItem("ColaboradorId")),
+      };
 
-      const url = this.props.url + `/api/agregaregistroventapendiente`;
-      try {
-        const response = await fetch(url, {
-          method: "POST",
-          body: JSON.stringify(json2),
-          headers: {
-            authorization: `Bearer ${this.props.accessToken}`,
-            "Content-Type": "application/json",
-          },
-        });
-        const data = await response.json();
-        if (data.error) {
-          console.log(data.error);
-          alert(data.error);
+      //#########################################################################################
+
+      if (FolioId > 0) {
+        //SI FOLIO ES MAYOR DE CERO INSERTA REGISTRO DE PRODUCTO EN LA DB
+
+        const url = this.props.url + `/api/agregaregistroventapendiente`;
+        try {
+          const response = await fetch(url, {
+            method: "POST",
+            body: JSON.stringify(json2),
+            headers: {
+              authorization: `Bearer ${this.props.accessToken}`,
+              "Content-Type": "application/json",
+            },
+          });
+          const data = await response.json();
+          if (data.error) {
+            console.log(data.error);
+            alert(data.error);
+            return;
+          }
+        } catch (error) {
+          console.log(error.message);
+          alert(error.message);
           return;
         }
-      } catch (error) {
-        console.log(error.message);
-        alert(error.message);
-        return;
       }
-    }
-    //##################
+      //##################
 
-    detalles.push(json); //Guarda json en detalles para this.state.detalles
+      detalles.push(json); //Guarda json en detalles para this.state.detalles
 
-
-
-
-
-
-      //### VALIDA QUE YA EXISTA EN LA VENTA UN PRODUCTO DE LA "CategoriaId" = 3 (03 LAVAMATICA)#### 
-      if(detalles.find(element => parseInt(element.CategoriaId) === 3)){
+      //### CALCULA EL PRECIO DEL SERVICIO DE LAVAMATICA "CategoriaId" = 3 (03 LAVAMATICA)####
+      if (detalles.find((element) => parseInt(element.CategoriaId) === 3)) {
         let totalTicketCategoria3 = 0;
         let position65;
-        detalles.forEach((element,i) => {
-          if(parseInt(element.CategoriaId) === 3 && parseInt(element.CodigoId) !== 65){
-            totalTicketCategoria3 = totalTicketCategoria3 + (parseFloat(element.PrecioVentaConImpuesto) * parseInt(element.Unidades))
+        detalles.forEach((element, i) => {
+          if (
+            parseInt(element.CategoriaId) === 3 &&
+            parseInt(element.CodigoId) !== 65
+          ) {
+            totalTicketCategoria3 =
+              totalTicketCategoria3 +
+              parseFloat(element.PrecioVentaConImpuesto) *
+                parseInt(element.Unidades);
           }
-          if(parseInt(element.CodigoId) === 65){
-            position65 = i
+          if (parseInt(element.CodigoId) === 65) {
+            position65 = i;
           }
-          return null
-        })
-        if(position65 !== undefined){
-          let precioServicioPorEncargo = totalTicketCategoria3 * parseFloat((this.state.porcentajePorServicio/100))
-          detalles[position65].PrecioVentaConImpuesto = precioServicioPorEncargo.toFixed(2)
+          return null;
+        });
+        if (position65 !== undefined) {
+          let precioServicioPorEncargo =
+            totalTicketCategoria3 *
+            parseFloat(this.state.porcentajePorServicio / 100);
+          detalles[position65].PrecioVentaConImpuesto =
+            precioServicioPorEncargo.toFixed(2);
         }
       }
 
       //###################### CALCULA EL TOTAL DEL TICKET ###########################
-      let totalTicket=0
-      detalles.forEach(element => {
-        totalTicket+= parseFloat(element.PrecioVentaConImpuesto) * parseInt(element.Unidades)
-      })
+      let totalTicket = 0;
+      detalles.forEach((element) => {
+        totalTicket +=
+          parseFloat(element.PrecioVentaConImpuesto) *
+          parseInt(element.Unidades);
+      });
       //##############################################################################
 
-    // let totalTicket =
-    //   parseFloat(this.state.totalTicket) +
-    //   parseFloat(arreglo[0].PrecioVentaConImpuesto) * Unidades;
+      this.setState({
+        detalles: detalles,
+        totalTicket: totalTicket,
+        CodigoBarras: "",
+        UnidadesDisponibles: "",
+        Descripcion: "",
 
-    this.setState({
-      detalles: detalles,
-      totalTicket: totalTicket,
-      CodigoBarras: "",
-      UnidadesDisponibles: "",
-    });
+        arreglo: [],
+        Unidades: 1, 
+        botonXColor: "secondary",
+      });
 
     this.CodigoBarrasInput.current.focus();
+  };
+
+  handleUnidadesXTimes = (e) => {
+    const Unidades = parseInt(e.target.value);
+    this.setState({
+      Unidades: Unidades,
+    });
   };
 
   handleBuscarEnter = (e) => {
@@ -772,31 +815,29 @@ async getCodigoBarraPrincipal(CodigoId){
     }
   };
 
-
   handleCancelar = async (e) => {
     e.preventDefault();
     const FolioId = this.state.FolioId;
-    const detalles = this.state.detalles
+    const detalles = this.state.detalles;
 
-    if(detalles.length === 0){
-      this.CodigoBarrasInput.current.focus()
-      if(this.state.CodigoBarras){
+    if (detalles.length === 0) {
+      this.CodigoBarrasInput.current.focus();
+      if (this.state.CodigoBarras) {
         this.setState({
           CodigoBarras: "",
-        })
+        });
       }
-      return
+      return;
     }
 
-    if(window.confirm("Desea Cancelar la Venta?")){
-      document.querySelector(".main").style.cursor = "progress"
-    }else{
+    if (window.confirm("Desea Cancelar la Venta?")) {
+      document.querySelector(".main").style.cursor = "progress";
+    } else {
       return;
     }
 
     if (parseInt(FolioId) > 0) {
       //Hay una VENTA PENDIENTE en DB y se va cancelar Status="C"
-
       //Cancela Nota Abierta
       const url = this.props.url + `/api/cancelaventapendiente`;
 
@@ -819,13 +860,13 @@ async getCodigoBarraPrincipal(CodigoId){
         const data = await response.json();
         if (data.error) {
           alert(data.error);
-          document.querySelector(".main").style.cursor = "default"
+          document.querySelector(".main").style.cursor = "default";
           return;
         }
         alert(data.message);
       } catch (error) {
         console.log(error.message);
-        document.querySelector(".main").style.cursor = "default"
+        document.querySelector(".main").style.cursor = "default";
         alert(error.message);
       }
     }
@@ -838,7 +879,7 @@ async getCodigoBarraPrincipal(CodigoId){
       ClienteId: 0,
       NotaModificada: false,
     });
-    document.querySelector(".main").style.cursor = "default"
+    document.querySelector(".main").style.cursor = "default";
     this.CodigoBarrasInput.current.focus();
   };
 
@@ -861,15 +902,15 @@ async getCodigoBarraPrincipal(CodigoId){
     this.addRowHandlers();
   };
 
-  handleVentanaDescripcionKeyDown =(e)=>{
-    const descripcion = this.state.VentanaDescripcion
-    if(e.key==="Enter" && descripcion === ""){
-      //document.querySelector(".ventanaproductos").style.display = "none";
-      document.querySelector(".ventanaproductos").style.display = !document.querySelector(".ventanaproductos").style.display;
-      document.querySelector("#btn-cancelarventa").style.display = "block";
+  handleVentanaDescripcionKeyDown = (e) => {
+    const descripcion = this.state.VentanaDescripcion;
+    if (e.key === "Enter" && descripcion === "") {
+      this.setState({
+        ventanaproductosdisabled: !this.state.ventanaproductosdisabled,
+      });
       this.CodigoBarrasInput.current.focus();
     }
-  }
+  };
 
   handleEliminar = async (e) => {
     e.preventDefault();
@@ -918,13 +959,13 @@ async getCodigoBarraPrincipal(CodigoId){
     //(En Nota grabada en Base de Datos y Nota en Proceso)
     arregloDetalles = arregloDetalles.filter(
       (element) => element.SerialId !== parseInt(SerialId)
-      );
+    );
 
     let vtotalTicket = 0;
     for (let i = 0; i < arregloDetalles.length; i++) {
       vtotalTicket +=
         parseFloat(arregloDetalles[i].PrecioVentaConImpuesto) *
-        parseInt(arregloDetalles[i].Unidades); //Antes tenía "UnidadesRegistradas" pero lo cambié al Modificar Nota
+        parseInt(arregloDetalles[i].Unidades); 
     }
     if (arregloDetalles.length === 0) {
       //Cancelar Ticket
@@ -947,9 +988,8 @@ async getCodigoBarraPrincipal(CodigoId){
   ventasPendientesRecupera = async (FolioId) => {
     if (this.state.detalles.length === 0) {
       const SucursalId = parseInt(this.state.SucursalId);
-      const arregloVentaPendientePorFolio = await this.getVentaPendientePorFolio(
-        FolioId
-      );
+      const arregloVentaPendientePorFolio =
+        await this.getVentaPendientePorFolio(FolioId);
       let totalTicket = 0;
       let arregloDetalles = [];
       let json_elemento;
@@ -995,7 +1035,6 @@ async getCodigoBarraPrincipal(CodigoId){
       const detalleNotasArreglo = this.state.ventasPendientes.filter(
         (element) => parseInt(element.FolioId) !== parseInt(FolioId)
       );
-
       //################## SECCION PARA FORMAR EL ARREGLO PARA DESPLEGAR ###########################
       vFolioId = 0;
       let detallesPendientes = [];
@@ -1055,7 +1094,12 @@ async getCodigoBarraPrincipal(CodigoId){
     }
   };
 
+  numberWithCommas(x) {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  }
+
   handleRender = () => {
+    const botonXColor = "btn btn-" + this.state.botonXColor+" ml-2";
     return (
       <React.Fragment>
         <div className="main">
@@ -1064,7 +1108,11 @@ async getCodigoBarraPrincipal(CodigoId){
             <button className="btn btn-secondary">X</button>
             <br />
             <label htmlFor="">Cliente</label>
-            <input onChange={this.handleClienteNombre} id="clientenombre" name="clientenombre" />
+            <input
+              onChange={this.handleClienteNombre}
+              id="clientenombre"
+              name="clientenombre"
+            />
             <table id="tableClientes" onClick={this.handlerRowClickedII}>
               <thead>
                 <tr>
@@ -1072,64 +1120,81 @@ async getCodigoBarraPrincipal(CodigoId){
                   <th>Cliente</th>
                 </tr>
               </thead>
-              <tbody>
-
-              </tbody>
+              <tbody></tbody>
             </table>
           </div>
           <div className="col-md-5 header">
-            <select
-              onChange={this.handleSucursales}
-              id="sucursales"
-              name="sucursales"
-              value={this.state.SucursalId}
+            <div
+              style={{
+                // visibility: this.state.XTimesVentanaDisplay
+                //   ? "hidden"
+                //   : "visible",
+                display: this.state.XTimesVentanaDisplay
+                  ? "none"
+                  : "block",
+              }}
             >
-              {this.state.sucursales.map((element, i) => (
-                <option key={i} value={element.SucursalId}>
-                  {element.Sucursal}
-                </option>
-              ))}
-            </select>
-            <select
-              onChange={this.handleClientes}
-              className="ml-2"
-              id="clientes"
-              name="clientes"
-              value={this.state.ClienteId}
-            >
-              {this.state.clientes.map((element, i) => (
-                <option key={i} value={element.ClienteId}>
-                  {element.Cliente}
-                </option>
-              ))}
-            </select>
-            <br />
-            <label
-              htmlFor="codigobarras"
-              style={{ fontSize: ".8em", width: "3em" }}
-            >
-              Código Barras
-            </label>
-            <input
-              onChange={this.handleCodigoBarras}
-              onKeyPress={this.handleBuscarEnter}
-              id="codigobarras"
-              name="codigobarras"
-              size="15"
-              maxLength="13"
-              value={this.state.CodigoBarras}
-              ref={this.CodigoBarrasInput}
-              autoComplete="off"
-            />
-            <button
-              onClick={this.handleBuscar}
-              className="btn btn-primary btn-sm ml-2"
-            >
-              Buscar
-            </button>
-            <br />
+              <select
+                onChange={this.handleSucursales}
+                id="sucursales"
+                name="sucursales"
+                value={this.state.SucursalId}
+              >
+                {this.state.sucursales.map((element, i) => (
+                  <option key={i} value={element.SucursalId}>
+                    {element.Sucursal}
+                  </option>
+                ))}
+              </select>
 
-            <div className="ventanaproductos">
+              <select
+                onChange={this.handleClientes}
+                className="ml-2"
+                id="clientes"
+                name="clientes"
+                value={this.state.ClienteId}
+              >
+                {this.state.clientes.map((element, i) => (
+                  <option key={i} value={element.ClienteId}>
+                    {element.Cliente}
+                  </option>
+                ))}
+              </select>
+              <button onClick={this.handleButtonXtimes} className={botonXColor}>
+                X
+              </button>
+              <br />
+              <label
+                htmlFor="codigobarras"
+                style={{ fontSize: ".8em", width: "3em" }}
+              >
+                Código Barras
+              </label>
+              <input
+                onChange={this.handleCodigoBarras}
+                onKeyPress={this.handleBuscarEnter}
+                id="codigobarras"
+                name="codigobarras"
+                size="15"
+                maxLength="13"
+                value={this.state.CodigoBarras}
+                ref={this.CodigoBarrasInput}
+                autoComplete="off"
+              />
+              <button
+                onClick={this.handleBuscar}
+                className="btn btn-primary btn-sm ml-2"
+              >
+                Buscar
+              </button>
+              <br />
+            </div>
+            <div
+              className="ventanaproductos"
+              style={{
+                display: this.state.ventanaproductosdisabled ? "none" : "block",
+              }}
+            >
               <label htmlFor="ventanadescripcion" style={{ width: "5rem" }}>
                 Descripcion
               </label>
@@ -1175,44 +1240,115 @@ async getCodigoBarraPrincipal(CodigoId){
               size="3"
               maxLength="3"
               type="text"
-              value={this.state.detalles.length}
+              value={this.state.detalles.reduce((suma, element) =>{return suma + element.Unidades},0)}
               style={{ textAlign: "right" }}
               readOnly
             />
-            <button
+            {/* <button
               onClick={this.handleCancelar}
               className="btn btn-danger btn-sm ml-5"
               id="btn-cancelarventa"
+              style={{
+                display: this.state.ventanaproductosdisabled ? "block" : "none",
+              }}
             >
               <small>CANCELAR TICKET</small>
-            </button>
+            </button> */}
             <br />
           </div>
           <div className="col-md-5">
-            <div className="content">
+            <div
+              className="XTimesVentana"
+              style={{
+                display: this.state.XTimesVentanaDisplay ? "block" : "none",
+                padding: "10px",
+              }}
+            >
+              <h4 className="text-center">Multiplica Unidades Venta</h4>
+              <label htmlFor="">Código de Barras</label>
+              <br />
+              <input value={this.state.CodigoBarras} readOnly />
+              <br />
+              <label htmlFor="">Descripcion</label>
+              <input
+                value={this.state.Descripcion}
+                style={{ width: "21rem" }}
+                readOnly
+              />
+              <br />
+              <br />
+              <label htmlFor="">
+                Unidades <b>X</b>
+              </label>
+              <input
+                onChange={this.handleUnidadesXTimes}
+                onFocus={(e) => e.target.select()}
+                value={this.state.Unidades}
+                style={{ width: "4rem" }}
+                ref={this.InputUnidadesXRef}
+              />
+              <br />
+              <br />
+              <br />
+              <div
+                className="botonesXTimes"
+                style={{ display: "flex", justifyContent: "space-around" }}
+              >
+                <button
+                  onClick={this.handleProcesarXTimes}
+                  className="btn btn-primary"
+                >
+                  Procesar
+                </button>
+                <button
+                  onClick={this.handleCancelarXTimes}
+                  className="btn btn-danger"
+                >
+                  Cancelar
+                </button>
+              </div>
+            </div>
+
+            <div
+              className="content"
+              style={{
+                display: this.state.XTimesVentanaDisplay ? "none" : "block",
+              }}
+            >
               <ul>
-                {this.state.detalles.sort((a,b) => { return a.CodigoId - b.CodigoId}).map((element, i) => (
-                  <li key={i}>
-                    <small>{element.Descripcion}</small> {element.CodigoBarras}{" "}
-                    <br /> <strong>$ {element.PrecioVentaConImpuesto}</strong>
-                    <span style={{fontSize:".5rem",color:"red"}}>{" UnidInvDisp "}<strong style={{color:"black"}}>{element.UnidadesDisponibles}</strong></span>
-                    <button
-                      onClick={(e) => {
-                        if (
-                          window.confirm(
-                            "Are you sure you wish to delete this item?"
+                {this.state.detalles
+                  .sort((a, b) => {
+                    return a.CodigoId - b.CodigoId;
+                  })
+                  .map((element, i) => (
+                    <li key={i}>
+                      <small>{element.Descripcion}</small>{" "}
+                      {element.CodigoBarras}{" "}
+                      <span style={{ fontSize: ".5rem", color: "red" }}>
+                        {" UIDisp "}
+                        <span style={{ color: "black",fontSize:".7rem" }}>
+                          {element.UnidadesDisponibles}
+                        </span><br />
+                      </span>
+                      <strong style={{fontSize:"1.2rem"}}>{element.Unidades}</strong>{" X "}
+                      <strong>$ {element.PrecioVentaConImpuesto}</strong>{" = "}
+                      <strong>$ {this.numberWithCommas((element.Unidades * element.PrecioVentaConImpuesto).toFixed(2))}</strong>
+                      <button
+                        onClick={(e) => {
+                          if (
+                            window.confirm(
+                              "Are you sure you wish to delete this item?"
+                            )
                           )
-                        )
-                          this.handleEliminar(e);
-                      }}
-                      // id={i}
-                      id={element.SerialId}
-                      className="btn btn-danger btn-sm ml-2"
-                    >
-                      Eliminar
-                    </button>
-                  </li>
-                ))}
+                            this.handleEliminar(e);
+                        }}
+                        id={element.SerialId}
+                        className="btn btn-danger btn-sm ml-2"
+                      >
+                        Eliminar
+                      </button>
+                    </li>
+                  ))}
               </ul>
             </div>
             {/*DESPLIEGA NOTAS PENDIENTES */}
@@ -1220,7 +1356,6 @@ async getCodigoBarraPrincipal(CodigoId){
               <div>
                 <span style={{ fontSize: "0.7rem" }}>
                   <strong>Notas en Proceso</strong>{" "}
-                  {/* {this.state.cantidadNotasAbiertas} */}
                   {this.state.ventasPendientes.length}
                 </span>
               </div>
@@ -1235,13 +1370,6 @@ async getCodigoBarraPrincipal(CodigoId){
               </div>
             </div>
             <div className="notas">
-              {/* La siguiente instrucción hace un DISTINCT de los NotaId 
-                         {[...new Set(this.state.detallesNotas.map(x => x.NotaId))].map((element,i) => */}
-              {/* ( */}
-              {/* <button onClick={()=>{this.ventasPendientesRecupera(element)}} key={i}>{element}</button> */}
-              {/* ) } */}
-
-              {/* {this.state.NotasEncabezados.map((element, i) => ( */}
               {this.state.ventasPendientes.map((element, i) => (
                 <div key={i}>
                   <button
@@ -1289,6 +1417,16 @@ async getCodigoBarraPrincipal(CodigoId){
             >
               {/* REGISTRAR NOTA */}
               VENTA (ON HOLD)
+            </button>
+            <button
+              onClick={this.handleCancelar}
+              className="btn btn-danger btn-sm ml-5"
+              id="btn-cancelarventa"
+              style={{
+                display: this.state.ventanaproductosdisabled ? "block" : "none",
+              }}
+            >
+              <small>CANCELAR TICKET</small>
             </button>
           </div>
         </div>
