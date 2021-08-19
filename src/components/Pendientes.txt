@@ -3,15 +3,15 @@ call stpr_calcula_costodeventas ('2021/05/01','2021/05/31');
 
 
 
+
+
+
+
+
+
 1. Poner height: 100 vh en VentasIngresos y Egresos (Probar en laptop y Mobile)
-
-
-1. 
-2
-3. 
-4. 
-5. En EGRESOS secciones DIA y MES sacar los subencabezados para que no se pierdan en el scroll
-6. En EGRESOS sección DIA la tabla se sale de la sección
+2. En EGRESOS secciones DIA y MES sacar los subencabezados para que no se pierdan en el scroll
+3. En EGRESOS sección DIA la tabla se sale de la sección
 
 
 
