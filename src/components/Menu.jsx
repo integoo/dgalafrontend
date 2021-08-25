@@ -11,6 +11,7 @@ import PuntoDeVenta from './PuntoDeVenta'
 import RetirosDeCaja from './RetirosDeCaja'
 import VentasConsultaSucursalesHoy from './VentasConsultaSucursalesHoy'
 import VentasConsulta from './VentasConsulta'
+import VentasBI from './VentasBI'
 import ConsultaArticulo from './ConsultaArticulo'
 import Kardex from './Kardex'
 import AjustesInventario from './AjustesInventario'
@@ -102,7 +103,7 @@ class Menu extends Component {
                       
                     <div className="dropdown-divider"></div>
                     <Link to="/limpiaduria/estadoderesultados" style={linkStyle}>
-                      <span className="dropdown-item">Estado de Resultados</span>
+                      <span className="dropdown-item">Reportes</span>
                     </Link>
                   </div>
                 </li>
@@ -193,8 +194,8 @@ class Menu extends Component {
 
                       
                     <div className="dropdown-divider"></div>
-                    <Link to="/ventas/estadoventas" style={linkStyle}>
-                      <span className="dropdown-item">Estado de Resultados</span>
+                    <Link to="/ventas/bi" style={linkStyle}>
+                      <span className="dropdown-item">Inteligencia de Negocio/BI</span>
                     </Link>
                   </div>
                 </li>
@@ -355,6 +356,7 @@ class Menu extends Component {
           <Route path="/ventas/consultaventascategorias" component={() => <VentasConsultaCategorias accessToken={this.state.accessToken} url={this.state.url} Administrador={this.props.Administrador} />} />
           <Route path='/ventas/consulta' component={() => <VentasConsulta accessToken={this.state.accessToken} url={this.state.url} Administrador={this.props.Administrador}/>} />
           <Route path='/ventas/consultafechaproductos' component={() => <VentasConsultaFechaProducto accessToken={this.state.accessToken} url={this.state.url} Administrador={this.props.Administrador}/>} />
+          <Route path='/ventas/bi' component={() => <VentasBI accessToken={this.state.accessToken} url={this.state.url} Administrador={this.props.Administrador}/>} />
           <Route path="/inventario/consultaarticulo" component={() => <ConsultaArticulo accessToken={this.state.accessToken} url={this.state.url} Administrador={this.props.Administrador} />} />
           <Route path='/inventario/kardex' component={() => <Kardex accessToken={this.state.accessToken} url={this.state.url} Administrador={this.props.Administrador} />} />
           <Route path='/inventario/ajustesinventario' component={() => <AjustesInventario accessToken={this.state.accessToken} url={this.state.url} Administrador={this.props.Administrador} />} />

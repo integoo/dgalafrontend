@@ -79,4 +79,6 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/t
     import Popper from 'popper.js';
     import 'bootstrap/dist/js/bootstrap.bundle.min';
 6. Usé npm install react-number-format --save para poder dar formato a números y tener el teclado numérico en mobile.
-7. 
+7. https://github.com/reactchartjs/react-chartjs-2
+    npm install --save react-chartjs-2 chart.js
+8.
