@@ -499,6 +499,12 @@ class PuntoDeVenta extends React.Component {
   };
 
   handleProcesarXTimes = () => {
+    const Unidades = this.state.Unidades
+    if(Unidades > 20 ){
+      if(!window.confirm("Las son Unidades son "+Unidades+". ¿Está seguro de continuar?")){
+        return
+      }
+    }
     this.handleBuscarFinProceso();
     this.setState({
       XTimesVentanaDisplay: false,
@@ -803,11 +809,12 @@ class PuntoDeVenta extends React.Component {
   };
 
   handleUnidadesXTimes = (e) => {
-    const Unidades = parseInt(e.target.value);
-    this.setState({
-      Unidades: Unidades,
-    });
-  };
+    const Unidades = e.target.value;
+
+        this.setState({
+          Unidades: Unidades,
+        });
+  }
 
   handleBuscarEnter = (e) => {
     if (e.key === "Enter") {
@@ -1282,6 +1289,7 @@ class PuntoDeVenta extends React.Component {
                 Unidades <b>X</b>
               </label>
               <input
+                type="number"
                 onChange={this.handleUnidadesXTimes}
                 onFocus={(e) => e.target.select()}
                 value={this.state.Unidades}

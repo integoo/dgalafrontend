@@ -22,10 +22,11 @@ table td {
 }
 
 
-@media only screen and (max-width: 387px) {
+/* @media only screen and (max-width: 387px) { */
+@media only screen and (max-width: 420px) {
     #idHeader{
         position:relative;
-        top: 0px;
+        top: 25px;
         left: 60%;
     }
 
