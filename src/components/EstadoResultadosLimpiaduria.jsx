@@ -25,6 +25,11 @@ class EstadoResultadosLimpiaduria extends React.Component {
       OtrosGastosEmpresa: 0,
       UAIR: 0,
       CifraControlTotal: 0,
+
+      detallesGastosInversiones:[],
+
+      selectedOption:"Fecha",
+      TotalMovimientos:0,
     };
   }
 
@@ -32,6 +37,7 @@ class EstadoResultadosLimpiaduria extends React.Component {
     if ((await this.fechaActual()) === false) return;
     if ((await this.getPeriodoAbierto()) === false) return;
     if ((await this.getConsultaPeriodos()) === false) return;
+    if ((await this.getGastosInversionperiodo()) === false) return;
     
 
     await this.handleEstadoDeResultados();
@@ -162,6 +168,40 @@ class EstadoResultadosLimpiaduria extends React.Component {
     return bandera;
   };
 
+  getGastosInversionperiodo = async()=>{
+    let bandera = false
+    const Periodo = this.state.Periodo
+    const url = this.props.url+ `/api/consultagastosinversionperiodo/${Periodo}`
+    let data=[]
+    try{
+      const response = await fetch(url, {
+        headers:{
+          Authorization: `Bearer ${this.props.accessToken}`,
+        },
+      })
+      data = await response.json()
+      if(data.error){
+        console.log(data.error)
+        alert(data.error)
+        return bandera
+      }
+      let suma = 0
+      for(let i =0; i < data.length; i++){
+        data[i].Posicion = i
+        suma+= parseFloat(data[i].Monto)
+      }
+      this.setState({
+        detallesGastosInversiones: data,
+        TotalMovimientos: suma,
+      })
+      bandera = true
+    }catch(error){
+      console.log(error.message)
+      alert(error.message)
+    }
+    return bandera
+  }
+
   handlePeriodoCambio = (e) => {
     e.preventDefault();
     const Periodo = e.target.value;
@@ -169,7 +209,10 @@ class EstadoResultadosLimpiaduria extends React.Component {
       {
         Periodo: Periodo,
       },
-      () => this.handleEstadoDeResultados()
+      () => {
+        this.getGastosInversionperiodo()
+        this.handleEstadoDeResultados()
+      }
     );
   };
 
@@ -340,6 +383,30 @@ class EstadoResultadosLimpiaduria extends React.Component {
       alert(error.message);
     }
   };
+
+
+  handleOptionChange = (e) =>{
+    const option = e.target.value 
+    let detallesGastosInversiones = this.state.detallesGastosInversiones
+
+    if (option === "Fecha"){
+      detallesGastosInversiones = detallesGastosInversiones.sort((a,b) => a.Posicion - b.Posicion)
+    }
+    if (option === "Sucursal"){
+      detallesGastosInversiones = detallesGastosInversiones.sort((a,b) => a.SucursalId - b.SucursalId)
+    }
+    if (option === "CuentaContable"){
+      detallesGastosInversiones = detallesGastosInversiones.sort((a,b) => a.CuentaContableId - b.CuentaContableId)
+    }
+    if (option === "Monto"){
+      detallesGastosInversiones = detallesGastosInversiones.sort((a,b) => b.Monto - a.Monto)
+    }
+
+    this.setState({
+      detallesGastosInversiones: detallesGastosInversiones,
+      selectedOption: e.target.value,
+    })
+  }
 
   numberWithCommas(x) {
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
@@ -531,6 +598,83 @@ class EstadoResultadosLimpiaduria extends React.Component {
                 <input style={{width:"6rem",textAlign:"right"}} value={this.numberWithCommas(parseFloat(this.state.CifraControlTotal).toFixed(2))} readOnly/>
             </div>
         </div>
+
+
+
+
+
+
+
+        <br />
+        <h5>Movimientos Detalle</h5>
+        <span id="idOrdenamientoRadioGroup">
+          <h6>Ordenamiento</h6>
+          <input type="radio" id="Fecha" name="orderGI" value="Fecha" checked={this.state.selectedOption === "Fecha"} onChange={this.handleOptionChange} />
+          <label htmlFor="Fecha" style={{marginLeft:"5px"}}>Fecha Hora</label>
+          <br />
+          <input type="radio" id="Sucursal" name="orderGI" value="Sucursal" checked={this.state.selectedOption === "Sucursal"} onChange={this.handleOptionChange} />
+          <label htmlFor="Sucursal" style={{marginLeft:"5px"}}>Sucursal</label>
+          <br />
+          <input type="radio" id="CuentaContable" name="orderGI" value="CuentaContable" checked={this.state.selectedOption === "CuentaContable"} onChange={this.handleOptionChange} />
+          <label htmlFor="CuentaContable" style={{marginLeft:"5px"}}>Cuenta Contable</label>
+          <br />
+          <input type="radio" id="Monto" name="orderGI" value="Monto" checked={this.state.selectedOption === "Monto"} onChange={this.handleOptionChange} />
+          <label htmlFor="Monto" style={{marginLeft:"5px"}}>Monto</label>
+        </span>
+        <table>
+          <thead>
+            <tr style={{ background: "#33FF90" }}>
+              <th style={{width:"20rem"}}>Sucursal</th>
+              <th style={{width:"20rem"}}>Unidad De Negocio</th>
+              <th style={{width:"8rem"}}>Cuenta Contable</th>
+              <th style={{width:"8rem"}}>Subcuenta Contable</th>
+              <th style={{width:"8rem"}}>Comentarios</th>
+              <th style={{width:"8rem"}}>Monto</th>
+              <th style={{width:"8rem"}}>Fecha Hora</th>
+              <th style={{width:"8rem"}}>Usuario</th>
+            </tr>
+          </thead>
+          <tbody>
+            {this.state.detallesGastosInversiones.map((element, i) => (
+              <tr key={i}>
+                <td style={{ textAlign: "left" }}><strong>{element.Sucursal}</strong></td>
+                <td style={{ textAlign: "left" }}><strong>{element.UnidadDeNegocio}</strong></td>
+                <td style={{textAlign: "left"}}>
+                  {element.CuentaContable}
+                </td>
+                <td style={{textAlign:"left"}}>
+                  {element.SubcuentaContable}
+                </td>
+                <td style={{textAlign:"left"}}>
+                  {element.Comentarios}
+                </td>
+                <td>
+                  {this.numberWithCommas(parseFloat(element.Monto).toFixed(2))}
+                </td>
+                <td>
+                  {element.FechaHora}
+                </td>
+                <td>
+                  {element.Usuario}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+        <br />
+        <span className="totalMovimientos">
+          <label htmlFor="TotaGI" style={{width:"13rem"}}><b>Total Movimientos Detalle</b></label>
+          <input style={{width:"8rem", textAlign:"right"}} value={"$ "+this.numberWithCommas(this.state.TotalMovimientos.toFixed(2))} readOnly/>
+        </span>
+
+
+
+
+
+
+
+
+
       </div>
     );
   };

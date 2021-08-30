@@ -249,3 +249,7 @@ class Input extends React.Component {
     }
   }
   //#################################################################################################
+  SELECT DE UN NUMERO CONSECUTIVO CREADO PARA ORDENAR O MANTENER EL ORDEN ORIGINAL DE LA CONSULTA 
+  
+  SELECT row_number() over(),"Id" FROM registro_contable;
+  //#################################################################################################

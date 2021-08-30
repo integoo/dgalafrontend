@@ -21,6 +21,16 @@ table td {
     margin-top: -40px;
 }
 
+#idOrdenamientoRadioGroup{
+    position: relative;
+    top: 0px;
+    left: 90%;
+}
+
+.totalMovimientos{
+    position: relative;
+    left: 70%;
+}
 
 /* @media only screen and (max-width: 387px) { */
 @media only screen and (max-width: 420px) {
