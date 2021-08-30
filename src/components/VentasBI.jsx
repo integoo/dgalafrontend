@@ -36,6 +36,9 @@ class VentasBI extends Component {
       utilidadPerdidaMelatePorcentaje: [],
       data: [],
       dataMelate: [],
+      dataGastosInversiones: [],
+      dataGastosInversionesTotales: [],
+      banderaOrdenamiento: false,
     };
   }
 
@@ -46,6 +49,8 @@ class VentasBI extends Component {
     
     if ((await this.getConsultaVentasMelatePorMes()) === false) return;
     if ((await this.getConsultaPagosMelatePorMes()) === false) return;
+
+    if ((await this.getGastosInversionesPorAnio()) === false) return;
 
     this.handleUtilidadPerdida();
     this.handleArrayLineChart();
@@ -174,6 +179,90 @@ class VentasBI extends Component {
     return bandera;
   };
 
+  getGastosInversionesPorAnio = async () => {
+    const Year = this.state.Year;
+    const url =
+      this.props.url + `/api/gastosinversionesporanio/${Year}`;
+    let bandera = false;
+    try {
+      const response = await fetch(url, {
+        headers: {
+          Authorization: `Bearer ${this.props.accessToken}`,
+        },
+      });
+
+      let data = await response.json();
+
+
+      let TotalEne = 0
+      let TotalFeb = 0
+      let TotalMar = 0
+      let TotalAbr = 0
+      let TotalMay = 0
+      let TotalJun = 0
+      let TotalJul = 0
+      let TotalAgo = 0
+      let TotalSep = 0
+      let TotalOct = 0
+      let TotalNov = 0
+      let TotalDic = 0
+      let TotalTotal = 0
+      data.forEach(element =>{
+        TotalEne += parseFloat(element.Ene)
+        TotalFeb += parseFloat(element.Feb)
+        TotalMar += parseFloat(element.Mar)
+        TotalAbr += parseFloat(element.Abr)
+        TotalMay += parseFloat(element.May)
+        TotalJun += parseFloat(element.Jun)
+        TotalJul += parseFloat(element.Jul)
+        TotalAgo += parseFloat(element.Ago)
+        TotalSep += parseFloat(element.Sep)
+        TotalOct += parseFloat(element.Oct)
+        TotalNov += parseFloat(element.Nov)
+        TotalDic += parseFloat(element.Dic)
+        TotalTotal += parseFloat(element.Total)
+      })
+
+      
+      
+      const json = {"CuentaContable": "Total",
+      "SubcuentaContable": "Total",
+      "Ene": TotalEne,
+      "Feb": TotalFeb,
+      "Mar": TotalMar,
+      "Abr": TotalAbr,
+      "May": TotalMay,
+      "Jun": TotalJun,
+      "Jul": TotalJul,
+      "Ago": TotalAgo,
+      "Sep": TotalSep,
+      "Oct": TotalOct,
+      "Nov": TotalNov,
+      "Dic": TotalDic,
+      "Total": TotalTotal,
+      "PorcentajeSimple": 100,
+    }
+    let dataGastosInversionesTotales = []
+    dataGastosInversionesTotales.push(json)
+    
+        for(let i = 0; i < data.length; i++){
+          data[i].id = i
+          data[i].PorcentajeSimple = Math.abs(parseFloat(data[i].Total)) / Math.abs(parseFloat(TotalTotal)) *100
+        }
+    this.setState({
+      dataGastosInversiones: data,
+      dataGastosInversionesTotales: dataGastosInversionesTotales,
+      
+      });
+      bandera = true;
+    } catch (error) {
+      console.log(error.message);
+      alert(error.message);
+    }
+    return bandera;
+  };
+
+
   handleYear = (e) => {
     const Year = e.target.value;
     this.setState(
@@ -184,15 +273,20 @@ class VentasBI extends Component {
         if ((await this.getConsultaVentasPorMes()) === false) return;
         if ((await this.getConsultaEgresosPorMes()) === false) return;
 
+        if ((await this.getConsultaVentasMelatePorMes()) === false) return;
+        if ((await this.getConsultaPagosMelatePorMes()) === false) return;
+    
+        if ((await this.getGastosInversionesPorAnio()) === false) return;
+    
         this.handleUtilidadPerdida();
         this.handleArrayLineChart();
         this.handleArrayLineChartMelate();
+
       }
     );
   };
 
   handleUtilidadPerdida = () => {
-
     //VENTAS
     const ventas = this.state.ventas;
     const egresos = this.state.egresos;
@@ -204,9 +298,6 @@ class VentasBI extends Component {
       utilidadPerdida.push(resultado);
     }
 
-
-
-
     resultado = 0;
     let utilidadPerdidaLimpiaduriaPorcentaje = [];
     for (let i = 0; i < ventas.length; i++) {
@@ -216,11 +307,6 @@ class VentasBI extends Component {
       }
       utilidadPerdidaLimpiaduriaPorcentaje.push(resultado);
     }
-
-
-
-
-
 
     //MELATE
     const ventasMelate = this.state.ventasMelate;
@@ -369,6 +455,23 @@ class VentasBI extends Component {
     });
   };
 
+  handleOdenamientoGastosInversiones = (e) =>{
+    let banderaOrdenamiento = e.target.checked
+    let data = this.state.dataGastosInversiones
+
+    if(banderaOrdenamiento){
+      data = data.sort((a,b) => a.Total - b.Total)
+    }else{
+      data = data.sort((a,b) => a.id - b.id)
+    }
+
+    this.setState({
+      dataGastosInversiones: data,
+      banderaOrdenamiento: !this.state.banderaOrdenamiento,
+    })
+
+  }
+
   numberWithCommas(x) {
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   }
@@ -507,12 +610,151 @@ class VentasBI extends Component {
         </table>
         <br />
         <LineChart data={this.state.dataMelate} />
+
+
+        <br />
+        <h3>Gastos e Inversión</h3>
+        <span id="idSpanOrdenamientoTotal">
+          <label htmlFor="idOrdenamientoTotal">Ordenar Por Total</label>
+          <input onChange={this.handleOdenamientoGastosInversiones} type="checkbox" id="idOrdenamientoTotal" checked={this.state.banderaOrdenamiento}/>
+        </span>
+
+        <table style={{ width: "95%", marginTop:"-20px" }}>
+          <thead>
+            <tr>
+              <th>Cuenta Contable</th>
+              <th>Subcuenta Contable</th>
+              {this.state.Meses.map((element, i) => (
+                <th key={i}>{element}</th>
+                ))}
+                <th>% Simple</th>
+            </tr>
+          </thead>
+          <tbody>
+              {this.state.dataGastosInversiones.map((element, i) => (
+            <tr key={i}>
+                <td style={{textAlign:"left"}}>{element.CuentaContable}</td>
+                <td style={{textAlign:"left"}}>{element.SubcuentaContable}</td>
+                <td >
+                  {this.numberWithCommas(Math.abs(parseFloat(element.Ene)).toFixed(0))}
+                </td>
+                <td >
+                  {this.numberWithCommas(Math.abs(parseFloat(element.Feb)).toFixed(0))}
+                </td>
+                <td >
+                  {this.numberWithCommas(Math.abs(parseFloat(element.Mar)).toFixed(0))}
+                </td>
+                <td >
+                  {this.numberWithCommas(Math.abs(parseFloat(element.Abr)).toFixed(0))}
+                </td>
+                <td >
+                  {this.numberWithCommas(Math.abs(parseFloat(element.May)).toFixed(0))}
+                </td>
+                <td >
+                  {this.numberWithCommas(Math.abs(parseFloat(element.Jun)).toFixed(0))}
+                </td>
+                <td >
+                  {this.numberWithCommas(Math.abs(parseFloat(element.Jul)).toFixed(0))}
+                </td>
+                <td >
+                  {this.numberWithCommas(Math.abs(parseFloat(element.Ago)).toFixed(0))}
+                </td>
+                <td >
+                  {this.numberWithCommas(Math.abs(parseFloat(element.Sep)).toFixed(0))}
+                </td>
+                <td >
+                  {this.numberWithCommas(Math.abs(parseFloat(element.Oct)).toFixed(0))}
+                </td>
+                <td >
+                  {this.numberWithCommas(Math.abs(parseFloat(element.Nov)).toFixed(0))}
+                </td>
+                <td >
+                  {this.numberWithCommas(Math.abs(parseFloat(element.Dic)).toFixed(0))}
+                </td>
+                <td >
+                  <b>{this.numberWithCommas(Math.abs(parseFloat(element.Total)).toFixed(0))}</b>
+                </td>
+                <td >
+                  {this.numberWithCommas(Math.abs(parseFloat(element.PorcentajeSimple)).toFixed(2))+"%"}
+                </td>
+            </tr>
+              ))}
+          </tbody>
+        </table>
+
+
+
+        <table style={{ width: "95%" }}>
+          <thead>
+            <tr>
+              <th>Cuenta Contable</th>
+              <th>Subcuenta Contable</th>
+              {this.state.Meses.map((element, i) => (
+                <th key={i}>{element}</th>
+                ))}
+                <th>% Simple</th>
+            </tr>
+          </thead>
+          <tbody>
+              {this.state.dataGastosInversionesTotales.map((element, i) => (
+            <tr key={i}>
+                <td style={{textAlign:"left"}}>{element.CuentaContable}</td>
+                <td style={{textAlign:"left"}}>{element.SubcuentaContable}</td>
+                <td >
+                  {this.numberWithCommas(Math.abs(parseFloat(element.Ene)).toFixed(0))}
+                </td>
+                <td >
+                  {this.numberWithCommas(Math.abs(parseFloat(element.Feb)).toFixed(0))}
+                </td>
+                <td >
+                  {this.numberWithCommas(Math.abs(parseFloat(element.Mar)).toFixed(0))}
+                </td>
+                <td >
+                  {this.numberWithCommas(Math.abs(parseFloat(element.Abr)).toFixed(0))}
+                </td>
+                <td >
+                  {this.numberWithCommas(Math.abs(parseFloat(element.May)).toFixed(0))}
+                </td>
+                <td >
+                  {this.numberWithCommas(Math.abs(parseFloat(element.Jun)).toFixed(0))}
+                </td>
+                <td >
+                  {this.numberWithCommas(Math.abs(parseFloat(element.Jul)).toFixed(0))}
+                </td>
+                <td >
+                  {this.numberWithCommas(Math.abs(parseFloat(element.Ago)).toFixed(0))}
+                </td>
+                <td >
+                  {this.numberWithCommas(Math.abs(parseFloat(element.Sep)).toFixed(0))}
+                </td>
+                <td >
+                  {this.numberWithCommas(Math.abs(parseFloat(element.Oct)).toFixed(0))}
+                </td>
+                <td >
+                  {this.numberWithCommas(Math.abs(parseFloat(element.Nov)).toFixed(0))}
+                </td>
+                <td >
+                  {this.numberWithCommas(Math.abs(parseFloat(element.Dic)).toFixed(0))}
+                </td>
+                <td >
+                  <b>{this.numberWithCommas(Math.abs(parseFloat(element.Total)).toFixed(0))}</b>
+                </td>
+                <td >
+                  {this.numberWithCommas(Math.abs(parseFloat(element.PorcentajeSimple)).toFixed(2))+"%"}
+                </td>
+            </tr>
+              ))}
+          </tbody>
+        </table>
+        <br />
+        <br />
       </div>
     );
   };
 
   render() {
-    return this.state.Years.length > 0 ? (
+    // return this.state.Years.length > 0 ? (
+    return this.state.dataMelate !== []  ? (
       <this.handleRender />
     ) : (
       <h4>Loading . . .</h4>
