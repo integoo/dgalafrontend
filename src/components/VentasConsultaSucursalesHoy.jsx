@@ -210,12 +210,17 @@ class VentasConsultaSucursalesHoy extends React.Component{
                 LogroTotal = GranTotalVentaProyectada /CuotaTotal * 100 
             }
 
+            let FechaM = "????"
+            if (data.length !== 0){
+                FechaM = data[0].FechaMaxima
+            }
             this.setState({
                 VentasTendenciaLimpiaduria: data,
                 GranTotalVentaProyectadaLimpiaduria: GranTotalVentaProyectada,
                 CuotaTotalLimpiaduria: CuotaTotal,
                 LogroTotalLimpiaduria: LogroTotal,
-                FechaMaximaLimpiaduria: data[0].FechaMaxima,
+                // FechaMaximaLimpiaduria: data[0].FechaMaxima,
+                FechaMaximaLimpiaduria: FechaM,
 
             })
 
@@ -278,12 +283,18 @@ class VentasConsultaSucursalesHoy extends React.Component{
           LogroTotal = GranTotalVentaProyectada /CuotaTotal * 100 
       }
 
+      let FechaM = "????"
+      if(data.length !==0 ){
+          FechaM = data[0].FechaMaxima
+      }
+
       this.setState({
           VentasTendenciaMelate: data,
           GranTotalVentaProyectadaMelate: GranTotalVentaProyectada,
           CuotaTotalMelate: CuotaTotal,
           LogroTotalMelate: LogroTotal,
-          FechaMaximaMelate: data[0].FechaMaxima,
+        //   FechaMaximaMelate: data[0].FechaMaxima,
+          FechaMaximaMelate: FechaM,
       })
 
   }catch(error){
