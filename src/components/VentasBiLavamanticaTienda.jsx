@@ -117,7 +117,6 @@ class VentasBiLavamanticaTienda extends React.Component{
 
 
 //############################## % Utilidad Neta ###############################
-            monto = 0
             json={
                 Transaccion:"% UtilidadNeta",
                 }
@@ -327,17 +326,17 @@ class VentasBiLavamanticaTienda extends React.Component{
         return bandera;
       };
 
-      handleYear = async(e) =>{
+      handleYear = (e) =>{
         const Year = e.target.value
 
         this.setState({
             Year: Year,
+        },async()=>{
+            if ((await this.getDetallesLavamatica()) === false) return;
+            if ((await this.getDetallesTienda()) === false) return;
+            if ((await this.getDetallesDecorafiestas()) === false) return;
         })
 
-        if ((await this.getConsultaAnios()) === false) return;
-        if ((await this.getDetallesLavamatica()) === false) return;
-        if ((await this.getDetallesTienda()) === false) return;
-        if ((await this.getDetallesDecorafiestas()) === false) return;
 
       }
     
