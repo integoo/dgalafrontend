@@ -196,7 +196,7 @@ class Menu extends Component {
                       
                     <div className="dropdown-divider"></div>
                     <Link to="/ventas/bi" style={linkStyle}>
-                      <span className="dropdown-item">Inteligencia de Negocio/BI</span>
+                      <span className="dropdown-item">Inteligencia de Negocio/BI Limpiaduría</span>
                     </Link>
                     <Link to="/ventas/VentasBiLavamaticaTienda" style={linkStyle}>
                       <span className="dropdown-item">Inteligencia de Negocio/BI Lavamatica/Tienda</span>
