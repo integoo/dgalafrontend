@@ -326,6 +326,20 @@ class VentasBiLavamanticaTienda extends React.Component{
         }
         return bandera;
       };
+
+      handleYear = async(e) =>{
+        const Year = e.target.value
+
+        this.setState({
+            Year: Year,
+        })
+
+        if ((await this.getConsultaAnios()) === false) return;
+        if ((await this.getDetallesLavamatica()) === false) return;
+        if ((await this.getDetallesTienda()) === false) return;
+        if ((await this.getDetallesDecorafiestas()) === false) return;
+
+      }
     
 
     numberWithCommas(x) {
@@ -335,13 +349,14 @@ class VentasBiLavamanticaTienda extends React.Component{
     handleRender = () =>{
         return(
             <div className="main">
-                <span>Ejercicio</span>
-                <select>
-                    {this.state.Years.map((element,i) =>
-                        <option>{element.Year}</option>
-
-                    )}
-                </select>
+                <span id="idYears">Ejercicio
+                    <select onChange={this.handleYear} value={this.state.Year} className="ml-1">
+                        {this.state.Years.map((element,i) =>
+                            <option key={i} value={element.Year}>{element.Year}</option>
+                            
+                            )}
+                    </select>
+                </span>
 
                 <h4>Inteligencia de Negocios Lavamática</h4>
                 <table>
