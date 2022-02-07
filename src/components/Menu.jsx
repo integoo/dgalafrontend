@@ -21,6 +21,7 @@ import InventarioCiclico from './InventarioCiclico'
 import InventarioPerpetuo from './InventarioPerpetuo'
 import VentasConsultaFechaProducto from './VentasConsultaFechaProducto'
 import VentasConsultaCategorias from "./VentasConsultaCategorias";
+import VentasBiLavamaticaTienda from "./VentasBiLavamanticaTienda";
 
 
 class Menu extends Component {
@@ -197,6 +198,12 @@ class Menu extends Component {
                     <Link to="/ventas/bi" style={linkStyle}>
                       <span className="dropdown-item">Inteligencia de Negocio/BI</span>
                     </Link>
+                    <Link to="/ventas/VentasBiLavamaticaTienda" style={linkStyle}>
+                      <span className="dropdown-item">Inteligencia de Negocio/BI Lavamatica/Tienda</span>
+                    </Link>
+
+
+                    
                   </div>
                 </li>
               </Link>
@@ -357,6 +364,7 @@ class Menu extends Component {
           <Route path='/ventas/consulta' component={() => <VentasConsulta accessToken={this.state.accessToken} url={this.state.url} Administrador={this.props.Administrador}/>} />
           <Route path='/ventas/consultafechaproductos' component={() => <VentasConsultaFechaProducto accessToken={this.state.accessToken} url={this.state.url} Administrador={this.props.Administrador}/>} />
           <Route path='/ventas/bi' component={() => <VentasBI accessToken={this.state.accessToken} url={this.state.url} Administrador={this.props.Administrador}/>} />
+          <Route path='/ventas/VentasBiLavamaticaTienda' component={() => <VentasBiLavamaticaTienda accessToken={this.state.accessToken} url={this.state.url} Administrador={this.props.Administrador}/>} />
           <Route path="/inventario/consultaarticulo" component={() => <ConsultaArticulo accessToken={this.state.accessToken} url={this.state.url} Administrador={this.props.Administrador} />} />
           <Route path='/inventario/kardex' component={() => <Kardex accessToken={this.state.accessToken} url={this.state.url} Administrador={this.props.Administrador} />} />
           <Route path='/inventario/ajustesinventario' component={() => <AjustesInventario accessToken={this.state.accessToken} url={this.state.url} Administrador={this.props.Administrador} />} />
