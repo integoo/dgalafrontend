@@ -347,6 +347,7 @@ class VentasBI extends Component {
     this.setState(
       {
         Year: Year,
+        dataLimpiaduriaMelateRentasOtrosUtilidad:[],
       },
       async () => {
         if ((await this.getConsultaVentasPorMes()) === false) return;
@@ -870,58 +871,6 @@ class VentasBI extends Component {
                   <td>{this.numberWithCommas(parseFloat(element.Total).toFixed(0))}</td>
                 </tr>
                 ))}
-            {/* {this.state.dataLimpiaduriaMelateRentasOtrosUtilidad.map((element,i) => {
-              <tr>
-                
-                <td>element.Negocio</td>
-                <td>{element.Ene}</td>
-              </tr>
-              })} */}
-            
-            {/* <tr>
-              <td style={{ textAlign: "center" }}>Ventas</td>
-              {this.state.ventas.map((element, i) => (
-                <td key={i}>
-                  {this.numberWithCommas(parseFloat(element.Monto).toFixed(0))}
-                </td>
-              ))}
-            </tr>
-            <tr>
-              <td style={{ textAlign: "center" }}>Egresos </td>
-              {this.state.egresos.map((element, i) => (
-                <td key={i}>
-                  {this.numberWithCommas(
-                    (parseFloat(element.Monto) * -1).toFixed(0)
-                  )}
-                </td>
-              ))}
-            </tr>
-            <tr>
-              <td style={{ textAlign: "center" }}>Utilidad </td>
-              {this.state.utilidadPerdida.map((element, i) => (
-                element >= 0 ?
-                <td key={i}>
-                  {this.numberWithCommas(parseFloat(element).toFixed(0))}
-                </td>
-                :
-                <td key={i} style={{color:"red"}}>
-                  {this.numberWithCommas(parseFloat(element).toFixed(0))}
-                </td>
-              ))}
-            </tr>
-            <tr>
-              <td style={{ textAlign: "center" }}>Utilidad % </td>
-              {this.state.utilidadPerdidaLimpiaduriaPorcentaje.map((element, i) => (
-                element > 0 ?
-                <td key={i}>
-                  {"% "+this.numberWithCommas((parseFloat(element) *100).toFixed(2))}
-                </td>
-                :
-                <td key={i} style={{color:"red"}}>
-                  {"% "+this.numberWithCommas((parseFloat(element) *100).toFixed(2))}
-                </td>
-              ))}
-            </tr> */}
           </tbody>
         </table>
         <br /> 
@@ -948,8 +897,6 @@ class VentasBI extends Component {
   };
 
   render() {
-    // return this.state.Years.length > 0 ? (
-    // return this.state.dataMelate !== []  ? (
     return this.state.dataLimpiaduriaMelateRentasOtrosUtilidad !== []  ? (
       <this.handleRender />
     ) : (
