@@ -835,12 +835,6 @@ class VentasBI extends Component {
 
 
 
-
-
-
-
-
-
         <h3>Resultados Limpiaduría, Melate, Rentas y Otros Ingresos (Utilidad)</h3>
 
         <table style={{ width: "95%" }}>
@@ -878,30 +872,16 @@ class VentasBI extends Component {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
       </div>
     );
   };
 
   render() {
-    return this.state.dataLimpiaduriaMelateRentasOtrosUtilidad !== []  ? (
+    return (
+      this.state.dataLimpiaduriaMelateRentasOtrosUtilidad.length > 0  ? 
       <this.handleRender />
-    ) : (
-      <h4>Loading . . .</h4>
-    );
+    : <h4>Loading . . .</h4>
+    )
   }
 }
 export default VentasBI;
