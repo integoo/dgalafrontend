@@ -94,7 +94,6 @@ class VentasBiLavamanticaTienda extends React.Component{
 
 
             let arregloRegistro = []
-            let monto = 0
             let json;
             
             json = this.handleMesesColumnas(data,'VentasConImpuesto')
@@ -109,6 +108,10 @@ class VentasBiLavamanticaTienda extends React.Component{
             arregloRegistro.push(json)
             json = this.handleMesesColumnas(data,'Egresos')
             arregloRegistro.push(json)
+
+            json = this.handleMesesColumnas(data,'ComisionesVenta')
+            arregloRegistro.push(json)
+
             json = this.handleMesesColumnas(data,'UtilidadNeta')
             arregloRegistro.push(json)
 
@@ -170,7 +173,6 @@ class VentasBiLavamanticaTienda extends React.Component{
 
 
             let arregloRegistro = []
-            let monto = 0
             let json;
             
             json = this.handleMesesColumnas(data,'VentasConImpuesto')
@@ -193,7 +195,6 @@ class VentasBiLavamanticaTienda extends React.Component{
 
 
 //############################## % Utilidad Neta ###############################
-            monto = 0
             json={
                 Transaccion:"% UtilidadNeta",
                 }
@@ -245,7 +246,6 @@ class VentasBiLavamanticaTienda extends React.Component{
 
 
             let arregloRegistro = []
-            let monto = 0
             let json;
             
             json = this.handleMesesColumnas(data,'VentasConImpuesto')
@@ -268,7 +268,6 @@ class VentasBiLavamanticaTienda extends React.Component{
 
 
 //############################## % Utilidad Neta ###############################
-            monto = 0
             json={
                 Transaccion:"% UtilidadNeta",
                 }
