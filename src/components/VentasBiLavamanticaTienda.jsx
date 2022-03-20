@@ -11,6 +11,7 @@ class VentasBiLavamanticaTienda extends React.Component{
             detallesLavamatica:[],
             detallesTienda:[],
             detallesDecorafiestas:[],
+            detallesInventarioPerpetuoHistoria:[],
         }
     }
 
@@ -20,6 +21,7 @@ class VentasBiLavamanticaTienda extends React.Component{
         if ((await this.getDetallesLavamatica()) === false) return;
         if ((await this.getDetallesTienda()) === false) return;
         if ((await this.getDetallesDecorafiestas()) === false) return;
+        if ((await this.getDetallesInventarioPerpetuoHistoria()) === false) return;
 
     }
 
@@ -298,6 +300,34 @@ class VentasBiLavamanticaTienda extends React.Component{
     }
 
 
+    getDetallesInventarioPerpetuoHistoria = async () => {
+        const year = this.state.Year
+        const url = this.props.url+`/api/consultainvnetarioperpetuohistoriaporperiodo/${year}`
+        let bandera = false;
+        try{
+            const response = await fetch(url, {
+                headers:{
+                    Authorization:`Bearer ${this.props.accessToken}`,
+                },
+            });
+            const data = await response.json()
+            if(data.error){
+                console.log(data.error)
+                alert(data.error)
+                return
+            }
+
+            bandera = true;
+
+            this.setState({
+                detallesInventarioPerpetuoHistoria: data,
+            })
+        }catch(error){
+            console.log(error.message)
+            alert(error.message)
+        }
+        return bandera
+    }
 
 
     getConsultaAnios = async () => {
@@ -334,6 +364,7 @@ class VentasBiLavamanticaTienda extends React.Component{
             if ((await this.getDetallesLavamatica()) === false) return;
             if ((await this.getDetallesTienda()) === false) return;
             if ((await this.getDetallesDecorafiestas()) === false) return;
+            if ((await this.getDetallesInventarioPerpetuoHistoria()) === false) return;
         })
 
 
@@ -495,10 +526,54 @@ class VentasBiLavamanticaTienda extends React.Component{
                                 </tr>
                             ))
                             : null}
-
-                            
                     </tbody>
                 </table>
+
+                <br />
+                <br />
+
+                <h4>Análisis de Inventario Perpetuo Historia</h4>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Transacción</th>
+                            <th>Ene</th>
+                            <th>Feb</th>
+                            <th>Mar</th>
+                            <th>Abr</th>
+                            <th>May</th>
+                            <th>Jun</th>
+                            <th>Jul</th>
+                            <th>Ago</th>
+                            <th>Sep</th>
+                            <th>Oct</th>
+                            <th>Nov</th>
+                            <th>Dic</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {this.state.detallesInventarioPerpetuoHistoria.length > 0 ? 
+                            this.state.detallesInventarioPerpetuoHistoria.map((element,i) =>(
+                                <tr key={i}>
+                                        <td>{this.numberWithCommas(element.Transaccion)}</td>
+                                        <td>{this.numberWithCommas(parseFloat(element.Ene).toFixed(0))}</td>
+                                        <td>{this.numberWithCommas(parseFloat(element.Feb).toFixed(0))}</td>
+                                        <td>{this.numberWithCommas(parseFloat(element.Mar).toFixed(0))}</td>
+                                        <td>{this.numberWithCommas(parseFloat(element.Abr).toFixed(0))}</td>
+                                        <td>{this.numberWithCommas(parseFloat(element.May).toFixed(0))}</td>
+                                        <td>{this.numberWithCommas(parseFloat(element.Jun).toFixed(0))}</td>
+                                        <td>{this.numberWithCommas(parseFloat(element.Jul).toFixed(0))}</td>
+                                        <td>{this.numberWithCommas(parseFloat(element.Ago).toFixed(0))}</td>
+                                        <td>{this.numberWithCommas(parseFloat(element.Sep).toFixed(0))}</td>
+                                        <td>{this.numberWithCommas(parseFloat(element.Oct).toFixed(0))}</td>
+                                        <td>{this.numberWithCommas(parseFloat(element.Nov).toFixed(0))}</td>
+                                        <td>{this.numberWithCommas(parseFloat(element.Dic).toFixed(0))}</td>
+                                </tr>
+                            ))
+                            : null}
+                    </tbody>
+                </table>
+
                 <br/>
                 <br/>
                 <br/>
