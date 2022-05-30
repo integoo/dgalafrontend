@@ -125,20 +125,19 @@ class VentasBiLavamanticaTienda extends React.Component{
             json={
                 Transaccion:"% UtilidadNeta",
                 }
-            json.Ene = arregloRegistro[6].Ene / arregloRegistro[2].Ene *100 || 0
-            json.Feb = arregloRegistro[6].Feb / arregloRegistro[2].Feb *100 || 0
-            json.Mar = arregloRegistro[6].Mar / arregloRegistro[2].Mar *100 || 0
-            json.Abr = arregloRegistro[6].Abr / arregloRegistro[2].Abr *100 || 0
-            json.May = arregloRegistro[6].May / arregloRegistro[2].May *100 || 0
-            json.Jun = arregloRegistro[6].Jun / arregloRegistro[2].Jun *100 || 0
-            json.Jul = arregloRegistro[6].Jul / arregloRegistro[2].Jul *100 || 0
-            json.Ago = arregloRegistro[6].Ago / arregloRegistro[2].Ago *100 || 0
-            json.Sep = arregloRegistro[6].Sep / arregloRegistro[2].Sep *100 || 0
-            json.Oct = arregloRegistro[6].Oct / arregloRegistro[2].Oct *100 || 0
-            json.Nov = arregloRegistro[6].Nov / arregloRegistro[2].Nov *100 || 0
-            json.Dic = arregloRegistro[6].Dic / arregloRegistro[2].Dic *100 || 0
-            json.Total = arregloRegistro[6].Total / arregloRegistro[2].Total *100 || 0
-
+            json.Ene = arregloRegistro[7].Ene / arregloRegistro[2].Ene *100 || 0
+            json.Feb = arregloRegistro[7].Feb / arregloRegistro[2].Feb *100 || 0
+            json.Mar = arregloRegistro[7].Mar / arregloRegistro[2].Mar *100 || 0
+            json.Abr = arregloRegistro[7].Abr / arregloRegistro[2].Abr *100 || 0
+            json.May = arregloRegistro[7].May / arregloRegistro[2].May *100 || 0
+            json.Jun = arregloRegistro[7].Jun / arregloRegistro[2].Jun *100 || 0
+            json.Jul = arregloRegistro[7].Jul / arregloRegistro[2].Jul *100 || 0
+            json.Ago = arregloRegistro[7].Ago / arregloRegistro[2].Ago *100 || 0
+            json.Sep = arregloRegistro[7].Sep / arregloRegistro[2].Sep *100 || 0
+            json.Oct = arregloRegistro[7].Oct / arregloRegistro[2].Oct *100 || 0
+            json.Nov = arregloRegistro[7].Nov / arregloRegistro[2].Nov *100 || 0
+            json.Dic = arregloRegistro[7].Dic / arregloRegistro[2].Dic *100 || 0
+            json.Total = arregloRegistro[7].Total / arregloRegistro[2].Total *100 || 0
             arregloRegistro.push(json)
 
 
@@ -410,22 +409,25 @@ class VentasBiLavamanticaTienda extends React.Component{
                     <tbody>
                         {this.state.detallesLavamatica.length > 0 ? 
                                 this.state.detallesLavamatica.map((element,i) =>(
-
                                     <tr key={i}>
                                         <td>{this.numberWithCommas(element.Transaccion)}</td>
-                                        <td>{this.numberWithCommas(parseFloat(element.Ene).toFixed(0))}</td>
-                                        <td>{this.numberWithCommas(parseFloat(element.Feb).toFixed(0))}</td>
-                                        <td>{this.numberWithCommas(parseFloat(element.Mar).toFixed(0))}</td>
-                                        <td>{this.numberWithCommas(parseFloat(element.Abr).toFixed(0))}</td>
-                                        <td>{this.numberWithCommas(parseFloat(element.May).toFixed(0))}</td>
-                                        <td>{this.numberWithCommas(parseFloat(element.Jun).toFixed(0))}</td>
-                                        <td>{this.numberWithCommas(parseFloat(element.Jul).toFixed(0))}</td>
-                                        <td>{this.numberWithCommas(parseFloat(element.Ago).toFixed(0))}</td>
-                                        <td>{this.numberWithCommas(parseFloat(element.Sep).toFixed(0))}</td>
-                                        <td>{this.numberWithCommas(parseFloat(element.Oct).toFixed(0))}</td>
-                                        <td>{this.numberWithCommas(parseFloat(element.Nov).toFixed(0))}</td>
-                                        <td>{this.numberWithCommas(parseFloat(element.Dic).toFixed(0))}</td>
-                                        <td>{this.numberWithCommas(parseFloat(element.Total).toFixed(0))}</td>
+                                        <td>{this.numberWithCommas(parseFloat(element.Ene).toFixed(i === 8 ? 2 : 0))}</td>
+                                        <td>{this.numberWithCommas(parseFloat(element.Feb).toFixed(i === 8 ? 2 : 0))}</td>
+                                        <td>{this.numberWithCommas(parseFloat(element.Mar).toFixed(i === 8 ? 2 : 0))}</td>
+                                        <td>{this.numberWithCommas(parseFloat(element.Abr).toFixed(i === 8 ? 2 : 0))}</td>
+                                        <td>{this.numberWithCommas(parseFloat(element.May).toFixed(i === 8 ? 2 : 0))}</td>
+                                        <td>{this.numberWithCommas(parseFloat(element.Jun).toFixed(i === 8 ? 2 : 0))}</td>
+                                        <td>{this.numberWithCommas(parseFloat(element.Jul).toFixed(i === 8 ? 2 : 0))}</td>
+                                        <td>{this.numberWithCommas(parseFloat(element.Ago).toFixed(i === 8 ? 2 : 0))}</td>
+                                        <td>{this.numberWithCommas(parseFloat(element.Sep).toFixed(i === 8 ? 2 : 0))}</td>
+                                        <td>{this.numberWithCommas(parseFloat(element.Oct).toFixed(i === 8 ? 2 : 0))}</td>
+                                        <td>{this.numberWithCommas(parseFloat(element.Nov).toFixed(i === 8 ? 2 : 0))}</td>
+                                        <td>{this.numberWithCommas(parseFloat(element.Dic).toFixed(i === 8 ? 2 : 0))}</td>
+                                        <td>{this.numberWithCommas(parseFloat(element.Total).toFixed(i === 8 ? 2 : 0))}</td>
+                                        
+                                        
+                                        
+
                                 </tr>
                             ))
                             : null}
@@ -461,19 +463,19 @@ class VentasBiLavamanticaTienda extends React.Component{
                             this.state.detallesTienda.map((element,i) =>(
                                 <tr key={i}>
                                         <td>{this.numberWithCommas(element.Transaccion)}</td>
-                                        <td>{this.numberWithCommas(parseFloat(element.Ene).toFixed(0))}</td>
-                                        <td>{this.numberWithCommas(parseFloat(element.Feb).toFixed(0))}</td>
-                                        <td>{this.numberWithCommas(parseFloat(element.Mar).toFixed(0))}</td>
-                                        <td>{this.numberWithCommas(parseFloat(element.Abr).toFixed(0))}</td>
-                                        <td>{this.numberWithCommas(parseFloat(element.May).toFixed(0))}</td>
-                                        <td>{this.numberWithCommas(parseFloat(element.Jun).toFixed(0))}</td>
-                                        <td>{this.numberWithCommas(parseFloat(element.Jul).toFixed(0))}</td>
-                                        <td>{this.numberWithCommas(parseFloat(element.Ago).toFixed(0))}</td>
-                                        <td>{this.numberWithCommas(parseFloat(element.Sep).toFixed(0))}</td>
-                                        <td>{this.numberWithCommas(parseFloat(element.Oct).toFixed(0))}</td>
-                                        <td>{this.numberWithCommas(parseFloat(element.Nov).toFixed(0))}</td>
-                                        <td>{this.numberWithCommas(parseFloat(element.Dic).toFixed(0))}</td>
-                                        <td>{this.numberWithCommas(parseFloat(element.Total).toFixed(0))}</td>
+                                        <td>{this.numberWithCommas(parseFloat(element.Ene).toFixed(i === 7 ? 2 : 0))}</td>
+                                        <td>{this.numberWithCommas(parseFloat(element.Feb).toFixed(i === 7 ? 2 : 0))}</td>
+                                        <td>{this.numberWithCommas(parseFloat(element.Mar).toFixed(i === 7 ? 2 : 0))}</td>
+                                        <td>{this.numberWithCommas(parseFloat(element.Abr).toFixed(i === 7 ? 2 : 0))}</td>
+                                        <td>{this.numberWithCommas(parseFloat(element.May).toFixed(i === 7 ? 2 : 0))}</td>
+                                        <td>{this.numberWithCommas(parseFloat(element.Jun).toFixed(i === 7 ? 2 : 0))}</td>
+                                        <td>{this.numberWithCommas(parseFloat(element.Jul).toFixed(i === 7 ? 2 : 0))}</td>
+                                        <td>{this.numberWithCommas(parseFloat(element.Ago).toFixed(i === 7 ? 2 : 0))}</td>
+                                        <td>{this.numberWithCommas(parseFloat(element.Sep).toFixed(i === 7 ? 2 : 0))}</td>
+                                        <td>{this.numberWithCommas(parseFloat(element.Oct).toFixed(i === 7 ? 2 : 0))}</td>
+                                        <td>{this.numberWithCommas(parseFloat(element.Nov).toFixed(i === 7 ? 2 : 0))}</td>
+                                        <td>{this.numberWithCommas(parseFloat(element.Dic).toFixed(i === 7 ? 2 : 0))}</td>
+                                        <td>{this.numberWithCommas(parseFloat(element.Total).toFixed(i === 7 ? 2 : 0))}</td>
                                 </tr>
                             ))
                             : null}
@@ -510,19 +512,19 @@ class VentasBiLavamanticaTienda extends React.Component{
                             this.state.detallesDecorafiestas.map((element,i) =>(
                                 <tr key={i}>
                                         <td>{this.numberWithCommas(element.Transaccion)}</td>
-                                        <td>{this.numberWithCommas(parseFloat(element.Ene).toFixed(0))}</td>
-                                        <td>{this.numberWithCommas(parseFloat(element.Feb).toFixed(0))}</td>
-                                        <td>{this.numberWithCommas(parseFloat(element.Mar).toFixed(0))}</td>
-                                        <td>{this.numberWithCommas(parseFloat(element.Abr).toFixed(0))}</td>
-                                        <td>{this.numberWithCommas(parseFloat(element.May).toFixed(0))}</td>
-                                        <td>{this.numberWithCommas(parseFloat(element.Jun).toFixed(0))}</td>
-                                        <td>{this.numberWithCommas(parseFloat(element.Jul).toFixed(0))}</td>
-                                        <td>{this.numberWithCommas(parseFloat(element.Ago).toFixed(0))}</td>
-                                        <td>{this.numberWithCommas(parseFloat(element.Sep).toFixed(0))}</td>
-                                        <td>{this.numberWithCommas(parseFloat(element.Oct).toFixed(0))}</td>
-                                        <td>{this.numberWithCommas(parseFloat(element.Nov).toFixed(0))}</td>
-                                        <td>{this.numberWithCommas(parseFloat(element.Dic).toFixed(0))}</td>
-                                        <td>{this.numberWithCommas(parseFloat(element.Total).toFixed(0))}</td>
+                                        <td>{this.numberWithCommas(parseFloat(element.Ene).toFixed(i === 7 ? 2 : 0))}</td>
+                                        <td>{this.numberWithCommas(parseFloat(element.Feb).toFixed(i === 7 ? 2 : 0))}</td>
+                                        <td>{this.numberWithCommas(parseFloat(element.Mar).toFixed(i === 7 ? 2 : 0))}</td>
+                                        <td>{this.numberWithCommas(parseFloat(element.Abr).toFixed(i === 7 ? 2 : 0))}</td>
+                                        <td>{this.numberWithCommas(parseFloat(element.May).toFixed(i === 7 ? 2 : 0))}</td>
+                                        <td>{this.numberWithCommas(parseFloat(element.Jun).toFixed(i === 7 ? 2 : 0))}</td>
+                                        <td>{this.numberWithCommas(parseFloat(element.Jul).toFixed(i === 7 ? 2 : 0))}</td>
+                                        <td>{this.numberWithCommas(parseFloat(element.Ago).toFixed(i === 7 ? 2 : 0))}</td>
+                                        <td>{this.numberWithCommas(parseFloat(element.Sep).toFixed(i === 7 ? 2 : 0))}</td>
+                                        <td>{this.numberWithCommas(parseFloat(element.Oct).toFixed(i === 7 ? 2 : 0))}</td>
+                                        <td>{this.numberWithCommas(parseFloat(element.Nov).toFixed(i === 7 ? 2 : 0))}</td>
+                                        <td>{this.numberWithCommas(parseFloat(element.Dic).toFixed(i === 7 ? 2 : 0))}</td>
+                                        <td>{this.numberWithCommas(parseFloat(element.Total).toFixed(i === 7 ? 2 : 0))}</td>
                                 </tr>
                             ))
                             : null}
