@@ -48,7 +48,15 @@ class SelectSucursales extends React.Component{
 
 
     async getSucursales(){
-        const url = this.props.url + `/api/catalogos/10`
+        const clase = this.props.clase 
+        let api = ''
+        if (clase === 'todasyfisicas'){
+            api = `/api/catalogos/10todasyfisicas`
+        }else{
+            api = `/api/catalogos/10`
+        }
+        // const url = this.props.url + `/api/catalogos/10`
+        const url = this.props.url + api
         try{
             const response = await fetch(url,{
                 headers:{

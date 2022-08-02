@@ -2,26 +2,42 @@ import React from 'react'
 
 import './VentasBiLavamaticaTienda.css'
 
+import SelectSucursales from './cmpnt/SelectSucursales'
+
 class VentasBiLavamanticaTienda extends React.Component{
     constructor(props){
         super(props)
         this.state = {
             Years: [],
             Year: 0,
+            // SucursalId: sessionStorage.getItem("SucursalId"),
+            SucursalId: 0,
             detallesLavamatica:[],
             detallesTienda:[],
             detallesDecorafiestas:[],
             detallesInventarioPerpetuoHistoria:[],
+            lavadassecadasserviciosSanPedro:[],
         }
     }
 
     componentDidMount = async()=>{
 
+
         if ((await this.getConsultaAnios()) === false) return;
-        if ((await this.getDetallesLavamatica()) === false) return;
-        if ((await this.getDetallesTienda()) === false) return;
-        if ((await this.getDetallesDecorafiestas()) === false) return;
-        if ((await this.getDetallesInventarioPerpetuoHistoria()) === false) return;
+        // if ((await this.getDetallesLavamatica()) === false) return;
+        // if ((await this.getLavadasSecadasServicios(SucursalId)) === false) return;
+        // if ((await this.getDetallesTienda()) === false) return;
+        // if ((await this.getDetallesDecorafiestas()) === false) return;
+        // if ((await this.getDetallesInventarioPerpetuoHistoria()) === false) return;
+
+    }
+
+    handleSucursal = (SucursalId) =>{
+        this.setState({
+            SucursalId: SucursalId
+        })
+        // this.CodigoBarrasInput.current.handleRefSucursalId(SucursalId)
+        this.getLavadasSecadasServicios(SucursalId)
 
     }
 
@@ -143,6 +159,36 @@ class VentasBiLavamanticaTienda extends React.Component{
 
             this.setState({
                 detallesLavamatica: arregloRegistro,
+            })
+        }catch(error){
+            console.log(error.message)
+            alert(error.message)
+        }
+        return bandera
+    }
+
+
+    getLavadasSecadasServicios = async (SucursalId) => {
+        const year = this.state.Year
+        const url = this.props.url+`/api/lavadassecadasservicios/${SucursalId}/${year}`
+        let bandera = false;
+        try{
+            const response = await fetch(url, {
+                headers:{
+                    Authorization:`Bearer ${this.props.accessToken}`,
+                },
+            });
+            const data = await response.json()
+            if(data.error){
+                console.log(data.error)
+                alert(data.error)
+                return
+            }
+
+            bandera = true;
+
+            this.setState({
+                lavadassecadasserviciosSanPedro: data,
             })
         }catch(error){
             console.log(error.message)
@@ -345,6 +391,13 @@ class VentasBiLavamanticaTienda extends React.Component{
           this.setState({
             Years: data,
             Year: data[0].Year,
+          },async()=>{
+                const SucursalId = this.state.SucursalId
+                if ((await this.getDetallesLavamatica()) === false) return;
+                if ((await this.getLavadasSecadasServicios(SucursalId)) === false) return;
+                if ((await this.getDetallesTienda()) === false) return;
+                if ((await this.getDetallesDecorafiestas()) === false) return;
+                if ((await this.getDetallesInventarioPerpetuoHistoria()) === false) return;
           });
           bandera = true;
         } catch (error) {
@@ -360,6 +413,8 @@ class VentasBiLavamanticaTienda extends React.Component{
         this.setState({
             Year: Year,
         },async()=>{
+            const SucursalId = this.state.SucursalId
+            this.getLavadasSecadasServicios(SucursalId)
             if ((await this.getDetallesLavamatica()) === false) return;
             if ((await this.getDetallesTienda()) === false) return;
             if ((await this.getDetallesDecorafiestas()) === false) return;
@@ -438,6 +493,105 @@ class VentasBiLavamanticaTienda extends React.Component{
 
                 <br />
                 <br />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                <span id="idYears">Lavamática
+                    {/* <select onChange={this.handleYear} value={this.state.Year} className="ml-1">
+                        {this.state.Years.map((element,i) =>
+                            <option key={i} value={element.Year}>{element.Year}</option>
+                            
+                            )}
+                        </select> */}
+                        <span className="m-1">
+                        <SelectSucursales accessToken={this.props.accessToken} url={this.props.url} SucursalAsignada={sessionStorage.getItem("SucursalId")} onhandleSucursal={this.handleSucursal} Administrador={this.props.Administrador} clase={'todasyfisicas'}/>
+                        </span>
+                </span>
+
+
+                <h4>Estadística Lavadas, Secadas y Servicios</h4>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Transacción</th>
+                            <th>Ene</th>
+                            <th>Feb</th>
+                            <th>Mar</th>
+                            <th>Abr</th>
+                            <th>May</th>
+                            <th>Jun</th>
+                            <th>Jul</th>
+                            <th>Ago</th>
+                            <th>Sep</th>
+                            <th>Oct</th>
+                            <th>Nov</th>
+                            <th>Dic</th>
+                            <th>Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {this.state.lavadassecadasserviciosSanPedro.length > 0 ? 
+                                this.state.lavadassecadasserviciosSanPedro.map((element,i) =>(
+                                    <tr key={i}>
+                                        <td style={{textAlign:"left", width:"210px"}}>{this.numberWithCommas(element.Descripcion)}</td>
+                                        <td>{this.numberWithCommas(parseFloat(element.Ene))}</td>
+                                        <td>{this.numberWithCommas(parseFloat(element.Feb))}</td>
+                                        <td>{this.numberWithCommas(parseFloat(element.Mar))}</td>
+                                        <td>{this.numberWithCommas(parseFloat(element.Abr))}</td>
+                                        <td>{this.numberWithCommas(parseFloat(element.May))}</td>
+                                        <td>{this.numberWithCommas(parseFloat(element.Jun))}</td>
+                                        <td>{this.numberWithCommas(parseFloat(element.Jul))}</td>
+                                        <td>{this.numberWithCommas(parseFloat(element.Ago))}</td>
+                                        <td>{this.numberWithCommas(parseFloat(element.Sep))}</td>
+                                        <td>{this.numberWithCommas(parseFloat(element.Oct))}</td>
+                                        <td>{this.numberWithCommas(parseFloat(element.Nov))}</td>
+                                        <td>{this.numberWithCommas(parseFloat(element.Dic))}</td>
+                                        <td>{this.numberWithCommas(parseFloat(element.Total))}</td>
+                                                          
+
+                                </tr>
+                            ))
+                            : null}
+                                
+                            </tbody>
+                            </table>
+
+                <br />
+                <br />
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
                 <h4>Inteligencia de Negocios Tienda</h4>
                 <table>
                     <thead>

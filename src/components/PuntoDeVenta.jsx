@@ -53,9 +53,10 @@ class PuntoDeVenta extends React.Component {
       sucursales: arregloSucursales,
       SucursalId: arregloSucursales[0].SucursalId,
       ventasPendientes: arregloVentasPendientes,
+    },()=>{
+      document.querySelector(".CatalogoClientes").style.display = "none";
+      this.CodigoBarrasInput.current.focus();
     });
-    document.querySelector(".CatalogoClientes").style.display = "none";
-    this.CodigoBarrasInput.current.focus();
   }
 
   addRowHandlers = () => {

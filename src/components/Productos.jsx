@@ -36,7 +36,7 @@ class Productos extends React.Component{
             productosRecientes:[],
             checked: false, //"checked" es para prender el checkbox
         }
-        this.codigobarras = React.createRef();
+        this.codigobarrasInput = React.createRef();
         this.DescripcionInput = React.createRef();
         this.handleSubmit = this.handleSubmit.bind(this)
 
@@ -114,8 +114,9 @@ class Productos extends React.Component{
                 IEPS: 0.00,
                 productosRecientes: productosRecientes,
 
+            }, ()=>{
+                this.codigobarrasInput.current.focus();
             })
-            this.codigobarras.current.focus();
         }catch(error){
             console.log(error.message)
             alert(error.message)
@@ -187,7 +188,7 @@ class Productos extends React.Component{
                 CodigoBarras:"",
                 checked:false
             })
-            this.codigobarras.current.focus()
+            this.codigobarrasInput.current.focus()
         }
     }
 
@@ -362,7 +363,7 @@ class Productos extends React.Component{
             //document.querySelector('.checkboxsincodigobarras').checked =""
             //document.querySelector('.checkboxsincodigobarras').defaultChecked = false
             
-            this.codigobarras.current.focus();
+            this.codigobarrasInput.current.focus();
 
         }catch(error){
             console.log(error.message)
@@ -382,7 +383,7 @@ class Productos extends React.Component{
                                 <input value={this.state.CodigoId} id="codigo" name="codigo" size="6" style={{backgroundColor:"lightgray"}} autoComplete="off" readOnly/>
                                 <br />
                                 <label htmlFor="codigobarras">Código Barras</label>
-                                <input onChange={this.handleCodigoBarras} value={this.state.CodigoBarras} id="codigobarras" name="codigobarras" size="15" maxLength="13" autoComplete="off" ref={this.codigobarras} required style={{"textTransform":"uppercase"}}/>
+                                <input onChange={this.handleCodigoBarras} value={this.state.CodigoBarras} id="codigobarras" name="codigobarras" size="15" maxLength="13" autoComplete="off" ref={this.codigobarrasInput} required style={{"textTransform":"uppercase"}}/>
                                 {/* <input onChange={this.handleSinCodigoBarras} id="checked" name="checked" type="checkbox" className="ml-2" defaultChecked={this.state.checked} /> */}
                                 <input onChange={this.handleSinCodigoBarras} id="checked" name="checked" type="checkbox" className="ml-2" checked={this.state.checked} />
                                 <label htmlFor="" className="ml-1" style={{fontSize:".8rem"}}>Sin Código de Barras</label>

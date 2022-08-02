@@ -35,12 +35,12 @@ class EstadoResultadosLimpiaduria extends React.Component {
 
   async componentDidMount() {
     if ((await this.fechaActual()) === false) return;
-    if ((await this.getPeriodoAbierto()) === false) return;
-    if ((await this.getConsultaPeriodos()) === false) return;
-    if ((await this.getGastosInversionperiodo()) === false) return;
+    // if ((await this.getPeriodoAbierto()) === false) return;
+    // if ((await this.getConsultaPeriodos()) === false) return;
+    // if ((await this.getGastosInversionperiodo()) === false) return;
     
 
-    await this.handleEstadoDeResultados();
+    // await this.handleEstadoDeResultados();
   }
 
   fechaActual = async () => {
@@ -62,6 +62,9 @@ class EstadoResultadosLimpiaduria extends React.Component {
       Fecha = data[0].Fecha.substring(0, 10);
       this.setState({
         Fecha: Fecha,
+      },async()=>{
+        if ((await this.getPeriodoAbierto()) === false) return;
+
       });
       bandera = true;
     } catch (error) {
@@ -101,6 +104,8 @@ class EstadoResultadosLimpiaduria extends React.Component {
         PeriodoAbiertoPrimerDia: PeriodoAbiertoPrimerDia,
         PeriodoAbiertoUltimoDia: PeriodoAbiertoUltimoDia,
         //Fecha: Fecha,
+      },async()=>{
+        if ((await this.getConsultaPeriodos()) === false) return;
       });
       bandera = true;
     } catch (error) {
@@ -159,6 +164,8 @@ class EstadoResultadosLimpiaduria extends React.Component {
         //Periodo: data[0].Periodo,
         //PrimerDiaMes: data[0].PrimerDiaMes,
         //UltimoDiaMes: data[0].UltimoDiaMes,
+      },async()=>{
+        if ((await this.getGastosInversionperiodo()) === false) return;
       });
       bandera = true;
     } catch (error) {
@@ -193,6 +200,8 @@ class EstadoResultadosLimpiaduria extends React.Component {
       this.setState({
         detallesGastosInversiones: data,
         TotalMovimientos: suma,
+      },async()=>{
+        await this.handleEstadoDeResultados();
       })
       bandera = true
     }catch(error){

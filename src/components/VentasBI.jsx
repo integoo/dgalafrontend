@@ -45,19 +45,19 @@ class VentasBI extends Component {
 
   async componentDidMount() {
     if ((await this.getConsultaAnios()) === false) return;
-    if ((await this.getConsultaVentasPorMes()) === false) return;
-    if ((await this.getConsultaEgresosPorMes()) === false) return;
+    // if ((await this.getConsultaVentasPorMes()) === false) return;
+    // if ((await this.getConsultaEgresosPorMes()) === false) return;
     
-    if ((await this.getConsultaVentasMelatePorMes()) === false) return;
-    if ((await this.getConsultaPagosMelatePorMes()) === false) return;
+    // if ((await this.getConsultaVentasMelatePorMes()) === false) return;
+    // if ((await this.getConsultaPagosMelatePorMes()) === false) return;
 
-    if ((await this.getGastosInversionesPorAnio()) === false) return;
+    // if ((await this.getGastosInversionesPorAnio()) === false) return;
 
-    if ((await this.getLimpiaduriaMelateRentasOtrosUtilidad()) === false) return;
+    // if ((await this.getLimpiaduriaMelateRentasOtrosUtilidad()) === false) return;
 
-    this.handleUtilidadPerdida();
-    this.handleArrayLineChart();
-    this.handleArrayLineChartMelate();
+    // this.handleUtilidadPerdida();
+    // this.handleArrayLineChart();
+    // this.handleArrayLineChartMelate();
   }
 
   getConsultaAnios = async () => {
@@ -75,6 +75,20 @@ class VentasBI extends Component {
       this.setState({
         Years: data,
         Year: data[0].Year,
+      },async()=>{
+            if ((await this.getConsultaVentasPorMes()) === false) return;
+            if ((await this.getConsultaEgresosPorMes()) === false) return;
+            
+            if ((await this.getConsultaVentasMelatePorMes()) === false) return;
+            if ((await this.getConsultaPagosMelatePorMes()) === false) return;
+
+            if ((await this.getGastosInversionesPorAnio()) === false) return;
+
+            if ((await this.getLimpiaduriaMelateRentasOtrosUtilidad()) === false) return;
+
+            this.handleUtilidadPerdida();
+            this.handleArrayLineChart();
+            this.handleArrayLineChartMelate();
       });
       bandera = true;
     } catch (error) {

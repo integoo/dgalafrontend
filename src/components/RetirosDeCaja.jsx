@@ -98,13 +98,14 @@ class RetirosDeCaja extends React.Component {
       CantidadesEmpresa: ArregloCantidades,
       CantidadesSucursal: ArregloCantidadesSucursal,
       alerta: alerta,
+    },()=>{
+      this.retiroInput.current.focus();
     });
 
     setTimeout(() => {
       document.querySelector(".alert").style.display = "none";
     }, 1000);
 
-    this.retiroInput.current.focus();
   }
 
   handleAdministrador = async () => {

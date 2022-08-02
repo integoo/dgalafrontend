@@ -64,12 +64,12 @@ class VentasConsultaSucursalesHoy extends React.Component{
         }
 
         await this.handleConsultaPeriodos()
-        await this.handleVentasMesYTendencia(this.state.checkboxvalue)
-        await this.handleVentasMesYTendenciaLimpiaduria()
-        await this.handleVentasMesYTendenciaMelate()
+        // await this.handleVentasMesYTendencia()
+        // await this.handleVentasMesYTendenciaLimpiaduria()
+        // await this.handleVentasMesYTendenciaMelate()
     }
 
-    handleConsultaPeriodos = async() =>{
+   handleConsultaPeriodos = async() =>{
         const url = this.props.url + `/api/consultaperiodos`
         try{
             const response = await fetch(url, {
@@ -88,6 +88,11 @@ class VentasConsultaSucursalesHoy extends React.Component{
                 Periodo: data[0].Periodo,
                 PrimerDiaMes: data[0].PrimerDiaMes,
                 UltimoDiaMes: data[0].UltimoDiaMes,
+            },async()=>{
+                await this.handleVentasMesYTendencia()
+                await this.handleVentasMesYTendenciaLimpiaduria()
+                await this.handleVentasMesYTendenciaMelate()
+        
             })
         }catch(error){
             console.log(error.message)
@@ -96,8 +101,9 @@ class VentasConsultaSucursalesHoy extends React.Component{
 
     }
 
-    handleVentasMesYTendencia = async(incluyeHoy)=>{
+    handleVentasMesYTendencia = async()=>{
 
+        const incluyeHoy = this.state.checkboxvalue
         //SI EL PERIODO ES EL ACTUAL
         const FechaInicial = this.state.PrimerDiaMes 
         let FechaFinal = this.state.Ayer
@@ -322,13 +328,13 @@ class VentasConsultaSucursalesHoy extends React.Component{
             UltimoDiaMes: arregloTemp[0].UltimoDiaMes,
             disabledvalue: banderaValue,
             checkboxvalue: checkboxValue,
-        },()=>this.handleVentasMesYTendencia(this.state.checkboxvalue))
+        },()=>this.handleVentasMesYTendencia())
     }
 
     handlecheckbox =(e)=>{
         this.setState({
             checkboxvalue:!this.state.checkboxvalue,
-        }, ()=> this.handleVentasMesYTendencia(this.state.checkboxvalue) )
+        }, ()=> this.handleVentasMesYTendencia() )
         
     }
 
