@@ -59,45 +59,115 @@ class Egresos extends Component {
   }
 
   async componentDidMount() {
-    if (await this.fechaActual() === false) return;
-    if (await this.getSucursales() === false) return;
-    if (await this.getUnidadesNegocioCatalogo() === false) return;
-    if (await this.getCuentasContablesCatalogo() === false) return;
-    if (await this.getSubcuentasContablesCatalogo() === false) return;
-    if (await this.getPeriodoAbierto() === false) return;
+    // if (await this.fechaActual() === false) return;
+    const fechaActual = await this.fechaActual()
+    // alert(fechaActual)
+    //Fecha: fechaActual
 
-    const Fecha = this.state.Fecha;
-    const Periodo = Fecha.substring(0, 4) + Fecha.substring(5, 7);
-    const accesoDB = "mes";
-    const NaturalezaCC = this.state.NaturalezaCC;
+    // if (await this.getSucursales() === false) return;
+    const sucursales = await this.getSucursales()
+    // alert(sucursales)
+    // alert(sucursales[0].SucursalId)
+    // alert(sucursales[0].Sucursal)
 
-    const SucursalId = this.state.SucursalId;
+    // sucursales: data,
+    // SucursalId: data[0].SucursalId,
+    //  Sucursal: data[0].Sucursal,
 
-    
-    const dataUnidadesNegocio = this.sincronizaUnidadesDeNegocio(SucursalId);
-    const UnidadDeNegocioId = dataUnidadesNegocio[0].UnidadDeNegocioId;
-    
-    this.getEgresos(Fecha, accesoDB, SucursalId,UnidadDeNegocioId);
+    //if (await this.getUnidadesNegocioCatalogo() === false) return;
+    const unidadesnegociocatalogo = await this.getUnidadesNegocioCatalogo()
+    // alert(unidadesnegociocatalogo)
+    // alert(unidadesnegociocatalogo[0].UnidadDeNegocioId)
+    // alert(unidadesnegociocatalogo[0].UnidadDeNegocio)
 
-    const dataCuentasContables = this.sincronizaCuentasContables(
-      SucursalId,
-      UnidadDeNegocioId,
-      NaturalezaCC
-    );
-    const CuentaContableId = dataCuentasContables[0].CuentaContableId;
+      // unidadesdenegociocatalogo: data,
+      // UnidadDeNegocioId: data[0].UnidadDeNegocioId,
+      // UnidadDeNegocio: data[0].UnidadDeNegocio,
 
-    const dataSubcuentasContables = this.sincronizaSubcuentasContables(
-      SucursalId,
-      UnidadDeNegocioId,
-      CuentaContableId
-    );
 
-    this.setState({
-      Periodo: Periodo,
-      unidadesdenegocio: dataUnidadesNegocio,
-      cuentascontables: dataCuentasContables,
-      subcuentascontables: dataSubcuentasContables,
-    });
+    //if (await this.getCuentasContablesCatalogo() === false) return;
+    const cuentascontablescatalogo = await this.getCuentasContablesCatalogo()
+    // alert(cuentascontablescatalogo)
+    // alert(cuentascontablescatalogo[0].CuentaContableId)
+    // alert(cuentascontablescatalogo[0].CuentaContable)
+      //   cuentascontablescatalogo: data,
+      //   CuentaContableId: data[0].CuentaContableId,
+      //   CuentaContable: data[0].CuentaContable,
+
+
+    //if (await this.getSubcuentasContablesCatalogo() === false) return;
+    const subcuentascontablescatalogo = await this.getSubcuentasContablesCatalogo()
+    // alert(subcuentascontablescatalogo)
+    // alert(subcuentascontablescatalogo[0].SubcuentaContableId)
+    // alert(subcuentascontablescatalogo[0].SubcuentaContable)
+      //   subcuentascontablescatalogo: data,
+      //   SubcuentaContableId: data[0].SubcuentaContableId,
+      //   SubcuentaContable: data[0].SubcuentaContable,
+
+
+
+    //if (await this.getPeriodoAbierto() === false) return;
+    const json_periodoabierto = await this.getPeriodoAbierto(fechaActual)
+    // alert(json_periodoabierto)
+      //   PeriodoAbierto: json_periodoabierto.PeriodoAbierto,
+      //   PeriodoAbiertoPrimerDia: json_periodoabierto.PeriodoAbiertoPrimerDia,
+      //   PeriodoAbiertoUltimoDia: json_periodoabierto.PeriodoAbiertoUltimoDia,
+      //   Fecha: json_periodoabierto.Fecha,
+
+
+
+      this.setState({
+          //Fecha: fechaActual
+          sucursales: sucursales,
+          SucursalId: sucursales[0].SucursalId,
+          Sucursal: sucursales[0].Sucursal,
+          unidadesdenegociocatalogo: unidadesnegociocatalogo,
+          UnidadDeNegocioId: unidadesnegociocatalogo[0].UnidadDeNegocioId,
+          UnidadDeNegocio: unidadesnegociocatalogo[0].UnidadDeNegocio,
+          cuentascontablescatalogo: cuentascontablescatalogo,
+          CuentaContableId: cuentascontablescatalogo[0].CuentaContableId,
+          CuentaContable: cuentascontablescatalogo[0].CuentaContable,
+          subcuentascontablescatalogo: subcuentascontablescatalogo,
+          SubcuentaContableId: subcuentascontablescatalogo[0].SubcuentaContableId,
+          SubcuentaContable: subcuentascontablescatalogo[0].SubcuentaContable,
+          PeriodoAbierto: json_periodoabierto.PeriodoAbierto,
+          PeriodoAbiertoPrimerDia: json_periodoabierto.PeriodoAbiertoPrimerDia,
+          PeriodoAbiertoUltimoDia: json_periodoabierto.PeriodoAbiertoUltimoDia,
+          Fecha: json_periodoabierto.Fecha,
+      },()=>{
+                const Fecha = this.state.Fecha;
+                const Periodo = Fecha.substring(0, 4) + Fecha.substring(5, 7);
+                const accesoDB = "mes";
+                const NaturalezaCC = this.state.NaturalezaCC;
+            
+                const SucursalId = this.state.SucursalId;
+            
+                
+                const dataUnidadesNegocio = this.sincronizaUnidadesDeNegocio(SucursalId);
+                const UnidadDeNegocioId = dataUnidadesNegocio[0].UnidadDeNegocioId;
+                
+                this.getEgresos(Fecha, accesoDB, SucursalId,UnidadDeNegocioId);
+            
+                const dataCuentasContables = this.sincronizaCuentasContables(
+                  SucursalId,
+                  UnidadDeNegocioId,
+                  NaturalezaCC
+                );
+                const CuentaContableId = dataCuentasContables[0].CuentaContableId;
+            
+                const dataSubcuentasContables = this.sincronizaSubcuentasContables(
+                  SucursalId,
+                  UnidadDeNegocioId,
+                  CuentaContableId
+                );
+            
+                this.setState({
+                  Periodo: Periodo,
+                  unidadesdenegocio: dataUnidadesNegocio,
+                  cuentascontables: dataCuentasContables,
+                  subcuentascontables: dataSubcuentasContables,
+                });
+      })
   }
 
   sincronizaUnidadesDeNegocio = (SucursalId) => {
@@ -162,31 +232,33 @@ class Egresos extends Component {
         return;
       }
       Fecha = data[0].Fecha.substring(0, 10);
-      this.setState({
-        Fecha: Fecha,
-      });
+      // this.setState({
+      //   Fecha: Fecha,
+      // });
       bandera = true
     } catch (error) {
       console.log(error.message);
       alert(error.message);
     }
-    return bandera
+    // return bandera
+    return Fecha
   };
 
-  getPeriodoAbierto = async () => {
+  getPeriodoAbierto = async (Fecha) => {
     const url = this.props.url + `/periodoabierto`;
-    let Fecha = this.state.Fecha
+    //let Fecha = this.state.Fecha
     let PeriodoAbierto;
     let PeriodoAbiertoPrimerDia;
     let PeriodoAbiertoUltimoDia;
     let bandera = false
+    let data = []
     try {
       const response = await fetch(url, {
         headers: {
           Authorization: `bearer ${this.props.accessToken}`,
         },
       });
-      const data = await response.json();
+      data = await response.json();
 
       if (data.error) {
         alert(data.error);
@@ -199,23 +271,34 @@ class Egresos extends Component {
       if(Fecha > PeriodoAbiertoUltimoDia){
         Fecha = PeriodoAbiertoUltimoDia
       }
-      this.setState({
-        PeriodoAbierto: PeriodoAbierto,
-        PeriodoAbiertoPrimerDia: PeriodoAbiertoPrimerDia,
-        PeriodoAbiertoUltimoDia: PeriodoAbiertoUltimoDia,
-        Fecha: Fecha,
-      });
+      // this.setState({
+      //   PeriodoAbierto: PeriodoAbierto,
+      //   PeriodoAbiertoPrimerDia: PeriodoAbiertoPrimerDia,
+      //   PeriodoAbiertoUltimoDia: PeriodoAbiertoUltimoDia,
+      //   Fecha: Fecha,
+      // });
       bandera = true
     } catch (error) {
       console.log(error.message);
       alert(error.message);
     }
-    return bandera
+    //return bandera
+
+    const json ={
+      PeriodoAbierto: PeriodoAbierto,
+      PeriodoAbiertoPrimerDia: PeriodoAbiertoPrimerDia,
+      PeriodoAbiertoUltimoDia: PeriodoAbiertoUltimoDia,
+      Fecha: Fecha,
+    }
+
+
+    return json
   };
 
   getSucursales = async () => {
     const naturalezaCC = this.props.naturalezaCC;
     const url = this.props.url + `/api/sucursales/${naturalezaCC}`;
+    let data = []
     let bandera = false
     try {
       const response = await fetch(url, {
@@ -223,27 +306,29 @@ class Egresos extends Component {
           Authorization: `Bearer ${this.props.accessToken}`,
         },
       });
-      let data = await response.json();
+      data = await response.json();
       if (data.length === 0) {
         data = { error: "No hay Sucursales" };
         return;
       }
-      this.setState({
-        sucursales: data,
-        SucursalId: data[0].SucursalId,
-        Sucursal: data[0].Sucursal,
-      });
+      // this.setState({
+      //   sucursales: data,
+      //   SucursalId: data[0].SucursalId,
+      //   Sucursal: data[0].Sucursal,
+      // });
       bandera = true
     } catch (error) {
       console.log(error.message);
       alert(error.message);
     }
-    return bandera
+    //return bandera
+    return data
   };
 
   getUnidadesNegocioCatalogo = async () => {
     const naturalezaCC = this.props.naturalezaCC;
     let bandera = false
+    let data = []
     const url =
       this.props.url + `/ingresos/unidadesdenegociocatalogo/${naturalezaCC}`;
     try {
@@ -252,27 +337,29 @@ class Egresos extends Component {
           Authorization: `Bearer ${this.props.accessToken}`,
         },
       });
-      let data = await response.json();
+      data = await response.json();
       if (data.length === 0) {
         data = { error: "No hay Unidades de Negocio" };
         return;
       }
-      this.setState({
-        unidadesdenegociocatalogo: data,
-        UnidadDeNegocioId: data[0].UnidadDeNegocioId,
-        UnidadDeNegocio: data[0].UnidadDeNegocio,
-      });
+      // this.setState({
+      //   unidadesdenegociocatalogo: data,
+      //   UnidadDeNegocioId: data[0].UnidadDeNegocioId,
+      //   UnidadDeNegocio: data[0].UnidadDeNegocio,
+      // });
       bandera = true
     } catch (error) {
       console.log(error.message);
       alert(error.message);
     }
-    return bandera
+    //return bandera
+    return data
   };
 
   getCuentasContablesCatalogo = async () => {
     const naturalezaCC = this.props.naturalezaCC;
     let bandera = false
+    let data = []
     const url =
       this.props.url + `/ingresos/cuentascontablescatalogo/${naturalezaCC}`;
     try {
@@ -281,27 +368,29 @@ class Egresos extends Component {
           Authorization: `Bearer ${this.props.accessToken}`,
         },
       });
-      let data = await response.json();
+      data = await response.json();
       if (data.length === 0) {
         data = { error: "No hay Cuentas Contables" };
         return;
       }
-      this.setState({
-        cuentascontablescatalogo: data,
-        CuentaContableId: data[0].CuentaContableId,
-        CuentaContable: data[0].CuentaContable,
-      });
+      // this.setState({
+      //   cuentascontablescatalogo: data,
+      //   CuentaContableId: data[0].CuentaContableId,
+      //   CuentaContable: data[0].CuentaContable,
+      // });
       bandera = true
     } catch (error) {
       console.log(error.message);
       alert(error.message);
     }
-    return bandera
+    //return bandera
+    return data
   };
 
   getSubcuentasContablesCatalogo = async () => {
     const naturalezaCC = this.props.naturalezaCC;
     let bandera = false
+    let data = []
     const url =
       this.props.url + `/ingresos/subcuentascontablescatalogo/${naturalezaCC}`;
     try {
@@ -310,22 +399,23 @@ class Egresos extends Component {
           Authorization: `Bearer ${this.props.accessToken}`,
         },
       });
-      let data = await response.json();
+      data = await response.json();
       if (data.length === 0) {
         data = { error: "No hay Subcuentas Contables" };
         return;
       }
-      this.setState({
-        subcuentascontablescatalogo: data,
-        SubcuentaContableId: data[0].SubcuentaContableId,
-        SubcuentaContable: data[0].SubcuentaContable,
-      });
+      // this.setState({
+      //   subcuentascontablescatalogo: data,
+      //   SubcuentaContableId: data[0].SubcuentaContableId,
+      //   SubcuentaContable: data[0].SubcuentaContable,
+      // });
       bandera = true
     } catch (error) {
       console.log(error.message);
       alert(error.message);
     }
-    return bandera
+    //return bandera
+    return data
   };
 
   getEgresos = async (vfecha, accesoDB, SucursalId,UnidadDeNegocioId) => {
