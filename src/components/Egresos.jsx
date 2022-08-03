@@ -217,7 +217,7 @@ class Egresos extends Component {
 
   fechaActual = async () => {
     let Fecha;
-    let bandera = false
+    //let bandera = false
     const url = this.props.url + `/api/fechaactual`;
     try {
       const response = await fetch(url, {
@@ -235,7 +235,7 @@ class Egresos extends Component {
       // this.setState({
       //   Fecha: Fecha,
       // });
-      bandera = true
+      //bandera = true
     } catch (error) {
       console.log(error.message);
       alert(error.message);
@@ -250,7 +250,7 @@ class Egresos extends Component {
     let PeriodoAbierto;
     let PeriodoAbiertoPrimerDia;
     let PeriodoAbiertoUltimoDia;
-    let bandera = false
+    //let bandera = false
     let data = []
     try {
       const response = await fetch(url, {
@@ -277,7 +277,7 @@ class Egresos extends Component {
       //   PeriodoAbiertoUltimoDia: PeriodoAbiertoUltimoDia,
       //   Fecha: Fecha,
       // });
-      bandera = true
+      //bandera = true
     } catch (error) {
       console.log(error.message);
       alert(error.message);
@@ -299,7 +299,7 @@ class Egresos extends Component {
     const naturalezaCC = this.props.naturalezaCC;
     const url = this.props.url + `/api/sucursales/${naturalezaCC}`;
     let data = []
-    let bandera = false
+    //let bandera = false
     try {
       const response = await fetch(url, {
         headers: {
@@ -316,7 +316,7 @@ class Egresos extends Component {
       //   SucursalId: data[0].SucursalId,
       //   Sucursal: data[0].Sucursal,
       // });
-      bandera = true
+      //bandera = true
     } catch (error) {
       console.log(error.message);
       alert(error.message);
@@ -327,7 +327,7 @@ class Egresos extends Component {
 
   getUnidadesNegocioCatalogo = async () => {
     const naturalezaCC = this.props.naturalezaCC;
-    let bandera = false
+    //let bandera = false
     let data = []
     const url =
       this.props.url + `/ingresos/unidadesdenegociocatalogo/${naturalezaCC}`;
@@ -347,7 +347,7 @@ class Egresos extends Component {
       //   UnidadDeNegocioId: data[0].UnidadDeNegocioId,
       //   UnidadDeNegocio: data[0].UnidadDeNegocio,
       // });
-      bandera = true
+      //bandera = true
     } catch (error) {
       console.log(error.message);
       alert(error.message);
@@ -358,7 +358,7 @@ class Egresos extends Component {
 
   getCuentasContablesCatalogo = async () => {
     const naturalezaCC = this.props.naturalezaCC;
-    let bandera = false
+    //let bandera = false
     let data = []
     const url =
       this.props.url + `/ingresos/cuentascontablescatalogo/${naturalezaCC}`;
@@ -378,7 +378,7 @@ class Egresos extends Component {
       //   CuentaContableId: data[0].CuentaContableId,
       //   CuentaContable: data[0].CuentaContable,
       // });
-      bandera = true
+      //bandera = true
     } catch (error) {
       console.log(error.message);
       alert(error.message);
@@ -389,7 +389,7 @@ class Egresos extends Component {
 
   getSubcuentasContablesCatalogo = async () => {
     const naturalezaCC = this.props.naturalezaCC;
-    let bandera = false
+    //let bandera = false
     let data = []
     const url =
       this.props.url + `/ingresos/subcuentascontablescatalogo/${naturalezaCC}`;
@@ -409,7 +409,7 @@ class Egresos extends Component {
       //   SubcuentaContableId: data[0].SubcuentaContableId,
       //   SubcuentaContable: data[0].SubcuentaContable,
       // });
-      bandera = true
+      //bandera = true
     } catch (error) {
       console.log(error.message);
       alert(error.message);
