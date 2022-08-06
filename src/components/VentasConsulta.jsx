@@ -127,8 +127,9 @@ class VentasConsulta extends React.Component{
             detallesFolios: data,
             totalventa: totalVentas,
             totalVentaFolio: totalVentas,
+        },()=>{
+            this.addRowHandlersFolios()
         })
-        this.addRowHandlersFolios()
     }
 
     addRowHandlers = ()=> {
@@ -204,14 +205,15 @@ class VentasConsulta extends React.Component{
                 detalles: data,
                 totalventa: totalventas,
                 totalVentaFecha: totalventas,
+            },()=>{
+                this.addRowHandlers()
+                document.querySelector("#btnFolio").disabled = true
+                document.querySelector("#btnTicket").disabled = true
+    
+                document.querySelector("#table1").style.display="block"
+                document.querySelector("#table2").style.display = "none"
+                document.querySelector("#table3").style.display = "none"
             })
-            this.addRowHandlers()
-            document.querySelector("#btnFolio").disabled = true
-            document.querySelector("#btnTicket").disabled = true
-
-            document.querySelector("#table1").style.display="block"
-            document.querySelector("#table2").style.display = "none"
-            document.querySelector("#table3").style.display = "none"
         } catch(error){
             console.log(error.message)
             alert(error.message)

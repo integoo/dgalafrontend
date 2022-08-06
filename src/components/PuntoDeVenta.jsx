@@ -530,6 +530,7 @@ class PuntoDeVenta extends React.Component {
     let Unidades = this.state.Unidades; //Al marcar un producto se toma 1 Unidad, si se escoge la opción de multiplicar cambia.
     let arreglo = [];
 
+
     //####### Funcionalidad para Capturar Códigos Internos y lo convierte a su Codigo de Barras #######
     //### Para Marcado Rápido productos que empiezan con I y que su longitud es menor que 6 lo toma como
     //### código interno para buscar su Código de Barras Principal
@@ -583,6 +584,71 @@ class PuntoDeVenta extends React.Component {
         arreglo: arreglo,
         Unidades: Unidades,
         Descripcion: arreglo[0].Descripcion,
+      },()=>{
+
+
+
+
+
+
+
+
+
+
+
+        let detalles = this.state.detalles;
+
+        //####################### VALIDACIONES DE "SERVICIO POR ENCARGO" ("CodigoId" = 65) ###############
+        if (parseInt(arreglo[0].CodigoId) === 65) {
+          this.setState({
+            servicioPorEncargo: "S",
+          });
+    
+          //### VALIDA QUE YA EXISTA EN LA VENTA UN PRODUCTO DE LA "CategoriaId" = 3 (03 LAVAMATICA)####
+          if (!detalles.find((element) => parseInt(element.CategoriaId) === 3)) {
+            alert('No existe ningún producto de Categoría "03 LAVAMATICA" ');
+            this.setState({
+              CodigoBarras: "",
+              arreglo: [],
+              Unidades: 1,
+              Descripcion: "",
+            });
+            this.CodigoBarrasInput.current.focus();
+            return;
+          }
+    
+          //#### VALIDA QUE EL "SERVICIO POR ENCARGO" ("CodigoId" = 65) NO SE REGISTRE MAS DE UNA VEZ #####
+          if (detalles.find((element) => parseInt(element.CodigoId) === 65)) {
+            alert('El "SERVICIO POR ENCARGO" ya está registrado en esta Venta');
+            this.setState({
+              CodigoBarras: "",
+              arreglo: [],
+              Unidades: 1,
+              Descripcion: "",
+            });
+            this.CodigoBarrasInput.current.focus();
+            return;
+          }
+        }
+        //####################################################################################
+        
+        const botonXColor = this.state.botonXColor;
+        if (botonXColor === "success") {
+          this.handleXtimesProcess();  //Activa proceso para Multiplicar "n" Piezas
+        } else {
+          this.handleBuscarFinProceso(); //Continua con el registro de 1 pieza para venta
+        }
+
+
+
+
+
+
+
+
+
+
+
       });
     } else {
       //Si no se tiene un Codigo de Barras se abre la Ventana de Búsqueda
@@ -605,49 +671,48 @@ class PuntoDeVenta extends React.Component {
       return;
     }
 
-    let detalles = this.state.detalles;
+    // let detalles = this.state.detalles;
 
-    //####################### VALIDACIONES DE "SERVICIO POR ENCARGO" ("CodigoId" = 65) ###############
-    if (parseInt(arreglo[0].CodigoId) === 65) {
-      this.setState({
-        servicioPorEncargo: "S",
-      });
+    // //####################### VALIDACIONES DE "SERVICIO POR ENCARGO" ("CodigoId" = 65) ###############
+    // if (parseInt(arreglo[0].CodigoId) === 65) {
+    //   this.setState({
+    //     servicioPorEncargo: "S",
+    //   });
 
-      //### VALIDA QUE YA EXISTA EN LA VENTA UN PRODUCTO DE LA "CategoriaId" = 3 (03 LAVAMATICA)####
-      if (!detalles.find((element) => parseInt(element.CategoriaId) === 3)) {
-        alert('No existe ningún producto de Categoría "03 LAVAMATICA" ');
-        this.setState({
-          CodigoBarras: "",
-          arreglo: [],
-          Unidades: 1,
-          Descripcion: "",
-        });
-        this.CodigoBarrasInput.current.focus();
-        return;
-      }
+    //   //### VALIDA QUE YA EXISTA EN LA VENTA UN PRODUCTO DE LA "CategoriaId" = 3 (03 LAVAMATICA)####
+    //   if (!detalles.find((element) => parseInt(element.CategoriaId) === 3)) {
+    //     alert('No existe ningún producto de Categoría "03 LAVAMATICA" ');
+    //     this.setState({
+    //       CodigoBarras: "",
+    //       arreglo: [],
+    //       Unidades: 1,
+    //       Descripcion: "",
+    //     });
+    //     this.CodigoBarrasInput.current.focus();
+    //     return;
+    //   }
 
-      //#### VALIDA QUE EL "SERVICIO POR ENCARGO" ("CodigoId" = 65) NO SE REGISTRE MAS DE UNA VEZ #####
-      if (detalles.find((element) => parseInt(element.CodigoId) === 65)) {
-        alert('El "SERVICIO POR ENCARGO" ya está registrado en esta Venta');
-        this.setState({
-          CodigoBarras: "",
-          arreglo: [],
-          Unidades: 1,
-          Descripcion: "",
-        });
-        this.CodigoBarrasInput.current.focus();
-        return;
-      }
-    }
-
-    //####################################################################################
-
-    const botonXColor = this.state.botonXColor;
-    if (botonXColor === "success") {
-      this.handleXtimesProcess();  //Activa proceso para Multiplicar "n" Piezas
-    } else {
-      this.handleBuscarFinProceso(); //Continua con el registro de 1 pieza para venta
-    }
+    //   //#### VALIDA QUE EL "SERVICIO POR ENCARGO" ("CodigoId" = 65) NO SE REGISTRE MAS DE UNA VEZ #####
+    //   if (detalles.find((element) => parseInt(element.CodigoId) === 65)) {
+    //     alert('El "SERVICIO POR ENCARGO" ya está registrado en esta Venta');
+    //     this.setState({
+    //       CodigoBarras: "",
+    //       arreglo: [],
+    //       Unidades: 1,
+    //       Descripcion: "",
+    //     });
+    //     this.CodigoBarrasInput.current.focus();
+    //     return;
+    //   }
+    // }
+    // //####################################################################################
+    
+    // const botonXColor = this.state.botonXColor;
+    // if (botonXColor === "success") {
+    //   this.handleXtimesProcess();  //Activa proceso para Multiplicar "n" Piezas
+    // } else {
+    //   this.handleBuscarFinProceso(); //Continua con el registro de 1 pieza para venta
+    // }
   };
 
   handleXtimesProcess = () => {
@@ -906,8 +971,8 @@ class PuntoDeVenta extends React.Component {
     }
     this.setState({
       VentanaDescripcionDetalles: arreglo,
-    });
-    this.addRowHandlers();
+    },()=> this.addRowHandlers());
+    //this.addRowHandlers();
   };
 
   handleVentanaDescripcionKeyDown = (e) => {

@@ -287,6 +287,30 @@ class Productos extends React.Component{
         })
     }
 
+    handleDigitoVerificador = () =>{
+        const CodigoBarras = this.state.CodigoBarras.toUpperCase()
+        let sumaPares = 0
+        let sumaNones = 0
+        for(let i=0; i<CodigoBarras.length-1; i++){
+            if(i % 2 === 0){
+                sumaPares+=parseInt(CodigoBarras[i])
+            }else{
+                sumaNones+=parseInt(CodigoBarras[i])
+            }
+        }
+        sumaNones = sumaNones * 3  //Multiplica por 3 la sumatoria de Impares
+
+        const sumaTotal = sumaPares + sumaNones  //Suma Pares más Impares * 3
+        
+        const sumaTotalRedondeoDecenas = Math.ceil(sumaTotal / 10) * 10  //SumaTotal redondeada a la decena más cercana
+        
+        const digitoVerificador = sumaTotalRedondeoDecenas - sumaTotal
+        
+        alert("El Dígito Verificador es "+digitoVerificador)
+
+
+    }
+
     async handleSubmit(event){
         event.preventDefault();
         const json={
@@ -372,6 +396,8 @@ class Productos extends React.Component{
         }
     }
 
+    
+
     handleRender =()=>{
         return(
             <div className="row">
@@ -387,6 +413,15 @@ class Productos extends React.Component{
                                 {/* <input onChange={this.handleSinCodigoBarras} id="checked" name="checked" type="checkbox" className="ml-2" defaultChecked={this.state.checked} /> */}
                                 <input onChange={this.handleSinCodigoBarras} id="checked" name="checked" type="checkbox" className="ml-2" checked={this.state.checked} />
                                 <label htmlFor="" className="ml-1" style={{fontSize:".8rem"}}>Sin Código de Barras</label>
+
+
+
+                                <button type="button" onClick={this.handleDigitoVerificador} style={{background:"dodgerblue", color:"white", borderRadius:"4px", padding:"0 10px"}}>Valida Dígito Verificador</button>
+
+
+
+
+
                                 <br/>
                                 <label htmlFor="descripcion">Descripcion</label>
                                 <input onChange={this.handleDescripcion} value={this.state.Descripcion} id="descripcion" name="descripcion" size="40" autoComplete="off" style={{textTransform:"uppercase"}} ref={this.DescripcionInput} required />
