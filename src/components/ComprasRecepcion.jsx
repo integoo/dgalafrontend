@@ -711,9 +711,11 @@ class ComprasRecepcion extends React.Component {
             <InputCodigoBarras accessToken={this.props.accessToken} url={this.props.url} handleCodigoBarrasProp = {this.onhandleCodigoBarras} handleConsultaProp = {this.onhandleConsulta} CodigoBarrasProp = {this.state.CodigoBarras} SoloInventariable={this.state.SoloInventariable} ref={this.CodigoBarrasInput}/>
            
             <label htmlFor="">Código</label>
-            <input value={this.state.CodigoId} style={{width:"4rem"}} disabled="true" readOnly/>
+            {/* <input value={this.state.CodigoId} style={{width:"4rem"}} disabled="true" readOnly/> */}
+            <input value={this.state.CodigoId} style={{width:"4rem"}} disabled={true} readOnly/>
             <label htmlFor="" className="ml-2" style={{width: "5rem"}}>Unidades Inventario</label>
-            <input value={this.state.UnidadesInventario} style={{width:"4rem"}} disabled="true" readOnly/>
+            {/* <input value={this.state.UnidadesInventario} style={{width:"4rem"}} disabled="true" readOnly/> */}
+            <input value={this.state.UnidadesInventario} style={{width:"4rem"}} disabled={true} readOnly/>
 
 
 

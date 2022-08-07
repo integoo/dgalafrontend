@@ -40,8 +40,9 @@ class CambiosDePresentacion extends React.Component{
     handleSucursal = (SucursalId) =>{
         this.setState({
             SucursalId: SucursalId,
+        },()=>{
+            this.CodigoBarrasInput.current.focus()
         })
-        this.CodigoBarrasInput.current.focus()
     }
 
     //#######
@@ -64,8 +65,9 @@ class CambiosDePresentacion extends React.Component{
         
         this.setState({
             DescripcionPadre: Descripcion,
+        },()=>{
+            this.handleconsultaPadres(Descripcion)
         })
-        this.handleconsultaPadres(Descripcion)
     }
 
     handleconsultaPadres = async(DescripcionPadre)=>{
@@ -91,9 +93,9 @@ class CambiosDePresentacion extends React.Component{
             }
             this.setState({
                 detallesPadres: data
+            },()=>{
+                this.addRowHandlers();
             })
-            this.addRowHandlers();
-
 
         }catch(error){
             console.log(error.message)
@@ -114,11 +116,45 @@ class CambiosDePresentacion extends React.Component{
         }
     }
 
+    handleHijosOpt = (vCodigoId,vcodigobarras,vdescripcion,vUnidadesInventario) =>{
+            let detallesHijos = this.state.detallesPadres.find(element => parseInt(element.CodigoIdPadre) === parseInt(vCodigoId))
+              this.setState({
+                CodigoBarrasPadre: vcodigobarras,
+                DescripcionPadre: vdescripcion,
+                UnidadesInventarioPadre: vUnidadesInventario,
+                CodigoIdPadre: vCodigoId,
+                detallesPadres: [],
+                detallesHijos: detallesHijos.detalles,
+                disabledPadre: true,
+                disabledPadreBuscar: true,
+              },()=>{
+                  this.addRowHandlersHijos();
+              });
+
+              if(detallesHijos.detalles.length === 1 ){
+                this.setState({
+                    CodigoIdHijo: detallesHijos.detalles[0].CodigoIdHijo,
+                    CodigoBarrasHijo: detallesHijos.detalles[0].CodigoBarrasHijo,
+                    DescripcionHijo: detallesHijos.detalles[0].DescripcionHijo,
+                    FactorConversion: detallesHijos.detalles[0].FactorConversion,
+                    UnidadesInventarioHijo: detallesHijos.detalles[0].UnidadesInventarioHijo,
+                    disabledUnidadesConvertir: false,
+                },()=>{
+                    this.UnidadesConvertirInput.current.focus()
+                })
+              }else{
+                document.querySelector(".tablaBusquedaHijos").style.display = "block";
+              }
+    
+              document.querySelector(".tablaBusquedaProductos").style.display = "none";
+              document.querySelector("#descripcion").disabled = true;
+
+    }
 
     addRowHandlers = () => {
         const table = document.getElementById("table1");
         const rows = table.getElementsByTagName("tr");
-        let detallesHijos=[]
+        //let detallesHijos=[]
         for (let i = 1; i < rows.length; i++) { //IMPORANTE: SE PONE DESDE 1 PORQUE EL 0 SON LOS ENCABEZADOS
           let currentRow = table.rows[i];
           let createClickHandler = (row) => {
@@ -138,40 +174,70 @@ class CambiosDePresentacion extends React.Component{
                 this.CodigoBarrasInput.current.focus()
                 return
               }
-              detallesHijos = this.state.detallesPadres.find(element => parseInt(element.CodigoIdPadre) === parseInt(vCodigoId))
-              this.setState({
-                CodigoBarrasPadre: vcodigobarras,
-                DescripcionPadre: vdescripcion,
-                UnidadesInventarioPadre: vUnidadesInventario,
-                CodigoIdPadre: vCodigoId,
-                detallesPadres: [],
-                detallesHijos: detallesHijos.detalles,
-                disabledPadre: true,
-                disabledPadreBuscar: true,
-              });
-              this.addRowHandlersHijos();
+              this.handleHijosOpt(vCodigoId,vcodigobarras,vdescripcion,vUnidadesInventario)
+              //alert(vCodigoId)
+            //   detallesHijos = this.state.detallesPadres.find(element => parseInt(element.CodigoIdPadre) === parseInt(vCodigoId))
+            //   this.setState({
+            //     CodigoBarrasPadre: vcodigobarras,
+            //     DescripcionPadre: vdescripcion,
+            //     UnidadesInventarioPadre: vUnidadesInventario,
+            //     CodigoIdPadre: vCodigoId,
+            //     detallesPadres: [],
+            //     detallesHijos: detallesHijos.detalles,
+            //     disabledPadre: true,
+            //     disabledPadreBuscar: true,
+            //   },()=>{
+            //       this.addRowHandlersHijos();
+            //   });
 
-              if(detallesHijos.detalles.length === 1 ){
-                this.setState({
-                    CodigoIdHijo: detallesHijos.detalles[0].CodigoIdHijo,
-                    CodigoBarrasHijo: detallesHijos.detalles[0].CodigoBarrasHijo,
-                    DescripcionHijo: detallesHijos.detalles[0].DescripcionHijo,
-                    FactorConversion: detallesHijos.detalles[0].FactorConversion,
-                    UnidadesInventarioHijo: detallesHijos.detalles[0].UnidadesInventarioHijo,
-                    disabledUnidadesConvertir: false,
-                })
-                this.UnidadesConvertirInput.current.focus()
-              }else{
-                document.querySelector(".tablaBusquedaHijos").style.display = "block";
-              }
+            //   if(detallesHijos.detalles.length === 1 ){
+            //     this.setState({
+            //         CodigoIdHijo: detallesHijos.detalles[0].CodigoIdHijo,
+            //         CodigoBarrasHijo: detallesHijos.detalles[0].CodigoBarrasHijo,
+            //         DescripcionHijo: detallesHijos.detalles[0].DescripcionHijo,
+            //         FactorConversion: detallesHijos.detalles[0].FactorConversion,
+            //         UnidadesInventarioHijo: detallesHijos.detalles[0].UnidadesInventarioHijo,
+            //         disabledUnidadesConvertir: false,
+            //     },()=>{
+            //         this.UnidadesConvertirInput.current.focus()
+            //     })
+            //   }else{
+            //     document.querySelector(".tablaBusquedaHijos").style.display = "block";
+            //   }
     
-              document.querySelector(".tablaBusquedaProductos").style.display = "none";
-              document.querySelector("#descripcion").disabled = true;
+            //   document.querySelector(".tablaBusquedaProductos").style.display = "none";
+            //   document.querySelector("#descripcion").disabled = true;
             };
           };
           currentRow.onclick = createClickHandler(currentRow);
         }
         
+
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
       };
 
       addRowHandlersHijos = () => {
@@ -200,10 +266,10 @@ class CambiosDePresentacion extends React.Component{
                 CodigoIdHijo: vCodigoId,
                 FactorConversion: vFactorConversion,
                 disabledUnidadesConvertir: false,
+              },()=>{
+                  this.UnidadesConvertirInput.current.focus()
+                  document.querySelector(".tablaBusquedaHijos").style.display = "none";
               });
-              this.UnidadesConvertirInput.current.focus()
-
-              document.querySelector(".tablaBusquedaHijos").style.display = "none";
             };
           };
           currentRow.onclick = createClickHandler(currentRow);
@@ -298,7 +364,8 @@ class CambiosDePresentacion extends React.Component{
                 <div className="col-md-6">
                     <div className="card">
                         <div className="card-header">
-                            <span className="badge badge-primary"><medium>Cambios de Presentación</medium></span>
+                            <span className="badge badge-primary">Cambios de Presentación</span>
+                            <br />
                             <br />
                             <SelectSucursales accessToken={this.props.accessToken} url={this.props.url} SucursalAsignada={this.state.SucursalId} onhandleSucursal={this.handleSucursal} Administrador={this.state.Administrador} />
                             <br />

@@ -30,8 +30,9 @@ class InputCodigoBarras extends React.Component {
     this.setState({
       CodigoBarras: CodigoBarras,
       detalles: [],
+    },()=>{
+      this.props.handleCodigoBarrasProp(CodigoBarras);
     });
-    this.props.handleCodigoBarrasProp(CodigoBarras);
   };
 
   handleCodigoBarrasKeyPress = (e) => {
@@ -42,8 +43,9 @@ class InputCodigoBarras extends React.Component {
       this.setState({
         CodigoBarras: CodigoBarras,
         detalles: [],
+    },()=>{
+      this.props.handleCodigoBarrasProp(CodigoBarras);
     });
-    this.props.handleCodigoBarrasProp(CodigoBarras);
   }
 };
 
@@ -119,12 +121,13 @@ onhandleDescripcionKeyPress = (e) => {
             UnidadesDisponibles: vUnidadesDisponibles,
             disabled: true,
             CodigoId: vCodigoId,
+          },()=>{
+            this.props.handleCodigoBarrasProp(vcodigobarras);
+            this.props.handleConsultaProp(vcodigobarras, vdescripcion, vUnidadesInventario, vUnidadesDisponibles, vCodigoId);
+            document.querySelector("#tableInputCodigoBarras").style.display =
+              "none";
           });
 
-          this.props.handleCodigoBarrasProp(vcodigobarras);
-          this.props.handleConsultaProp(vcodigobarras, vdescripcion, vUnidadesInventario, vUnidadesDisponibles, vCodigoId);
-          document.querySelector("#tableInputCodigoBarras").style.display =
-            "none";
         };
       };
       currentRow.onclick = createClickHandler(currentRow);
@@ -139,6 +142,7 @@ onhandleDescripcionKeyPress = (e) => {
     this.setState({
       Descripcion: Descripcion,
     });
+
     try {
       let arreglo = [];
       if (Descripcion.length >= 3) {
@@ -146,7 +150,7 @@ onhandleDescripcionKeyPress = (e) => {
       }
       
       if(arreglo.message){
-        console.log(arreglo.message)
+        //console.log(arreglo.message)
         //alert(JSON.stringify(arreglo.message))
         this.setState({
           detalles: [],
@@ -157,20 +161,22 @@ onhandleDescripcionKeyPress = (e) => {
       
       
       if (arreglo.error) {
-        console.log(arreglo.error);
+        //console.log(arreglo.error);
         alert(arreglo.error);
         return;
       }
       this.setState({
         detalles: arreglo,
+      },()=>{
+        this.addRowHandlers();
       });
-      this.addRowHandlers();
     }catch(error){
       this.setState({
         detalles: [],
+      },()=>{
+        alert("Error POSIBLEMENTE DE RED")
+        return
       })
-      alert("Error POSIBLEMENTE DE RED")
-      return
     }
   };
 

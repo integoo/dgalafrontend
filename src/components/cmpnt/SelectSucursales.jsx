@@ -78,6 +78,7 @@ class SelectSucursales extends React.Component{
             SucursalId: SucursalId,
         })
     }
+    
     handleRender = () =>{
         return(
             <select onChange={this.handleSucursales}>

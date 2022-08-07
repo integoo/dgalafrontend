@@ -2,7 +2,7 @@ import React, { Component } from "react";
 
 import "./VentasBI.css";
 
-import LineChart from "./LineChart";
+// import LineChart from "./LineChart";
 
 class VentasBI extends Component {
   constructor(props) {
@@ -642,7 +642,7 @@ class VentasBI extends Component {
           </tbody>
         </table>
         <br />
-        <LineChart data={this.state.data} />
+        {/* <LineChart data={this.state.data} /> */}
 
 
         <br />
@@ -705,7 +705,7 @@ class VentasBI extends Component {
           </tbody>
         </table>
         <br />
-        <LineChart data={this.state.dataMelate} />
+        {/* <LineChart data={this.state.dataMelate} /> */}
 
 
         <br />
@@ -862,7 +862,7 @@ class VentasBI extends Component {
           </thead>
           <tbody>
                 {this.state.dataLimpiaduriaMelateRentasOtrosUtilidad.map((element,i) =>(
-                <tr>
+                <tr key={i}>
                   <td>{element.Negocio}</td>
                   <td>{this.numberWithCommas(parseFloat(element.Ene).toFixed(0))}</td>
                   <td>{this.numberWithCommas(parseFloat(element.Feb).toFixed(0))}</td>

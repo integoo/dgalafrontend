@@ -25,8 +25,9 @@ class InputFecha extends React.Component{
         const Fecha = e.target.value 
         this.setState({
             Fecha: Fecha
+        },()=>{
+            this.props.onhandleFecha(Fecha)
         })
-        this.props.onhandleFecha(Fecha)
       }
 
 

@@ -17,8 +17,8 @@ class ConsultaArticulo extends React.Component {
       Categoria: "",
       Subcategoria: "",
       //IVAIdProductos: "",
-      IVADescripcion:"",
-      IVACompraProductos:"",
+      IVADescripcion: "",
+      IVACompraProductos: "",
       IEPSIdProductos: "",
       PadreHijo: "",
       Hermano: "",
@@ -35,7 +35,7 @@ class ConsultaArticulo extends React.Component {
       CostoPromedio: "",
       Margen: "",
       MargenReal: "",
-      PrecioVentaSinImpuesto:"",
+      PrecioVentaSinImpuesto: "",
       IVAIdInventario: "",
       IVAInventario: "",
       IVAMontoInventario: "",
@@ -62,10 +62,11 @@ class ConsultaArticulo extends React.Component {
   handleSucursal = (SucursalId) => {
     this.setState({
       SucursalId: SucursalId,
+    },()=>{
+      this.onhandleCancel()
+      this.CodigoBarrasInput.current.handleRefSucursalId(SucursalId)
+      this.CodigoBarrasInput.current.handleRefCodigoBarrasInput()
     });
-    this.onhandleCancel()
-    this.CodigoBarrasInput.current.handleRefSucursalId(SucursalId)
-    this.CodigoBarrasInput.current.handleRefCodigoBarrasInput()
   };
 
   onhandleCodigoBarras = (CodigoBarras) => {
@@ -73,10 +74,11 @@ class ConsultaArticulo extends React.Component {
       CodigoBarras: CodigoBarras,
       Descripcion: "",
       UnidadesInventario: "",
+    },()=>{
+      if(this.state.CodigoBarrasDisplay){
+        this.onhandleCancel()
+      }
     });
-    if(this.state.CodigoBarrasDisplay){
-      this.onhandleCancel()
-    }
   };
 
   onhandleConsulta = async(CodigoBarras, Descripcion, UnidadesInventario, UnidadesDisponibles, CodigoId) => {
@@ -126,11 +128,11 @@ class ConsultaArticulo extends React.Component {
         FechaHoraInventario: detalles[0].FechaHoraInventario,
         UsuarioInventario: detalles[0].UsuarioInventario,
         detallesInventarios: detalles[1],
+      },()=>{
+        this.CodigoBarrasInput.current.handleRefCodigoBarrasInput()
+      //this.UnidadesAjustadasInput.current.focus();
       });
 
-      this.CodigoBarrasInput.current.handleRefCodigoBarrasInput()
-
-    //this.UnidadesAjustadasInput.current.focus();
   };
 
   onhandleCancel = () => {
@@ -376,7 +378,7 @@ class ConsultaArticulo extends React.Component {
                   </thead>
                   <tbody>
                     {this.state.detallesInventarios.map((element,i) =>(
-                      <tr>
+                      <tr key={i}>
                         <td>{element.Sucursal}</td>
                         <td style={{textAlign:"right"}}>{element.UnidadesDisponibles}</td>
                       </tr>

@@ -98,8 +98,9 @@ class TraspasosSalida extends React.Component{
         const SucursalIdDestino = parseInt(e.target.value)
         this.setState({
             SucursalIdDestino: SucursalIdDestino,
+        },()=>{
+            this.CodigoBarrasInput.current.handleRefCodigoBarrasInput()
         })
-        this.CodigoBarrasInput.current.handleRefCodigoBarrasInput()
     }
 
     onhandleCodigoBarras = (CodigoBarras) =>{
@@ -115,8 +116,9 @@ class TraspasosSalida extends React.Component{
             UnidadesExistencia: UnidadesExistencia,
             UnidadesDisponibles: UnidadesDisponibles,
             CodigoId: CodigoId,
+        },()=>{
+            this.UnidadesPedidasInput.current.focus()
         })
-        this.UnidadesPedidasInput.current.focus()
     }
 
     onhandleUnidadesPedidas = (e) =>{
@@ -167,9 +169,10 @@ class TraspasosSalida extends React.Component{
                 UnidadesDisponibles:0,
                 UnidadesPedidas: "",
                 CodigoId: "",
+            },()=>{
+                this.CodigoBarrasInput.current.handleRefCodigoBarrasInput()
+                return
             })
-            this.CodigoBarrasInput.current.handleRefCodigoBarrasInput()
-            return
         }
 
         const json={
@@ -188,8 +191,9 @@ class TraspasosSalida extends React.Component{
             UnidadesPedidas: "",
             detalles: arreglo,
             IsDisabled: true,
+        },()=>{
+            this.CodigoBarrasInput.current.handleRefCodigoBarrasInput()
         })
-        this.CodigoBarrasInput.current.handleRefCodigoBarrasInput()
     }
 
     onhandleCancelar = (e) => {
@@ -202,8 +206,9 @@ class TraspasosSalida extends React.Component{
             UnidadesPedidas: "",
             //detalles:[],
             CodigoId: "",
+        },()=>{
+            this.CodigoBarrasInput.current.handleRefCodigoBarrasInput()
         })
-        this.CodigoBarrasInput.current.handleRefCodigoBarrasInput()
     }
 
     onhandleCerrarTraspaso = async() =>{
@@ -265,8 +270,9 @@ class TraspasosSalida extends React.Component{
                 detalles:[],
                 CodigoId: "",
                 IsDisabled:false,
+            },()=>{
+                this.CodigoBarrasInput.current.handleRefCodigoBarrasInput()
             })
-            this.CodigoBarrasInput.current.handleRefCodigoBarrasInput()
 
 
         }catch(error){
@@ -285,8 +291,9 @@ class TraspasosSalida extends React.Component{
             detalles:[],
             CodigoId: "",
             IsDisabled: false,
+        },()=>{
+            this.CodigoBarrasInput.current.handleRefCodigoBarrasInput()
         })
-        this.CodigoBarrasInput.current.handleRefCodigoBarrasInput()
     }
 
 
