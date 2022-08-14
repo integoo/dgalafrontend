@@ -253,3 +253,10 @@ class Input extends React.Component {
   
   SELECT row_number() over(),"Id" FROM registro_contable;
   //#################################################################################################
+  En Visial Studio para seleccionar palabras iguales con <Ctrl> d
+  //#################################################################################################
+  Valor Max y Mínimo de un campo en un arreglo de Objetos
+          //Math.max.apply(Math, array.map(function(o) { return o.y; })) //Esta es la forma tradicioanl
+        //const maxvalue = Math.max(...data.map(element => element.value))
+        //const minvalue = Math.min(...data.map(element => element.value))
+//###################################################################################################

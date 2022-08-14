@@ -82,3 +82,12 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/t
 7. https://github.com/reactchartjs/react-chartjs-2
     npm install --save react-chartjs-2 chart.js
 8.
+
+################ IMPORTANTE EN CASO DE REHACER LA VERSION O PARA QUITAR ALGUN PAQUETE ####################
+0. Sacar una copia de GitHub : git clone <direccion de github>
+1. Editar y borrar los paquetes de package.json
+2. Se puede o se debe borrar el archivo package-lock.json y el directorio node_modules
+3. npm install
+4. Si hubo cambios y no se postearon, hay que copiar el directorio "components"
+
+##########################################################################################################

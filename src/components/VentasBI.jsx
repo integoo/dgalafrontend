@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 
 import "./VentasBI.css";
-
-// import LineChart from "./LineChart";
+import Recharts from "./cmpnt/Recharts"
+import {NumberWithCommas, RechartsFormat} from './cmpnt/FuncionesGlobales'
 
 class VentasBI extends Component {
   constructor(props) {
@@ -45,19 +45,6 @@ class VentasBI extends Component {
 
   async componentDidMount() {
     if ((await this.getConsultaAnios()) === false) return;
-    // if ((await this.getConsultaVentasPorMes()) === false) return;
-    // if ((await this.getConsultaEgresosPorMes()) === false) return;
-    
-    // if ((await this.getConsultaVentasMelatePorMes()) === false) return;
-    // if ((await this.getConsultaPagosMelatePorMes()) === false) return;
-
-    // if ((await this.getGastosInversionesPorAnio()) === false) return;
-
-    // if ((await this.getLimpiaduriaMelateRentasOtrosUtilidad()) === false) return;
-
-    // this.handleUtilidadPerdida();
-    // this.handleArrayLineChart();
-    // this.handleArrayLineChartMelate();
   }
 
   getConsultaAnios = async () => {
@@ -435,58 +422,23 @@ class VentasBI extends Component {
 
   handleArrayLineChart = () => {
     const ventas = this.state.ventas;
-    const egresos = this.state.egresos;
-
-    //Prepara Arreglo de VENTAS
-    let arregloVentas = [];
-    ventas.forEach((element) => arregloVentas.push(parseFloat(element.Monto)));
-    arregloVentas = arregloVentas.filter(
-      (element,i) => parseFloat(element) !== 0 && i <= 11  //Menor-Igual a 11 para sólo los meses y no el Total
-    );
+    //const egresos = this.state.egresos;
 
     //Prepara Arreglo de EGRESOS
-    let arregloEgresos = [];
-    egresos.forEach((element) =>
-      arregloEgresos.push(parseFloat(element.Monto) * -1)
-    );
-    arregloEgresos = arregloEgresos.filter(
-      (element,i) => parseFloat(element) !== 0 && i <= 11 //Menor-Igual a 11 para sólo los meses y no el Total
-    );
+    // let arregloEgresos = [];
+    // egresos.forEach((element) =>
+    //   arregloEgresos.push(parseFloat(element.Monto) * -1)
+    // );
+    // arregloEgresos = arregloEgresos.filter(
+    //   (element,i) => parseFloat(element) !== 0 && i <= 11 //Menor-Igual a 11 para sólo los meses y no el Total
+    // );
 
-    const data = {
-      labels: [
-        "Ene",
-        "Feb",
-        "Mar",
-        "Abr",
-        "May",
-        "Jun",
-        "Jul",
-        "Ago",
-        "Sep",
-        "Oct",
-        "Nov",
-        "Dic",
-      ],
-      datasets: [
-        {
-          label: "$ Ventas",
-          // data: [72000,63000,65000,64000,77500,79000,86300],
-          data: arregloVentas,
-          fill: false,
-          backgroundColor: "rgb(3, 113, 13, 0.9  )",
-          borderColor: "rgb(5, 198, 22, 0.9  )",
-        },
-        {
-          label: "$ Gastos/Inversiones",
-          //data: [42000,33000,35000,34000,47500,49000,46300,21000],
-          data: arregloEgresos,
-          fill: false,
-          backgroundColor: "rgb(255, 99, 132, 0.9)",
-          borderColor: "rgba(247, 6, 10, 0.8)",
-        },
-      ],
-    };
+    const data = RechartsFormat(ventas)
+    //[{Mes:1, Monto:1230.25},
+    // {Mes:2, Monto:3456.57}
+    //]
+
+
     this.setState({
       data: data,
     });
@@ -496,56 +448,20 @@ class VentasBI extends Component {
     const ventasMelate = this.state.ventasMelate;
     const pagosMelate = this.state.pagosMelate;
 
-    //Prepara Arreglo de VENTAS Melate
-    let arregloVentasMelate = [];
-    ventasMelate.forEach((element) => arregloVentasMelate.push(parseFloat(element.Monto)));
-    arregloVentasMelate = arregloVentasMelate.filter(
-      (element,i) => parseFloat(element) !== 0 && i <= 11 //Menor-Igual a 11 para sólo los meses y no el Total
-    );
+    // //Prepara Arreglo de Pagos Melate
+    // let arregloPagosMelate = [];
+    // pagosMelate.forEach((element) =>
+    //   arregloPagosMelate.push(parseFloat(element.Monto) * -1)
+    // );
+    // arregloPagosMelate = arregloPagosMelate.filter(
+    //   (element,i) => parseFloat(element) !== 0 && i <= 11 //Menor-Igual a 11 para sólo los meses y no el Total
+    // );
 
-    //Prepara Arreglo de Pagos Melate
-    let arregloPagosMelate = [];
-    pagosMelate.forEach((element) =>
-      arregloPagosMelate.push(parseFloat(element.Monto) * -1)
-    );
-    arregloPagosMelate = arregloPagosMelate.filter(
-      (element,i) => parseFloat(element) !== 0 && i <= 11 //Menor-Igual a 11 para sólo los meses y no el Total
-    );
+    const data = RechartsFormat(ventasMelate)
+    //[{Mes:1, Monto:1230.25},
+    // {Mes:2, Monto:3456.57}
+    //]
 
-    const data = {
-      labels: [
-        "Ene",
-        "Feb",
-        "Mar",
-        "Abr",
-        "May",
-        "Jun",
-        "Jul",
-        "Ago",
-        "Sep",
-        "Oct",
-        "Nov",
-        "Dic",
-      ],
-      datasets: [
-        {
-          label: "$ Ventas Melate",
-          // data: [72000,63000,65000,64000,77500,79000,86300],
-          data: arregloVentasMelate,
-          fill: false,
-          backgroundColor: "rgb(3, 113, 13, 0.9  )",
-          borderColor: "rgb(5, 198, 22, 0.9  )",
-        },
-        {
-          label: "$ Pagos Melate",
-          //data: [42000,33000,35000,34000,47500,49000,46300,21000],
-          data: arregloPagosMelate,
-          fill: false,
-          backgroundColor: "rgb(255, 99, 132, 0.9)",
-          borderColor: "rgba(247, 6, 10, 0.8)",
-        },
-      ],
-    };
     this.setState({
       dataMelate: data,
     });
@@ -566,10 +482,6 @@ class VentasBI extends Component {
       banderaOrdenamiento: !this.state.banderaOrdenamiento,
     })
 
-  }
-
-  numberWithCommas(x) {
-    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   }
 
   handleRender = () => {
@@ -599,7 +511,7 @@ class VentasBI extends Component {
               <td style={{ textAlign: "center" }}>Ventas</td>
               {this.state.ventas.map((element, i) => (
                 <td key={i}>
-                  {this.numberWithCommas(parseFloat(element.Monto).toFixed(0))}
+                  {NumberWithCommas(parseFloat(element.Monto).toFixed(0))}
                 </td>
               ))}
             </tr>
@@ -607,7 +519,7 @@ class VentasBI extends Component {
               <td style={{ textAlign: "center" }}>Egresos </td>
               {this.state.egresos.map((element, i) => (
                 <td key={i}>
-                  {this.numberWithCommas(
+                  {NumberWithCommas(
                     (parseFloat(element.Monto) * -1).toFixed(0)
                   )}
                 </td>
@@ -618,11 +530,11 @@ class VentasBI extends Component {
               {this.state.utilidadPerdida.map((element, i) => (
                 element >= 0 ?
                 <td key={i}>
-                  {this.numberWithCommas(parseFloat(element).toFixed(0))}
+                  {NumberWithCommas(parseFloat(element).toFixed(0))}
                 </td>
                 :
                 <td key={i} style={{color:"red"}}>
-                  {this.numberWithCommas(parseFloat(element).toFixed(0))}
+                  {NumberWithCommas(parseFloat(element).toFixed(0))}
                 </td>
               ))}
             </tr>
@@ -631,18 +543,18 @@ class VentasBI extends Component {
               {this.state.utilidadPerdidaLimpiaduriaPorcentaje.map((element, i) => (
                 element > 0 ?
                 <td key={i}>
-                  {"% "+this.numberWithCommas((parseFloat(element) *100).toFixed(2))}
+                  {"% "+NumberWithCommas((parseFloat(element) *100).toFixed(2))}
                 </td>
                 :
                 <td key={i} style={{color:"red"}}>
-                  {"% "+this.numberWithCommas((parseFloat(element) *100).toFixed(2))}
+                  {"% "+NumberWithCommas((parseFloat(element) *100).toFixed(2))}
                 </td>
               ))}
             </tr>
           </tbody>
         </table>
         <br />
-        {/* <LineChart data={this.state.data} /> */}
+        <Recharts data={this.state.data} titulo={"Ventas Limpiaduría"}/>
 
 
         <br />
@@ -662,7 +574,7 @@ class VentasBI extends Component {
               <td style={{ textAlign: "center" }}>Ventas Melate</td>
               {this.state.ventasMelate.map((element, i) => (
                 <td key={i}>
-                  {this.numberWithCommas(parseFloat(element.Monto).toFixed(0))}
+                  {NumberWithCommas(parseFloat(element.Monto).toFixed(0))}
                 </td>
               ))}
             </tr>
@@ -670,7 +582,7 @@ class VentasBI extends Component {
               <td style={{ textAlign: "center" }}>Pagos Melate </td>
               {this.state.pagosMelate.map((element, i) => (
                 <td key={i}>
-                  {this.numberWithCommas(
+                  {NumberWithCommas(
                     (parseFloat(element.Monto) * -1).toFixed(0)
                   )}
                 </td>
@@ -681,11 +593,11 @@ class VentasBI extends Component {
               {this.state.utilidadPerdidaMelate.map((element, i) => (
                 element > 0 ?
                 <td key={i}>
-                  {this.numberWithCommas(parseFloat(element).toFixed(0))}
+                  {NumberWithCommas(parseFloat(element).toFixed(0))}
                 </td>
                 :
                 <td key={i} style={{color:"red"}}>
-                  {this.numberWithCommas(parseFloat(element).toFixed(0))}
+                  {NumberWithCommas(parseFloat(element).toFixed(0))}
                 </td>
               ))}
             </tr>
@@ -694,18 +606,18 @@ class VentasBI extends Component {
               {this.state.utilidadPerdidaMelatePorcentaje.map((element, i) => (
                 element > 0 ?
                 <td key={i}>
-                  {"% "+this.numberWithCommas((parseFloat(element) *100).toFixed(2))}
+                  {"% "+NumberWithCommas((parseFloat(element) *100).toFixed(2))}
                 </td>
                 :
                 <td key={i} style={{color:"red"}}>
-                  {"% "+this.numberWithCommas((parseFloat(element) *100).toFixed(2))}
+                  {"% "+NumberWithCommas((parseFloat(element) *100).toFixed(2))}
                 </td>
               ))}
             </tr>
           </tbody>
         </table>
         <br />
-        {/* <LineChart data={this.state.dataMelate} /> */}
+        <Recharts data={this.state.dataMelate} titulo={"Ventas Melate"}/>
 
 
         <br />
@@ -732,46 +644,46 @@ class VentasBI extends Component {
                 <td style={{textAlign:"left"}}>{element.CuentaContable}</td>
                 <td style={{textAlign:"left"}}>{element.SubcuentaContable}</td>
                 <td >
-                  {this.numberWithCommas(Math.abs(parseFloat(element.Ene)).toFixed(0))}
+                  {NumberWithCommas(Math.abs(parseFloat(element.Ene)).toFixed(0))}
                 </td>
                 <td >
-                  {this.numberWithCommas(Math.abs(parseFloat(element.Feb)).toFixed(0))}
+                  {NumberWithCommas(Math.abs(parseFloat(element.Feb)).toFixed(0))}
                 </td>
                 <td >
-                  {this.numberWithCommas(Math.abs(parseFloat(element.Mar)).toFixed(0))}
+                  {NumberWithCommas(Math.abs(parseFloat(element.Mar)).toFixed(0))}
                 </td>
                 <td >
-                  {this.numberWithCommas(Math.abs(parseFloat(element.Abr)).toFixed(0))}
+                  {NumberWithCommas(Math.abs(parseFloat(element.Abr)).toFixed(0))}
                 </td>
                 <td >
-                  {this.numberWithCommas(Math.abs(parseFloat(element.May)).toFixed(0))}
+                  {NumberWithCommas(Math.abs(parseFloat(element.May)).toFixed(0))}
                 </td>
                 <td >
-                  {this.numberWithCommas(Math.abs(parseFloat(element.Jun)).toFixed(0))}
+                  {NumberWithCommas(Math.abs(parseFloat(element.Jun)).toFixed(0))}
                 </td>
                 <td >
-                  {this.numberWithCommas(Math.abs(parseFloat(element.Jul)).toFixed(0))}
+                  {NumberWithCommas(Math.abs(parseFloat(element.Jul)).toFixed(0))}
                 </td>
                 <td >
-                  {this.numberWithCommas(Math.abs(parseFloat(element.Ago)).toFixed(0))}
+                  {NumberWithCommas(Math.abs(parseFloat(element.Ago)).toFixed(0))}
                 </td>
                 <td >
-                  {this.numberWithCommas(Math.abs(parseFloat(element.Sep)).toFixed(0))}
+                  {NumberWithCommas(Math.abs(parseFloat(element.Sep)).toFixed(0))}
                 </td>
                 <td >
-                  {this.numberWithCommas(Math.abs(parseFloat(element.Oct)).toFixed(0))}
+                  {NumberWithCommas(Math.abs(parseFloat(element.Oct)).toFixed(0))}
                 </td>
                 <td >
-                  {this.numberWithCommas(Math.abs(parseFloat(element.Nov)).toFixed(0))}
+                  {NumberWithCommas(Math.abs(parseFloat(element.Nov)).toFixed(0))}
                 </td>
                 <td >
-                  {this.numberWithCommas(Math.abs(parseFloat(element.Dic)).toFixed(0))}
+                  {NumberWithCommas(Math.abs(parseFloat(element.Dic)).toFixed(0))}
                 </td>
                 <td >
-                  <b>{this.numberWithCommas(Math.abs(parseFloat(element.Total)).toFixed(0))}</b>
+                  <b>{NumberWithCommas(Math.abs(parseFloat(element.Total)).toFixed(0))}</b>
                 </td>
                 <td >
-                  {this.numberWithCommas(Math.abs(parseFloat(element.PorcentajeSimple)).toFixed(2))+"%"}
+                  {NumberWithCommas(Math.abs(parseFloat(element.PorcentajeSimple)).toFixed(2))+"%"}
                 </td>
             </tr>
               ))}
@@ -797,46 +709,46 @@ class VentasBI extends Component {
                 <td style={{textAlign:"left"}}>{element.CuentaContable}</td>
                 <td style={{textAlign:"left"}}>{element.SubcuentaContable}</td>
                 <td >
-                  {this.numberWithCommas(Math.abs(parseFloat(element.Ene)).toFixed(0))}
+                  {NumberWithCommas(Math.abs(parseFloat(element.Ene)).toFixed(0))}
                 </td>
                 <td >
-                  {this.numberWithCommas(Math.abs(parseFloat(element.Feb)).toFixed(0))}
+                  {NumberWithCommas(Math.abs(parseFloat(element.Feb)).toFixed(0))}
                 </td>
                 <td >
-                  {this.numberWithCommas(Math.abs(parseFloat(element.Mar)).toFixed(0))}
+                  {NumberWithCommas(Math.abs(parseFloat(element.Mar)).toFixed(0))}
                 </td>
                 <td >
-                  {this.numberWithCommas(Math.abs(parseFloat(element.Abr)).toFixed(0))}
+                  {NumberWithCommas(Math.abs(parseFloat(element.Abr)).toFixed(0))}
                 </td>
                 <td >
-                  {this.numberWithCommas(Math.abs(parseFloat(element.May)).toFixed(0))}
+                  {NumberWithCommas(Math.abs(parseFloat(element.May)).toFixed(0))}
                 </td>
                 <td >
-                  {this.numberWithCommas(Math.abs(parseFloat(element.Jun)).toFixed(0))}
+                  {NumberWithCommas(Math.abs(parseFloat(element.Jun)).toFixed(0))}
                 </td>
                 <td >
-                  {this.numberWithCommas(Math.abs(parseFloat(element.Jul)).toFixed(0))}
+                  {NumberWithCommas(Math.abs(parseFloat(element.Jul)).toFixed(0))}
                 </td>
                 <td >
-                  {this.numberWithCommas(Math.abs(parseFloat(element.Ago)).toFixed(0))}
+                  {NumberWithCommas(Math.abs(parseFloat(element.Ago)).toFixed(0))}
                 </td>
                 <td >
-                  {this.numberWithCommas(Math.abs(parseFloat(element.Sep)).toFixed(0))}
+                  {NumberWithCommas(Math.abs(parseFloat(element.Sep)).toFixed(0))}
                 </td>
                 <td >
-                  {this.numberWithCommas(Math.abs(parseFloat(element.Oct)).toFixed(0))}
+                  {NumberWithCommas(Math.abs(parseFloat(element.Oct)).toFixed(0))}
                 </td>
                 <td >
-                  {this.numberWithCommas(Math.abs(parseFloat(element.Nov)).toFixed(0))}
+                  {NumberWithCommas(Math.abs(parseFloat(element.Nov)).toFixed(0))}
                 </td>
                 <td >
-                  {this.numberWithCommas(Math.abs(parseFloat(element.Dic)).toFixed(0))}
+                  {NumberWithCommas(Math.abs(parseFloat(element.Dic)).toFixed(0))}
                 </td>
                 <td >
-                  <b>{this.numberWithCommas(Math.abs(parseFloat(element.Total)).toFixed(0))}</b>
+                  <b>{NumberWithCommas(Math.abs(parseFloat(element.Total)).toFixed(0))}</b>
                 </td>
                 <td >
-                  {this.numberWithCommas(Math.abs(parseFloat(element.PorcentajeSimple)).toFixed(2))+"%"}
+                  {NumberWithCommas(Math.abs(parseFloat(element.PorcentajeSimple)).toFixed(2))+"%"}
                 </td>
             </tr>
               ))}
@@ -864,19 +776,19 @@ class VentasBI extends Component {
                 {this.state.dataLimpiaduriaMelateRentasOtrosUtilidad.map((element,i) =>(
                 <tr key={i}>
                   <td>{element.Negocio}</td>
-                  <td>{this.numberWithCommas(parseFloat(element.Ene).toFixed(0))}</td>
-                  <td>{this.numberWithCommas(parseFloat(element.Feb).toFixed(0))}</td>
-                  <td>{this.numberWithCommas(parseFloat(element.Mar).toFixed(0))}</td>
-                  <td>{this.numberWithCommas(parseFloat(element.Abr).toFixed(0))}</td>
-                  <td>{this.numberWithCommas(parseFloat(element.May).toFixed(0))}</td>
-                  <td>{this.numberWithCommas(parseFloat(element.Jun).toFixed(0))}</td>
-                  <td>{this.numberWithCommas(parseFloat(element.Jul).toFixed(0))}</td>
-                  <td>{this.numberWithCommas(parseFloat(element.Ago).toFixed(0))}</td>
-                  <td>{this.numberWithCommas(parseFloat(element.Sep).toFixed(0))}</td>
-                  <td>{this.numberWithCommas(parseFloat(element.Oct).toFixed(0))}</td>
-                  <td>{this.numberWithCommas(parseFloat(element.Nov).toFixed(0))}</td>
-                  <td>{this.numberWithCommas(parseFloat(element.Dic).toFixed(0))}</td>
-                  <td>{this.numberWithCommas(parseFloat(element.Total).toFixed(0))}</td>
+                  <td>{NumberWithCommas(parseFloat(element.Ene).toFixed(0))}</td>
+                  <td>{NumberWithCommas(parseFloat(element.Feb).toFixed(0))}</td>
+                  <td>{NumberWithCommas(parseFloat(element.Mar).toFixed(0))}</td>
+                  <td>{NumberWithCommas(parseFloat(element.Abr).toFixed(0))}</td>
+                  <td>{NumberWithCommas(parseFloat(element.May).toFixed(0))}</td>
+                  <td>{NumberWithCommas(parseFloat(element.Jun).toFixed(0))}</td>
+                  <td>{NumberWithCommas(parseFloat(element.Jul).toFixed(0))}</td>
+                  <td>{NumberWithCommas(parseFloat(element.Ago).toFixed(0))}</td>
+                  <td>{NumberWithCommas(parseFloat(element.Sep).toFixed(0))}</td>
+                  <td>{NumberWithCommas(parseFloat(element.Oct).toFixed(0))}</td>
+                  <td>{NumberWithCommas(parseFloat(element.Nov).toFixed(0))}</td>
+                  <td>{NumberWithCommas(parseFloat(element.Dic).toFixed(0))}</td>
+                  <td>{NumberWithCommas(parseFloat(element.Total).toFixed(0))}</td>
                 </tr>
                 ))}
           </tbody>
@@ -894,7 +806,7 @@ class VentasBI extends Component {
     return (
       this.state.dataLimpiaduriaMelateRentasOtrosUtilidad.length > 0  ? 
       <this.handleRender />
-    : <h4>Loading . . .</h4>
+    : <h4 style={{margin:"10px 25px "}}>Loading . . .</h4>
     )
   }
 }
