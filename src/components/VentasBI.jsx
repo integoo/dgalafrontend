@@ -446,7 +446,7 @@ class VentasBI extends Component {
 
   handleArrayLineChartMelate = () => {
     const ventasMelate = this.state.ventasMelate;
-    const pagosMelate = this.state.pagosMelate;
+    //const pagosMelate = this.state.pagosMelate;
 
     // //Prepara Arreglo de Pagos Melate
     // let arregloPagosMelate = [];

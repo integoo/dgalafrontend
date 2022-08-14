@@ -9,7 +9,7 @@ export function NumberWithCommas(x) {
     //]
     let data=[]
     let json={}
-      arregloDeObjetos.map((element,i) =>{
+      arregloDeObjetos.forEach((element,i) =>{
         if(element.Mes === 1){
           json = {name:'Ene',value:parseFloat(element.Monto) || 0}
         }
