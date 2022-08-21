@@ -22,6 +22,7 @@ class EstadoResultadosLimpiaduria extends React.Component {
       detallesUtilidadOperacionConMelate: [],
       UtilidadDeOperacionConMelate: 0,
       RentasEmpresa: 0,
+      OtrosIngresosEmpresa: 0,
       OtrosGastosEmpresa: 0,
       UAIR: 0,
       CifraControlTotal: 0,
@@ -369,8 +370,9 @@ class EstadoResultadosLimpiaduria extends React.Component {
     //     dataOtros.push(data[i]);
     //   }
       const RentasEmpresa = data[9].Suc01 
-      const OtrosGastosEmpresa = data[10].Suc01
-      const UAIR = parseFloat(UtilidadDeOperacionConMelate) + parseFloat(RentasEmpresa) + parseFloat(OtrosGastosEmpresa)
+      const OtrosIngresosEmpresa = data[10].Suc01
+      const OtrosGastosEmpresa = data[11].Suc01
+      const UAIR = parseFloat(UtilidadDeOperacionConMelate) + parseFloat(RentasEmpresa) + parseFloat(OtrosIngresosEmpresa) + parseFloat(OtrosGastosEmpresa)
       
       //##########################################################################################
       this.setState({
@@ -381,6 +383,7 @@ class EstadoResultadosLimpiaduria extends React.Component {
         detallesUtilidadOperacionConMelate: dataUtilidadOperacionConMelate,
         UtilidadDeOperacionConMelate: UtilidadDeOperacionConMelate,
         RentasEmpresa: RentasEmpresa,
+        OtrosIngresosEmpresa: OtrosIngresosEmpresa,
         OtrosGastosEmpresa: OtrosGastosEmpresa,
         UAIR: UAIR,
       });
@@ -593,17 +596,25 @@ class EstadoResultadosLimpiaduria extends React.Component {
         <h5 id="idOtrosIngresosGastos">Otros Ingresos/Gastos</h5>
         <div className="otrosingresosgastos">
             <div>
-                <label htmlFor="" style={{width:"10rem"}}>Rentas Empresa</label>
+                <label htmlFor="" style={{width:"12rem"}}>Rentas Empresa</label>
                 <input style={{width:"6rem",textAlign:"right"}} value={this.numberWithCommas(parseFloat(this.state.RentasEmpresa).toFixed(2))} readOnly/>
                 <br />
-                <label htmlFor="" style={{width:"10rem"}}>Otros Gastos Empresa</label>
+
+
+                <label htmlFor="" style={{width:"12rem"}}>Otros Ingresos Empresa</label>
+                <input style={{width:"6rem",textAlign:"right"}} value={this.numberWithCommas(parseFloat(this.state.OtrosIngresosEmpresa).toFixed(2))} readOnly/>
+                <br />
+
+
+
+                <label htmlFor="" style={{width:"12rem"}}>Otros Gastos Empresa</label>
                 <input style={{width:"6rem",textAlign:"right"}} value={this.numberWithCommas(parseFloat(this.state.OtrosGastosEmpresa).toFixed(2))} readOnly/>
                 <br />
-                <label htmlFor="" style={{width:"10rem"}}><strong>UAIR</strong></label>
+                <label htmlFor="" style={{width:"12rem"}}><strong>UAIR</strong></label>
                 <input style={{width:"6rem",textAlign:"right",fontWeight:"bold"}} value={this.numberWithCommas(parseFloat(this.state.UAIR).toFixed(2))} readOnly/>
                 <br />
                 <br />
-                <label htmlFor="" style={{width:"10rem"}}>Cifra Control</label>
+                <label htmlFor="" style={{width:"12rem"}}>Cifra Control</label>
                 <input style={{width:"6rem",textAlign:"right"}} value={this.numberWithCommas(parseFloat(this.state.CifraControlTotal).toFixed(2))} readOnly/>
             </div>
         </div>

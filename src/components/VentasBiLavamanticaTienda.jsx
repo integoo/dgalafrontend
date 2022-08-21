@@ -1,6 +1,7 @@
 import React from 'react'
 
 import './VentasBiLavamaticaTienda.css'
+import {RechartsBarChart01,RechartsBarChart02,RechartsBarChart03} from './cmpnt/FuncionesRecharts'
 
 import SelectSucursales from './cmpnt/SelectSucursales'
 
@@ -13,10 +14,14 @@ class VentasBiLavamanticaTienda extends React.Component{
             // SucursalId: sessionStorage.getItem("SucursalId"),
             SucursalId: 0,
             detallesLavamatica:[],
+            detallesLavamaticaRecharts:[],
             detallesTienda:[],
+            detallesTiendaRecharts:[],
             detallesDecorafiestas:[],
             detallesInventarioPerpetuoHistoria:[],
-            lavadassecadasserviciosSanPedro:[],
+            detallesInventarioPerpetuoHistoriaRecharts:[],
+            lavadassecadasservicios:[],
+            lavadassecadasserviciosRecharts:[],
         }
     }
 
@@ -156,9 +161,23 @@ class VentasBiLavamanticaTienda extends React.Component{
             json.Total = arregloRegistro[7].Total / arregloRegistro[2].Total *100 || 0
             arregloRegistro.push(json)
 
+            let arregloRegistroRecharts = []
+            arregloRegistroRecharts.push({"name": "Ene", "VentaConImp": parseFloat(arregloRegistro[0].Ene.toFixed(0)), "UtilidadNeta": parseFloat(arregloRegistro[7].Ene.toFixed(0))})
+            arregloRegistroRecharts.push({"name": "Feb", "VentaConImp": parseFloat(arregloRegistro[0].Feb.toFixed(0)), "UtilidadNeta": parseFloat(arregloRegistro[7].Feb.toFixed(0))})
+            arregloRegistroRecharts.push({"name": "Mar", "VentaConImp": parseFloat(arregloRegistro[0].Mar.toFixed(0)), "UtilidadNeta": parseFloat(arregloRegistro[7].Mar.toFixed(0))})
+            arregloRegistroRecharts.push({"name": "Abr", "VentaConImp": parseFloat(arregloRegistro[0].Abr.toFixed(0)), "UtilidadNeta": parseFloat(arregloRegistro[7].Abr.toFixed(0))})
+            arregloRegistroRecharts.push({"name": "May", "VentaConImp": parseFloat(arregloRegistro[0].May.toFixed(0)), "UtilidadNeta": parseFloat(arregloRegistro[7].May.toFixed(0))})
+            arregloRegistroRecharts.push({"name": "Jun", "VentaConImp": parseFloat(arregloRegistro[0].Jun.toFixed(0)), "UtilidadNeta": parseFloat(arregloRegistro[7].Jun.toFixed(0))})
+            arregloRegistroRecharts.push({"name": "Jul", "VentaConImp": parseFloat(arregloRegistro[0].Jul.toFixed(0)), "UtilidadNeta": parseFloat(arregloRegistro[7].Jul.toFixed(0))})
+            arregloRegistroRecharts.push({"name": "Ago", "VentaConImp": parseFloat(arregloRegistro[0].Ago.toFixed(0)), "UtilidadNeta": parseFloat(arregloRegistro[7].Ago.toFixed(0))})
+            arregloRegistroRecharts.push({"name": "Sep", "VentaConImp": parseFloat(arregloRegistro[0].Sep.toFixed(0)), "UtilidadNeta": parseFloat(arregloRegistro[7].Sep.toFixed(0))})
+            arregloRegistroRecharts.push({"name": "Oct", "VentaConImp": parseFloat(arregloRegistro[0].Oct.toFixed(0)), "UtilidadNeta": parseFloat(arregloRegistro[7].Oct.toFixed(0))})
+            arregloRegistroRecharts.push({"name": "Nov", "VentaConImp": parseFloat(arregloRegistro[0].Nov.toFixed(0)), "UtilidadNeta": parseFloat(arregloRegistro[7].Nov.toFixed(0))})
+            arregloRegistroRecharts.push({"name": "Dic", "VentaConImp": parseFloat(arregloRegistro[0].Dic.toFixed(0)), "UtilidadNeta": parseFloat(arregloRegistro[7].Dic.toFixed(0))})
 
             this.setState({
                 detallesLavamatica: arregloRegistro,
+                detallesLavamaticaRecharts: arregloRegistroRecharts,
             })
         }catch(error){
             console.log(error.message)
@@ -187,8 +206,24 @@ class VentasBiLavamanticaTienda extends React.Component{
 
             bandera = true;
 
+
+            let dataRecharts = []
+            dataRecharts.push({"name": "Ene", "Lavadas": parseInt(data[0].Ene), "Secadas": parseInt(data[1].Ene)})
+            dataRecharts.push({"name": "Feb", "Lavadas": parseInt(data[0].Feb), "Secadas": parseInt(data[1].Feb)})
+            dataRecharts.push({"name": "Mar", "Lavadas": parseInt(data[0].Mar), "Secadas": parseInt(data[1].Mar)})
+            dataRecharts.push({"name": "Abr", "Lavadas": parseInt(data[0].Abr), "Secadas": parseInt(data[1].Abr)})
+            dataRecharts.push({"name": "May", "Lavadas": parseInt(data[0].May), "Secadas": parseInt(data[1].May)})
+            dataRecharts.push({"name": "Jun", "Lavadas": parseInt(data[0].Jun), "Secadas": parseInt(data[1].Jun)})
+            dataRecharts.push({"name": "Jul", "Lavadas": parseInt(data[0].Jul), "Secadas": parseInt(data[1].Jul)})
+            dataRecharts.push({"name": "Ago", "Lavadas": parseInt(data[0].Ago), "Secadas": parseInt(data[1].Ago)})
+            dataRecharts.push({"name": "Sep", "Lavadas": parseInt(data[0].Sep), "Secadas": parseInt(data[1].Sep)})
+            dataRecharts.push({"name": "Oct", "Lavadas": parseInt(data[0].Oct), "Secadas": parseInt(data[1].Oct)})
+            dataRecharts.push({"name": "Nov", "Lavadas": parseInt(data[0].Nov), "Secadas": parseInt(data[1].Nov)})
+            dataRecharts.push({"name": "Dic", "Lavadas": parseInt(data[0].Dic), "Secadas": parseInt(data[1].Dic)})
+            
             this.setState({
-                lavadassecadasserviciosSanPedro: data,
+                lavadassecadasservicios: data,
+                lavadassecadasserviciosRecharts: dataRecharts,
             })
         }catch(error){
             console.log(error.message)
@@ -261,8 +296,23 @@ class VentasBiLavamanticaTienda extends React.Component{
 
             arregloRegistro.push(json)
 
+
+            let arregloRegistroRecharts = []
+            arregloRegistroRecharts.push({"name":"Ene","VentasConImp":parseInt(arregloRegistro[0].Ene.toFixed(0)),"CostoDeVentas":parseInt(arregloRegistro[3].Ene.toFixed(0)),"UtilidadNeta":parseInt(arregloRegistro[6].Ene.toFixed(0))})
+            arregloRegistroRecharts.push({"name":"Feb","VentasConImp":parseInt(arregloRegistro[0].Feb.toFixed(0)),"CostoDeVentas":parseInt(arregloRegistro[3].Feb.toFixed(0)),"UtilidadNeta":parseInt(arregloRegistro[6].Feb.toFixed(0))})
+            arregloRegistroRecharts.push({"name":"Mar","VentasConImp":parseInt(arregloRegistro[0].Mar.toFixed(0)),"CostoDeVentas":parseInt(arregloRegistro[3].Mar.toFixed(0)),"UtilidadNeta":parseInt(arregloRegistro[6].Mar.toFixed(0))})
+            arregloRegistroRecharts.push({"name":"Abr","VentasConImp":parseInt(arregloRegistro[0].Abr.toFixed(0)),"CostoDeVentas":parseInt(arregloRegistro[3].Abr.toFixed(0)),"UtilidadNeta":parseInt(arregloRegistro[6].Abr.toFixed(0))})
+            arregloRegistroRecharts.push({"name":"May","VentasConImp":parseInt(arregloRegistro[0].May.toFixed(0)),"CostoDeVentas":parseInt(arregloRegistro[3].May.toFixed(0)),"UtilidadNeta":parseInt(arregloRegistro[6].May.toFixed(0))})
+            arregloRegistroRecharts.push({"name":"Jun","VentasConImp":parseInt(arregloRegistro[0].Jun.toFixed(0)),"CostoDeVentas":parseInt(arregloRegistro[3].Jun.toFixed(0)),"UtilidadNeta":parseInt(arregloRegistro[6].Jun.toFixed(0))})
+            arregloRegistroRecharts.push({"name":"Jul","VentasConImp":parseInt(arregloRegistro[0].Jul.toFixed(0)),"CostoDeVentas":parseInt(arregloRegistro[3].Jul.toFixed(0)),"UtilidadNeta":parseInt(arregloRegistro[6].Jul.toFixed(0))})
+            arregloRegistroRecharts.push({"name":"Ago","VentasConImp":parseInt(arregloRegistro[0].Ago.toFixed(0)),"CostoDeVentas":parseInt(arregloRegistro[3].Ago.toFixed(0)),"UtilidadNeta":parseInt(arregloRegistro[6].Ago.toFixed(0))})
+            arregloRegistroRecharts.push({"name":"Sep","VentasConImp":parseInt(arregloRegistro[0].Sep.toFixed(0)),"CostoDeVentas":parseInt(arregloRegistro[3].Sep.toFixed(0)),"UtilidadNeta":parseInt(arregloRegistro[6].Sep.toFixed(0))})
+            arregloRegistroRecharts.push({"name":"Oct","VentasConImp":parseInt(arregloRegistro[0].Oct.toFixed(0)),"CostoDeVentas":parseInt(arregloRegistro[3].Oct.toFixed(0)),"UtilidadNeta":parseInt(arregloRegistro[6].Oct.toFixed(0))})
+            arregloRegistroRecharts.push({"name":"Nov","VentasConImp":parseInt(arregloRegistro[0].Nov.toFixed(0)),"CostoDeVentas":parseInt(arregloRegistro[3].Nov.toFixed(0)),"UtilidadNeta":parseInt(arregloRegistro[6].Nov.toFixed(0))})
+            arregloRegistroRecharts.push({"name":"Dic","VentasConImp":parseInt(arregloRegistro[0].Dic.toFixed(0)),"CostoDeVentas":parseInt(arregloRegistro[3].Dic.toFixed(0)),"UtilidadNeta":parseInt(arregloRegistro[6].Dic.toFixed(0))})
             this.setState({
                 detallesTienda: arregloRegistro,
+                detallesTiendaRecharts: arregloRegistroRecharts,
             })
         }catch(error){
             console.log(error.message)
@@ -364,8 +414,23 @@ class VentasBiLavamanticaTienda extends React.Component{
 
             bandera = true;
 
+            let dataRecharts = []
+            dataRecharts.push({"name":"Ene", "InventarioPerpetuo":parseInt(parseFloat(data[0].Ene).toFixed(0))})
+            dataRecharts.push({"name":"Feb", "InventarioPerpetuo":parseInt(parseFloat(data[0].Feb).toFixed(0))})
+            dataRecharts.push({"name":"Mar", "InventarioPerpetuo":parseInt(parseFloat(data[0].Mar).toFixed(0))})
+            dataRecharts.push({"name":"Abr", "InventarioPerpetuo":parseInt(parseFloat(data[0].Abr).toFixed(0))})
+            dataRecharts.push({"name":"May", "InventarioPerpetuo":parseInt(parseFloat(data[0].May).toFixed(0))})
+            dataRecharts.push({"name":"Jun", "InventarioPerpetuo":parseInt(parseFloat(data[0].Jun).toFixed(0))})
+            dataRecharts.push({"name":"Jul", "InventarioPerpetuo":parseInt(parseFloat(data[0].Jul).toFixed(0))})
+            dataRecharts.push({"name":"Ago", "InventarioPerpetuo":parseInt(parseFloat(data[0].Ago).toFixed(0))})
+            dataRecharts.push({"name":"Sep", "InventarioPerpetuo":parseInt(parseFloat(data[0].Sep).toFixed(0))})
+            dataRecharts.push({"name":"Oct", "InventarioPerpetuo":parseInt(parseFloat(data[0].Oct).toFixed(0))})
+            dataRecharts.push({"name":"Nov", "InventarioPerpetuo":parseInt(parseFloat(data[0].Nov).toFixed(0))})
+            dataRecharts.push({"name":"Dic", "InventarioPerpetuo":parseInt(parseFloat(data[0].Dic).toFixed(0))})
+
             this.setState({
                 detallesInventarioPerpetuoHistoria: data,
+                detallesInventarioPerpetuoHistoriaRecharts: dataRecharts,
             })
         }catch(error){
             console.log(error.message)
@@ -478,9 +543,9 @@ class VentasBiLavamanticaTienda extends React.Component{
                                         <td>{this.numberWithCommas(parseFloat(element.Oct).toFixed(i === 8 ? 2 : 0))}</td>
                                         <td>{this.numberWithCommas(parseFloat(element.Nov).toFixed(i === 8 ? 2 : 0))}</td>
                                         <td>{this.numberWithCommas(parseFloat(element.Dic).toFixed(i === 8 ? 2 : 0))}</td>
-                                        <td>{this.numberWithCommas(parseFloat(element.Total).toFixed(i === 8 ? 2 : 0))}</td>
-                                        
-                                        
+                                       {i !== 8  ? <td>{this.numberWithCommas(parseFloat(element.Total).toFixed(i === 8 ? 2 : 0))}</td>
+                                        : <td style={{background:"green", color:"white"}}><b>{this.numberWithCommas(parseFloat(element.Total).toFixed(i === 8 ? 2 : 0))}</b></td>
+                                        }
                                         
 
                                 </tr>
@@ -496,7 +561,7 @@ class VentasBiLavamanticaTienda extends React.Component{
 
 
 
-
+                <RechartsBarChart02 data={this.state.detallesLavamaticaRecharts} titulo={"Lavamática Ventas Con Impuesto y Utilidad Neta (Sin Impuestos)"}/>
 
 
 
@@ -545,8 +610,8 @@ class VentasBiLavamanticaTienda extends React.Component{
                         </tr>
                     </thead>
                     <tbody>
-                        {this.state.lavadassecadasserviciosSanPedro.length > 0 ? 
-                                this.state.lavadassecadasserviciosSanPedro.map((element,i) =>(
+                        {this.state.lavadassecadasservicios.length > 0 ? 
+                                this.state.lavadassecadasservicios.map((element,i) =>(
                                     <tr key={i}>
                                         <td style={{textAlign:"left", width:"210px"}}>{this.numberWithCommas(element.Descripcion)}</td>
                                         <td>{this.numberWithCommas(parseFloat(element.Ene))}</td>
@@ -574,7 +639,7 @@ class VentasBiLavamanticaTienda extends React.Component{
                 <br />
                 <br />
  
-
+                <RechartsBarChart02 data={this.state.lavadassecadasserviciosRecharts} titulo={"Lavadas y Secadas"}/>
 
 
 
@@ -629,7 +694,9 @@ class VentasBiLavamanticaTienda extends React.Component{
                                         <td>{this.numberWithCommas(parseFloat(element.Oct).toFixed(i === 7 ? 2 : 0))}</td>
                                         <td>{this.numberWithCommas(parseFloat(element.Nov).toFixed(i === 7 ? 2 : 0))}</td>
                                         <td>{this.numberWithCommas(parseFloat(element.Dic).toFixed(i === 7 ? 2 : 0))}</td>
-                                        <td>{this.numberWithCommas(parseFloat(element.Total).toFixed(i === 7 ? 2 : 0))}</td>
+                                        {i !== 7 ?<td>{this.numberWithCommas(parseFloat(element.Total).toFixed(i === 7 ? 2 : 0))}</td>
+                                            : <td style={{background:"green", color:"white"}}><b>{this.numberWithCommas(parseFloat(element.Total).toFixed(i === 7 ? 2 : 0))}</b></td>
+}
                                 </tr>
                             ))
                             : null}
@@ -640,6 +707,9 @@ class VentasBiLavamanticaTienda extends React.Component{
 
                 <br />
                 <br />
+
+                <RechartsBarChart03 data={this.state.detallesTiendaRecharts} titulo={"Tienda Ventas Con Impuesto, Costo de Ventas, Utilidad Neta (Sin Impuesto)"}/>
+
 
                 <h4>Inteligencia de Negocios Decorafiestas</h4>
                 <table>
@@ -730,6 +800,8 @@ class VentasBiLavamanticaTienda extends React.Component{
                     </tbody>
                 </table>
 
+                <RechartsBarChart01 data={this.state.detallesInventarioPerpetuoHistoriaRecharts} titulo={"Inventario"}/>
+
                 <br/>
                 <br/>
                 <br/>
@@ -740,7 +812,7 @@ class VentasBiLavamanticaTienda extends React.Component{
     render(){
         return(
             <div className="containerVentasBiLavamanticaTienda">
-                {this.state.detallesDecorafiestas.length > 0 ? <this.handleRender /> :<h3>Procesando...</h3>}
+                {this.state.detallesInventarioPerpetuoHistoriaRecharts.length > 0 ? <this.handleRender /> :<h3>Procesando...</h3>}
             </div>
         )
     }

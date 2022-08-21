@@ -56,16 +56,48 @@ class Menu extends Component {
     const ambientePruebas = (this.props.dbName) === 'dgaladb' ? <span style={{fontSize:".5rem"}}>{this.props.Version}</span> : 'PRUEBAS '+this.props.url
 
 //******************************************************************************** */
-
+    const srcrobot = "https://robohash.org/user/"+Math.round(Math.random()*100)
     return (
       <Router>
         <Redirect to="/" />
-        <nav className={classes} >
-            <Link to="/" style={linkStyle}>
-                {/* <span className="navbar-brand">D'Gala</span> */}
-                {/* IMPORTANTE: SE AGREGARON LAS CLASES data-toggle="collapse" data-target=".navbar-collapse.show" PARA COLLAPSAR EL MENU MOBILE DESPUES DE DAR CLICK */}
-                <span className="navbar-brand" data-toggle="collapse" data-target=".navbar-collapse.show">D'Gala {ambientePruebas}</span>
-            </Link>
+        <nav className={classes}>
+          <Link to="/" style={linkStyle}>
+            {/* <span className="navbar-brand">D'Gala</span> */}
+            {/* IMPORTANTE: SE AGREGARON LAS CLASES data-toggle="collapse" data-target=".navbar-collapse.show" PARA COLLAPSAR EL MENU MOBILE DESPUES DE DAR CLICK */}
+            <span
+              className="navbar-brand"
+              data-toggle="collapse"
+              data-target=".navbar-collapse.show"
+            >
+              D'Gala {ambientePruebas}
+            </span>
+          </Link>
+
+
+
+
+          {/* IMAGEN DEL USUARIO ROBOT */}
+          <Link to="/" style={linkStyle}>
+            <span>
+              <img
+                src={srcrobot}
+                alt="Robohash"
+                width={60}
+                height={60}
+                style={{
+                  background: "rgb(244,240,236)",
+                  borderRadius: "50%",
+                  border: "4px solid red",
+                  // borderColor: "red yellow black"
+                  borderColor: "red yellow purple green"
+                }}
+              />
+            </span>
+          </Link>
+
+
+
+
           <button
             className="navbar-toggler navbar-light bg-light"
             type="button"
@@ -80,11 +112,12 @@ class Menu extends Component {
 
           <div className="collapse navbar-collapse" id="navbarSupportedContent">
             <ul className="navbar-nav mr-auto">
-
-
-
-            <Link to="/" style={linkStyle}>
-                <li className="nav-item dropdown" data-toggle="collapse" data-target=".navbar-collapse.show">
+              <Link to="/" style={linkStyle}>
+                <li
+                  className="nav-item dropdown"
+                  data-toggle="collapse"
+                  data-target=".navbar-collapse.show"
+                >
                   <span
                     className="nav-link dropdown-toggle"
                     id="navbarDropdown"
@@ -100,9 +133,9 @@ class Menu extends Component {
                     aria-labelledby="navbarDropdown"
                   >
                     <Link to="/catalogos/productos" style={linkStyle}>
-                        <span className="dropdown-item">Productos</span>
+                      <span className="dropdown-item">Productos</span>
                     </Link>
-                      
+
                     {/* <div className="dropdown-divider"></div>
                     <Link to="/limpiaduria/estadoderesultados" style={linkStyle}>
                       <span className="dropdown-item">Reportes</span>
@@ -111,12 +144,12 @@ class Menu extends Component {
                 </li>
               </Link>
 
-
-
-
-
               <Link to="/" style={linkStyle}>
-                <li className="nav-item dropdown" data-toggle="collapse" data-target=".navbar-collapse.show">
+                <li
+                  className="nav-item dropdown"
+                  data-toggle="collapse"
+                  data-target=".navbar-collapse.show"
+                >
                   <span
                     className="nav-link dropdown-toggle"
                     id="navbarDropdown"
@@ -132,9 +165,9 @@ class Menu extends Component {
                     aria-labelledby="navbarDropdown"
                   >
                     <Link to="/puntodeventa/puntodeventa" style={linkStyle}>
-                        <span className="dropdown-item">Punto de Venta</span>
+                      <span className="dropdown-item">Punto de Venta</span>
                     </Link>
-                      
+
                     <div className="dropdown-divider"></div>
                     <Link to="/puntodeventa/retirosdecaja" style={linkStyle}>
                       <span className="dropdown-item">Retiros de Caja</span>
@@ -142,13 +175,6 @@ class Menu extends Component {
                   </div>
                 </li>
               </Link>
-
-
-
-
-
-
-
 
               {/* <Link to="/puntodeventa" style={linkStyle}>
                 <li className="nav-item" data-toggle="collapse" data-target=".navbar-collapse.show">
@@ -158,13 +184,12 @@ class Menu extends Component {
                 </li>
               </Link> */}
 
-
-
-
-
-
               <Link to="/" style={linkStyle}>
-                <li className="nav-item dropdown" data-toggle="collapse" data-target=".navbar-collapse.show">
+                <li
+                  className="nav-item dropdown"
+                  data-toggle="collapse"
+                  data-target=".navbar-collapse.show"
+                >
                   <span
                     className="nav-link dropdown-toggle"
                     id="navbarDropdown"
@@ -179,43 +204,59 @@ class Menu extends Component {
                     className="dropdown-menu"
                     aria-labelledby="navbarDropdown"
                   >
-                    <Link to="/ventas/ventasconsultasucursaleshoy" style={linkStyle}>
-                      <span className="dropdown-item">Consulta Ventas Sucursales Hoy</span>
+                    <Link
+                      to="/ventas/ventasconsultasucursaleshoy"
+                      style={linkStyle}
+                    >
+                      <span className="dropdown-item">
+                        Consulta Ventas Sucursales Hoy
+                      </span>
                     </Link>
-                    
-                    <Link to="/ventas/consultaventascategorias" style={linkStyle}>
-                      <span className="dropdown-item">Consulta Ventas Categorías</span>
+
+                    <Link
+                      to="/ventas/consultaventascategorias"
+                      style={linkStyle}
+                    >
+                      <span className="dropdown-item">
+                        Consulta Ventas Categorías
+                      </span>
                     </Link>
                     <Link to="/ventas/consulta" style={linkStyle}>
-                        <span className="dropdown-item">Consulta Ventas (Fecha/Folio/Ticket)</span>
+                      <span className="dropdown-item">
+                        Consulta Ventas (Fecha/Folio/Ticket)
+                      </span>
                     </Link>
 
                     <Link to="/ventas/consultafechaproductos" style={linkStyle}>
-                        <span className="dropdown-item">Consulta Ventas (Fecha/Producto)</span>
+                      <span className="dropdown-item">
+                        Consulta Ventas (Fecha/Producto)
+                      </span>
                     </Link>
 
-                      
                     <div className="dropdown-divider"></div>
                     <Link to="/ventas/bi" style={linkStyle}>
-                      <span className="dropdown-item">Inteligencia de Negocio/BI Limpiaduría</span>
+                      <span className="dropdown-item">
+                        Inteligencia de Negocio/BI Limpiaduría
+                      </span>
                     </Link>
-                    <Link to="/ventas/VentasBiLavamaticaTienda" style={linkStyle}>
-                      <span className="dropdown-item">Inteligencia de Negocio/BI Lavamatica/Tienda</span>
+                    <Link
+                      to="/ventas/VentasBiLavamaticaTienda"
+                      style={linkStyle}
+                    >
+                      <span className="dropdown-item">
+                        Inteligencia de Negocio/BI Lavamatica/Tienda
+                      </span>
                     </Link>
-
-
-                    
                   </div>
                 </li>
               </Link>
 
-
-
-
-
-
               <Link to="/" style={linkStyle}>
-                <li className="nav-item dropdown" data-toggle="collapse" data-target=".navbar-collapse.show">
+                <li
+                  className="nav-item dropdown"
+                  data-toggle="collapse"
+                  data-target=".navbar-collapse.show"
+                >
                   <span
                     className="nav-link dropdown-toggle"
                     id="navbarDropdown"
@@ -231,29 +272,33 @@ class Menu extends Component {
                     aria-labelledby="navbarDropdown"
                   >
                     <Link to="/limpiaduria/catalogo" style={linkStyle}>
-                        <span className="dropdown-item">Catalogo</span>
+                      <span className="dropdown-item">Catalogo</span>
                     </Link>
                     <Link to="/contabilidad/ingresos" style={linkStyle}>
-                        <span className="dropdown-item">Ingresos</span>
+                      <span className="dropdown-item">Ingresos</span>
                     </Link>
                     <Link to="/contabilidad/egresos" style={linkStyle}>
-                        <span className="dropdown-item">Egresos</span>
+                      <span className="dropdown-item">Egresos</span>
                     </Link>
                     <div className="dropdown-divider"></div>
-                    <Link to="/limpiaduria/estadoderesultados" style={linkStyle}>
-                      <span className="dropdown-item">Estado de Resultados</span>
+                    <Link
+                      to="/limpiaduria/estadoderesultados"
+                      style={linkStyle}
+                    >
+                      <span className="dropdown-item">
+                        Estado de Resultados
+                      </span>
                     </Link>
                   </div>
                 </li>
               </Link>
 
-
-
-
-
-
               <Link to="/" style={linkStyle}>
-                <li className="nav-item dropdown" data-toggle="collapse" data-target=".navbar-collapse.show">
+                <li
+                  className="nav-item dropdown"
+                  data-toggle="collapse"
+                  data-target=".navbar-collapse.show"
+                >
                   <span
                     className="nav-link dropdown-toggle"
                     id="navbarDropdown"
@@ -269,14 +314,12 @@ class Menu extends Component {
                     aria-labelledby="navbarDropdown"
                   >
                     <Link to="/compras/recepcion" style={linkStyle}>
-                        <span className="dropdown-item">Compras Recepcion</span>
-                    </Link>
-                      
-                    <Link to="/compras/consulta" style={linkStyle}>
-                        <span className="dropdown-item">Compras Consulta</span>
+                      <span className="dropdown-item">Compras Recepcion</span>
                     </Link>
 
-                    
+                    <Link to="/compras/consulta" style={linkStyle}>
+                      <span className="dropdown-item">Compras Consulta</span>
+                    </Link>
 
                     <div className="dropdown-divider"></div>
                     <Link to="/compras/estadoderesultados" style={linkStyle}>
@@ -285,13 +328,13 @@ class Menu extends Component {
                   </div>
                 </li>
               </Link>
-              
-
-
-
 
               <Link to="/" style={linkStyle}>
-                <li className="nav-item dropdown" data-toggle="collapse" data-target=".navbar-collapse.show">
+                <li
+                  className="nav-item dropdown"
+                  data-toggle="collapse"
+                  data-target=".navbar-collapse.show"
+                >
                   <span
                     className="nav-link dropdown-toggle"
                     id="navbarDropdown"
@@ -306,24 +349,30 @@ class Menu extends Component {
                     className="dropdown-menu"
                     aria-labelledby="navbarDropdown"
                   >
-
                     <Link to="/inventario/consultaarticulo" style={linkStyle}>
-                        <span className="dropdown-item">Consulta Artículo</span>
+                      <span className="dropdown-item">Consulta Artículo</span>
                     </Link>
 
                     <Link to="/inventario/kardex" style={linkStyle}>
-                        <span className="dropdown-item">Kardex</span>
+                      <span className="dropdown-item">Kardex</span>
                     </Link>
 
                     <Link to="/inventario/ajustesinventario" style={linkStyle}>
-                        <span className="dropdown-item">Ajustes Inventario</span>
+                      <span className="dropdown-item">Ajustes Inventario</span>
                     </Link>
 
-                    <Link to="/inventario/cambiosdepresentacion" style={linkStyle}>
-                        <span className="dropdown-item">Cambios de Presentación</span>
+                    <Link
+                      to="/inventario/cambiosdepresentacion"
+                      style={linkStyle}
+                    >
+                      <span className="dropdown-item">
+                        Cambios de Presentación
+                      </span>
                     </Link>
                     <Link to="/inventario/traspasossalida" style={linkStyle}>
-                      <span className="dropdown-item">Traspasos Salida/Entrada</span>
+                      <span className="dropdown-item">
+                        Traspasos Salida/Entrada
+                      </span>
                     </Link>
 
                     <Link to="/inventario/inventariociclico" style={linkStyle}>
@@ -331,7 +380,9 @@ class Menu extends Component {
                     </Link>
 
                     <Link to="/compras/inventariofaltantes" style={linkStyle}>
-                      <span className="dropdown-item">Faltantes Inventario</span>
+                      <span className="dropdown-item">
+                        Faltantes Inventario
+                      </span>
                     </Link>
 
                     <div className="dropdown-divider"></div>
@@ -342,14 +393,14 @@ class Menu extends Component {
                 </li>
               </Link>
 
-
-
-
-
-            
               <li>
                 <Link to="/">
-                  <button onClick={this.signOut} className="btn btn-light btn-md mt-1 ml-2">Salir</button>
+                  <button
+                    onClick={this.signOut}
+                    className="btn btn-light btn-md mt-1 ml-2"
+                  >
+                    Salir
+                  </button>
                 </Link>
               </li>
             </ul>
@@ -358,28 +409,231 @@ class Menu extends Component {
 
         <Switch>
           <Route exact path="/" />
-          <Route exac path="/catalogos/productos" component={() => <Productos accessToken={this.state.accessToken} url={this.state.url}/>} />
-          <Route exac path="/contabilidad/ingresos" component={() => <VentasIngresos accessToken={this.state.accessToken} naturalezaCC="1" url={this.state.url} Administrador={this.props.Administrador} />} />
-          <Route exac path="/contabilidad/egresos" component={() => <Egresos accessToken={this.state.accessToken} naturalezaCC="-1" url={this.state.url} Administrador={this.props.Administrador} />} />
-          <Route exac path="/limpiaduria/estadoderesultados" component={() => <EstadoResultadosLimpiaduria accessToken={this.state.accessToken}  url={this.state.url} Administrador={this.props.Administrador} />} />
-          <Route path="/compras/recepcion" component={() => <ComprasRecepcion accessToken={this.state.accessToken} url={this.state.url} Administrador={this.props.Administrador} />} />
-          <Route path="/compras/consulta" component={() => <ComprasConsulta accessToken={this.state.accessToken} url={this.state.url} Administrador={this.props.Administrador} />} />
-          <Route path="/puntodeventa/puntodeventa" component={() => <PuntoDeVenta accessToken={this.state.accessToken} url={this.state.url} Administrador={this.props.Administrador} />} />
-          <Route path="/puntodeventa/retirosdecaja" component={() => <RetirosDeCaja accessToken={this.state.accessToken} url={this.state.url} Administrador={this.props.Administrador} />} />
-          <Route path="/ventas/ventasconsultasucursaleshoy" component={() => <VentasConsultaSucursalesHoy accessToken={this.state.accessToken} url={this.state.url} Administrador={this.props.Administrador} />} />
-          <Route path="/ventas/consultaventascategorias" component={() => <VentasConsultaCategorias accessToken={this.state.accessToken} url={this.state.url} Administrador={this.props.Administrador} />} />
-          <Route path='/ventas/consulta' component={() => <VentasConsulta accessToken={this.state.accessToken} url={this.state.url} Administrador={this.props.Administrador}/>} />
-          <Route path='/ventas/consultafechaproductos' component={() => <VentasConsultaFechaProducto accessToken={this.state.accessToken} url={this.state.url} Administrador={this.props.Administrador}/>} />
-          <Route path='/ventas/bi' component={() => <VentasBI accessToken={this.state.accessToken} url={this.state.url} Administrador={this.props.Administrador}/>} />
-          <Route path='/ventas/VentasBiLavamaticaTienda' component={() => <VentasBiLavamaticaTienda accessToken={this.state.accessToken} url={this.state.url} Administrador={this.props.Administrador}/>} />
-          <Route path="/inventario/consultaarticulo" component={() => <ConsultaArticulo accessToken={this.state.accessToken} url={this.state.url} Administrador={this.props.Administrador} />} />
-          <Route path='/inventario/kardex' component={() => <Kardex accessToken={this.state.accessToken} url={this.state.url} Administrador={this.props.Administrador} />} />
-          <Route path='/inventario/ajustesinventario' component={() => <AjustesInventario accessToken={this.state.accessToken} url={this.state.url} Administrador={this.props.Administrador} />} />
-          <Route path="/inventario/cambiosdepresentacion" component={() => <CambiosDePresentacion accessToken={this.state.accessToken} url={this.state.url} Administrador={this.props.Administrador} />} />
-          <Route path='/inventario/traspasossalida' component={() => <TraspasosSalida accessToken={this.state.accessToken} url={this.state.url} Administrador={this.props.Administrador}/>} />
-          <Route path='/inventario/inventariociclico' component={() => <InventarioCiclico accessToken={this.state.accessToken} url={this.state.url} Administrador={this.props.Administrador} />} />
-          <Route path="/compras/inventariofaltantes" component={() => <InventarioFaltantes accessToken={this.state.accessToken} url={this.state.url} Administrador={this.props.Administrador} />} />
-          <Route path='/inventario/inventarioperpetuo' component={() => <InventarioPerpetuo accessToken={this.state.accessToken} url={this.state.url} Administrador={this.props.Administrador}/>} />
+          <Route
+            exac
+            path="/catalogos/productos"
+            component={() => (
+              <Productos
+                accessToken={this.state.accessToken}
+                url={this.state.url}
+              />
+            )}
+          />
+          <Route
+            exac
+            path="/contabilidad/ingresos"
+            component={() => (
+              <VentasIngresos
+                accessToken={this.state.accessToken}
+                naturalezaCC="1"
+                url={this.state.url}
+                Administrador={this.props.Administrador}
+              />
+            )}
+          />
+          <Route
+            exac
+            path="/contabilidad/egresos"
+            component={() => (
+              <Egresos
+                accessToken={this.state.accessToken}
+                naturalezaCC="-1"
+                url={this.state.url}
+                Administrador={this.props.Administrador}
+              />
+            )}
+          />
+          <Route
+            exac
+            path="/limpiaduria/estadoderesultados"
+            component={() => (
+              <EstadoResultadosLimpiaduria
+                accessToken={this.state.accessToken}
+                url={this.state.url}
+                Administrador={this.props.Administrador}
+              />
+            )}
+          />
+          <Route
+            path="/compras/recepcion"
+            component={() => (
+              <ComprasRecepcion
+                accessToken={this.state.accessToken}
+                url={this.state.url}
+                Administrador={this.props.Administrador}
+              />
+            )}
+          />
+          <Route
+            path="/compras/consulta"
+            component={() => (
+              <ComprasConsulta
+                accessToken={this.state.accessToken}
+                url={this.state.url}
+                Administrador={this.props.Administrador}
+              />
+            )}
+          />
+          <Route
+            path="/puntodeventa/puntodeventa"
+            component={() => (
+              <PuntoDeVenta
+                accessToken={this.state.accessToken}
+                url={this.state.url}
+                Administrador={this.props.Administrador}
+              />
+            )}
+          />
+          <Route
+            path="/puntodeventa/retirosdecaja"
+            component={() => (
+              <RetirosDeCaja
+                accessToken={this.state.accessToken}
+                url={this.state.url}
+                Administrador={this.props.Administrador}
+              />
+            )}
+          />
+          <Route
+            path="/ventas/ventasconsultasucursaleshoy"
+            component={() => (
+              <VentasConsultaSucursalesHoy
+                accessToken={this.state.accessToken}
+                url={this.state.url}
+                Administrador={this.props.Administrador}
+              />
+            )}
+          />
+          <Route
+            path="/ventas/consultaventascategorias"
+            component={() => (
+              <VentasConsultaCategorias
+                accessToken={this.state.accessToken}
+                url={this.state.url}
+                Administrador={this.props.Administrador}
+              />
+            )}
+          />
+          <Route
+            path="/ventas/consulta"
+            component={() => (
+              <VentasConsulta
+                accessToken={this.state.accessToken}
+                url={this.state.url}
+                Administrador={this.props.Administrador}
+              />
+            )}
+          />
+          <Route
+            path="/ventas/consultafechaproductos"
+            component={() => (
+              <VentasConsultaFechaProducto
+                accessToken={this.state.accessToken}
+                url={this.state.url}
+                Administrador={this.props.Administrador}
+              />
+            )}
+          />
+          <Route
+            path="/ventas/bi"
+            component={() => (
+              <VentasBI
+                accessToken={this.state.accessToken}
+                url={this.state.url}
+                Administrador={this.props.Administrador}
+              />
+            )}
+          />
+          <Route
+            path="/ventas/VentasBiLavamaticaTienda"
+            component={() => (
+              <VentasBiLavamaticaTienda
+                accessToken={this.state.accessToken}
+                url={this.state.url}
+                Administrador={this.props.Administrador}
+              />
+            )}
+          />
+          <Route
+            path="/inventario/consultaarticulo"
+            component={() => (
+              <ConsultaArticulo
+                accessToken={this.state.accessToken}
+                url={this.state.url}
+                Administrador={this.props.Administrador}
+              />
+            )}
+          />
+          <Route
+            path="/inventario/kardex"
+            component={() => (
+              <Kardex
+                accessToken={this.state.accessToken}
+                url={this.state.url}
+                Administrador={this.props.Administrador}
+              />
+            )}
+          />
+          <Route
+            path="/inventario/ajustesinventario"
+            component={() => (
+              <AjustesInventario
+                accessToken={this.state.accessToken}
+                url={this.state.url}
+                Administrador={this.props.Administrador}
+              />
+            )}
+          />
+          <Route
+            path="/inventario/cambiosdepresentacion"
+            component={() => (
+              <CambiosDePresentacion
+                accessToken={this.state.accessToken}
+                url={this.state.url}
+                Administrador={this.props.Administrador}
+              />
+            )}
+          />
+          <Route
+            path="/inventario/traspasossalida"
+            component={() => (
+              <TraspasosSalida
+                accessToken={this.state.accessToken}
+                url={this.state.url}
+                Administrador={this.props.Administrador}
+              />
+            )}
+          />
+          <Route
+            path="/inventario/inventariociclico"
+            component={() => (
+              <InventarioCiclico
+                accessToken={this.state.accessToken}
+                url={this.state.url}
+                Administrador={this.props.Administrador}
+              />
+            )}
+          />
+          <Route
+            path="/compras/inventariofaltantes"
+            component={() => (
+              <InventarioFaltantes
+                accessToken={this.state.accessToken}
+                url={this.state.url}
+                Administrador={this.props.Administrador}
+              />
+            )}
+          />
+          <Route
+            path="/inventario/inventarioperpetuo"
+            component={() => (
+              <InventarioPerpetuo
+                accessToken={this.state.accessToken}
+                url={this.state.url}
+                Administrador={this.props.Administrador}
+              />
+            )}
+          />
         </Switch>
       </Router>
     );

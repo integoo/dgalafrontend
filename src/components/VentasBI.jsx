@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 
 import "./VentasBI.css";
-import Recharts from "./cmpnt/Recharts"
-import {NumberWithCommas, RechartsFormat} from './cmpnt/FuncionesGlobales'
+import {RechartsBarChart01} from "./cmpnt/FuncionesRecharts"
+import {NumberWithCommas} from './cmpnt/FuncionesGlobales'
 
 class VentasBI extends Component {
   constructor(props) {
@@ -38,8 +38,10 @@ class VentasBI extends Component {
       dataMelate: [],
       dataGastosInversiones: [],
       dataGastosInversionesTotales: [],
+      dataGastosInversionesTotalesRecharts: [],
       banderaOrdenamiento: false,
-      dataLimpiaduriaMelateRentasOtrosUtilidad: []
+      dataLimpiaduriaMelateRentasOtrosUtilidad: [],
+      dataLimpiaduriaMelateRentasOtrosUtilidadRecharts: []
     };
   }
 
@@ -253,9 +255,35 @@ class VentasBI extends Component {
           data[i].id = i
           data[i].PorcentajeSimple = Math.abs(parseFloat(data[i].Total)) / Math.abs(parseFloat(TotalTotal)) *100
         }
+
+
+
+
+        //Prapara el arreglo para Recharts
+        let dataGastosInversionesTotalesRecharts = []
+        dataGastosInversionesTotalesRecharts.push({"name": "Ene", "GastosInversion":parseFloat(dataGastosInversionesTotales[0].Ene).toFixed(0)*-1})
+        dataGastosInversionesTotalesRecharts.push({"name": "Feb", "GastosInversion":parseFloat(dataGastosInversionesTotales[0].Feb).toFixed(0)*-1})
+        dataGastosInversionesTotalesRecharts.push({"name": "Mar", "GastosInversion":parseFloat(dataGastosInversionesTotales[0].Mar).toFixed(0)*-1})
+        dataGastosInversionesTotalesRecharts.push({"name": "Abr", "GastosInversion":parseFloat(dataGastosInversionesTotales[0].Abr).toFixed(0)*-1})
+        dataGastosInversionesTotalesRecharts.push({"name": "May", "GastosInversion":parseFloat(dataGastosInversionesTotales[0].May).toFixed(0)*-1})
+        dataGastosInversionesTotalesRecharts.push({"name": "Jun", "GastosInversion":parseFloat(dataGastosInversionesTotales[0].Jun).toFixed(0)*-1})
+        dataGastosInversionesTotalesRecharts.push({"name": "Jul", "GastosInversion":parseFloat(dataGastosInversionesTotales[0].Jul).toFixed(0)*-1})
+        dataGastosInversionesTotalesRecharts.push({"name": "Ago", "GastosInversion":parseFloat(dataGastosInversionesTotales[0].Ago).toFixed(0)*-1})
+        dataGastosInversionesTotalesRecharts.push({"name": "Sep", "GastosInversion":parseFloat(dataGastosInversionesTotales[0].Sep).toFixed(0)*-1})
+        dataGastosInversionesTotalesRecharts.push({"name": "Oct", "GastosInversion":parseFloat(dataGastosInversionesTotales[0].Oct).toFixed(0)*-1})
+        dataGastosInversionesTotalesRecharts.push({"name": "Nov", "GastosInversion":parseFloat(dataGastosInversionesTotales[0].Nov).toFixed(0)*-1})
+        dataGastosInversionesTotalesRecharts.push({"name": "Dic", "GastosInversion":parseFloat(dataGastosInversionesTotales[0].Dic).toFixed(0)*-1})
+
+
+
+
+
+
+
     this.setState({
       dataGastosInversiones: data,
       dataGastosInversionesTotales: dataGastosInversionesTotales,
+      dataGastosInversionesTotalesRecharts: dataGastosInversionesTotalesRecharts,
       
       });
       bandera = true;
@@ -329,9 +357,30 @@ class VentasBI extends Component {
       "Total": TotalTotal,
     }
     data.push(json)
-    
+
+
+
+
+
+
+    let dataLimpiaduriaMelateRentasOtrosUtilidadRecharts = []
+    dataLimpiaduriaMelateRentasOtrosUtilidadRecharts.push({"name": "Ene", "UtilidadNeta": parseFloat(data[5].Ene.toFixed(0))})
+    dataLimpiaduriaMelateRentasOtrosUtilidadRecharts.push({"name": "Feb", "UtilidadNeta": parseFloat(data[5].Feb.toFixed(0))})
+    dataLimpiaduriaMelateRentasOtrosUtilidadRecharts.push({"name": "Mar", "UtilidadNeta": parseFloat(data[5].Mar.toFixed(0))})
+    dataLimpiaduriaMelateRentasOtrosUtilidadRecharts.push({"name": "Abr", "UtilidadNeta": parseFloat(data[5].Abr.toFixed(0))})
+    dataLimpiaduriaMelateRentasOtrosUtilidadRecharts.push({"name": "May", "UtilidadNeta": parseFloat(data[5].May.toFixed(0))})
+    dataLimpiaduriaMelateRentasOtrosUtilidadRecharts.push({"name": "Jun", "UtilidadNeta": parseFloat(data[5].Jun.toFixed(0))})
+    dataLimpiaduriaMelateRentasOtrosUtilidadRecharts.push({"name": "Jul", "UtilidadNeta": parseFloat(data[5].Jul.toFixed(0))})
+    dataLimpiaduriaMelateRentasOtrosUtilidadRecharts.push({"name": "Ago", "UtilidadNeta": parseFloat(data[5].Ago.toFixed(0))})
+    dataLimpiaduriaMelateRentasOtrosUtilidadRecharts.push({"name": "Sep", "UtilidadNeta": parseFloat(data[5].Sep.toFixed(0))})
+    dataLimpiaduriaMelateRentasOtrosUtilidadRecharts.push({"name": "Oct", "UtilidadNeta": parseFloat(data[5].Oct.toFixed(0))})
+    dataLimpiaduriaMelateRentasOtrosUtilidadRecharts.push({"name": "Nov", "UtilidadNeta": parseFloat(data[5].Nov.toFixed(0))})
+    dataLimpiaduriaMelateRentasOtrosUtilidadRecharts.push({"name": "Dic", "UtilidadNeta": parseFloat(data[5].Dic.toFixed(0))})
+
+
     this.setState({
       dataLimpiaduriaMelateRentasOtrosUtilidad: data,
+      dataLimpiaduriaMelateRentasOtrosUtilidadRecharts: dataLimpiaduriaMelateRentasOtrosUtilidadRecharts,
       });
       bandera = true;
     } catch (error) {
@@ -433,10 +482,19 @@ class VentasBI extends Component {
     //   (element,i) => parseFloat(element) !== 0 && i <= 11 //Menor-Igual a 11 para sólo los meses y no el Total
     // );
 
-    const data = RechartsFormat(ventas)
-    //[{Mes:1, Monto:1230.25},
-    // {Mes:2, Monto:3456.57}
-    //]
+    let data = []
+    data.push({"name":"Ene","Venta": parseInt(ventas[0].Monto || 0)})
+    data.push({"name":"Feb","Venta": parseInt(ventas[1].Monto || 0)})
+    data.push({"name":"Mar","Venta": parseInt(ventas[2].Monto || 0)})
+    data.push({"name":"Abr","Venta": parseInt(ventas[3].Monto || 0)})
+    data.push({"name":"May","Venta": parseInt(ventas[4].Monto || 0)})
+    data.push({"name":"Jun","Venta": parseInt(ventas[5].Monto || 0)})
+    data.push({"name":"Jul","Venta": parseInt(ventas[6].Monto || 0)})
+    data.push({"name":"Ago","Venta": parseInt(ventas[7].Monto || 0)})
+    data.push({"name":"Sep","Venta": parseInt(ventas[8].Monto || 0)})
+    data.push({"name":"Oct","Venta": parseInt(ventas[9].Monto || 0)})
+    data.push({"name":"Nov","Venta": parseInt(ventas[10].Monto || 0)})
+    data.push({"name":"Dic","Venta": parseInt(ventas[11].Monto || 0)})
 
 
     this.setState({
@@ -457,10 +515,20 @@ class VentasBI extends Component {
     //   (element,i) => parseFloat(element) !== 0 && i <= 11 //Menor-Igual a 11 para sólo los meses y no el Total
     // );
 
-    const data = RechartsFormat(ventasMelate)
-    //[{Mes:1, Monto:1230.25},
-    // {Mes:2, Monto:3456.57}
-    //]
+
+    let data = []
+    data.push({"name":"Ene","VentaMelate": parseInt(ventasMelate[0].Monto || 0)})
+    data.push({"name":"Feb","VentaMelate": parseInt(ventasMelate[1].Monto || 0)})
+    data.push({"name":"Mar","VentaMelate": parseInt(ventasMelate[2].Monto || 0)})
+    data.push({"name":"Abr","VentaMelate": parseInt(ventasMelate[3].Monto || 0)})
+    data.push({"name":"May","VentaMelate": parseInt(ventasMelate[4].Monto || 0)})
+    data.push({"name":"Jun","VentaMelate": parseInt(ventasMelate[5].Monto || 0)})
+    data.push({"name":"Jul","VentaMelate": parseInt(ventasMelate[6].Monto || 0)})
+    data.push({"name":"Ago","VentaMelate": parseInt(ventasMelate[7].Monto || 0)})
+    data.push({"name":"Sep","VentaMelate": parseInt(ventasMelate[8].Monto || 0)})
+    data.push({"name":"Oct","VentaMelate": parseInt(ventasMelate[9].Monto || 0)})
+    data.push({"name":"Nov","VentaMelate": parseInt(ventasMelate[10].Monto || 0)})
+    data.push({"name":"Dic","VentaMelate": parseInt(ventasMelate[11].Monto || 0)})
 
     this.setState({
       dataMelate: data,
@@ -554,7 +622,7 @@ class VentasBI extends Component {
           </tbody>
         </table>
         <br />
-        <Recharts data={this.state.data} titulo={"Ventas Limpiaduría"}/>
+        <RechartsBarChart01 data={this.state.data} titulo={"Ventas Limpiaduría"}/>
 
 
         <br />
@@ -617,7 +685,7 @@ class VentasBI extends Component {
           </tbody>
         </table>
         <br />
-        <Recharts data={this.state.dataMelate} titulo={"Ventas Melate"}/>
+        <RechartsBarChart01 data={this.state.dataMelate} titulo={"Ventas Melate"}/>
 
 
         <br />
@@ -757,6 +825,7 @@ class VentasBI extends Component {
         <br />
         <br />
 
+        <RechartsBarChart01 data={this.state.dataGastosInversionesTotalesRecharts} titulo={"Total Gastos e Inversión"}/>
 
 
 
@@ -794,8 +863,7 @@ class VentasBI extends Component {
           </tbody>
         </table>
         <br /> 
-
-
+        <RechartsBarChart01 data={this.state.dataLimpiaduriaMelateRentasOtrosUtilidadRecharts} titulo={"Utilidad Neta Limpiaduría, Melate, Rentas y Otros Ingresos"}/>
 
 
       </div>
