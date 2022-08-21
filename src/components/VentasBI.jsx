@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 
 import "./VentasBI.css";
-import {RechartsBarChart01} from "./cmpnt/FuncionesRecharts"
+import {RechartsBarChart01,RechartsBarChart02} from "./cmpnt/FuncionesRecharts"
 import {NumberWithCommas} from './cmpnt/FuncionesGlobales'
 
 class VentasBI extends Component {
@@ -471,7 +471,7 @@ class VentasBI extends Component {
 
   handleArrayLineChart = () => {
     const ventas = this.state.ventas;
-    //const egresos = this.state.egresos;
+    const egresos = this.state.egresos;
 
     //Prepara Arreglo de EGRESOS
     // let arregloEgresos = [];
@@ -482,19 +482,21 @@ class VentasBI extends Component {
     //   (element,i) => parseFloat(element) !== 0 && i <= 11 //Menor-Igual a 11 para sólo los meses y no el Total
     // );
 
+    //###################################################################################
+
     let data = []
-    data.push({"name":"Ene","Venta": parseInt(ventas[0].Monto || 0)})
-    data.push({"name":"Feb","Venta": parseInt(ventas[1].Monto || 0)})
-    data.push({"name":"Mar","Venta": parseInt(ventas[2].Monto || 0)})
-    data.push({"name":"Abr","Venta": parseInt(ventas[3].Monto || 0)})
-    data.push({"name":"May","Venta": parseInt(ventas[4].Monto || 0)})
-    data.push({"name":"Jun","Venta": parseInt(ventas[5].Monto || 0)})
-    data.push({"name":"Jul","Venta": parseInt(ventas[6].Monto || 0)})
-    data.push({"name":"Ago","Venta": parseInt(ventas[7].Monto || 0)})
-    data.push({"name":"Sep","Venta": parseInt(ventas[8].Monto || 0)})
-    data.push({"name":"Oct","Venta": parseInt(ventas[9].Monto || 0)})
-    data.push({"name":"Nov","Venta": parseInt(ventas[10].Monto || 0)})
-    data.push({"name":"Dic","Venta": parseInt(ventas[11].Monto || 0)})
+    data.push({"name":"Ene","Ventas": parseInt(ventas[0].Monto || 0),"Egresos":parseInt(egresos[0].Monto || 0)*-1})
+    data.push({"name":"Feb","Ventas": parseInt(ventas[1].Monto || 0),"Egresos":parseInt(egresos[1].Monto || 0)*-1})
+    data.push({"name":"Mar","Ventas": parseInt(ventas[2].Monto || 0),"Egresos":parseInt(egresos[2].Monto || 0)*-1})
+    data.push({"name":"Abr","Ventas": parseInt(ventas[3].Monto || 0),"Egresos":parseInt(egresos[3].Monto || 0)*-1})
+    data.push({"name":"May","Ventas": parseInt(ventas[4].Monto || 0),"Egresos":parseInt(egresos[4].Monto || 0)*-1})
+    data.push({"name":"Jun","Ventas": parseInt(ventas[5].Monto || 0),"Egresos":parseInt(egresos[5].Monto || 0)*-1})
+    data.push({"name":"Jul","Ventas": parseInt(ventas[6].Monto || 0),"Egresos":parseInt(egresos[6].Monto || 0)*-1})
+    data.push({"name":"Ago","Ventas": parseInt(ventas[7].Monto || 0),"Egresos":parseInt(egresos[7].Monto || 0)*-1})
+    data.push({"name":"Sep","Ventas": parseInt(ventas[8].Monto || 0),"Egresos":parseInt(egresos[8].Monto || 0)*-1})
+    data.push({"name":"Oct","Ventas": parseInt(ventas[9].Monto || 0),"Egresos":parseInt(egresos[9].Monto || 0)*-1})
+    data.push({"name":"Nov","Ventas": parseInt(ventas[10].Monto || 0),"Egresos":parseInt(egresos[10].Monto || 0)*-1})
+    data.push({"name":"Dic","Ventas": parseInt(ventas[11].Monto || 0),"Egresos":parseInt(egresos[11].Monto || 0)*-1})
 
 
     this.setState({
@@ -504,7 +506,7 @@ class VentasBI extends Component {
 
   handleArrayLineChartMelate = () => {
     const ventasMelate = this.state.ventasMelate;
-    //const pagosMelate = this.state.pagosMelate;
+    const pagosMelate = this.state.pagosMelate;
 
     // //Prepara Arreglo de Pagos Melate
     // let arregloPagosMelate = [];
@@ -515,20 +517,37 @@ class VentasBI extends Component {
     //   (element,i) => parseFloat(element) !== 0 && i <= 11 //Menor-Igual a 11 para sólo los meses y no el Total
     // );
 
+    let utilidadMelate = []
+    ventasMelate.forEach((element,i) =>{
+      utilidadMelate.push({"name": element.name, "Monto": parseInt(element.Monto) + parseInt(pagosMelate[i].Monto)})
+    })
 
     let data = []
-    data.push({"name":"Ene","VentaMelate": parseInt(ventasMelate[0].Monto || 0)})
-    data.push({"name":"Feb","VentaMelate": parseInt(ventasMelate[1].Monto || 0)})
-    data.push({"name":"Mar","VentaMelate": parseInt(ventasMelate[2].Monto || 0)})
-    data.push({"name":"Abr","VentaMelate": parseInt(ventasMelate[3].Monto || 0)})
-    data.push({"name":"May","VentaMelate": parseInt(ventasMelate[4].Monto || 0)})
-    data.push({"name":"Jun","VentaMelate": parseInt(ventasMelate[5].Monto || 0)})
-    data.push({"name":"Jul","VentaMelate": parseInt(ventasMelate[6].Monto || 0)})
-    data.push({"name":"Ago","VentaMelate": parseInt(ventasMelate[7].Monto || 0)})
-    data.push({"name":"Sep","VentaMelate": parseInt(ventasMelate[8].Monto || 0)})
-    data.push({"name":"Oct","VentaMelate": parseInt(ventasMelate[9].Monto || 0)})
-    data.push({"name":"Nov","VentaMelate": parseInt(ventasMelate[10].Monto || 0)})
-    data.push({"name":"Dic","VentaMelate": parseInt(ventasMelate[11].Monto || 0)})
+    // data.push({"name":"Ene","VentaMelate": parseInt(ventasMelate[0].Monto || 0),"PagosMelate": parseInt(pagosMelate[0].Monto || 0)*-1,"UtilidadMelate": parseInt(utilidadMelate[0].Monto)})
+    // data.push({"name":"Feb","VentaMelate": parseInt(ventasMelate[1].Monto || 0),"PagosMelate": parseInt(pagosMelate[1].Monto || 0)*-1,"UtilidadMelate": parseInt(utilidadMelate[1].Monto)})
+    // data.push({"name":"Mar","VentaMelate": parseInt(ventasMelate[2].Monto || 0),"PagosMelate": parseInt(pagosMelate[2].Monto || 0)*-1,"UtilidadMelate": parseInt(utilidadMelate[2].Monto)})
+    // data.push({"name":"Abr","VentaMelate": parseInt(ventasMelate[3].Monto || 0),"PagosMelate": parseInt(pagosMelate[3].Monto || 0)*-1,"UtilidadMelate": parseInt(utilidadMelate[3].Monto)})
+    // data.push({"name":"May","VentaMelate": parseInt(ventasMelate[4].Monto || 0),"PagosMelate": parseInt(pagosMelate[4].Monto || 0)*-1,"UtilidadMelate": parseInt(utilidadMelate[4].Monto)})
+    // data.push({"name":"Jun","VentaMelate": parseInt(ventasMelate[5].Monto || 0),"PagosMelate": parseInt(pagosMelate[5].Monto || 0)*-1,"UtilidadMelate": parseInt(utilidadMelate[5].Monto)})
+    // data.push({"name":"Jul","VentaMelate": parseInt(ventasMelate[6].Monto || 0),"PagosMelate": parseInt(pagosMelate[6].Monto || 0)*-1,"UtilidadMelate": parseInt(utilidadMelate[6].Monto)})
+    // data.push({"name":"Ago","VentaMelate": parseInt(ventasMelate[7].Monto || 0),"PagosMelate": parseInt(pagosMelate[7].Monto || 0)*-1,"UtilidadMelate": parseInt(utilidadMelate[7].Monto)})
+    // data.push({"name":"Sep","VentaMelate": parseInt(ventasMelate[8].Monto || 0),"PagosMelate": parseInt(pagosMelate[8].Monto || 0)*-1,"UtilidadMelate": parseInt(utilidadMelate[8].Monto)})
+    // data.push({"name":"Oct","VentaMelate": parseInt(ventasMelate[9].Monto || 0),"PagosMelate": parseInt(pagosMelate[9].Monto || 0)*-1,"UtilidadMelate": parseInt(utilidadMelate[9].Monto)})
+    // data.push({"name":"Nov","VentaMelate": parseInt(ventasMelate[10].Monto || 0),"PagosMelate": parseInt(pagosMelate[10].Monto || 0)*-1,"UtilidadMelate": parseInt(utilidadMelate[10].Monto)})
+    // data.push({"name":"Dic","VentaMelate": parseInt(ventasMelate[11].Monto || 0),"PagosMelate": parseInt(pagosMelate[11].Monto || 0)*-1,"UtilidadMelate": parseInt(utilidadMelate[11].Monto)})
+
+    data.push({"name":"Ene","VentaMelate": parseInt(ventasMelate[0].Monto || 0),"UtilidadMelate": parseInt(utilidadMelate[0].Monto)})
+    data.push({"name":"Feb","VentaMelate": parseInt(ventasMelate[1].Monto || 0),"UtilidadMelate": parseInt(utilidadMelate[1].Monto)})
+    data.push({"name":"Mar","VentaMelate": parseInt(ventasMelate[2].Monto || 0),"UtilidadMelate": parseInt(utilidadMelate[2].Monto)})
+    data.push({"name":"Abr","VentaMelate": parseInt(ventasMelate[3].Monto || 0),"UtilidadMelate": parseInt(utilidadMelate[3].Monto)})
+    data.push({"name":"May","VentaMelate": parseInt(ventasMelate[4].Monto || 0),"UtilidadMelate": parseInt(utilidadMelate[4].Monto)})
+    data.push({"name":"Jun","VentaMelate": parseInt(ventasMelate[5].Monto || 0),"UtilidadMelate": parseInt(utilidadMelate[5].Monto)})
+    data.push({"name":"Jul","VentaMelate": parseInt(ventasMelate[6].Monto || 0),"UtilidadMelate": parseInt(utilidadMelate[6].Monto)})
+    data.push({"name":"Ago","VentaMelate": parseInt(ventasMelate[7].Monto || 0),"UtilidadMelate": parseInt(utilidadMelate[7].Monto)})
+    data.push({"name":"Sep","VentaMelate": parseInt(ventasMelate[8].Monto || 0),"UtilidadMelate": parseInt(utilidadMelate[8].Monto)})
+    data.push({"name":"Oct","VentaMelate": parseInt(ventasMelate[9].Monto || 0),"UtilidadMelate": parseInt(utilidadMelate[9].Monto)})
+    data.push({"name":"Nov","VentaMelate": parseInt(ventasMelate[10].Monto || 0),"UtilidadMelate": parseInt(utilidadMelate[10].Monto)})
+    data.push({"name":"Dic","VentaMelate": parseInt(ventasMelate[11].Monto || 0),"UtilidadMelate": parseInt(utilidadMelate[11].Monto)})
 
     this.setState({
       dataMelate: data,
@@ -622,7 +641,7 @@ class VentasBI extends Component {
           </tbody>
         </table>
         <br />
-        <RechartsBarChart01 data={this.state.data} titulo={"Ventas Limpiaduría"}/>
+        <RechartsBarChart02 data={this.state.data} titulo={"Ventas y Egresos Limpiaduría"} color1={"dodgerblue"} color2={"red"} />
 
 
         <br />
@@ -685,11 +704,11 @@ class VentasBI extends Component {
           </tbody>
         </table>
         <br />
-        <RechartsBarChart01 data={this.state.dataMelate} titulo={"Ventas Melate"}/>
+        <RechartsBarChart02 data={this.state.dataMelate} titulo={"Venta y Utilidad Melate"} color1={"dodgerblue"} color2={"green"} />
 
 
         <br />
-        <h3>Gastos e Inversión</h3>
+        <h3>Egresos (Gastos e Inversión)</h3>
         <span id="idSpanOrdenamientoTotal">
           <label htmlFor="idOrdenamientoTotal">Ordenar Por Total</label>
           <input onChange={this.handleOdenamientoGastosInversiones} type="checkbox" id="idOrdenamientoTotal" checked={this.state.banderaOrdenamiento}/>
@@ -825,7 +844,7 @@ class VentasBI extends Component {
         <br />
         <br />
 
-        <RechartsBarChart01 data={this.state.dataGastosInversionesTotalesRecharts} titulo={"Total Gastos e Inversión"}/>
+        <RechartsBarChart01 data={this.state.dataGastosInversionesTotalesRecharts} titulo={"Egresos (Gastos e Inversión)"}/>
 
 
 

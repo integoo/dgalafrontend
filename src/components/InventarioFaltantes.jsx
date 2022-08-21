@@ -97,20 +97,20 @@ class InventarioFaltantes extends Component {
                       <table>
                           <thead>
                               <tr>
-                                  <th>Sucursal</th>
+                                  {/* <th>Sucursal</th> */}
                                   <th>Codigo</th>
                                   <th>Descripcion</th>
                                   <th>Máximo</th>
                                   <th>Mínimo</th>
                                   <th>Unidades Inventario</th>
-                                  <th>Unidades Desplazadas</th>
+                                  <th>Unidades Vendidas</th>
                                   <th>Unidades Inventario CEDIS</th>
                               </tr>
                           </thead>
                           <tbody>
                               {this.state.detalles.map((element,i) =>(
                                   <tr key={i}>
-                                      <td>{element.SucursalId}</td>
+                                      {/* <td>{element.SucursalId}</td> */}
                                       <td>{element.CodigoId}</td>
                                       <td style={{textAlign:"left"}}>{element.Descripcion}</td>
                                       <td>{element.Maximo}</td>

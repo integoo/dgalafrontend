@@ -561,7 +561,7 @@ class VentasBiLavamanticaTienda extends React.Component{
 
 
 
-                <RechartsBarChart02 data={this.state.detallesLavamaticaRecharts} titulo={"Lavamática Ventas Con Impuesto y Utilidad Neta (Sin Impuestos)"}/>
+                <RechartsBarChart02 data={this.state.detallesLavamaticaRecharts} titulo={"Lavamática Ventas Con Impuesto y Utilidad Neta (Sin Impuestos)"} color1={"dodgerblue"} color2={"green"} />
 
 
 
