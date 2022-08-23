@@ -251,36 +251,16 @@ class EstadoResultadosLimpiaduria extends React.Component {
 
        dataLimpiaduria[0].Total = TotalVentas
 
-       //Prorrateo de Gastos Planta Matriz por cada Sucursal de acuerdo a su venta
-       const GastosPlanta = dataLimpiaduria[1].Suc01 
-       const GastosPlantaSuc01 = parseFloat(dataLimpiaduria[0].Suc01) / TotalVentas * GastosPlanta
-       const GastosPlantaSuc02 = parseFloat(dataLimpiaduria[0].Suc02) / TotalVentas * GastosPlanta
-       const GastosPlantaSuc03 = parseFloat(dataLimpiaduria[0].Suc03) / TotalVentas * GastosPlanta
-       const GastosPlantaSuc04 = parseFloat(dataLimpiaduria[0].Suc04) / TotalVentas * GastosPlanta
-       const GastosPlantaSuc05 = parseFloat(dataLimpiaduria[0].Suc05) / TotalVentas * GastosPlanta
-       const GastosPlantaSuc06 = parseFloat(dataLimpiaduria[0].Suc06) / TotalVentas * GastosPlanta
 
-       dataLimpiaduria[1].Suc01 = GastosPlantaSuc01
-       dataLimpiaduria[1].Suc02 = GastosPlantaSuc02
-       dataLimpiaduria[1].Suc03 = GastosPlantaSuc03
-       dataLimpiaduria[1].Suc04 = GastosPlantaSuc04
-       dataLimpiaduria[1].Suc05 = GastosPlantaSuc05
-       dataLimpiaduria[1].Suc06 = GastosPlantaSuc06
+      //Gastos Sucursal
+       const TotalGastosSucursal = parseFloat(dataLimpiaduria[1].Suc01)
+                                    + parseFloat(dataLimpiaduria[1].Suc02)
+                                    + parseFloat(dataLimpiaduria[1].Suc03)
+                                    + parseFloat(dataLimpiaduria[1].Suc04)
+                                    + parseFloat(dataLimpiaduria[1].Suc05)
+                                    + parseFloat(dataLimpiaduria[1].Suc06)
+       dataLimpiaduria[1].Total = TotalGastosSucursal
 
-       const GastosPlantaCifraControl = parseFloat(dataLimpiaduria[1].Suc01)
-       + parseFloat(dataLimpiaduria[1].Suc02)
-       + parseFloat(dataLimpiaduria[1].Suc03)
-       + parseFloat(dataLimpiaduria[1].Suc04)
-       + parseFloat(dataLimpiaduria[1].Suc05)
-       + parseFloat(dataLimpiaduria[1].Suc06)
-
-       dataLimpiaduria[1].Total = GastosPlantaCifraControl
-
-       //Valida que los GastosPlanta (DB) menos los GastosPlantaCifraControl (Prorrateados) 
-       //no sea mayor a 1 peso de diferencia
-       if(Math.abs(parseFloat(GastosPlanta)) - Math.abs(parseFloat(GastosPlantaCifraControl)) > 1){
-           alert("Diferencia en Gastos Planta Matriz Prorrateados : "+ GastosPlanta + " "+ GastosPlantaCifraControl)
-       }
 
        //Utilidad Bruta
        dataLimpiaduria[2].Suc01 = parseFloat(dataLimpiaduria[0].Suc01) + parseFloat(dataLimpiaduria[1].Suc01)
@@ -291,14 +271,41 @@ class EstadoResultadosLimpiaduria extends React.Component {
        dataLimpiaduria[2].Suc06 = parseFloat(dataLimpiaduria[0].Suc06) + parseFloat(dataLimpiaduria[1].Suc06)
        dataLimpiaduria[2].Total = parseFloat(dataLimpiaduria[0].Total) + parseFloat(dataLimpiaduria[1].Total)
 
-       //Gastos Sucursal
-       const TotalGastosSucursal = parseFloat(dataLimpiaduria[3].Suc01)
-                                    + parseFloat(dataLimpiaduria[3].Suc02)
-                                    + parseFloat(dataLimpiaduria[3].Suc03)
-                                    + parseFloat(dataLimpiaduria[3].Suc04)
-                                    + parseFloat(dataLimpiaduria[3].Suc05)
-                                    + parseFloat(dataLimpiaduria[3].Suc06)
-       dataLimpiaduria[3].Total = TotalGastosSucursal
+
+
+       //Prorrateo de Gastos Planta Matriz por cada Sucursal de acuerdo a su venta
+       const GastosPlanta = dataLimpiaduria[3].Suc01 
+       const GastosPlantaSuc01 = parseFloat(dataLimpiaduria[0].Suc01) / TotalVentas * GastosPlanta
+       const GastosPlantaSuc02 = parseFloat(dataLimpiaduria[0].Suc02) / TotalVentas * GastosPlanta
+       const GastosPlantaSuc03 = parseFloat(dataLimpiaduria[0].Suc03) / TotalVentas * GastosPlanta
+       const GastosPlantaSuc04 = parseFloat(dataLimpiaduria[0].Suc04) / TotalVentas * GastosPlanta
+       const GastosPlantaSuc05 = parseFloat(dataLimpiaduria[0].Suc05) / TotalVentas * GastosPlanta
+       const GastosPlantaSuc06 = parseFloat(dataLimpiaduria[0].Suc06) / TotalVentas * GastosPlanta
+
+
+      dataLimpiaduria[3].Suc01 = GastosPlantaSuc01
+      dataLimpiaduria[3].Suc02 = GastosPlantaSuc02
+      dataLimpiaduria[3].Suc03 = GastosPlantaSuc03
+      dataLimpiaduria[3].Suc04 = GastosPlantaSuc04
+      dataLimpiaduria[3].Suc05 = GastosPlantaSuc05
+      dataLimpiaduria[3].Suc06 = GastosPlantaSuc06
+
+      const GastosPlantaCifraControl = parseFloat(dataLimpiaduria[3].Suc01)
+      + parseFloat(dataLimpiaduria[3].Suc02)
+      + parseFloat(dataLimpiaduria[3].Suc03)
+      + parseFloat(dataLimpiaduria[3].Suc04)
+      + parseFloat(dataLimpiaduria[3].Suc05)
+      + parseFloat(dataLimpiaduria[3].Suc06)
+
+      dataLimpiaduria[3].Total = GastosPlantaCifraControl
+
+
+ //Valida que los GastosPlanta (DB) menos los GastosPlantaCifraControl (Prorrateados) 
+       //no sea mayor a 1 peso de diferencia
+       if(Math.abs(parseFloat(GastosPlanta)) - Math.abs(parseFloat(GastosPlantaCifraControl)) > 1){
+        alert("Diferencia en Gastos Planta Matriz Prorrateados : "+ GastosPlanta + " "+ GastosPlantaCifraControl)
+    }
+
 
        //Utilidad de Operación
        dataLimpiaduria[4].Suc01 = parseFloat(dataLimpiaduria[2].Suc01) + parseFloat(dataLimpiaduria[3].Suc01)
