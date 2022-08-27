@@ -69,16 +69,11 @@ class Menu extends Component {
               data-toggle="collapse"
               data-target=".navbar-collapse.show"
             >
-              D'Gala {ambientePruebas}
-            </span>
-          </Link>
+              <span style={{ marginRight: "10px" }}>
+                D'Gala {ambientePruebas}
+              </span>
 
-
-
-
-          {/* IMAGEN DEL USUARIO ROBOT */}
-          <Link to="/" style={linkStyle}>
-            <span>
+              {/* IMAGEN DEL USUARIO ROBOT */}
               <img
                 src={srcrobot}
                 alt="Robohash"
@@ -89,14 +84,13 @@ class Menu extends Component {
                   borderRadius: "50%",
                   border: "4px solid red",
                   // borderColor: "red yellow black"
-                  borderColor: "red yellow purple green"
+                  borderColor: "red yellow purple green",
                 }}
               />
+
+
             </span>
           </Link>
-
-
-
 
           <button
             className="navbar-toggler navbar-light bg-light"
@@ -110,7 +104,12 @@ class Menu extends Component {
             <span className="navbar-toggler-icon"></span>
           </button>
 
-          <div className="collapse navbar-collapse" id="navbarSupportedContent">
+
+
+
+
+          <div className="collapse navbar-collapse" id="navbarSupportedContent" >
+
             <ul className="navbar-nav mr-auto">
               <Link to="/" style={linkStyle}>
                 <li

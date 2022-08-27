@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 
 import "./VentasBI.css";
-import {RechartsBarChart01,RechartsBarChart02} from "./cmpnt/FuncionesRecharts"
+import {RechartsBarChart01, RechartsComposedChart03, RechartsComposedChart04} from "./cmpnt/FuncionesRecharts"
 import {NumberWithCommas} from './cmpnt/FuncionesGlobales'
 
 class VentasBI extends Component {
@@ -27,8 +27,11 @@ class VentasBI extends Component {
         "Total"
       ],
       ventas: [],
+      ventasLastYear: [],
       egresos: [],
+      egresosLastYear: [],
       ventasMelate: [],
+      ventasMelateLastYear: [],
       pagosMelate: [],
       utilidadPerdida: [],
       utilidadPerdidaLimpiaduriaPorcentaje: [],
@@ -90,18 +93,37 @@ class VentasBI extends Component {
   
   getConsultaVentasPorMes = async () => {
     const Year = this.state.Year;
-    const url = this.props.url + `/api/consultalimpiaduriaventaspormes/${Year}`;
+    let url = this.props.url + `/api/consultalimpiaduriaventaspormes/${Year}`;
     let bandera = false;
     try {
-      const response = await fetch(url, {
+      let response = await fetch(url, {
         headers: {
           Authorization: `Bearer ${this.props.accessToken}`,
         },
       });
 
       const data = await response.json();
+
+
+
+      //###################  Ventas del año pasado  ############################
+      const LastYear = parseInt(Year) - 1
+      url = this.props.url + `/api/consultalimpiaduriaventaspormes/${LastYear}`;
+      response = await fetch(url, {
+          headers: {
+            Authorization: `Bearer ${this.props.accessToken}`,
+          },
+        });
+  
+        const dataLastYear = await response.json();
+      //########################################################################
+
+
+
+
       this.setState({
         ventas: data,
+        ventasLastYear: dataLastYear,
       });
       bandera = true;
     } catch (error) {
@@ -113,11 +135,11 @@ class VentasBI extends Component {
 
   getConsultaEgresosPorMes = async () => {
     const Year = this.state.Year;
-    const url =
+    let url =
       this.props.url + `/api/consultalimpiaduriaegresospormes/${Year}`;
     let bandera = false;
     try {
-      const response = await fetch(url, {
+      let response = await fetch(url, {
         headers: {
           Authorization: `Bearer ${this.props.accessToken}`,
         },
@@ -125,8 +147,30 @@ class VentasBI extends Component {
 
       const data = await response.json();
 
+
+      const LastYear = parseInt(Year) - 1
+      url =
+      this.props.url + `/api/consultalimpiaduriaegresospormes/${LastYear}`;
+      response = await fetch(url, {
+        headers: {
+          Authorization: `Bearer ${this.props.accessToken}`,
+        },
+      });
+
+      const dataLastYear = await response.json();
+
+
+
+
+
+
+
+
+
+
       this.setState({
         egresos: data,
+        egresosLastYear: dataLastYear,
       });
       bandera = true;
     } catch (error) {
@@ -138,10 +182,10 @@ class VentasBI extends Component {
 
   getConsultaVentasMelatePorMes = async () => {
     const Year = this.state.Year;
-    const url = this.props.url + `/api/consultamelateventaspormes/${Year}`;
+    let url = this.props.url + `/api/consultamelateventaspormes/${Year}`;
     let bandera = false;
     try {
-      const response = await fetch(url, {
+      let response = await fetch(url, {
         headers: {
           Authorization: `Bearer ${this.props.accessToken}`,
         },
@@ -149,8 +193,26 @@ class VentasBI extends Component {
 
       const data = await response.json();
 
+
+
+      const LastYear = parseInt(Year) - 1
+      url = this.props.url + `/api/consultamelateventaspormes/${LastYear}`;
+        response = await fetch(url, {
+          headers: {
+            Authorization: `Bearer ${this.props.accessToken}`,
+          },
+        });
+  
+        const dataLastYear = await response.json();
+  
+
+
+
+
+
       this.setState({
         ventasMelate: data,
+        ventasMelateLastYear: dataLastYear,
       });
       bandera = true;
     } catch (error) {
@@ -471,7 +533,9 @@ class VentasBI extends Component {
 
   handleArrayLineChart = () => {
     const ventas = this.state.ventas;
+    const ventasLastYear = this.state.ventasLastYear;
     const egresos = this.state.egresos;
+    const egresosLastYear = this.state.egresosLastYear;
 
     //Prepara Arreglo de EGRESOS
     // let arregloEgresos = [];
@@ -485,18 +549,18 @@ class VentasBI extends Component {
     //###################################################################################
 
     let data = []
-    data.push({"name":"Ene","Ventas": parseInt(ventas[0].Monto || 0),"Egresos":parseInt(egresos[0].Monto || 0)*-1})
-    data.push({"name":"Feb","Ventas": parseInt(ventas[1].Monto || 0),"Egresos":parseInt(egresos[1].Monto || 0)*-1})
-    data.push({"name":"Mar","Ventas": parseInt(ventas[2].Monto || 0),"Egresos":parseInt(egresos[2].Monto || 0)*-1})
-    data.push({"name":"Abr","Ventas": parseInt(ventas[3].Monto || 0),"Egresos":parseInt(egresos[3].Monto || 0)*-1})
-    data.push({"name":"May","Ventas": parseInt(ventas[4].Monto || 0),"Egresos":parseInt(egresos[4].Monto || 0)*-1})
-    data.push({"name":"Jun","Ventas": parseInt(ventas[5].Monto || 0),"Egresos":parseInt(egresos[5].Monto || 0)*-1})
-    data.push({"name":"Jul","Ventas": parseInt(ventas[6].Monto || 0),"Egresos":parseInt(egresos[6].Monto || 0)*-1})
-    data.push({"name":"Ago","Ventas": parseInt(ventas[7].Monto || 0),"Egresos":parseInt(egresos[7].Monto || 0)*-1})
-    data.push({"name":"Sep","Ventas": parseInt(ventas[8].Monto || 0),"Egresos":parseInt(egresos[8].Monto || 0)*-1})
-    data.push({"name":"Oct","Ventas": parseInt(ventas[9].Monto || 0),"Egresos":parseInt(egresos[9].Monto || 0)*-1})
-    data.push({"name":"Nov","Ventas": parseInt(ventas[10].Monto || 0),"Egresos":parseInt(egresos[10].Monto || 0)*-1})
-    data.push({"name":"Dic","Ventas": parseInt(ventas[11].Monto || 0),"Egresos":parseInt(egresos[11].Monto || 0)*-1})
+    data.push({"name":"Ene","Ventas": parseInt(ventas[0].Monto || 0),"Egresos":parseInt(egresos[0].Monto || 0)*-1,"VentasLastYear":parseInt(ventasLastYear[0].Monto ||0),"EgresosLastYear":parseInt(egresosLastYear[0].Monto ||0)*-1})
+    data.push({"name":"Feb","Ventas": parseInt(ventas[1].Monto || 0),"Egresos":parseInt(egresos[1].Monto || 0)*-1,"VentasLastYear":parseInt(ventasLastYear[1].Monto ||0),"EgresosLastYear":parseInt(egresosLastYear[1].Monto ||0)*-1})
+    data.push({"name":"Mar","Ventas": parseInt(ventas[2].Monto || 0),"Egresos":parseInt(egresos[2].Monto || 0)*-1,"VentasLastYear":parseInt(ventasLastYear[2].Monto ||0),"EgresosLastYear":parseInt(egresosLastYear[2].Monto ||0)*-1})
+    data.push({"name":"Abr","Ventas": parseInt(ventas[3].Monto || 0),"Egresos":parseInt(egresos[3].Monto || 0)*-1,"VentasLastYear":parseInt(ventasLastYear[3].Monto ||0),"EgresosLastYear":parseInt(egresosLastYear[3].Monto ||0)*-1})
+    data.push({"name":"May","Ventas": parseInt(ventas[4].Monto || 0),"Egresos":parseInt(egresos[4].Monto || 0)*-1,"VentasLastYear":parseInt(ventasLastYear[4].Monto ||0),"EgresosLastYear":parseInt(egresosLastYear[4].Monto ||0)*-1})
+    data.push({"name":"Jun","Ventas": parseInt(ventas[5].Monto || 0),"Egresos":parseInt(egresos[5].Monto || 0)*-1,"VentasLastYear":parseInt(ventasLastYear[5].Monto ||0),"EgresosLastYear":parseInt(egresosLastYear[5].Monto ||0)*-1})
+    data.push({"name":"Jul","Ventas": parseInt(ventas[6].Monto || 0),"Egresos":parseInt(egresos[6].Monto || 0)*-1,"VentasLastYear":parseInt(ventasLastYear[6].Monto ||0),"EgresosLastYear":parseInt(egresosLastYear[6].Monto ||0)*-1})
+    data.push({"name":"Ago","Ventas": parseInt(ventas[7].Monto || 0),"Egresos":parseInt(egresos[7].Monto || 0)*-1,"VentasLastYear":parseInt(ventasLastYear[7].Monto ||0),"EgresosLastYear":parseInt(egresosLastYear[7].Monto ||0)*-1})
+    data.push({"name":"Sep","Ventas": parseInt(ventas[8].Monto || 0),"Egresos":parseInt(egresos[8].Monto || 0)*-1,"VentasLastYear":parseInt(ventasLastYear[8].Monto ||0),"EgresosLastYear":parseInt(egresosLastYear[8].Monto ||0)*-1})
+    data.push({"name":"Oct","Ventas": parseInt(ventas[9].Monto || 0),"Egresos":parseInt(egresos[9].Monto || 0)*-1,"VentasLastYear":parseInt(ventasLastYear[9].Monto ||0),"EgresosLastYear":parseInt(egresosLastYear[9].Monto ||0)*-1})
+    data.push({"name":"Nov","Ventas": parseInt(ventas[10].Monto || 0),"Egresos":parseInt(egresos[10].Monto || 0)*-1,"VentasLastYear":parseInt(ventasLastYear[10].Monto ||0),"EgresosLastYear":parseInt(egresosLastYear[10].Monto ||0)*-1})
+    data.push({"name":"Dic","Ventas": parseInt(ventas[11].Monto || 0),"Egresos":parseInt(egresos[11].Monto || 0)*-1,"VentasLastYear":parseInt(ventasLastYear[11].Monto ||0),"EgresosLastYear":parseInt(egresosLastYear[11].Monto ||0)*-1})
 
 
     this.setState({
@@ -506,6 +570,7 @@ class VentasBI extends Component {
 
   handleArrayLineChartMelate = () => {
     const ventasMelate = this.state.ventasMelate;
+    const ventasMelateLastYear = this.state.ventasMelateLastYear;
     const pagosMelate = this.state.pagosMelate;
 
     // //Prepara Arreglo de Pagos Melate
@@ -536,18 +601,18 @@ class VentasBI extends Component {
     // data.push({"name":"Nov","VentaMelate": parseInt(ventasMelate[10].Monto || 0),"PagosMelate": parseInt(pagosMelate[10].Monto || 0)*-1,"UtilidadMelate": parseInt(utilidadMelate[10].Monto)})
     // data.push({"name":"Dic","VentaMelate": parseInt(ventasMelate[11].Monto || 0),"PagosMelate": parseInt(pagosMelate[11].Monto || 0)*-1,"UtilidadMelate": parseInt(utilidadMelate[11].Monto)})
 
-    data.push({"name":"Ene","VentaMelate": parseInt(ventasMelate[0].Monto || 0),"UtilidadMelate": parseInt(utilidadMelate[0].Monto)})
-    data.push({"name":"Feb","VentaMelate": parseInt(ventasMelate[1].Monto || 0),"UtilidadMelate": parseInt(utilidadMelate[1].Monto)})
-    data.push({"name":"Mar","VentaMelate": parseInt(ventasMelate[2].Monto || 0),"UtilidadMelate": parseInt(utilidadMelate[2].Monto)})
-    data.push({"name":"Abr","VentaMelate": parseInt(ventasMelate[3].Monto || 0),"UtilidadMelate": parseInt(utilidadMelate[3].Monto)})
-    data.push({"name":"May","VentaMelate": parseInt(ventasMelate[4].Monto || 0),"UtilidadMelate": parseInt(utilidadMelate[4].Monto)})
-    data.push({"name":"Jun","VentaMelate": parseInt(ventasMelate[5].Monto || 0),"UtilidadMelate": parseInt(utilidadMelate[5].Monto)})
-    data.push({"name":"Jul","VentaMelate": parseInt(ventasMelate[6].Monto || 0),"UtilidadMelate": parseInt(utilidadMelate[6].Monto)})
-    data.push({"name":"Ago","VentaMelate": parseInt(ventasMelate[7].Monto || 0),"UtilidadMelate": parseInt(utilidadMelate[7].Monto)})
-    data.push({"name":"Sep","VentaMelate": parseInt(ventasMelate[8].Monto || 0),"UtilidadMelate": parseInt(utilidadMelate[8].Monto)})
-    data.push({"name":"Oct","VentaMelate": parseInt(ventasMelate[9].Monto || 0),"UtilidadMelate": parseInt(utilidadMelate[9].Monto)})
-    data.push({"name":"Nov","VentaMelate": parseInt(ventasMelate[10].Monto || 0),"UtilidadMelate": parseInt(utilidadMelate[10].Monto)})
-    data.push({"name":"Dic","VentaMelate": parseInt(ventasMelate[11].Monto || 0),"UtilidadMelate": parseInt(utilidadMelate[11].Monto)})
+    data.push({"name":"Ene","VentaMelate": parseInt(ventasMelate[0].Monto || 0),"UtilidadMelate": parseInt(utilidadMelate[0].Monto),"VentaMelateLastYear": parseInt(ventasMelateLastYear[0].Monto || 0)})
+    data.push({"name":"Feb","VentaMelate": parseInt(ventasMelate[1].Monto || 0),"UtilidadMelate": parseInt(utilidadMelate[1].Monto),"VentaMelateLastYear": parseInt(ventasMelateLastYear[1].Monto || 0)})
+    data.push({"name":"Mar","VentaMelate": parseInt(ventasMelate[2].Monto || 0),"UtilidadMelate": parseInt(utilidadMelate[2].Monto),"VentaMelateLastYear": parseInt(ventasMelateLastYear[2].Monto || 0)})
+    data.push({"name":"Abr","VentaMelate": parseInt(ventasMelate[3].Monto || 0),"UtilidadMelate": parseInt(utilidadMelate[3].Monto),"VentaMelateLastYear": parseInt(ventasMelateLastYear[3].Monto || 0)})
+    data.push({"name":"May","VentaMelate": parseInt(ventasMelate[4].Monto || 0),"UtilidadMelate": parseInt(utilidadMelate[4].Monto),"VentaMelateLastYear": parseInt(ventasMelateLastYear[4].Monto || 0)})
+    data.push({"name":"Jun","VentaMelate": parseInt(ventasMelate[5].Monto || 0),"UtilidadMelate": parseInt(utilidadMelate[5].Monto),"VentaMelateLastYear": parseInt(ventasMelateLastYear[5].Monto || 0)})
+    data.push({"name":"Jul","VentaMelate": parseInt(ventasMelate[6].Monto || 0),"UtilidadMelate": parseInt(utilidadMelate[6].Monto),"VentaMelateLastYear": parseInt(ventasMelateLastYear[6].Monto || 0)})
+    data.push({"name":"Ago","VentaMelate": parseInt(ventasMelate[7].Monto || 0),"UtilidadMelate": parseInt(utilidadMelate[7].Monto),"VentaMelateLastYear": parseInt(ventasMelateLastYear[7].Monto || 0)})
+    data.push({"name":"Sep","VentaMelate": parseInt(ventasMelate[8].Monto || 0),"UtilidadMelate": parseInt(utilidadMelate[8].Monto),"VentaMelateLastYear": parseInt(ventasMelateLastYear[8].Monto || 0)})
+    data.push({"name":"Oct","VentaMelate": parseInt(ventasMelate[9].Monto || 0),"UtilidadMelate": parseInt(utilidadMelate[9].Monto),"VentaMelateLastYear": parseInt(ventasMelateLastYear[9].Monto || 0)})
+    data.push({"name":"Nov","VentaMelate": parseInt(ventasMelate[10].Monto || 0),"UtilidadMelate": parseInt(utilidadMelate[10].Monto),"VentaMelateLastYear": parseInt(ventasMelateLastYear[10].Monto || 0)})
+    data.push({"name":"Dic","VentaMelate": parseInt(ventasMelate[11].Monto || 0),"UtilidadMelate": parseInt(utilidadMelate[11].Monto),"VentaMelateLastYear": parseInt(ventasMelateLastYear[11].Monto || 0)})
 
     this.setState({
       dataMelate: data,
@@ -641,7 +706,8 @@ class VentasBI extends Component {
           </tbody>
         </table>
         <br />
-        <RechartsBarChart02 data={this.state.data} titulo={"Ventas y Egresos Limpiaduría"} color1={"dodgerblue"} color2={"red"} />
+        {/* <RechartsBarChart02 data={this.state.data} titulo={"Ventas y Egresos Limpiaduría"} color1={"dodgerblue"} color2={"red"} /> */}
+        <RechartsComposedChart04 data={this.state.data} titulo={"Ventas y Egresos Limpiaduría"} color1={"#005599"} color2={"red"} color3={"dodgerblue"} color4={"#ff5349"} />
 
 
         <br />
@@ -704,7 +770,8 @@ class VentasBI extends Component {
           </tbody>
         </table>
         <br />
-        <RechartsBarChart02 data={this.state.dataMelate} titulo={"Venta y Utilidad Melate"} color1={"dodgerblue"} color2={"green"} />
+        {/* <RechartsBarChart02 data={this.state.dataMelate} titulo={"Venta y Utilidad Melate"} color1={"dodgerblue"} color2={"green"} /> */}
+        <RechartsComposedChart03 data={this.state.dataMelate} titulo={"Venta y Utilidad Melate"} color1={"dodgerblue"} color2={"green"} color3={"#005599"} />
 
 
         <br />
@@ -844,7 +911,7 @@ class VentasBI extends Component {
         <br />
         <br />
 
-        <RechartsBarChart01 data={this.state.dataGastosInversionesTotalesRecharts} titulo={"Egresos (Gastos e Inversión)"}/>
+        <RechartsBarChart01 data={this.state.dataGastosInversionesTotalesRecharts} titulo={"Egresos (Gastos e Inversión)"} color1={"red"} color2={"red"}/>
 
 
 
@@ -882,7 +949,7 @@ class VentasBI extends Component {
           </tbody>
         </table>
         <br /> 
-        <RechartsBarChart01 data={this.state.dataLimpiaduriaMelateRentasOtrosUtilidadRecharts} titulo={"Utilidad Neta Limpiaduría, Melate, Rentas y Otros Ingresos"}/>
+        <RechartsBarChart01 data={this.state.dataLimpiaduriaMelateRentasOtrosUtilidadRecharts} titulo={"Utilidad Neta Limpiaduría, Melate, Rentas y Otros Ingresos"} color1={"green"} />
 
 
       </div>

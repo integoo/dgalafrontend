@@ -260,3 +260,11 @@ class Input extends React.Component {
         //const maxvalue = Math.max(...data.map(element => element.value))
         //const minvalue = Math.min(...data.map(element => element.value))
 //###################################################################################################
+//Extrae los nombres de los primeros 2 campos del Objeto Javascrip (JSON File) adentro del arreglo "data"
+let json = data[0]
+let [first, second] = Object.keys(json)
+first = ""
+
+//Acceder a la segunda posicion de un JSON file dentro de un array
+alert(data[0][second])
+//################################################################################################
