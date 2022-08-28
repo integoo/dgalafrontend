@@ -43,7 +43,7 @@ class InventarioFaltantes extends Component {
     }
 
     async getSucursales() {
-        const url = this.props.url + `/api/catalogos/10`;
+        const url = this.props.url + `/api/catalogos/10fisicasycedis`;
         const Administrador = this.props.Administrador
         try {
           const response = await fetch(url, {
@@ -78,56 +78,63 @@ class InventarioFaltantes extends Component {
 
     handleRender = () =>{
         return (
-            <React.Fragment>
-              <div className="maincontainer">
-                  <div className="mainheader">Faltantes Inventario</div>
-                  <div className="main">
-                      <select 
-                          style={{marginTop: "10px"}}
-                          onChange={this.handleSucursales}
-                          id="Sucursales"
-                          name="Sucursales"
-                          value={this.state.SucursalId} >
-                              {
-                                  this.state.sucursales.map((element,i) =>(
-                                      <option key={i} value={element.SucursalId}>{element.Sucursal}</option>
-                                  ))
-                              }
-                      </select>
-                      <table>
-                          <thead>
-                              <tr>
-                                  {/* <th>Sucursal</th> */}
-                                  <th>Codigo</th>
-                                  <th>Descripcion</th>
-                                  <th>Máximo</th>
-                                  <th>Mínimo</th>
-                                  <th>Unidades Inventario</th>
-                                  <th>Unidades Vendidas</th>
-                                  <th>Unidades Inventario CEDIS</th>
-                              </tr>
-                          </thead>
-                          <tbody>
-                              {this.state.detalles.map((element,i) =>(
-                                  <tr key={i}>
-                                      {/* <td>{element.SucursalId}</td> */}
-                                      <td>{element.CodigoId}</td>
-                                      <td style={{textAlign:"left"}}>{element.Descripcion}</td>
-                                      <td>{element.Maximo}</td>
-                                      <td>{element.Minimo}</td>
-                                      <td>{element.UniInv}</td>
-                                      <td>{element.UnidadesDesplazadas}</td>
-                                      <td>{element.UniInvCedis}</td>
-                                  </tr>
-                              ))}
-                          </tbody>
-                      </table>
-                      <br />
-                  </div>
-                  <div className="mainfooter"></div>
+          <React.Fragment>
+            <div className="maincontainer">
+              <div className="mainheader">Faltantes Inventario</div>
+              <div className="main">
+                <select
+                  style={{ marginTop: "10px" }}
+                  onChange={this.handleSucursales}
+                  id="Sucursales"
+                  name="Sucursales"
+                  value={this.state.SucursalId}
+                >
+                  {this.state.sucursales.map((element, i) => (
+                    <option key={i} value={element.SucursalId}>
+                      {element.Sucursal}
+                    </option>
+                  ))}
+                </select>
+
+                <div className="maindetalles">
+                        <table>
+                        <thead>
+                            <tr>
+                            {/* <th>Sucursal</th> */}
+                            <th>Codigo</th>
+                            <th>Descripcion</th>
+                            <th>Máximo</th>
+                            <th>Mínimo</th>
+                            <th>Unidades Inventario</th>
+                            <th>Unidades Vendidas</th>
+                            <th>Unidades Inventario CEDIS</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {this.state.detalles.map((element, i) => (
+                            <tr key={i}>
+                                {/* <td>{element.SucursalId}</td> */}
+                                <td>{element.CodigoId}</td>
+                                <td style={{ textAlign: "left" }}>
+                                {element.Descripcion}
+                                </td>
+                                <td>{element.Maximo}</td>
+                                <td>{element.Minimo}</td>
+                                <td>{element.UniInv}</td>
+                                <td>{element.UnidadesDesplazadas}</td>
+                                <td>{element.UniInvCedis}</td>
+                            </tr>
+                            ))}
+                        </tbody>
+                        </table>
+
+                </div>
               </div>
-            </React.Fragment>
-          );
+              <br />
+              <div className="mainfooter"></div>
+            </div>
+          </React.Fragment>
+        );
     }
 
 

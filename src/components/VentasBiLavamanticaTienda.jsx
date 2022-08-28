@@ -1,7 +1,7 @@
 import React from 'react'
 
 import './VentasBiLavamaticaTienda.css'
-import {RechartsBarChart01,RechartsBarChart02,RechartsBarChart03} from './cmpnt/FuncionesRecharts'
+import {RechartsBarChart01,RechartsBarChart03,RechartsComposedChart04} from './cmpnt/FuncionesRecharts'
 
 import SelectSucursales from './cmpnt/SelectSucursales'
 
@@ -98,10 +98,10 @@ class VentasBiLavamanticaTienda extends React.Component{
 
     getDetallesLavamatica = async () => {
         const year = this.state.Year
-        const url = this.props.url+`/api/ventas/bi/lavamatica/${year}`
+        let url = this.props.url+`/api/ventas/bi/lavamatica/${year}`
         let bandera = false;
         try{
-            const response = await fetch(url, {
+            let response = await fetch(url, {
                 headers:{
                     Authorization:`Bearer ${this.props.accessToken}`,
                 },
@@ -116,9 +116,30 @@ class VentasBiLavamanticaTienda extends React.Component{
             bandera = true;
 
 
+
+
+//####################### Ventas del Año Anterior ###########################
+            const LastYear = parseInt(year) - 1 
+            url = this.props.url+`/api/ventas/bi/lavamatica/${LastYear}`
+            response = await fetch(url, {
+                headers:{
+                    Authorization:`Bearer ${this.props.accessToken}`,
+                },
+            });
+            const dataLastYear = await response.json()
+            if(dataLastYear.error){
+                console.log(dataLastYear.error)
+                alert(dataLastYear.error)
+                return
+            }
+//#############################################################################
+
+
+
+
+
             let arregloRegistro = []
             let json;
-            
             json = this.handleMesesColumnas(data,'VentasConImpuesto')
             arregloRegistro.push(json)
             json = this.handleMesesColumnas(data,'Impuestos')
@@ -137,6 +158,7 @@ class VentasBiLavamanticaTienda extends React.Component{
 
             json = this.handleMesesColumnas(data,'UtilidadNeta')
             arregloRegistro.push(json)
+
 
 
 
@@ -162,19 +184,18 @@ class VentasBiLavamanticaTienda extends React.Component{
             arregloRegistro.push(json)
 
             let arregloRegistroRecharts = []
-            arregloRegistroRecharts.push({"name": "Ene", "VentaConImp": parseFloat(arregloRegistro[0].Ene.toFixed(0)), "UtilidadNeta": parseFloat(arregloRegistro[7].Ene.toFixed(0))})
-            arregloRegistroRecharts.push({"name": "Feb", "VentaConImp": parseFloat(arregloRegistro[0].Feb.toFixed(0)), "UtilidadNeta": parseFloat(arregloRegistro[7].Feb.toFixed(0))})
-            arregloRegistroRecharts.push({"name": "Mar", "VentaConImp": parseFloat(arregloRegistro[0].Mar.toFixed(0)), "UtilidadNeta": parseFloat(arregloRegistro[7].Mar.toFixed(0))})
-            arregloRegistroRecharts.push({"name": "Abr", "VentaConImp": parseFloat(arregloRegistro[0].Abr.toFixed(0)), "UtilidadNeta": parseFloat(arregloRegistro[7].Abr.toFixed(0))})
-            arregloRegistroRecharts.push({"name": "May", "VentaConImp": parseFloat(arregloRegistro[0].May.toFixed(0)), "UtilidadNeta": parseFloat(arregloRegistro[7].May.toFixed(0))})
-            arregloRegistroRecharts.push({"name": "Jun", "VentaConImp": parseFloat(arregloRegistro[0].Jun.toFixed(0)), "UtilidadNeta": parseFloat(arregloRegistro[7].Jun.toFixed(0))})
-            arregloRegistroRecharts.push({"name": "Jul", "VentaConImp": parseFloat(arregloRegistro[0].Jul.toFixed(0)), "UtilidadNeta": parseFloat(arregloRegistro[7].Jul.toFixed(0))})
-            arregloRegistroRecharts.push({"name": "Ago", "VentaConImp": parseFloat(arregloRegistro[0].Ago.toFixed(0)), "UtilidadNeta": parseFloat(arregloRegistro[7].Ago.toFixed(0))})
-            arregloRegistroRecharts.push({"name": "Sep", "VentaConImp": parseFloat(arregloRegistro[0].Sep.toFixed(0)), "UtilidadNeta": parseFloat(arregloRegistro[7].Sep.toFixed(0))})
-            arregloRegistroRecharts.push({"name": "Oct", "VentaConImp": parseFloat(arregloRegistro[0].Oct.toFixed(0)), "UtilidadNeta": parseFloat(arregloRegistro[7].Oct.toFixed(0))})
-            arregloRegistroRecharts.push({"name": "Nov", "VentaConImp": parseFloat(arregloRegistro[0].Nov.toFixed(0)), "UtilidadNeta": parseFloat(arregloRegistro[7].Nov.toFixed(0))})
-            arregloRegistroRecharts.push({"name": "Dic", "VentaConImp": parseFloat(arregloRegistro[0].Dic.toFixed(0)), "UtilidadNeta": parseFloat(arregloRegistro[7].Dic.toFixed(0))})
-
+            arregloRegistroRecharts.push({"name": "Ene", "VentaConImp": parseFloat(arregloRegistro[0].Ene.toFixed(0)), "UtilidadNeta": parseFloat(arregloRegistro[7].Ene.toFixed(0)), "VentaConImpLastYear":parseFloat(dataLastYear[0].Monto),"UtilidadNetaLastYear":parseInt(dataLastYear[84].Monto)})
+            arregloRegistroRecharts.push({"name": "Feb", "VentaConImp": parseFloat(arregloRegistro[0].Feb.toFixed(0)), "UtilidadNeta": parseFloat(arregloRegistro[7].Feb.toFixed(0)), "VentaConImpLastYear":parseFloat(dataLastYear[1].Monto),"UtilidadNetaLastYear":parseInt(dataLastYear[85].Monto)})
+            arregloRegistroRecharts.push({"name": "Mar", "VentaConImp": parseFloat(arregloRegistro[0].Mar.toFixed(0)), "UtilidadNeta": parseFloat(arregloRegistro[7].Mar.toFixed(0)), "VentaConImpLastYear":parseFloat(dataLastYear[2].Monto),"UtilidadNetaLastYear":parseInt(dataLastYear[86].Monto)})
+            arregloRegistroRecharts.push({"name": "Abr", "VentaConImp": parseFloat(arregloRegistro[0].Abr.toFixed(0)), "UtilidadNeta": parseFloat(arregloRegistro[7].Abr.toFixed(0)), "VentaConImpLastYear":parseFloat(dataLastYear[3].Monto),"UtilidadNetaLastYear":parseInt(dataLastYear[87].Monto)})
+            arregloRegistroRecharts.push({"name": "May", "VentaConImp": parseFloat(arregloRegistro[0].May.toFixed(0)), "UtilidadNeta": parseFloat(arregloRegistro[7].May.toFixed(0)), "VentaConImpLastYear":parseFloat(dataLastYear[4].Monto),"UtilidadNetaLastYear":parseInt(dataLastYear[88].Monto)})
+            arregloRegistroRecharts.push({"name": "Jun", "VentaConImp": parseFloat(arregloRegistro[0].Jun.toFixed(0)), "UtilidadNeta": parseFloat(arregloRegistro[7].Jun.toFixed(0)), "VentaConImpLastYear":parseFloat(dataLastYear[5].Monto),"UtilidadNetaLastYear":parseInt(dataLastYear[89].Monto)})
+            arregloRegistroRecharts.push({"name": "Jul", "VentaConImp": parseFloat(arregloRegistro[0].Jul.toFixed(0)), "UtilidadNeta": parseFloat(arregloRegistro[7].Jul.toFixed(0)), "VentaConImpLastYear":parseFloat(dataLastYear[6].Monto),"UtilidadNetaLastYear":parseInt(dataLastYear[90].Monto)})
+            arregloRegistroRecharts.push({"name": "Ago", "VentaConImp": parseFloat(arregloRegistro[0].Ago.toFixed(0)), "UtilidadNeta": parseFloat(arregloRegistro[7].Ago.toFixed(0)), "VentaConImpLastYear":parseFloat(dataLastYear[7].Monto),"UtilidadNetaLastYear":parseInt(dataLastYear[91].Monto)})
+            arregloRegistroRecharts.push({"name": "Sep", "VentaConImp": parseFloat(arregloRegistro[0].Sep.toFixed(0)), "UtilidadNeta": parseFloat(arregloRegistro[7].Sep.toFixed(0)), "VentaConImpLastYear":parseFloat(dataLastYear[8].Monto),"UtilidadNetaLastYear":parseInt(dataLastYear[92].Monto)})
+            arregloRegistroRecharts.push({"name": "Oct", "VentaConImp": parseFloat(arregloRegistro[0].Oct.toFixed(0)), "UtilidadNeta": parseFloat(arregloRegistro[7].Oct.toFixed(0)), "VentaConImpLastYear":parseFloat(dataLastYear[9].Monto),"UtilidadNetaLastYear":parseInt(dataLastYear[93].Monto)})
+            arregloRegistroRecharts.push({"name": "Nov", "VentaConImp": parseFloat(arregloRegistro[0].Nov.toFixed(0)), "UtilidadNeta": parseFloat(arregloRegistro[7].Nov.toFixed(0)), "VentaConImpLastYear":parseFloat(dataLastYear[10].Monto),"UtilidadNetaLastYear":parseInt(dataLastYear[94].Monto)})
+            arregloRegistroRecharts.push({"name": "Dic", "VentaConImp": parseFloat(arregloRegistro[0].Dic.toFixed(0)), "UtilidadNeta": parseFloat(arregloRegistro[7].Dic.toFixed(0)), "VentaConImpLastYear":parseFloat(dataLastYear[11].Monto),"UtilidadNetaLastYear":parseInt(dataLastYear[95].Monto)})
             this.setState({
                 detallesLavamatica: arregloRegistro,
                 detallesLavamaticaRecharts: arregloRegistroRecharts,
@@ -189,10 +210,10 @@ class VentasBiLavamanticaTienda extends React.Component{
 
     getLavadasSecadasServicios = async (SucursalId) => {
         const year = this.state.Year
-        const url = this.props.url+`/api/lavadassecadasservicios/${SucursalId}/${year}`
+        let url = this.props.url+`/api/lavadassecadasservicios/${SucursalId}/${year}`
         let bandera = false;
         try{
-            const response = await fetch(url, {
+            let response = await fetch(url, {
                 headers:{
                     Authorization:`Bearer ${this.props.accessToken}`,
                 },
@@ -204,22 +225,43 @@ class VentasBiLavamanticaTienda extends React.Component{
                 return
             }
 
+
+            //############# Lavadas y Secadas del Año Anterior  #######################
+            const LastYear = parseInt(year) - 1
+            url = this.props.url+`/api/lavadassecadasservicios/${SucursalId}/${LastYear}`
+            response = await fetch(url, {
+                headers:{
+                    Authorization:`Bearer ${this.props.accessToken}`,
+                },
+            });
+            const dataLastYear = await response.json()
+            if(data.error){
+                console.log(data.error)
+                alert(data.error)
+                return
+            }
+
+
+
+
+            //#########################################################################
+
             bandera = true;
 
 
             let dataRecharts = []
-            dataRecharts.push({"name": "Ene", "Lavadas": parseInt(data[0].Ene), "Secadas": parseInt(data[1].Ene)})
-            dataRecharts.push({"name": "Feb", "Lavadas": parseInt(data[0].Feb), "Secadas": parseInt(data[1].Feb)})
-            dataRecharts.push({"name": "Mar", "Lavadas": parseInt(data[0].Mar), "Secadas": parseInt(data[1].Mar)})
-            dataRecharts.push({"name": "Abr", "Lavadas": parseInt(data[0].Abr), "Secadas": parseInt(data[1].Abr)})
-            dataRecharts.push({"name": "May", "Lavadas": parseInt(data[0].May), "Secadas": parseInt(data[1].May)})
-            dataRecharts.push({"name": "Jun", "Lavadas": parseInt(data[0].Jun), "Secadas": parseInt(data[1].Jun)})
-            dataRecharts.push({"name": "Jul", "Lavadas": parseInt(data[0].Jul), "Secadas": parseInt(data[1].Jul)})
-            dataRecharts.push({"name": "Ago", "Lavadas": parseInt(data[0].Ago), "Secadas": parseInt(data[1].Ago)})
-            dataRecharts.push({"name": "Sep", "Lavadas": parseInt(data[0].Sep), "Secadas": parseInt(data[1].Sep)})
-            dataRecharts.push({"name": "Oct", "Lavadas": parseInt(data[0].Oct), "Secadas": parseInt(data[1].Oct)})
-            dataRecharts.push({"name": "Nov", "Lavadas": parseInt(data[0].Nov), "Secadas": parseInt(data[1].Nov)})
-            dataRecharts.push({"name": "Dic", "Lavadas": parseInt(data[0].Dic), "Secadas": parseInt(data[1].Dic)})
+            dataRecharts.push({"name": "Ene", "Lavadas": parseInt(data[0].Ene), "Secadas": parseInt(data[1].Ene),"LavadasLastYear": parseInt(dataLastYear[0].Ene), "SecadasLastYear": parseInt(dataLastYear[1].Ene)})
+            dataRecharts.push({"name": "Feb", "Lavadas": parseInt(data[0].Feb), "Secadas": parseInt(data[1].Feb),"LavadasLastYear": parseInt(dataLastYear[0].Feb), "SecadasLastYear": parseInt(dataLastYear[1].Feb)})
+            dataRecharts.push({"name": "Mar", "Lavadas": parseInt(data[0].Mar), "Secadas": parseInt(data[1].Mar),"LavadasLastYear": parseInt(dataLastYear[0].Mar), "SecadasLastYear": parseInt(dataLastYear[1].Mar)})
+            dataRecharts.push({"name": "Abr", "Lavadas": parseInt(data[0].Abr), "Secadas": parseInt(data[1].Abr),"LavadasLastYear": parseInt(dataLastYear[0].Abr), "SecadasLastYear": parseInt(dataLastYear[1].Abr)})
+            dataRecharts.push({"name": "May", "Lavadas": parseInt(data[0].May), "Secadas": parseInt(data[1].May),"LavadasLastYear": parseInt(dataLastYear[0].May), "SecadasLastYear": parseInt(dataLastYear[1].May)})
+            dataRecharts.push({"name": "Jun", "Lavadas": parseInt(data[0].Jun), "Secadas": parseInt(data[1].Jun),"LavadasLastYear": parseInt(dataLastYear[0].Jun), "SecadasLastYear": parseInt(dataLastYear[1].Jun)})
+            dataRecharts.push({"name": "Jul", "Lavadas": parseInt(data[0].Jul), "Secadas": parseInt(data[1].Jul),"LavadasLastYear": parseInt(dataLastYear[0].Jul), "SecadasLastYear": parseInt(dataLastYear[1].Jul)})
+            dataRecharts.push({"name": "Ago", "Lavadas": parseInt(data[0].Ago), "Secadas": parseInt(data[1].Ago),"LavadasLastYear": parseInt(dataLastYear[0].Ago), "SecadasLastYear": parseInt(dataLastYear[1].Ago)})
+            dataRecharts.push({"name": "Sep", "Lavadas": parseInt(data[0].Sep), "Secadas": parseInt(data[1].Sep),"LavadasLastYear": parseInt(dataLastYear[0].Sep), "SecadasLastYear": parseInt(dataLastYear[1].Sep)})
+            dataRecharts.push({"name": "Oct", "Lavadas": parseInt(data[0].Oct), "Secadas": parseInt(data[1].Oct),"LavadasLastYear": parseInt(dataLastYear[0].Oct), "SecadasLastYear": parseInt(dataLastYear[1].Oct)})
+            dataRecharts.push({"name": "Nov", "Lavadas": parseInt(data[0].Nov), "Secadas": parseInt(data[1].Nov),"LavadasLastYear": parseInt(dataLastYear[0].Nov), "SecadasLastYear": parseInt(dataLastYear[1].Nov)})
+            dataRecharts.push({"name": "Dic", "Lavadas": parseInt(data[0].Dic), "Secadas": parseInt(data[1].Dic),"LavadasLastYear": parseInt(dataLastYear[0].Dic), "SecadasLastYear": parseInt(dataLastYear[1].Dic)})
             
             this.setState({
                 lavadassecadasservicios: data,
@@ -561,7 +603,8 @@ class VentasBiLavamanticaTienda extends React.Component{
 
 
 
-                <RechartsBarChart02 data={this.state.detallesLavamaticaRecharts} titulo={"Lavamática Ventas Con Impuesto y Utilidad Neta (Sin Impuestos)"} color1={"dodgerblue"} color2={"green"} />
+                {/* <RechartsBarChart02 data={this.state.detallesLavamaticaRecharts} titulo={"Lavamática Ventas Con Impuesto y Utilidad Neta (Sin Impuestos)"} color1={"dodgerblue"} color2={"green"} /> */}
+                <RechartsComposedChart04 data={this.state.detallesLavamaticaRecharts} titulo={"Lavamática Ventas Con Impuesto y Utilidad Neta (Sin Impuestos)"} color1={"dodgerblue"} color2={"green"} color3={"#005599"} color4={"orange"} />
 
 
 
@@ -639,7 +682,8 @@ class VentasBiLavamanticaTienda extends React.Component{
                 <br />
                 <br />
  
-                <RechartsBarChart02 data={this.state.lavadassecadasserviciosRecharts} titulo={"Lavadas y Secadas"}/>
+                {/* <RechartsBarChart02 data={this.state.lavadassecadasserviciosRecharts} titulo={"Lavadas y Secadas"}/> */}
+                <RechartsComposedChart04 data={this.state.lavadassecadasserviciosRecharts} titulo={"Lavadas y Secadas"} color1={"orange"} color2={"#9370db"} color3={"red"} color4={"#005599"} />
 
 
 

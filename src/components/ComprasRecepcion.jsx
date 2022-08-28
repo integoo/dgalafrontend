@@ -75,7 +75,7 @@ class ComprasRecepcion extends React.Component {
   }
 
   async getSucursales() {
-    const url = this.props.url + `/api/catalogos/10`;
+    const url = this.props.url + `/api/catalogos/10fisicasycedis`;
     const Administrador = this.props.Administrador
     try {
       const response = await fetch(url, {
@@ -623,6 +623,7 @@ class ComprasRecepcion extends React.Component {
               <h3>Compras Recepcion</h3>
             </span>
             <br />
+
             <label htmlFor="sucursales">Sucursales</label>
             <select
               onChange={this.handleSucursales}
@@ -637,6 +638,8 @@ class ComprasRecepcion extends React.Component {
               ))}
             </select>
             <br />
+
+
             <label htmlFor="proveedores">Proveedores</label>
             <select
               onChange={this.handleProveedores}
@@ -650,6 +653,8 @@ class ComprasRecepcion extends React.Component {
                 </option>
               ))}
             </select>
+
+
             <label id="labelivaproveedor">IVA</label>
             <input id="IVAProveedor" name="IVAProveedor" value={this.state.IVAProveedor+"%"} disabled readOnly/>
             <br />
@@ -665,6 +670,8 @@ class ComprasRecepcion extends React.Component {
               required
             />
             <br />
+
+
             <label htmlFor="totalfactura">Total Factura</label>
             <input
               onChange={this.handleTotalFactura}
@@ -676,6 +683,8 @@ class ComprasRecepcion extends React.Component {
               required
             />
             <br />
+
+
             <label>Pago (Socios) </label>
             <select onChange={this.handleSocios} id="socios" name="socios" value={this.state.SocioId}>
                 {this.state.socios.map((element,i) => (
@@ -684,28 +693,6 @@ class ComprasRecepcion extends React.Component {
                 ))}
             </select>
             <br />
-            {/* <label htmlFor="codigoBarras">Código Barras</label>
-            <br />
-            <input
-              onChange={this.handleCodigoBarras}
-              onKeyDown={this.handleCodigoBarrasEnter}
-              id="codigobarras"
-              name="codigobarras"
-              size="15"
-              maxLength="13"
-              style={{textTransform:"capitalize"}}
-              value={this.state.CodigoBarras}
-              ref={this.CodigoBarrasInput}
-              autoComplete="off"
-            />
-            <button
-              type="button"
-              onClick={this.handleConsultar}
-              id="btn-consultar"
-              className="btn btn-primary btn-sm m-1"
-            >
-              Consultar
-            </button> */}
 
 
             <InputCodigoBarras accessToken={this.props.accessToken} url={this.props.url} handleCodigoBarrasProp = {this.onhandleCodigoBarras} handleConsultaProp = {this.onhandleConsulta} CodigoBarrasProp = {this.state.CodigoBarras} SoloInventariable={this.state.SoloInventariable} ref={this.CodigoBarrasInput}/>
@@ -882,7 +869,7 @@ class ComprasRecepcion extends React.Component {
   render() {
      return (
        <React.Fragment>
-         {this.state.socios.length > 0 ? <this.handleRender /> : <h3>Loading . . .</h3>}
+         {this.state.socios.length > 0 ? <this.handleRender /> : <h3 style={{margin:"5px 20px"}}>Loading . . .</h3>}
        </React.Fragment>
     )
   }

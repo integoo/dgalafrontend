@@ -40,8 +40,14 @@
 .main{
     margin: -2px auto;
     grid-area: main1;
-    overflow: auto;
 }
+
+.maindetalles {
+    margin-top: 10px;
+    height: 369px;
+    overflow: scroll;
+}
+
 
 .mainfooter{
     grid-area: footer;
