@@ -52,7 +52,7 @@ import { BarChart, Bar, XAxis, YAxis, Tooltip, CartesianGrid,
                   <Bar dataKey={second} fill={color1} barSize={50}>
                     {data.map((entry, index) => (
                       // <Cell fill={ data[index][second] <= 0 ? 'red' : '#005599' }/>
-                      <Cell fill={data[index][second] >= 0 ? color1 : color2} />
+                      <Cell key={index} fill={data[index][second] >= 0 ? color1 : color2} />
                     ))}
 
                     {/* <LabelList dataKey="value" position="top" formatter={(value) => new Intl.NumberFormat('en').format(value)} /> */}
@@ -97,7 +97,7 @@ import { BarChart, Bar, XAxis, YAxis, Tooltip, CartesianGrid,
 
                       {data.map((entry, index) => (
                         // <Cell fill={ data[index][second] <= 0 ? 'red' : '#005599' }/>
-                        <Cell fill={data[index][second] >= 0 ? color1 : 'red'} />
+                        <Cell key={index} fill={data[index][second] >= 0 ? color1 : 'red'} />
                       ))}
 
 
@@ -111,7 +111,7 @@ import { BarChart, Bar, XAxis, YAxis, Tooltip, CartesianGrid,
 
                     {data.map((entry, index) => (
                       // <Cell fill={ data[index][second] <= 0 ? 'red' : '#005599' }/>
-                      <Cell fill={data[index][third] >= 0 ? color2 : 'red'} />
+                      <Cell key={index} fill={data[index][third] >= 0 ? color2 : 'red'} />
                     ))}
 
 
@@ -167,7 +167,7 @@ import { BarChart, Bar, XAxis, YAxis, Tooltip, CartesianGrid,
             );
         }
 
-        export function RechartsComposedChart02({data, titulo}){
+        export function RechartsComposedChart03Original({data, titulo}){
           //Extrae los nombres de los primeros 3 campos del Objeto json adentro del arreglo "data"
           let json = data[0]
           let [first, second, third] = Object.keys(json)
@@ -202,8 +202,63 @@ import { BarChart, Bar, XAxis, YAxis, Tooltip, CartesianGrid,
               </div>
             </>
           );
-                                      
         }
+
+        export function RechartsComposedChart02({data, titulo, color1, color2}){
+          //Extrae los nombres de los primeros 3 campos del Objeto json adentro del arreglo "data"
+          let json = data[0]
+          let [first, second, third] = Object.keys(json)
+          first = ""
+
+          if (color1 === undefined) {color1 = "green"}
+          if (color2 === undefined) {color2 = "red"}
+          
+          return (
+            <>
+              <h3>{titulo+first}</h3>
+              <div style={{ width: "95%", height: "300px" }}>
+              <ResponsiveContainer width="100%" height="100%">
+                <ComposedChart data={data} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
+                  <XAxis dataKey="name" />
+                  <YAxis tickFormatter={(value) => new Intl.NumberFormat('en').format(value)} />
+                  <Tooltip />
+                  <Legend />
+                  <CartesianGrid stroke="#f5f5f5" />
+                  {/* <Area
+                    type="monotone"
+                    // dataKey="amt"
+                    dataKey={second}
+                    fill="#8884d8"
+                    stroke="#8884d8"
+                  /> */}
+                  {/* <Bar dataKey="pv" barSize={20} fill="#413ea0" /> */}
+                  {/* <Bar dataKey={second} barSize={50} fill="#413ea0"> */}
+                  <Bar dataKey={second} barSize={50} fill={color1}>
+
+                    {data.map((entry, index) => (
+                          // <Cell fill={ data[index][second] <= 0 ? 'red' : '#005599' }/>
+                          <Cell key={index} fill={data[index][second] >= 0 ? color1 : 'red'} />
+                    ))}
+
+                    <LabelList dataKey={second} position="top" formatter={(value) => new Intl.NumberFormat('en').format(value)} />
+                  </Bar>
+                  {/* <Line type="monotone" dataKey="uv" stroke="#ff7300" /> */}
+                  {/* <Line type="monotone" dataKey={third} stroke="#ff7300" /> */}
+                  <Line type="monotone" dataKey={third} stroke={color2} >
+
+                      {data.map((entry, index) => (
+                              // <Cell fill={ data[index][second] <= 0 ? 'red' : '#005599' }/>
+                              <Cell key={index} fill={data[index][third] >= 0 ? color2 : 'red'} />
+                        ))}
+
+                  </Line>
+                </ComposedChart>
+                </ResponsiveContainer>
+              </div>
+            </>
+          );
+        }
+
 
 
 
@@ -241,7 +296,7 @@ import { BarChart, Bar, XAxis, YAxis, Tooltip, CartesianGrid,
 
                       {data.map((entry, index) => (
                         // <Cell fill={ data[index][second] <= 0 ? 'red' : '#005599' }/>
-                        <Cell fill={data[index][second] >= 0 ? color1 : 'red'} />
+                        <Cell key={index} fill={data[index][second] >= 0 ? color1 : 'red'} />
                       ))}
 
                     <LabelList dataKey={second} position="top" formatter={(value) => new Intl.NumberFormat('en').format(value)} />
@@ -252,7 +307,7 @@ import { BarChart, Bar, XAxis, YAxis, Tooltip, CartesianGrid,
 
                   {data.map((entry, index) => (
                         // <Cell fill={ data[index][second] <= 0 ? 'red' : '#005599' }/>
-                        <Cell fill={data[index][third] >= 0 ? color2 : 'red'} />
+                        <Cell key={index} fill={data[index][third] >= 0 ? color2 : 'red'} />
                       ))}
 
                     <LabelList dataKey={third} position="top" formatter={(value) => new Intl.NumberFormat('en').format(value)} />

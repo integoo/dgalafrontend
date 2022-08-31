@@ -2,7 +2,7 @@ import React, { Component } from "react";
 
 import "./VentasBI.css";
 import {RechartsBarChart01, RechartsComposedChart03, RechartsComposedChart04} from "./cmpnt/FuncionesRecharts"
-import {NumberWithCommas} from './cmpnt/FuncionesGlobales'
+import {NumberWithCommas,NumeroAMes} from './cmpnt/FuncionesGlobales'
 
 class VentasBI extends Component {
   constructor(props) {
@@ -37,6 +37,7 @@ class VentasBI extends Component {
       utilidadPerdidaLimpiaduriaPorcentaje: [],
       utilidadPerdidaMelate: [],
       utilidadPerdidaMelatePorcentaje: [],
+      utilidadPerdidaMelatePorcentajeRecharts: [],
       data: [],
       dataMelate: [],
       dataGastosInversiones: [],
@@ -523,11 +524,20 @@ class VentasBI extends Component {
       utilidadPerdidaMelatePorcentaje.push(resultado);
     }
 
+    //################### PREPARACION DE GRÁFICA DE % UTILIAD DE MELATE #################################
+    let utilidadPerdidaMelatePorcentajeRecharts = []
+    utilidadPerdidaMelatePorcentaje.forEach((element,i) =>{
+      utilidadPerdidaMelatePorcentajeRecharts.push({"name": NumeroAMes(ventasMelate[i].Mes),"%Utilidad":parseFloat((element*100).toFixed(2))})
+    })
+    //##################################################################################################
+
+
     this.setState({
       utilidadPerdida: utilidadPerdida,
       utilidadPerdidaLimpiaduriaPorcentaje: utilidadPerdidaLimpiaduriaPorcentaje,
       utilidadPerdidaMelate: utilidadPerdidaMelate,
       utilidadPerdidaMelatePorcentaje: utilidadPerdidaMelatePorcentaje,
+      utilidadPerdidaMelatePorcentajeRecharts: utilidadPerdidaMelatePorcentajeRecharts,
     });
   };
 
@@ -772,7 +782,7 @@ class VentasBI extends Component {
         <br />
         {/* <RechartsBarChart02 data={this.state.dataMelate} titulo={"Venta y Utilidad Melate"} color1={"dodgerblue"} color2={"green"} /> */}
         <RechartsComposedChart03 data={this.state.dataMelate} titulo={"Venta y Utilidad Melate"} color1={"dodgerblue"} color2={"green"} color3={"#005599"} />
-
+        <RechartsBarChart01 data={this.state.utilidadPerdidaMelatePorcentajeRecharts} titulo={"% Utilidad Melate"} color1={"green"} color2={"red"} />
 
         <br />
         <h3>Egresos (Gastos e Inversión)</h3>

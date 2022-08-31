@@ -1,7 +1,7 @@
 import React from 'react'
 
 import './VentasBiLavamaticaTienda.css'
-import {RechartsBarChart01,RechartsBarChart03,RechartsComposedChart04} from './cmpnt/FuncionesRecharts'
+import {RechartsBarChart01,RechartsBarChart03,RechartsComposedChart02,RechartsComposedChart04} from './cmpnt/FuncionesRecharts'
 
 import SelectSucursales from './cmpnt/SelectSucursales'
 
@@ -15,8 +15,10 @@ class VentasBiLavamanticaTienda extends React.Component{
             SucursalId: 0,
             detallesLavamatica:[],
             detallesLavamaticaRecharts:[],
+            detallesLavamaticaPorcenUtilidadRecharts:[],
             detallesTienda:[],
             detallesTiendaRecharts:[],
+            detallesTiendaPorcenUtilidadRecharts:[],
             detallesDecorafiestas:[],
             detallesInventarioPerpetuoHistoria:[],
             detallesInventarioPerpetuoHistoriaRecharts:[],
@@ -132,6 +134,41 @@ class VentasBiLavamanticaTienda extends React.Component{
                 alert(dataLastYear.error)
                 return
             }
+
+            //##################### Prepara %Utilidad Año Anterior ##################################
+            let detallesLavamaticaPorcenUtilidadLastYearRecharts =[]
+            detallesLavamaticaPorcenUtilidadLastYearRecharts.push({"name":"Ene","Monto":parseFloat(parseFloat((dataLastYear[84].Monto) / dataLastYear[24].Monto) * 100 ||0).toFixed(2)})
+            detallesLavamaticaPorcenUtilidadLastYearRecharts.push({"name":"Feb","Monto":parseFloat(parseFloat((dataLastYear[85].Monto) / dataLastYear[25].Monto) * 100 ||0).toFixed(2)})
+            detallesLavamaticaPorcenUtilidadLastYearRecharts.push({"name":"Mar","Monto":parseFloat(parseFloat((dataLastYear[86].Monto) / dataLastYear[26].Monto) * 100 ||0).toFixed(2)})
+            detallesLavamaticaPorcenUtilidadLastYearRecharts.push({"name":"Abr","Monto":parseFloat(parseFloat((dataLastYear[87].Monto) / dataLastYear[27].Monto) * 100 ||0).toFixed(2)})
+            detallesLavamaticaPorcenUtilidadLastYearRecharts.push({"name":"May","Monto":parseFloat(parseFloat((dataLastYear[88].Monto) / dataLastYear[28].Monto) * 100 ||0).toFixed(2)})
+            detallesLavamaticaPorcenUtilidadLastYearRecharts.push({"name":"Jun","Monto":parseFloat(parseFloat((dataLastYear[89].Monto) / dataLastYear[29].Monto) * 100 ||0).toFixed(2)})
+            detallesLavamaticaPorcenUtilidadLastYearRecharts.push({"name":"Jul","Monto":parseFloat(parseFloat((dataLastYear[90].Monto) / dataLastYear[30].Monto) * 100 ||0).toFixed(2)})
+            detallesLavamaticaPorcenUtilidadLastYearRecharts.push({"name":"Ago","Monto":parseFloat(parseFloat((dataLastYear[91].Monto) / dataLastYear[31].Monto) * 100 ||0).toFixed(2)})
+            detallesLavamaticaPorcenUtilidadLastYearRecharts.push({"name":"Sep","Monto":parseFloat(parseFloat((dataLastYear[92].Monto) / dataLastYear[32].Monto) * 100 ||0).toFixed(2)})
+            detallesLavamaticaPorcenUtilidadLastYearRecharts.push({"name":"Oct","Monto":parseFloat(parseFloat((dataLastYear[93].Monto) / dataLastYear[33].Monto) * 100 ||0).toFixed(2)})
+            detallesLavamaticaPorcenUtilidadLastYearRecharts.push({"name":"Nov","Monto":parseFloat(parseFloat((dataLastYear[94].Monto) / dataLastYear[34].Monto) * 100 ||0).toFixed(2)})
+            detallesLavamaticaPorcenUtilidadLastYearRecharts.push({"name":"Dic","Monto":parseFloat(parseFloat((dataLastYear[95].Monto) / dataLastYear[35].Monto) * 100 ||0).toFixed(2)})
+
+            //##########Calcula % Total de Utilidad del Año Pasado
+            let utilidadNetaTotal = 0
+            for (let i = 84; i<=95; i++){
+                utilidadNetaTotal += parseFloat(dataLastYear[i].Monto)
+            }
+            utilidadNetaTotal = parseInt(utilidadNetaTotal.toFixed(0))
+            
+            let ventaSinImpuestoTotal = 0
+            for (let i = 24; i<=35; i++){
+                ventaSinImpuestoTotal += parseFloat(dataLastYear[i].Monto)
+            }
+            ventaSinImpuestoTotal = parseInt(ventaSinImpuestoTotal.toFixed(0))
+
+            let porceUtilidadLastYear = (utilidadNetaTotal / ventaSinImpuestoTotal * 100).toFixed(2)
+
+            //###################################################
+
+            detallesLavamaticaPorcenUtilidadLastYearRecharts.push({"name":"Total","Monto":porceUtilidadLastYear})
+            //########################################################################################
 //#############################################################################
 
 
@@ -196,9 +233,27 @@ class VentasBiLavamanticaTienda extends React.Component{
             arregloRegistroRecharts.push({"name": "Oct", "VentaConImp": parseFloat(arregloRegistro[0].Oct.toFixed(0)), "UtilidadNeta": parseFloat(arregloRegistro[7].Oct.toFixed(0)), "VentaConImpLastYear":parseFloat(dataLastYear[9].Monto),"UtilidadNetaLastYear":parseInt(dataLastYear[93].Monto)})
             arregloRegistroRecharts.push({"name": "Nov", "VentaConImp": parseFloat(arregloRegistro[0].Nov.toFixed(0)), "UtilidadNeta": parseFloat(arregloRegistro[7].Nov.toFixed(0)), "VentaConImpLastYear":parseFloat(dataLastYear[10].Monto),"UtilidadNetaLastYear":parseInt(dataLastYear[94].Monto)})
             arregloRegistroRecharts.push({"name": "Dic", "VentaConImp": parseFloat(arregloRegistro[0].Dic.toFixed(0)), "UtilidadNeta": parseFloat(arregloRegistro[7].Dic.toFixed(0)), "VentaConImpLastYear":parseFloat(dataLastYear[11].Monto),"UtilidadNetaLastYear":parseInt(dataLastYear[95].Monto)})
+           
+           //#################### Prepara Info para Gráfica de % Utilidad Lavamática Año Actual y Año Anterior ###################
+                let detallesLavamaticaPorcenUtilidadRecharts = []
+                detallesLavamaticaPorcenUtilidadRecharts.push({"name":"Ene","%Utilidad":parseFloat(arregloRegistro[8].Ene.toFixed(2)),"%UtilidadLastYear":detallesLavamaticaPorcenUtilidadLastYearRecharts[0].Monto})
+                detallesLavamaticaPorcenUtilidadRecharts.push({"name":"Feb","%Utilidad":parseFloat(arregloRegistro[8].Feb.toFixed(2)),"%UtilidadLastYear":detallesLavamaticaPorcenUtilidadLastYearRecharts[1].Monto})
+                detallesLavamaticaPorcenUtilidadRecharts.push({"name":"Mar","%Utilidad":parseFloat(arregloRegistro[8].Mar.toFixed(2)),"%UtilidadLastYear":detallesLavamaticaPorcenUtilidadLastYearRecharts[2].Monto})
+                detallesLavamaticaPorcenUtilidadRecharts.push({"name":"Abr","%Utilidad":parseFloat(arregloRegistro[8].Abr.toFixed(2)),"%UtilidadLastYear":detallesLavamaticaPorcenUtilidadLastYearRecharts[3].Monto})
+                detallesLavamaticaPorcenUtilidadRecharts.push({"name":"May","%Utilidad":parseFloat(arregloRegistro[8].May.toFixed(2)),"%UtilidadLastYear":detallesLavamaticaPorcenUtilidadLastYearRecharts[4].Monto})
+                detallesLavamaticaPorcenUtilidadRecharts.push({"name":"Jun","%Utilidad":parseFloat(arregloRegistro[8].Jun.toFixed(2)),"%UtilidadLastYear":detallesLavamaticaPorcenUtilidadLastYearRecharts[5].Monto})
+                detallesLavamaticaPorcenUtilidadRecharts.push({"name":"Jul","%Utilidad":parseFloat(arregloRegistro[8].Jul.toFixed(2)),"%UtilidadLastYear":detallesLavamaticaPorcenUtilidadLastYearRecharts[6].Monto})
+                detallesLavamaticaPorcenUtilidadRecharts.push({"name":"Ago","%Utilidad":parseFloat(arregloRegistro[8].Ago.toFixed(2)),"%UtilidadLastYear":detallesLavamaticaPorcenUtilidadLastYearRecharts[7].Monto})
+                detallesLavamaticaPorcenUtilidadRecharts.push({"name":"Sep","%Utilidad":parseFloat(arregloRegistro[8].Sep.toFixed(2)),"%UtilidadLastYear":detallesLavamaticaPorcenUtilidadLastYearRecharts[8].Monto})
+                detallesLavamaticaPorcenUtilidadRecharts.push({"name":"Oct","%Utilidad":parseFloat(arregloRegistro[8].Oct.toFixed(2)),"%UtilidadLastYear":detallesLavamaticaPorcenUtilidadLastYearRecharts[9].Monto})
+                detallesLavamaticaPorcenUtilidadRecharts.push({"name":"Nov","%Utilidad":parseFloat(arregloRegistro[8].Nov.toFixed(2)),"%UtilidadLastYear":detallesLavamaticaPorcenUtilidadLastYearRecharts[10].Monto})
+                detallesLavamaticaPorcenUtilidadRecharts.push({"name":"Dic","%Utilidad":parseFloat(arregloRegistro[8].Dic.toFixed(2)),"%UtilidadLastYear":detallesLavamaticaPorcenUtilidadLastYearRecharts[11].Monto})
+                detallesLavamaticaPorcenUtilidadRecharts.push({"name":"Total","%Utilidad":parseFloat(arregloRegistro[8].Total.toFixed(2)),"%UtilidadLastYear":detallesLavamaticaPorcenUtilidadLastYearRecharts[12].Monto})
+           //##########################################################################################
             this.setState({
                 detallesLavamatica: arregloRegistro,
                 detallesLavamaticaRecharts: arregloRegistroRecharts,
+                detallesLavamaticaPorcenUtilidadRecharts: detallesLavamaticaPorcenUtilidadRecharts,
             })
         }catch(error){
             console.log(error.message)
@@ -278,10 +333,10 @@ class VentasBiLavamanticaTienda extends React.Component{
 
     getDetallesTienda = async () => {
         const year = this.state.Year
-        const url = this.props.url+`/api/ventas/bi/tienda/${year}`
+        let url = this.props.url+`/api/ventas/bi/tienda/${year}`
         let bandera = false;
         try{
-            const response = await fetch(url, {
+            let response = await fetch(url, {
                 headers:{
                     Authorization:`Bearer ${this.props.accessToken}`,
                 },
@@ -294,6 +349,75 @@ class VentasBiLavamanticaTienda extends React.Component{
             }
 
             bandera = true;
+
+            //############### Tienda de Año Anterior ########################
+            const lastYear = parseInt(year) - 1
+            url = this.props.url+`/api/ventas/bi/tienda/${lastYear}`
+            response = await fetch(url, {
+                headers:{
+                    Authorization:`Bearer ${this.props.accessToken}`,
+                },
+            });
+            const dataLastYear = await response.json()
+            if(dataLastYear.error){
+                console.log(dataLastYear.error)
+                alert(dataLastYear.error)
+                return
+            }
+
+
+
+
+
+
+            let detallesTiendaPorcenUtilidadLastYearRecharts =[]
+            detallesTiendaPorcenUtilidadLastYearRecharts.push({"name":"Ene","Monto":parseFloat(parseFloat((dataLastYear[72].Monto) / dataLastYear[12].Monto) * 100 ||0).toFixed(2)})
+            detallesTiendaPorcenUtilidadLastYearRecharts.push({"name":"Feb","Monto":parseFloat(parseFloat((dataLastYear[73].Monto) / dataLastYear[25].Monto) * 100 ||0).toFixed(2)})
+            detallesTiendaPorcenUtilidadLastYearRecharts.push({"name":"Mar","Monto":parseFloat(parseFloat((dataLastYear[74].Monto) / dataLastYear[26].Monto) * 100 ||0).toFixed(2)})
+            detallesTiendaPorcenUtilidadLastYearRecharts.push({"name":"Abr","Monto":parseFloat(parseFloat((dataLastYear[75].Monto) / dataLastYear[27].Monto) * 100 ||0).toFixed(2)})
+            detallesTiendaPorcenUtilidadLastYearRecharts.push({"name":"May","Monto":parseFloat(parseFloat((dataLastYear[76].Monto) / dataLastYear[28].Monto) * 100 ||0).toFixed(2)})
+            detallesTiendaPorcenUtilidadLastYearRecharts.push({"name":"Jun","Monto":parseFloat(parseFloat((dataLastYear[77].Monto) / dataLastYear[29].Monto) * 100 ||0).toFixed(2)})
+            detallesTiendaPorcenUtilidadLastYearRecharts.push({"name":"Jul","Monto":parseFloat(parseFloat((dataLastYear[78].Monto) / dataLastYear[30].Monto) * 100 ||0).toFixed(2)})
+            detallesTiendaPorcenUtilidadLastYearRecharts.push({"name":"Ago","Monto":parseFloat(parseFloat((dataLastYear[79].Monto) / dataLastYear[31].Monto) * 100 ||0).toFixed(2)})
+            detallesTiendaPorcenUtilidadLastYearRecharts.push({"name":"Sep","Monto":parseFloat(parseFloat((dataLastYear[80].Monto) / dataLastYear[32].Monto) * 100 ||0).toFixed(2)})
+            detallesTiendaPorcenUtilidadLastYearRecharts.push({"name":"Oct","Monto":parseFloat(parseFloat((dataLastYear[81].Monto) / dataLastYear[33].Monto) * 100 ||0).toFixed(2)})
+            detallesTiendaPorcenUtilidadLastYearRecharts.push({"name":"Nov","Monto":parseFloat(parseFloat((dataLastYear[82].Monto) / dataLastYear[34].Monto) * 100 ||0).toFixed(2)})
+            detallesTiendaPorcenUtilidadLastYearRecharts.push({"name":"Dic","Monto":parseFloat(parseFloat((dataLastYear[83].Monto) / dataLastYear[35].Monto) * 100 ||0).toFixed(2)})
+
+            //##########Calcula % Total de Utilidad del Año Pasado
+            let utilidadNetaTotal = 0
+            for (let i = 72; i<=83; i++){
+                utilidadNetaTotal += parseFloat(dataLastYear[i].Monto)
+            }
+            utilidadNetaTotal = parseInt(utilidadNetaTotal.toFixed(0))
+            
+            let ventaSinImpuestoTotal = 0
+            for (let i = 24; i<=35; i++){
+                ventaSinImpuestoTotal += parseFloat(dataLastYear[i].Monto)
+            }
+            ventaSinImpuestoTotal = parseInt(ventaSinImpuestoTotal.toFixed(0))
+
+            let porceUtilidadLastYear = (utilidadNetaTotal / ventaSinImpuestoTotal * 100).toFixed(2)
+
+            //###################################################
+
+            detallesTiendaPorcenUtilidadLastYearRecharts.push({"name":"Total","Monto":porceUtilidadLastYear})
+            // //########################################################################################
+
+
+
+
+
+
+
+
+
+
+
+
+            //alert(JSON.stringify(dataLastYear[78]))
+
+            //###############################################################
 
 
             let arregloRegistro = []
@@ -352,9 +476,28 @@ class VentasBiLavamanticaTienda extends React.Component{
             arregloRegistroRecharts.push({"name":"Oct","VentasConImp":parseInt(arregloRegistro[0].Oct.toFixed(0)),"CostoDeVentas":parseInt(arregloRegistro[3].Oct.toFixed(0)),"UtilidadNeta":parseInt(arregloRegistro[6].Oct.toFixed(0))})
             arregloRegistroRecharts.push({"name":"Nov","VentasConImp":parseInt(arregloRegistro[0].Nov.toFixed(0)),"CostoDeVentas":parseInt(arregloRegistro[3].Nov.toFixed(0)),"UtilidadNeta":parseInt(arregloRegistro[6].Nov.toFixed(0))})
             arregloRegistroRecharts.push({"name":"Dic","VentasConImp":parseInt(arregloRegistro[0].Dic.toFixed(0)),"CostoDeVentas":parseInt(arregloRegistro[3].Dic.toFixed(0)),"UtilidadNeta":parseInt(arregloRegistro[6].Dic.toFixed(0))})
+
+                //######### Porcentaje Utilidad Tienda para Gráfica ###################
+                let detallesTiendaPorcenUtilidadRecharts = []
+                detallesTiendaPorcenUtilidadRecharts.push({"name": "Ene","%Utilidad":parseFloat(arregloRegistro[7].Ene.toFixed(2)),"%UtilidadLastYear":detallesTiendaPorcenUtilidadLastYearRecharts[0].Monto})
+                detallesTiendaPorcenUtilidadRecharts.push({"name": "Feb","%Utilidad":parseFloat(arregloRegistro[7].Feb.toFixed(2)),"%UtilidadLastYear":detallesTiendaPorcenUtilidadLastYearRecharts[1].Monto})
+                detallesTiendaPorcenUtilidadRecharts.push({"name": "Mar","%Utilidad":parseFloat(arregloRegistro[7].Mar.toFixed(2)),"%UtilidadLastYear":detallesTiendaPorcenUtilidadLastYearRecharts[2].Monto})
+                detallesTiendaPorcenUtilidadRecharts.push({"name": "Abr","%Utilidad":parseFloat(arregloRegistro[7].Abr.toFixed(2)),"%UtilidadLastYear":detallesTiendaPorcenUtilidadLastYearRecharts[3].Monto})
+                detallesTiendaPorcenUtilidadRecharts.push({"name": "May","%Utilidad":parseFloat(arregloRegistro[7].May.toFixed(2)),"%UtilidadLastYear":detallesTiendaPorcenUtilidadLastYearRecharts[4].Monto})
+                detallesTiendaPorcenUtilidadRecharts.push({"name": "Jun","%Utilidad":parseFloat(arregloRegistro[7].Jun.toFixed(2)),"%UtilidadLastYear":detallesTiendaPorcenUtilidadLastYearRecharts[5].Monto})
+                detallesTiendaPorcenUtilidadRecharts.push({"name": "Jul","%Utilidad":parseFloat(arregloRegistro[7].Jul.toFixed(2)),"%UtilidadLastYear":detallesTiendaPorcenUtilidadLastYearRecharts[6].Monto})
+                detallesTiendaPorcenUtilidadRecharts.push({"name": "Ago","%Utilidad":parseFloat(arregloRegistro[7].Ago.toFixed(2)),"%UtilidadLastYear":detallesTiendaPorcenUtilidadLastYearRecharts[7].Monto})
+                detallesTiendaPorcenUtilidadRecharts.push({"name": "Sep","%Utilidad":parseFloat(arregloRegistro[7].Sep.toFixed(2)),"%UtilidadLastYear":detallesTiendaPorcenUtilidadLastYearRecharts[8].Monto})
+                detallesTiendaPorcenUtilidadRecharts.push({"name": "Oct","%Utilidad":parseFloat(arregloRegistro[7].Oct.toFixed(2)),"%UtilidadLastYear":detallesTiendaPorcenUtilidadLastYearRecharts[9].Monto})
+                detallesTiendaPorcenUtilidadRecharts.push({"name": "Nov","%Utilidad":parseFloat(arregloRegistro[7].Nov.toFixed(2)),"%UtilidadLastYear":detallesTiendaPorcenUtilidadLastYearRecharts[10].Monto})
+                detallesTiendaPorcenUtilidadRecharts.push({"name": "Dic","%Utilidad":parseFloat(arregloRegistro[7].Dic.toFixed(2)),"%UtilidadLastYear":detallesTiendaPorcenUtilidadLastYearRecharts[11].Monto})
+                detallesTiendaPorcenUtilidadRecharts.push({"name": "Total","%Utilidad":parseFloat(arregloRegistro[7].Total.toFixed(2)),"%UtilidadLastYear": detallesTiendaPorcenUtilidadLastYearRecharts[12].Monto})
+                //#####################################################################
+
             this.setState({
                 detallesTienda: arregloRegistro,
                 detallesTiendaRecharts: arregloRegistroRecharts,
+                detallesTiendaPorcenUtilidadRecharts: detallesTiendaPorcenUtilidadRecharts,
             })
         }catch(error){
             console.log(error.message)
@@ -605,8 +748,7 @@ class VentasBiLavamanticaTienda extends React.Component{
 
                 {/* <RechartsBarChart02 data={this.state.detallesLavamaticaRecharts} titulo={"Lavamática Ventas Con Impuesto y Utilidad Neta (Sin Impuestos)"} color1={"dodgerblue"} color2={"green"} /> */}
                 <RechartsComposedChart04 data={this.state.detallesLavamaticaRecharts} titulo={"Lavamática Ventas Con Impuesto y Utilidad Neta (Sin Impuestos)"} color1={"dodgerblue"} color2={"green"} color3={"#005599"} color4={"orange"} />
-
-
+                <RechartsComposedChart02 data={this.state.detallesLavamaticaPorcenUtilidadRecharts} titulo={"% Utilidad Lavamática"} color1={"green"} color2={"#005599"}/>
 
 
 
@@ -752,8 +894,8 @@ class VentasBiLavamanticaTienda extends React.Component{
                 <br />
                 <br />
 
-                <RechartsBarChart03 data={this.state.detallesTiendaRecharts} titulo={"Tienda Ventas Con Impuesto, Costo de Ventas, Utilidad Neta (Sin Impuesto)"}/>
-
+                <RechartsBarChart03 data={this.state.detallesTiendaRecharts} titulo={"Tienda Ventas Con Impuesto, Costo de Ventas, Utilidad Neta (Sin Impuesto)"} />
+                <RechartsComposedChart02 data={this.state.detallesTiendaPorcenUtilidadRecharts} titulo={"% Utilidad de Tienda"} color1={"green"} color2={"purple"} />
 
                 <h4>Inteligencia de Negocios Decorafiestas</h4>
                 <table>
