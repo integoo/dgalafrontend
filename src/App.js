@@ -13,8 +13,8 @@ class App extends React.Component{
       accessToken: '',
       dbName: '',
       Administrador: "",
-      Version: " v1.46",
-      VersionFecha: " 2022 Ago 30",
+      Version: " v1.47",
+      VersionFecha: " 2022 Sep 18",
     }
 
   }

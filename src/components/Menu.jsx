@@ -23,6 +23,7 @@ import InventarioPerpetuo from './InventarioPerpetuo'
 import VentasConsultaFechaProducto from './VentasConsultaFechaProducto'
 import VentasConsultaCategorias from "./VentasConsultaCategorias";
 import VentasBiLavamaticaTienda from "./VentasBiLavamanticaTienda";
+import EgresosLimpiaduriaBI from "./EgresosLimpiaduriaBI";
 
 
 class Menu extends Component {
@@ -84,7 +85,8 @@ class Menu extends Component {
                   borderRadius: "50%",
                   border: "4px solid red",
                   // borderColor: "red yellow black"
-                  borderColor: "red yellow purple green",
+                  // borderColor: "red yellow purple green",
+                  borderColor: "red yellow green orange",
                 }}
               />
 
@@ -285,9 +287,18 @@ class Menu extends Component {
                       style={linkStyle}
                     >
                       <span className="dropdown-item">
-                        Estado de Resultados
+                        Estado de Resultados Limpiaduría
                       </span>
                     </Link>
+                    <Link
+                      to="/limpiaduria/EgresosLimpiaduriaBI"
+                      style={linkStyle}
+                    >
+                      <span className="dropdown-item">
+                        Egresos Limpiaduría BI
+                      </span>
+                    </Link>
+
                   </div>
                 </li>
               </Link>
@@ -447,6 +458,17 @@ class Menu extends Component {
             path="/limpiaduria/estadoderesultados"
             component={() => (
               <EstadoResultadosLimpiaduria
+                accessToken={this.state.accessToken}
+                url={this.state.url}
+                Administrador={this.props.Administrador}
+              />
+            )}
+          />
+          <Route
+            exac
+            path="/limpiaduria/EgresosLimpiaduriaBI"
+            component={() => (
+              <EgresosLimpiaduriaBI
                 accessToken={this.state.accessToken}
                 url={this.state.url}
                 Administrador={this.props.Administrador}

@@ -1,0 +1,47 @@
+*{
+    margin:0;
+    padding:0;
+    box-sizing: border-box;
+}
+
+.principal{
+    width: 90%;
+    margin: 0 auto;
+    min-width: 543px;
+}
+
+.sumatoria{
+    text-align: right;
+    margin-right: 64px;
+}
+
+.sumatoria input[type=text]{
+    text-align: right;
+}
+
+
+.principal label {
+    margin-left: 5px;
+    width: 150px;
+    min-width: 150px;
+}
+
+.radiogroup {
+    border:2px darkgrey solid;
+    border-radius: 10px;
+    margin-left: 10px;
+    padding: 10px;
+    line-height: 10px;
+}
+
+.formparent {
+    display:flex;
+    justify-content:right;
+}
+
+.t1 td:hover{
+    background-color: yellow;
+}
+
+
+

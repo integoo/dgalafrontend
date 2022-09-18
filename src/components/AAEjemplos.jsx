@@ -142,6 +142,7 @@ ALTER TABLE registro_contable ALTER COLUMN "FolioId"            SET  not null ;
 CREATE trigger trg_registro_contable_actualizaciones AFTER UPDATE ON registro_contable FOR EACH ROW EXECUTE FUNCTION fn_registro_contable_actualizaciones();
 
 
+import react from 'react'
  //###############################################################
  
 
@@ -268,3 +269,35 @@ first = ""
 //Acceder a la segunda posicion de un JSON file dentro de un array
 alert(data[0][second])
 //################################################################################################
+Ordenar un arreglo de objetos en react
+
+La forma correcta es creando un "Shallow Copy" del arreglo, de lo contrario se actualiza directamente
+el state y eso no es correcto.$
+
+Sort an Array of Objects in React #
+To sort an array of objects in React:
+
+Create a shallow copy of the array.
+Call the sort() method on the array passing it a function.
+The function is used to define the sort order.
+
+// 👇️ sort by Numeric property ASCENDING (1 - 100)
+const numAscending = [...employees].sort((a, b) => a.id - b.id);
+console.log(numAscending);
+
+// 👇️ sort by Numeric property DESCENDING (100 - 1)
+const numDescending = [...employees].sort((a, b) => b.id - a.id);
+console.log(numDescending);
+
+// 👇️ sort by String property ASCENDING (A - Z)
+const strAscending = [...employees].sort((a, b) =>
+  a.name > b.name ? 1 : -1,
+);
+
+La forma correcta en React
+https://bobbyhadz.com/blog/react-sort-array-of-objects#:~:text=To%20sort%20an%20array%20of%20objects%20in%20React%3A,function%20is%20used%20to%20define%20the%20sort%20order.
+
+La forma en javascript (Pero cambia el state brincándose el setState, lo cual es incorrecto en React)
+https://flaviocopes.com/how-to-sort-array-of-objects-by-property-javascript/
+
+###############################################################################################
