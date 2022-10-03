@@ -1,0 +1,57 @@
+/* body{
+    background-color: aqua;
+} */
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing:border-box;
+}
+
+.mainpage{
+    height: 100vw;
+    width: 90%;
+    min-width: 500px;
+    margin: auto;
+
+}
+
+.toparea{
+    /* border: 2px solid green; */
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+}
+
+.area1{
+    border: 5px solid grey;
+    border-radius: 10px;
+    padding: 10px;
+    margin: 2px;
+}
+
+
+
+.grupofechas{
+    /* border: 2px solid grey; */
+    border-radius: 10px;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.fechas{
+    margin: 10px;
+}
+
+.classbutton{
+    height: 40px;
+    width: 80px;
+    border-radius: 10px;
+    background-color: dodgerblue;
+    color: white;
+    margin:10px;
+}
+
+.tscroll{
+    height: 319px;
+    overflow: scroll;
+}

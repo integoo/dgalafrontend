@@ -1,5 +1,15 @@
 import React from 'react';
 
+/*
+handleSucursal = (SucursalId) =>{
+      this.setState({
+          SucursalId: SucursalId
+      })
+  }
+
+<SelectSucursales accessToken={this.props.accessToken} url={this.props.url} SucursalAsignada={sessionStorage.getItem("SucursalId")} onhandleSucursal={this.handleSucursal} Administrador={this.props.Administrador} clase={'todasyfisicas'}/>
+*/
+
 class SelectSucursales extends React.Component{
     constructor(props){
         super(props)

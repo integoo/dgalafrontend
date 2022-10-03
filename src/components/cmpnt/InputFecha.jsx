@@ -1,5 +1,18 @@
 import React from 'react';
 
+/*
+
+handleFechaInicial = (Fecha) =>{
+        this.setState({
+            FechaInicial: Fecha
+        })
+     }
+
+<span>Fecha Inicial</span><InputFecha onhandleFecha={this.handleFechaInicial}/>
+
+*/
+
+
 class InputFecha extends React.Component{
     constructor(props){
         super(props)

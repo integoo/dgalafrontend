@@ -14,6 +14,7 @@ import VentasConsulta from './VentasConsulta'
 import VentasBI from './VentasBI'
 import ConsultaArticulo from './ConsultaArticulo'
 import Kardex from './Kardex'
+import ProductosMasDesplazados from './ProductosMasDesplazados'
 import AjustesInventario from './AjustesInventario'
 import CambiosDePresentacion from './CambiosDePresentacion'
 import TraspasosSalida from './TraspasosSalida'
@@ -367,6 +368,10 @@ class Menu extends Component {
                       <span className="dropdown-item">Kardex</span>
                     </Link>
 
+                    <Link to="/inventario/productosmasdesplazadosmargen" style={linkStyle}>
+                      <span className="dropdown-item">Productos Más Desplazados (Margen)</span>
+                    </Link>
+
                     <Link to="/inventario/ajustesinventario" style={linkStyle}>
                       <span className="dropdown-item">Ajustes Inventario</span>
                     </Link>
@@ -589,6 +594,16 @@ class Menu extends Component {
             path="/inventario/kardex"
             component={() => (
               <Kardex
+                accessToken={this.state.accessToken}
+                url={this.state.url}
+                Administrador={this.props.Administrador}
+              />
+            )}
+          />
+          <Route
+            path="/inventario/productosmasdesplazadosmargen"
+            component={() => (
+              <ProductosMasDesplazados
                 accessToken={this.state.accessToken}
                 url={this.state.url}
                 Administrador={this.props.Administrador}
