@@ -102,7 +102,7 @@ export default class Login extends React.Component{
                 </div>
                     <button className="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
                     <p className="mt-5 mb-3 text-muted">&copy;{this.props.VersionFecha}{this.props.Version}</p>
-                    <span style={{color:"blue"}}>Power by</span><span style={{marginLeft:"2px",color:"red"}}>Integoo.com</span>
+                    <span style={{color:"blue"}}>Powered by</span><span style={{marginLeft:"2px",color:"red"}}>Integoo.com</span>
                 </form>
             </div>
         </React.Fragment>

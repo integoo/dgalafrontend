@@ -4,6 +4,8 @@ import InputFecha from './cmpnt/InputFecha'
 import SelectSucursales from './cmpnt/SelectSucursales'
 import {NumberWithCommas} from './cmpnt/FuncionesGlobales'
 
+import HashLoader from "react-spinners/HashLoader";
+
 class ProductosMasDesplazados extends React.Component{
     constructor(props){
         super(props)
@@ -15,6 +17,7 @@ class ProductosMasDesplazados extends React.Component{
             FechaFinal:"",
             extunidadesvendidas:0,
             extventacimp:0,
+            loading: false,
         }
     }
 
@@ -44,6 +47,10 @@ class ProductosMasDesplazados extends React.Component{
         const FechaFinal = this.state.FechaFinal
         const SucursalId = this.state.SucursalId 
 
+        this.setState({
+          loading: true,  //Inicia Spinner
+      })
+
         const url = this.props.url +`/api/productosmasdesplazadosmargen/${FechaInicial}/${FechaFinal}/${SucursalId}`
         try{
             const response = await fetch(url,{
@@ -66,6 +73,7 @@ class ProductosMasDesplazados extends React.Component{
                 arreglo: data,
                 extunidadesvendidas: extunidadesvendidas,
                 extventacimp: extventacimp,
+                loading: false,  //Finaliza Spinner
             })
         }catch(error){
             console.log(error.message)
@@ -75,6 +83,8 @@ class ProductosMasDesplazados extends React.Component{
      }
 
     handleRender=()=>{
+        
+
         return (
           <div className="mainpage">
             <h4>Productos Más Desplazados (Margen)</h4>
@@ -146,8 +156,28 @@ class ProductosMasDesplazados extends React.Component{
     }
 
     render(){
+        const loading = this.state.loading
+        // const override ={
+        //   display: "block",
+        //   margin: "0 auto",
+        //   borderColor: "red",
+        // }
+
+        const override ={
+          width: "90%",
+          postion: "relative",
+          top:"180px",
+          margin: "auto",
+          borderColor: "red",
+        }
         return(
-            <this.handleRender />
+          <React.Fragment>
+            {
+              this.state.loading === false 
+              ? <this.handleRender />
+              : <HashLoader color="#36d7b7" loading={loading} cssOverride={override} size={150} />
+            }
+          </React.Fragment>
         )
     }
 }

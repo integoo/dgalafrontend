@@ -91,3 +91,64 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/t
 4. Si hubo cambios y no se postearon, hay que copiar el directorio "components"
 
 ##########################################################################################################
+React Spinners
+
+En Chrome:
+https://www.npmjs.com/package/react-spinners
+https://www.davidhu.io/react-spinners/
+
+npm i react-spinners
+
+import HashLoader from "react-spinners/HashLoader";
+
+handleFetch =async()=>{
+        this.setState({
+            loading: true,
+            arreglo:[],
+        })
+            // const response = await fetch("https://jsonplaceholder.typicode.com/users")
+            const response = await fetch("https://www.vizgr.org/historical-events/search.php?format=json&begin_date=-3000000&end_date=20151231&lang=es")
+            const data = await response.json()
+            this.setState({
+                arreglo: data,
+                loading: false,
+            })
+
+
+    }
+render(){
+
+        const loading = this.state.loading
+        // const override: CSSProperties = {
+  const override ={
+    display: "block",
+    margin: "0 auto",
+    borderColor: "red",
+  };
+
+        return(
+            <React.Fragment>
+                <h1>Hello World!!!!</h1>
+                <button onClick={this.handleFetch}>Procesar</button>
+                {/* <table>
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {this.state.arreglo.map((element,i)=>(
+                        <tr key={i}>
+                            <td>{element.name}</td>
+                        </tr>
+
+                        ))}
+                    </tbody>
+                </table> */}
+
+                <HashLoader color="#36d7b7" loading={loading} cssOverride={override} size={150} />
+            </React.Fragment>
+        )
+    }
+#######################################################################
+
