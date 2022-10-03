@@ -83,7 +83,20 @@ class ProductosMasDesplazados extends React.Component{
      }
 
     handleRender=()=>{
-        
+      const loading = this.state.loading
+      const override ={
+        display: "block",
+        margin: "0 auto",
+        borderColor: "red",
+      }
+
+      // const override ={
+      //   width: "90%",
+      //   postion: "relative",
+      //   top:"180px",
+      //   margin: "auto",
+      //   borderColor: "red",
+      // }
 
         return (
           <div className="mainpage">
@@ -110,6 +123,8 @@ class ProductosMasDesplazados extends React.Component{
               </div>
 
             </div>
+
+            <HashLoader color="#36d7b7" loading={loading} cssOverride={override} size={150} />
 
             <div className="tscroll">
               <table>
@@ -149,34 +164,16 @@ class ProductosMasDesplazados extends React.Component{
             <span style={{margin:"20px"}}>Ext Unidades Vendidas</span>
             <span style={{margin:"20px"}}>Ext Venta C/Imp</span>
             <br />
-            <input type="text" style={{margin:"0 20px", textAlign:"right"}} value={NumberWithCommas(this.state.extunidadesvendidas)} />
-            <input type="text" style={{textAlign:"right"}} value={NumberWithCommas(this.state.extventacimp)}/>
+            <input type="text" style={{margin:"0 20px", textAlign:"right"}} value={NumberWithCommas(this.state.extunidadesvendidas)} readOnly />
+            <input type="text" style={{textAlign:"right"}} value={NumberWithCommas(this.state.extventacimp)} readOnly />
           </div>
         );
     }
 
     render(){
-        const loading = this.state.loading
-        // const override ={
-        //   display: "block",
-        //   margin: "0 auto",
-        //   borderColor: "red",
-        // }
-
-        const override ={
-          width: "90%",
-          postion: "relative",
-          top:"180px",
-          margin: "auto",
-          borderColor: "red",
-        }
         return(
           <React.Fragment>
-            {
-              this.state.loading === false 
-              ? <this.handleRender />
-              : <HashLoader color="#36d7b7" loading={loading} cssOverride={override} size={150} />
-            }
+              <this.handleRender />
           </React.Fragment>
         )
     }
