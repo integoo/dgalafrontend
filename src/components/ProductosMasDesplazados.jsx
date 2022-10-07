@@ -2,7 +2,7 @@ import React from 'react';
 import "./ProductosMasDesplazados.css"
 import InputFecha from './cmpnt/InputFecha'
 import SelectSucursales from './cmpnt/SelectSucursales'
-import {NumberWithCommas} from './cmpnt/FuncionesGlobales'
+import { NumberWithCommas } from './cmpnt/FuncionesGlobales'
 
 import HashLoader from "react-spinners/HashLoader";
 

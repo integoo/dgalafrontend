@@ -4,6 +4,8 @@ import "./VentasBI.css";
 import {RechartsBarChart01, RechartsComposedChart03, RechartsComposedChart04} from "./cmpnt/FuncionesRecharts"
 import {NumberWithCommas,NumeroAMes} from './cmpnt/FuncionesGlobales'
 
+import PacmanLoader from "react-spinners/PacmanLoader";
+
 class VentasBI extends Component {
   constructor(props) {
     super(props);
@@ -45,7 +47,7 @@ class VentasBI extends Component {
       dataGastosInversionesTotalesRecharts: [],
       banderaOrdenamiento: false,
       dataLimpiaduriaMelateRentasOtrosUtilidad: [],
-      dataLimpiaduriaMelateRentasOtrosUtilidadRecharts: []
+      dataLimpiaduriaMelateRentasOtrosUtilidadRecharts: [],
     };
   }
 
@@ -967,10 +969,18 @@ class VentasBI extends Component {
   };
 
   render() {
+      const override ={
+        display: "block",
+        margin: "0 auto",
+        position: "relative",
+        top: "155px",
+        borderColor: "red",
+      }
     return (
       this.state.dataLimpiaduriaMelateRentasOtrosUtilidad.length > 0  ? 
       <this.handleRender />
-    : <h4 style={{margin:"10px 25px "}}>Loading . . .</h4>
+    // : <h4 style={{margin:"10px 25px "}}>Loading . . .</h4>
+    : <PacmanLoader color="#36d7b7" loading={true} cssOverride={override} size={70} />
     )
   }
 }
