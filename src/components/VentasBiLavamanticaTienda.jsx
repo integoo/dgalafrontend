@@ -29,7 +29,6 @@ class VentasBiLavamanticaTienda extends React.Component{
 
     componentDidMount = async()=>{
 
-
         if ((await this.getConsultaAnios()) === false) return;
         // if ((await this.getDetallesLavamatica()) === false) return;
         // if ((await this.getLavadasSecadasServicios(SucursalId)) === false) return;
@@ -429,7 +428,8 @@ class VentasBiLavamanticaTienda extends React.Component{
             arregloRegistro.push(json)
             json = this.handleMesesColumnas(data,'VentasSinImpuesto')
             arregloRegistro.push(json)
-            json = this.handleMesesColumnas(data,'CostoDeVentas')
+            // json = this.handleMesesColumnas(data,'CostoDeVentas')
+            json = this.handleMesesColumnas(data,'CostoPromedio')
             arregloRegistro.push(json)
             json = this.handleMesesColumnas(data,'UtilidadBruta')
             arregloRegistro.push(json)
