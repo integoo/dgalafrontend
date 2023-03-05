@@ -10,7 +10,7 @@ class ComprasRecepcion extends React.Component {
     this.state = {
       detalles: [],
       sucursales: [],
-      SucursalId: 1,
+      SucursalId: 99,
       proveedores: [],
       ProveedorId: 1,
       IVAProveedor: "",
@@ -619,163 +619,227 @@ class ComprasRecepcion extends React.Component {
       <React.Fragment>
         <div className="container">
           <form onSubmit={this.handleSubmit} className="one">
-            <span className="badge badge-success">
-              <h3>Compras Recepcion</h3>
-            </span>
-            <br />
+            <div className="parent">
+              <div className="child01">
+                <span className="badge badge-success">
+                  <h3>Compras Recepcion</h3>
+                </span>
+                <br />
+                <br />
 
-            <label htmlFor="sucursales">Sucursales</label>
-            <select
-              onChange={this.handleSucursales}
-              id="sucursales"
-              name="sucursales"
-              value={this.state.SucursalId}
-            >
-              {this.state.sucursales.map((element, i) => (
-                <option key={i} value={element.SucursalId}>
-                  {element.Sucursal}
-                </option>
-              ))}
-            </select>
-            <br />
+                <label htmlFor="sucursales">Sucursales</label>
+                <select
+                  onChange={this.handleSucursales}
+                  id="sucursales"
+                  name="sucursales"
+                  value={this.state.SucursalId}
+                >
+                  {this.state.sucursales.map((element, i) => (
+                    <option key={i} value={element.SucursalId}>
+                      {element.Sucursal}
+                    </option>
+                  ))}
+                </select>
+                <br />
+
+                <label htmlFor="proveedores">Proveedores</label>
+                <select
+                  onChange={this.handleProveedores}
+                  id="proveedores"
+                  name="proveedores"
+                  value={this.state.ProveedorId}
+                >
+                  {this.state.proveedores.map((element, i) => (
+                    <option key={i} value={element.ProveedorId}>
+                      {element.Proveedor}
+                    </option>
+                  ))}
+                </select>
+
+                <label id="labelivaproveedor">IVA</label>
+                <input
+                  id="IVAProveedor"
+                  name="IVAProveedor"
+                  value={this.state.IVAProveedor + "%"}
+                  disabled
+                  readOnly
+                />
+                <br />
+                <label htmlFor="factura">Factura</label>
+                <input
+                  onChange={this.handleFactura}
+                  id="factura"
+                  name="factura"
+                  autoComplete="off"
+                  style={{ textTransform: "uppercase" }}
+                  value={this.state.NumeroFactura}
+                  ref={this.facturaInput}
+                  required
+                />
+                <br />
+
+                <label htmlFor="totalfactura">Total Factura</label>
+                <input
+                  onChange={this.handleTotalFactura}
+                  id="totalfactura"
+                  name="totalfactura"
+                  type="number"
+                  step="0.01"
+                  value={this.state.TotalFactura}
+                  required
+                />
+                <br />
+
+                <label>Pago (Socios) </label>
+                <select
+                  onChange={this.handleSocios}
+                  id="socios"
+                  name="socios"
+                  value={this.state.SocioId}
+                >
+                  {this.state.socios.map((element, i) => (
+                    <option key={i} value={element.SocioId}>
+                      {element.Socio}
+                    </option>
+                  ))}
+                </select>
+              </div>
 
 
-            <label htmlFor="proveedores">Proveedores</label>
-            <select
-              onChange={this.handleProveedores}
-              id="proveedores"
-              name="proveedores"
-              value={this.state.ProveedorId}
-            >
-              {this.state.proveedores.map((element, i) => (
-                <option key={i} value={element.ProveedorId}>
-                  {element.Proveedor}
-                </option>
-              ))}
-            </select>
+              <br />
 
 
-            <label id="labelivaproveedor">IVA</label>
-            <input id="IVAProveedor" name="IVAProveedor" value={this.state.IVAProveedor+"%"} disabled readOnly/>
-            <br />
-            <label htmlFor="factura">Factura</label>
-            <input
-              onChange={this.handleFactura}
-              id="factura"
-              name="factura"
-              autoComplete="off"
-              style={{ textTransform: "uppercase" }}
-              value={this.state.NumeroFactura}
-              ref={this.facturaInput}
-              required
-            />
-            <br />
+              <div className="child02">
 
 
-            <label htmlFor="totalfactura">Total Factura</label>
-            <input
-              onChange={this.handleTotalFactura}
-              id="totalfactura"
-              name="totalfactura"
-              type="number"
-              step="0.01"
-              value={this.state.TotalFactura}
-              required
-            />
-            <br />
+              <InputCodigoBarras
+                accessToken={this.props.accessToken}
+                url={this.props.url}
+                handleCodigoBarrasProp={this.onhandleCodigoBarras}
+                handleConsultaProp={this.onhandleConsulta}
+                CodigoBarrasProp={this.state.CodigoBarras}
+                SoloInventariable={this.state.SoloInventariable}
+                ref={this.CodigoBarrasInput}
+                />
+
+              {/* <label htmlFor="">Código</label> */}
+              <span style={{marginRight: "10px"}}>Código</span>
+              {/* <input value={this.state.CodigoId} style={{width:"4rem"}} disabled="true" readOnly/> */}
+              <input
+                value={this.state.CodigoId}
+                style={{ width: "4rem" }}
+                disabled={true}
+                readOnly
+                />
+              {/* <label htmlFor="" className="ml-2" style={{ width: "5rem" }}>
+                Unidades Inventario
+              </label> */}
+              <span style={{margin:"0 10px 0 30px"}}>Unidades Inventario</span>
+              {/* <input value={this.state.UnidadesInventario} style={{width:"4rem"}} disabled="true" readOnly/> */}
+              <input
+                value={this.state.UnidadesInventario}
+                style={{ width: "4rem" }}
+                disabled={true}
+                readOnly
+                />
+
+              <br />
+              <input
+                id="iva"
+                name="iva"
+                value={this.state.IVADescripcion}
+                readOnly
+                />
+              <input
+                id="ieps"
+                name="ieps"
+                value={this.state.IEPSDescripcion}
+                className="ml-2"
+                readOnly
+                />
+              <br />
+              {/* <label htmlFor="descripcion">Descripción</label> */}
+              <span>Descripción</span>
+              <br />
+              <input
+                className="descripcion"
+                name="descripcion"
+                // size="65"
+                value={this.state.Descripcion}
+                readOnly
+                />
+              <br />
+              {/* <label htmlFor="unidades">Unidades</label> */}
+              <label style={{width:"110px"}}>Proveedor Actual</label>
+              <input />
+              <label style={{width:"130px"}}>Costo Compra Actual</label>
+              {/* <span>Costo Compra Actual</span> */}
+              <input />
+              <br />
+              <label style={{width:"110px"}}>Margen Actual</label>
+              {/* <span>Margen Actual</span> */}
+              <input />
+              <label style={{width:"130px"}}>Margen Nuevo</label>
+              {/* <span>Margen Nuevo</span> */}
+              <input />
+              <br />
+              <br />
+              <span>Unidades</span>
+              {/* <label
+                htmlFor="costocompra"
+                style={{ width: "10rem", marginLeft: "6rem" }}
+                >
+                Costo Compra Unitario C/Impuesto
+              </label> */}
+              <span style={{marginLeft:"80px"}}>Costo Compra Unitario C/Impuesto</span>
+              <br />
+              <input
+                onChange={this.handleUnidades}
+                onKeyDown={this.handleUnidadesEnter}
+                type="number"
+                id="unidades"
+                name="unidades"
+                size="15"
+                autoComplete="off"
+                value={this.state.Unidades}
+                ref={this.unidadesInput}
+                />
+              <input
+                onChange={this.handleCostoCompra}
+                onKeyDown={this.handleCostoCompraEnter}
+                type="number"
+                step="0.01"
+                id="costocompra"
+                name="costocompra"
+                size="15"
+                style={{ marginLeft: ".5rem" }}
+                autoComplete="off"
+                value={this.state.CostoCompra}
+                ref={this.costoCompraInput}
+                />
+              <button
+                type="button"
+                onClick={this.handleAgregar}
+                className="btn btn-success btn-sm ml-1"
+                >
+                Agregar
+              </button>
+              <button
+                type="button"
+                onClick={this.handleAgregarCancelar}
+                className="btn btn-danger btn-sm ml-1"
+                >
+                Cancelar
+              </button>
 
 
-            <label>Pago (Socios) </label>
-            <select onChange={this.handleSocios} id="socios" name="socios" value={this.state.SocioId}>
-                {this.state.socios.map((element,i) => (
-                    <option key={i} value={element.SocioId}>{element.Socio}</option>
 
-                ))}
-            </select>
-            <br />
-
-
-            <InputCodigoBarras accessToken={this.props.accessToken} url={this.props.url} handleCodigoBarrasProp = {this.onhandleCodigoBarras} handleConsultaProp = {this.onhandleConsulta} CodigoBarrasProp = {this.state.CodigoBarras} SoloInventariable={this.state.SoloInventariable} ref={this.CodigoBarrasInput}/>
-           
-            <label htmlFor="">Código</label>
-            {/* <input value={this.state.CodigoId} style={{width:"4rem"}} disabled="true" readOnly/> */}
-            <input value={this.state.CodigoId} style={{width:"4rem"}} disabled={true} readOnly/>
-            <label htmlFor="" className="ml-2" style={{width: "5rem"}}>Unidades Inventario</label>
-            {/* <input value={this.state.UnidadesInventario} style={{width:"4rem"}} disabled="true" readOnly/> */}
-            <input value={this.state.UnidadesInventario} style={{width:"4rem"}} disabled={true} readOnly/>
+                </div>
 
 
 
-            <br />
-            <input
-              id="iva"
-              name="iva"
-              value={this.state.IVADescripcion}
-              readOnly
-            />
-            <input
-              id="ieps"
-              name="ieps"
-              value={this.state.IEPSDescripcion}
-              className="ml-2"
-              readOnly
-            />
-            <br />
-            <label htmlFor="descripcion">Descripción</label>
-            <br />
-            <input
-              id="descripcion"
-              name="descripcion"
-              size="65"
-              value={this.state.Descripcion}
-              readOnly
-            />
-            <br />
-            <label htmlFor="unidades">Unidades</label>
-            <label htmlFor="costocompra" style={{width:"10rem",marginLeft:"6rem"}}>
-              Costo Compra Unitario C/Impuesto
-            </label>
-            <br />
-            <input
-              onChange={this.handleUnidades}
-              onKeyDown={this.handleUnidadesEnter}
-              type="number"
-              id="unidades"
-              name="unidades"
-              size="15"
-              autoComplete="off"
-              value={this.state.Unidades}
-              ref={this.unidadesInput}
-            />
-            <input
-              onChange={this.handleCostoCompra}
-              onKeyDown={this.handleCostoCompraEnter}
-              type="number"
-              step="0.01"
-              id="costocompra"
-              name="costocompra"
-              size="15"
-              style={{marginLeft:".5rem"}}
-              autoComplete="off"
-              value={this.state.CostoCompra}
-              ref={this.costoCompraInput}
-            />
-            <button
-              type="button"
-              onClick={this.handleAgregar}
-              className="btn btn-success btn-sm ml-1"
-            >
-              Agregar
-            </button>
-            <button
-              type="button"
-              onClick={this.handleAgregarCancelar}
-              className="btn btn-danger btn-sm ml-1"
-            >
-              Cancelar
-            </button>
-            <br />
-            <br />
+
+            </div>
             <table>
               <thead>
                 <tr>
@@ -815,15 +879,23 @@ class ComprasRecepcion extends React.Component {
                 ))}
               </tbody>
             </table>
-            <label htmlFor="" style={{marginLeft:"4rem"}}>Ext Costo Compra Sin Impuestos</label>
-            <label htmlFor="" style={{marginLeft:"5rem"}}>Ext IEPS</label>
-            <label htmlFor="" style={{marginLeft:"5rem"}}>Ext IVA</label>
-            <label htmlFor="" style={{marginLeft:"5rem"}}>Ext Costo Compra</label>
+            <label htmlFor="" style={{ marginLeft: "2rem" }}>
+              Ext Costo Compra Sin Impuestos
+            </label>
+            <label htmlFor="" style={{ marginLeft: "3rem" }}>
+              Ext IEPS
+            </label>
+            <label htmlFor="" style={{ marginLeft: "2rem" }}>
+              Ext IVA
+            </label>
+            <label htmlFor="" style={{ marginLeft: "2rem" }}>
+              Ext Costo Compra
+            </label>
             <br />
             <input
               id="extCostoCompraSinImpuestos"
               name="extCostoCompraSinImpuestos"
-              style={{ textAlign: "right" }}
+              style={{ textAlign: "right", marginRight: "10px" }}
               value={
                 "$ " +
                 this.numberWithCommas(
@@ -835,14 +907,14 @@ class ComprasRecepcion extends React.Component {
             <input
               id="extIEPSMonto"
               name="extIEPSMonto"
-              style={{ textAlign: "right" }}
+              style={{ textAlign: "right", marginRight: "10px" }}
               value={"$ " + this.state.extIEPSMonto.toFixed(2)}
               readOnly
             />
             <input
               id="extIVAMonto"
               name="extIVAMonto"
-              style={{ textAlign: "right" }}
+              style={{ textAlign: "right", marginRight: "10px" }}
               value={"$ " + this.state.extIVAMonto.toFixed(2)}
               readOnly
             />
@@ -857,10 +929,20 @@ class ComprasRecepcion extends React.Component {
               readOnly
             />
             <br />
-            <button type="button" onClick={this.handleGrabar}  className="btn btn-success btn-lg m-2">
+            <button
+              type="button"
+              onClick={this.handleGrabar}
+              className="btn btn-success btn-lg m-2"
+            >
               Grabar
             </button>
-            <button type="reset" className="btn btn-danger btn-lg" onClick={this.handleCancelar}>Cancelar</button>
+            <button
+              type="reset"
+              className="btn btn-danger btn-lg"
+              onClick={this.handleCancelar}
+            >
+              Cancelar
+            </button>
           </form>
         </div>
       </React.Fragment>

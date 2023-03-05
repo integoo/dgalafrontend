@@ -764,6 +764,7 @@ class RetirosDeCaja extends React.Component {
                 SucursalAsignada={sessionStorage.getItem("SucursalId")}
                 onhandleSucursal={this.handleSucursal}
                 Administrador={this.state.Administrador}
+                clase={'fisicas'}
               />
               <select
                 onChange={this.handleMes}

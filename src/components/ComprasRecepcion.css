@@ -3,7 +3,10 @@
     margin:0;
     padding:0;
 }
+
 .one{
+    height:85vh;
+    padding: 10px;
     border: 4px solid green;
     border-radius: 10px;
     background-color:lightblue;
@@ -21,4 +24,31 @@ table{
 #labelivaproveedor {
     width: 20px;
     margin: 0 0 0 5px;
+}
+
+.descripcion{
+    width:640px;              
+}
+
+.parent{
+    display: grid;
+    grid-template-areas: 'right left';
+    /* border: 5px solid red; */
+    height: 270px;
+}
+
+.child01{
+    margin: 5px;
+    grid-area: right;
+    border: 5px solid gray;
+    border-radius: 10px;
+    padding: 5px;
+}
+
+.child02{
+    margin: 5px;
+    grid-area: left;
+    border: 5px solid gray;
+    border-radius: 10px;
+    padding: 5px;
 }

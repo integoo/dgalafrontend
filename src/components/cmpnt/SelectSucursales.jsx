@@ -62,7 +62,11 @@ class SelectSucursales extends React.Component{
         let api = ''
         if (clase === 'todasyfisicas'){
             api = `/api/catalogos/10todasyfisicas`
-        }else{
+        }
+        if (clase === 'fisicas'){
+            api = `/api/catalogos/10fisicas`
+        }
+        if (clase === undefined ){
             api = `/api/catalogos/10`
         }
         // const url = this.props.url + `/api/catalogos/10`
