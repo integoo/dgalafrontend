@@ -182,7 +182,7 @@ class VentasBiLavamanticaTienda extends React.Component{
             arregloRegistro.push(json)
             json = this.handleMesesColumnas(data,'VentasSinImpuesto')
             arregloRegistro.push(json)
-            json = this.handleMesesColumnas(data,'CostoDeVentas')
+            json = this.handleMesesColumnas(data,'CostoPromedio')
             arregloRegistro.push(json)
             json = this.handleMesesColumnas(data,'UtilidadBruta')
             arregloRegistro.push(json)
@@ -346,6 +346,7 @@ class VentasBiLavamanticaTienda extends React.Component{
                 alert(data.error)
                 return
             }
+            // console.log(data)
 
             bandera = true;
 
@@ -428,7 +429,6 @@ class VentasBiLavamanticaTienda extends React.Component{
             arregloRegistro.push(json)
             json = this.handleMesesColumnas(data,'VentasSinImpuesto')
             arregloRegistro.push(json)
-            // json = this.handleMesesColumnas(data,'CostoDeVentas')
             json = this.handleMesesColumnas(data,'CostoPromedio')
             arregloRegistro.push(json)
             json = this.handleMesesColumnas(data,'UtilidadBruta')
@@ -464,18 +464,18 @@ class VentasBiLavamanticaTienda extends React.Component{
 
 
             let arregloRegistroRecharts = []
-            arregloRegistroRecharts.push({"name":"Ene","VentasConImp":parseInt(arregloRegistro[0].Ene.toFixed(0)),"CostoDeVentas":parseInt(arregloRegistro[3].Ene.toFixed(0)),"UtilidadNeta":parseInt(arregloRegistro[6].Ene.toFixed(0))})
-            arregloRegistroRecharts.push({"name":"Feb","VentasConImp":parseInt(arregloRegistro[0].Feb.toFixed(0)),"CostoDeVentas":parseInt(arregloRegistro[3].Feb.toFixed(0)),"UtilidadNeta":parseInt(arregloRegistro[6].Feb.toFixed(0))})
-            arregloRegistroRecharts.push({"name":"Mar","VentasConImp":parseInt(arregloRegistro[0].Mar.toFixed(0)),"CostoDeVentas":parseInt(arregloRegistro[3].Mar.toFixed(0)),"UtilidadNeta":parseInt(arregloRegistro[6].Mar.toFixed(0))})
-            arregloRegistroRecharts.push({"name":"Abr","VentasConImp":parseInt(arregloRegistro[0].Abr.toFixed(0)),"CostoDeVentas":parseInt(arregloRegistro[3].Abr.toFixed(0)),"UtilidadNeta":parseInt(arregloRegistro[6].Abr.toFixed(0))})
-            arregloRegistroRecharts.push({"name":"May","VentasConImp":parseInt(arregloRegistro[0].May.toFixed(0)),"CostoDeVentas":parseInt(arregloRegistro[3].May.toFixed(0)),"UtilidadNeta":parseInt(arregloRegistro[6].May.toFixed(0))})
-            arregloRegistroRecharts.push({"name":"Jun","VentasConImp":parseInt(arregloRegistro[0].Jun.toFixed(0)),"CostoDeVentas":parseInt(arregloRegistro[3].Jun.toFixed(0)),"UtilidadNeta":parseInt(arregloRegistro[6].Jun.toFixed(0))})
-            arregloRegistroRecharts.push({"name":"Jul","VentasConImp":parseInt(arregloRegistro[0].Jul.toFixed(0)),"CostoDeVentas":parseInt(arregloRegistro[3].Jul.toFixed(0)),"UtilidadNeta":parseInt(arregloRegistro[6].Jul.toFixed(0))})
-            arregloRegistroRecharts.push({"name":"Ago","VentasConImp":parseInt(arregloRegistro[0].Ago.toFixed(0)),"CostoDeVentas":parseInt(arregloRegistro[3].Ago.toFixed(0)),"UtilidadNeta":parseInt(arregloRegistro[6].Ago.toFixed(0))})
-            arregloRegistroRecharts.push({"name":"Sep","VentasConImp":parseInt(arregloRegistro[0].Sep.toFixed(0)),"CostoDeVentas":parseInt(arregloRegistro[3].Sep.toFixed(0)),"UtilidadNeta":parseInt(arregloRegistro[6].Sep.toFixed(0))})
-            arregloRegistroRecharts.push({"name":"Oct","VentasConImp":parseInt(arregloRegistro[0].Oct.toFixed(0)),"CostoDeVentas":parseInt(arregloRegistro[3].Oct.toFixed(0)),"UtilidadNeta":parseInt(arregloRegistro[6].Oct.toFixed(0))})
-            arregloRegistroRecharts.push({"name":"Nov","VentasConImp":parseInt(arregloRegistro[0].Nov.toFixed(0)),"CostoDeVentas":parseInt(arregloRegistro[3].Nov.toFixed(0)),"UtilidadNeta":parseInt(arregloRegistro[6].Nov.toFixed(0))})
-            arregloRegistroRecharts.push({"name":"Dic","VentasConImp":parseInt(arregloRegistro[0].Dic.toFixed(0)),"CostoDeVentas":parseInt(arregloRegistro[3].Dic.toFixed(0)),"UtilidadNeta":parseInt(arregloRegistro[6].Dic.toFixed(0))})
+            arregloRegistroRecharts.push({"name":"Ene","VentasConImp":parseInt(arregloRegistro[0].Ene.toFixed(0)),"CostoPromedio":parseInt(arregloRegistro[3].Ene.toFixed(0)),"UtilidadNeta":parseInt(arregloRegistro[6].Ene.toFixed(0))})
+            arregloRegistroRecharts.push({"name":"Feb","VentasConImp":parseInt(arregloRegistro[0].Feb.toFixed(0)),"CostoPromedio":parseInt(arregloRegistro[3].Feb.toFixed(0)),"UtilidadNeta":parseInt(arregloRegistro[6].Feb.toFixed(0))})
+            arregloRegistroRecharts.push({"name":"Mar","VentasConImp":parseInt(arregloRegistro[0].Mar.toFixed(0)),"CostoPromedio":parseInt(arregloRegistro[3].Mar.toFixed(0)),"UtilidadNeta":parseInt(arregloRegistro[6].Mar.toFixed(0))})
+            arregloRegistroRecharts.push({"name":"Abr","VentasConImp":parseInt(arregloRegistro[0].Abr.toFixed(0)),"CostoPromedio":parseInt(arregloRegistro[3].Abr.toFixed(0)),"UtilidadNeta":parseInt(arregloRegistro[6].Abr.toFixed(0))})
+            arregloRegistroRecharts.push({"name":"May","VentasConImp":parseInt(arregloRegistro[0].May.toFixed(0)),"CostoPromedio":parseInt(arregloRegistro[3].May.toFixed(0)),"UtilidadNeta":parseInt(arregloRegistro[6].May.toFixed(0))})
+            arregloRegistroRecharts.push({"name":"Jun","VentasConImp":parseInt(arregloRegistro[0].Jun.toFixed(0)),"CostoPromedio":parseInt(arregloRegistro[3].Jun.toFixed(0)),"UtilidadNeta":parseInt(arregloRegistro[6].Jun.toFixed(0))})
+            arregloRegistroRecharts.push({"name":"Jul","VentasConImp":parseInt(arregloRegistro[0].Jul.toFixed(0)),"CostoPromedio":parseInt(arregloRegistro[3].Jul.toFixed(0)),"UtilidadNeta":parseInt(arregloRegistro[6].Jul.toFixed(0))})
+            arregloRegistroRecharts.push({"name":"Ago","VentasConImp":parseInt(arregloRegistro[0].Ago.toFixed(0)),"CostoPromedio":parseInt(arregloRegistro[3].Ago.toFixed(0)),"UtilidadNeta":parseInt(arregloRegistro[6].Ago.toFixed(0))})
+            arregloRegistroRecharts.push({"name":"Sep","VentasConImp":parseInt(arregloRegistro[0].Sep.toFixed(0)),"CostoPromedio":parseInt(arregloRegistro[3].Sep.toFixed(0)),"UtilidadNeta":parseInt(arregloRegistro[6].Sep.toFixed(0))})
+            arregloRegistroRecharts.push({"name":"Oct","VentasConImp":parseInt(arregloRegistro[0].Oct.toFixed(0)),"CostoPromedio":parseInt(arregloRegistro[3].Oct.toFixed(0)),"UtilidadNeta":parseInt(arregloRegistro[6].Oct.toFixed(0))})
+            arregloRegistroRecharts.push({"name":"Nov","VentasConImp":parseInt(arregloRegistro[0].Nov.toFixed(0)),"CostoPromedio":parseInt(arregloRegistro[3].Nov.toFixed(0)),"UtilidadNeta":parseInt(arregloRegistro[6].Nov.toFixed(0))})
+            arregloRegistroRecharts.push({"name":"Dic","VentasConImp":parseInt(arregloRegistro[0].Dic.toFixed(0)),"CostoPromedio":parseInt(arregloRegistro[3].Dic.toFixed(0)),"UtilidadNeta":parseInt(arregloRegistro[6].Dic.toFixed(0))})
 
                 //######### Porcentaje Utilidad Tienda para Gráfica ###################
                 let detallesTiendaPorcenUtilidadRecharts = []
@@ -536,7 +536,7 @@ class VentasBiLavamanticaTienda extends React.Component{
             arregloRegistro.push(json)
             json = this.handleMesesColumnas(data,'VentasSinImpuesto')
             arregloRegistro.push(json)
-            json = this.handleMesesColumnas(data,'CostoDeVentas')
+            json = this.handleMesesColumnas(data,'CostoPromedio')
             arregloRegistro.push(json)
             json = this.handleMesesColumnas(data,'UtilidadBruta')
             arregloRegistro.push(json)
