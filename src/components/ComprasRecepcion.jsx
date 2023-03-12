@@ -71,6 +71,10 @@ class ComprasRecepcion extends React.Component {
       IVAProveedor: arregloProveedores[0].IVA,
       socios: arregloSocios,
       SocioId: arregloSocios[0].SocioId,
+    },()=>{
+      //Esto es para que cuando se consulte Codigos de Barra despliegue el inventario
+      //de SucursalId = 99
+      this.CodigoBarrasInput.current.handleRefSucursalId(this.state.SucursalId)
     });
   }
 

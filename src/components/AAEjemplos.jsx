@@ -5,7 +5,8 @@ a) Local:
 pg_dump -Fc dgaladb > /home/ubuntu/backups/backup_dgaladb/dgaladb_$fecha.dump
 
 b) Remota:
-1) pg_dump -h decorafiestas.com -Fc -U ubuntu dgaladb > desarrollodb.dump
+1) pg_dump -h grupodgala.com -Fc -U ubuntu dgaladb > desarrollodb.dump
+aDmini.....
 
 2) ssh user@remote_machine "pg_dump -U dbuser -h localhost -C --column-inserts" \
  > backup_file_on_your_local_machine.sql
@@ -13,8 +14,11 @@ b) Remota:
  3) Sacar una copia de la base de datos local:
  CREATE DATABASE desarrollodb WITH TEMPLATE dgaladb;
 
+####################################################################################################
+Recuperar la Base de Datos de Desarrollo (desarrollodb)
+drop database desarrollodb;
+create database desarrollodb;
 
-Recuperar la Base de Datos de Desarrollo 
 pg_restore -d desarrollodb dgaladb_$fecha.dump
 
 UPDATE colaboradores SET "Password" = 'dfjiejoijeijfjgjrjojijg837439dkK' WHERE "ColaboradorId" <> 0;
