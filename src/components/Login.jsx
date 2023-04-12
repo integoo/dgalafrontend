@@ -1,4 +1,3 @@
-//import { render } from '@testing-library/react';
 import React from 'react';
 
 export default class Login extends React.Component{
@@ -28,7 +27,8 @@ export default class Login extends React.Component{
             port = 4001
         }else{
             port = 3001
-            domain=`decorafiestas.com`
+            // domain=`decorafiestas.com`
+            domain=`grupodgala.com`
         }
         //const url = 'http://decorafiestas.com:3001/login'
         //const url = `http://decorafiestas.com:${port}/login`
@@ -54,7 +54,7 @@ export default class Login extends React.Component{
                     sessionStorage.setItem('ColaboradorId', data.ColaboradorId)
                     sessionStorage.setItem('SucursalId', data.SucursalId)
                     /* *********************************************** */
-                    this.props.handler(true, data.accessToken,data.db_name,data.Administrador)
+                    this.props.handler(true, data.accessToken,data.db_name,data.Administrador,data.PerfilTransacciones)
                     this.props.onhandleUrl(url)
                 } else{
                     console.log(data.error)
@@ -101,7 +101,8 @@ export default class Login extends React.Component{
                         
                 </div>
                     <button className="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
-                    <p className="mt-5 mb-3 text-muted">&copy;{this.props.VersionFecha}{this.props.Version}</p>
+                    {/* <p className="mt-5 mb-3 text-muted">&copy;{this.props.VersionFecha}{this.props.Version}</p> */}
+                    <p className="mt-5 mb-3 text-muted">&copy;{this.props.jsonv.VersionFecha}{this.props.jsonv.Version}</p>
                     <span style={{color:"blue"}}>Powered by</span><span style={{marginLeft:"2px",color:"red"}}>Integoo.com</span>
                 </form>
             </div>

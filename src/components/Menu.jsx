@@ -34,6 +34,7 @@ class Menu extends Component {
       accessToken: this.props.accessToken,
       //url: "http://decorafiestas.com:3001"
       url: this.props.url,
+      perfilTransacciones: this.props.PerfilTransacciones, //analista,gerente,colaborador
     };
   }
 
@@ -42,7 +43,7 @@ class Menu extends Component {
   }
 
   signOut = () => {
-    this.props.handler(false,null,null)
+    this.props.handler(false,null,null,null,null)
   }
 
   render() {
@@ -58,7 +59,24 @@ class Menu extends Component {
     const ambientePruebas = (this.props.dbName) === 'dgaladb' ? <span style={{fontSize:".5rem"}}>{this.props.Version}</span> : 'PRUEBAS '+this.props.url
 
 //******************************************************************************** */
-    const srcrobot = "https://robohash.org/user/"+Math.round(Math.random()*100)
+//** ACCEDE A LA IMAGEN ALEATORIA DEL USUARIO (ROBOT) */
+const srcrobot = "https://robohash.org/user/"+Math.round(Math.random()*100)
+//******************************************************************************** */
+//***  ACTIVA PRIVILEGIOS O ACCESOS EN EL MENU DE ACUERDO AL "PERFIL" DEL USUARIO*/
+//** ACTUALMENTE SOLO ADMINISTRA ACCESOS A OPCIONES DE MENU QUE GRABAN O INSERTAN EN LA BASE DE DATOS */
+const perfilTransacciones = this.state.perfilTransacciones
+let acceso = false
+if(perfilTransacciones === "Gerente"){
+  // spanclassname = "nav-link dropdown-toggle"
+  acceso = true
+}
+if(perfilTransacciones === "Analista"){
+  acceso = false
+}
+if(perfilTransacciones === "Colaborador"){
+  acceso = true
+}
+//******************************************************************************** */
     return (
       <Router>
         <Redirect to="/" />
@@ -121,7 +139,8 @@ class Menu extends Component {
                   data-target=".navbar-collapse.show"
                 >
                   <span
-                    className="nav-link dropdown-toggle"
+                  //Acceso Seguro
+                    className={acceso === true ? "nav-link dropdown-toggle" : "nav-link dropdown-toggle disabled"}
                     id="navbarDropdown"
                     role="button"
                     data-toggle="dropdown"
@@ -146,14 +165,15 @@ class Menu extends Component {
                 </li>
               </Link>
 
-              <Link to="/" style={linkStyle}>
+              <Link to="/" style={linkStyle} >
                 <li
                   className="nav-item dropdown"
                   data-toggle="collapse"
                   data-target=".navbar-collapse.show"
                 >
                   <span
-                    className="nav-link dropdown-toggle"
+                  // Acceso Seguro
+                    className={acceso === true ? "nav-link dropdown-toggle" : "nav-link dropdown-toggle disabled"}
                     id="navbarDropdown"
                     role="button"
                     data-toggle="dropdown"
@@ -273,15 +293,25 @@ class Menu extends Component {
                     className="dropdown-menu"
                     aria-labelledby="navbarDropdown"
                   >
-                    <Link to="/limpiaduria/catalogo" style={linkStyle}>
-                      <span className="dropdown-item">Catalogo</span>
+
+                    {/* Acceso Seguro*/}
+                    <Link to={acceso === true ? "/limpiaduria/catalogo" : "#"} style={linkStyle}>
+                    {/* Acceso Seguro*/}
+                      <span className={acceso === true ? "dropdown-item" : "dropdown-item disabled"} >Catalogo</span>
                     </Link>
-                    <Link to="/contabilidad/ingresos" style={linkStyle}>
-                      <span className="dropdown-item">Ingresos</span>
+
+                      {/* Acceso Seguro*/}
+                    <Link to={acceso === true ? "/contabilidad/ingresos" : "#"} style={linkStyle}>
+                      {/* Acceso Seguro*/}
+                      <span className={acceso === true ? "dropdown-item" : "dropdown-item disabled"}>Ingresos</span>
                     </Link>
-                    <Link to="/contabilidad/egresos" style={linkStyle}>
-                      <span className="dropdown-item">Egresos</span>
+
+                     {/* Acceso Seguro*/}
+                    <Link to={acceso === true ? "/contabilidad/egresos" : "#"} style={linkStyle}>
+                     {/* Acceso Seguro*/}
+                      <span className={acceso === true ? "dropdown-item" : "dropdown-item disabled"}>Egresos</span>
                     </Link>
+
                     <div className="dropdown-divider"></div>
                     <Link
                       to="/limpiaduria/estadoderesultados"
@@ -324,8 +354,11 @@ class Menu extends Component {
                     className="dropdown-menu"
                     aria-labelledby="navbarDropdown"
                   >
-                    <Link to="/compras/recepcion" style={linkStyle}>
-                      <span className="dropdown-item">Compras Recepcion</span>
+
+                    {/* Acceso Seguro*/}
+                    <Link to={acceso === true ? "/compras/recepcion" : "#"} style={linkStyle}>
+                    {/* Acceso Seguro*/}
+                      <span className={acceso === true ? "dropdown-item" : "dropdown-item disabled" }>Compras Recepcion</span>
                     </Link>
 
                     <Link to="/compras/consulta" style={linkStyle}>
@@ -372,23 +405,33 @@ class Menu extends Component {
                       <span className="dropdown-item">Productos Más Desplazados (Margen)</span>
                     </Link>
 
-                    <Link to="/inventario/ajustesinventario" style={linkStyle}>
-                      <span className="dropdown-item">Ajustes Inventario</span>
+                    {/* Acceso Seguro*/}
+                    <Link to={acceso === true ?"/inventario/ajustesinventario" : "#"} style={linkStyle}>
+                    {/* Acceso Seguro*/}
+                      <span className={acceso === true ? "dropdown-item" : "dropdown-item disabled" }>Ajustes Inventario</span>
                     </Link>
 
+                    
+                    {/* Acceso Seguro*/}
                     <Link
-                      to="/inventario/cambiosdepresentacion"
+                      to={acceso === true ? "/inventario/cambiosdepresentacion" : "#"}
                       style={linkStyle}
-                    >
-                      <span className="dropdown-item">
+                      >
+                      {/* Acceso Seguro*/}
+                      <span className={acceso === true ? "dropdown-item" : "dropdown-item disabled"} >
                         Cambios de Presentación
                       </span>
                     </Link>
-                    <Link to="/inventario/traspasossalida" style={linkStyle}>
-                      <span className="dropdown-item">
+
+
+                    {/* Acceso Seguro*/}
+                    <Link to={acceso === true ? "/inventario/traspasossalida" : "#"} style={linkStyle}>
+                    {/* Acceso Seguro*/}
+                      <span className={acceso === true ? "dropdown-item" : "dropdown-item disabled" }>
                         Traspasos Salida/Entrada
                       </span>
                     </Link>
+
 
                     <Link to="/inventario/inventariociclico" style={linkStyle}>
                       <span className="dropdown-item">Inventario Cíclico</span>
