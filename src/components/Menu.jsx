@@ -47,7 +47,6 @@ class Menu extends Component {
       userScreen2: false,
       srcrobot: null,
     };
-    alert(this.state.dbName)
   }
 
   componentDidMount(){
