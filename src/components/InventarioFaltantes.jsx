@@ -17,7 +17,15 @@ class InventarioFaltantes extends Component {
     async componentDidMount(){
         const SucursalId = this.state.SucursalId
         const arregloSucursales = await this.getSucursales()
+        if(arregloSucursales.error){
+          alert(arregloSucursales.error)
+          return
+        }
         const arregloInventarioFaltantes = await this.getInventarioFaltantes(SucursalId)
+        if(arregloInventarioFaltantes.error){
+          alert(arregloInventarioFaltantes.error)
+          return
+        }
         this.setState({
             detalles: arregloInventarioFaltantes,
             sucursales: arregloSucursales,
@@ -70,6 +78,10 @@ class InventarioFaltantes extends Component {
     handleSucursales = async(e) =>{
         const SucursalId = e.target.value
         const arregloInventarioFaltantes = await this.getInventarioFaltantes(SucursalId)
+        if(arregloInventarioFaltantes.error){
+          alert(arregloInventarioFaltantes.error)
+          return
+        }
         this.setState({
             SucursalId: SucursalId,
             detalles: arregloInventarioFaltantes

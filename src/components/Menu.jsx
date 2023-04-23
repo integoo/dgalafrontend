@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import { BrowserRouter as Router, Switch, Route, Link, Redirect } from "react-router-dom";
-
+// import { FcKey } from 'react-icons/fc'
+import { ImKey } from 'react-icons/im'
+ 
 import Egresos from './Egresos';
 import EstadoResultadosLimpiaduria from './EstadoResultadosLimpiaduria'
 import VentasIngresos from './VentasIngresos'
@@ -26,16 +28,29 @@ import VentasConsultaCategorias from "./VentasConsultaCategorias";
 import VentasBiLavamaticaTienda from "./VentasBiLavamanticaTienda";
 import EgresosLimpiaduriaBI from "./EgresosLimpiaduriaBI";
 
+import './Menu.css'
+
 
 class Menu extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      accessToken: this.props.accessToken,
-      //url: "http://decorafiestas.com:3001"
-      url: this.props.url,
-      perfilTransacciones: this.props.PerfilTransacciones, //analista,gerente,colaborador
+      SucursalId: this.props.onPropsMenu.SucursalId,
+      ColaboradorId: this.props.onPropsMenu.ColaboradorId,
+      accessToken: this.props.onPropsMenu.accessToken,
+      url: this.props.onPropsMenu.url,
+      perfilTransacciones: this.props.onPropsMenu.PerfilTransacciones, //analista,gerente,colaborador
+      user: this.props.onPropsMenu.user,
+      userScreen: false,
+      userScreen2: false,
+      srcrobot: null,
     };
+  }
+
+  componentDidMount(){
+    //** ACCEDE A LA IMAGEN ALEATORIA DEL USUARIO (ROBOT) */
+    const srcrobot = "https://robohash.org/user/"+Math.round(Math.random()*100)
+    this.setState({srcrobot: srcrobot})
   }
 
   componentWillUnmount(){
@@ -43,7 +58,7 @@ class Menu extends Component {
   }
 
   signOut = () => {
-    this.props.handler(false,null,null,null,null)
+    this.props.handler(0,false,null,null,null,null,null,0)
   }
 
   render() {
@@ -58,9 +73,6 @@ class Menu extends Component {
     // const ambientePruebas = (this.props.dbName) === 'dgaladb' ? '' : 'PRUEBAS '+this.props.url
     const ambientePruebas = (this.props.dbName) === 'dgaladb' ? <span style={{fontSize:".5rem"}}>{this.props.Version}</span> : 'PRUEBAS '+this.props.url
 
-//******************************************************************************** */
-//** ACCEDE A LA IMAGEN ALEATORIA DEL USUARIO (ROBOT) */
-const srcrobot = "https://robohash.org/user/"+Math.round(Math.random()*100)
 //******************************************************************************** */
 //***  ACTIVA PRIVILEGIOS O ACCESOS EN EL MENU DE ACUERDO AL "PERFIL" DEL USUARIO*/
 //** ACTUALMENTE SOLO ADMINISTRA ACCESOS A OPCIONES DE MENU QUE GRABAN O INSERTAN EN LA BASE DE DATOS */
@@ -79,6 +91,78 @@ if(perfilTransacciones === "Colaborador"){
 //******************************************************************************** */
     return (
       <Router>
+
+
+
+
+
+
+
+
+
+
+        {this.state.userScreen 
+        ?
+          <div className="userScreen">
+              <div style={{height:"80px",borderRadius:"10px 10px 0 0", backgroundColor:"lightgrey"}}>
+                  <div style={{position:"relative", top:"50px", display:"flex", justifyContent:"center", alignItems:"center", flexDirection:"column"}}>
+                    <div>
+                      <img
+                            src={this.state.srcrobot}
+                            alt="Robohash"
+                            width={60}
+                            height={60}
+                            style={{
+                              background: "rgb(244,240,236)",
+                              borderRadius: "50%",
+                              border: "4px solid red",
+                              borderColor: "red yellow green orange",
+                            }}
+                            />
+                    </div>
+                    <div>
+                      {this.state.user}
+                    </div>
+                  </div>
+                </div>
+            <div style={{width:"100%", fontSize:"0.7rem", margin:"60px 0 0 0 "}}>
+              <div>
+                <div className="userScreenOptions" onClick={()=> {
+                                                                  this.setState({userScreen: false, userScreen2: true})  
+                                                                  // }}><FcKey /><span style={{width: "800px", marginLeft:"5px"}}>Cambio de Password</span></div>
+                                                                  }}><ImKey /><span style={{width: "800px", marginLeft:"5px"}}>Cambio de Password</span></div>
+                </div>
+
+              </div>
+              <hr style={{position: "relative", top:"60px"}}/>
+            </div>
+        :
+            null
+        }
+
+        {this.state.userScreen2
+        ?
+          <div className="userScreen2">
+            <h1>En Construcción ...!!!</h1>
+            <button>Actualizar</button>
+            <button>Cancelar</button>
+          </div>
+        :
+          null
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
         <Redirect to="/" />
         <nav className={classes}>
           <Link to="/" style={linkStyle}>
@@ -95,7 +179,7 @@ if(perfilTransacciones === "Colaborador"){
 
               {/* IMAGEN DEL USUARIO ROBOT */}
               <img
-                src={srcrobot}
+                src={this.state.srcrobot}
                 alt="Robohash"
                 width={60}
                 height={60}
@@ -107,11 +191,20 @@ if(perfilTransacciones === "Colaborador"){
                   // borderColor: "red yellow purple green",
                   borderColor: "red yellow green orange",
                 }}
+                onClick={()=> {
+                                if(this.state.userScreen2){
+                                  this.setState({userScreen2: false})
+                                }else{
+                                  this.setState({userScreen: !this.state.userScreen, userScreen2: false})
+                                }
+                              }}
               />
-
 
             </span>
           </Link>
+
+
+
 
           <button
             className="navbar-toggler navbar-light bg-light"

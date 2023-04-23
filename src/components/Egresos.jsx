@@ -53,6 +53,7 @@ class Egresos extends Component {
       FolioIdModifica: "",
       MontoModifica: "",
       ComentariosModifica: "",
+      isWaiting: false,
 
     };
 
@@ -706,88 +707,102 @@ class Egresos extends Component {
 
   handleSubmit = async (event) => {
     event.preventDefault();
-    const SucursalId = this.state.SucursalId;
-    const UnidadDeNegocioId = this.state.UnidadDeNegocioId;
-    const CuentaContableId = this.state.CuentaContableId;
-    const SubcuentaContableId = this.state.SubcuentaContableId;
-    const Fecha = this.state.Fecha;
-    const PeriodoAbiertoPrimerDia = this.state.PeriodoAbiertoPrimerDia;
-    let data = [];
 
-    if (Fecha < PeriodoAbiertoPrimerDia) {
-      alert(
-        "ERROR : La Fecha debe ser mayor o igual que " + PeriodoAbiertoPrimerDia
-      );
-      return;
-    }
+    this.setState({
+        isWaiting: true,
+      },async()=>{
 
-    //### Validar si existe un movimiento Sucursal,UnidadesDeNegocio,Cuenta y Subcuenta Contable Igual###
-    data = await this.handleValidaMovimiento(
-      SucursalId,
-      UnidadDeNegocioId,
-      CuentaContableId,
-      SubcuentaContableId,
-      Fecha
-    );
-    if (data.error) {
-      console.log(data.error);
-      alert(data.error);
-      return;
-    }
-    if (data[0].cuantos > 0) {
-      if (
-        !window.confirm(
-          "Ya existe(n) " +
-            data[0].cuantos +
-            " Movimiento(s) para la Sucursal, UnidadDeNegocio, Cuenta, Subcuenta Contable y Fecha. ¿Desea Continuar?"
-        )
-      ) {
+      
+
+      const SucursalId = this.state.SucursalId;
+      const UnidadDeNegocioId = this.state.UnidadDeNegocioId;
+      const CuentaContableId = this.state.CuentaContableId;
+      const SubcuentaContableId = this.state.SubcuentaContableId;
+      const Fecha = this.state.Fecha;
+      const PeriodoAbiertoPrimerDia = this.state.PeriodoAbiertoPrimerDia;
+      let data = [];
+
+      if (Fecha < PeriodoAbiertoPrimerDia) {
+        alert(
+          "ERROR : La Fecha debe ser mayor o igual que " + PeriodoAbiertoPrimerDia
+        );
         return;
       }
-    }
-    //###################################################################################################
-    let json = {
-      SucursalId: SucursalId,
-      UnidadDeNegocioId: UnidadDeNegocioId,
-      CuentaContableId: CuentaContableId,
-      SubcuentaContableId: SubcuentaContableId,
-      Fecha: Fecha,
-      Monto: this.state.Monto * parseInt(this.props.naturalezaCC),
-      Comentarios: this.state.Comentarios,
-      Usuario: sessionStorage.getItem("user"),
-    };
 
-    try {
-      const url = this.props.url + `/ingresos/grabaingresos`;
-      const response = await fetch(url, {
-        method: "POST",
-        body: JSON.stringify(json), //JSON.stringify(data)
-        headers: {
-          Authorization: `Bearer ${this.props.accessToken}`,
-          "Content-Type": "application/json",
-        },
-      });
-      data = await response.json();
+      //### Validar si existe un movimiento Sucursal,UnidadesDeNegocio,Cuenta y Subcuenta Contable Igual###
+      data = await this.handleValidaMovimiento(
+        SucursalId,
+        UnidadDeNegocioId,
+        CuentaContableId,
+        SubcuentaContableId,
+        Fecha
+      );
       if (data.error) {
         console.log(data.error);
         alert(data.error);
         return;
       }
+      if (data[0].cuantos > 0) {
+        if (
+          !window.confirm(
+            "Ya existe(n) " +
+              data[0].cuantos +
+              " Movimiento(s) para la Sucursal, UnidadDeNegocio, Cuenta, Subcuenta Contable y Fecha. ¿Desea Continuar?"
+          )
+        ) {
+          return;
+        }
+      }
+      //###################################################################################################
+      let json = {
+        SucursalId: SucursalId,
+        UnidadDeNegocioId: UnidadDeNegocioId,
+        CuentaContableId: CuentaContableId,
+        SubcuentaContableId: SubcuentaContableId,
+        Fecha: Fecha,
+        Monto: this.state.Monto * parseInt(this.props.naturalezaCC),
+        Comentarios: this.state.Comentarios,
+        Usuario: sessionStorage.getItem("user"),
+      };
 
-      //####### Actualiza Ingresos Egresos #########
-      const accesoDB = "dia";
-      await this.getEgresos(this.state.Fecha, accesoDB, SucursalId, UnidadDeNegocioId);
+      try {
+        const url = this.props.url + `/ingresos/grabaingresos`;
+        const response = await fetch(url, {
+          method: "POST",
+          body: JSON.stringify(json), //JSON.stringify(data)
+          headers: {
+            Authorization: `Bearer ${this.props.accessToken}`,
+            "Content-Type": "application/json",
+          },
+        });
+        data = await response.json();
+        if (data.error) {
+          console.log(data.error);
+          alert(data.error);
+          return;
+        }
 
-      //####################################
-      this.setState({
-        Monto: "",
-        Comentarios: "",
-      });
-      alert(JSON.stringify(data));
-    } catch (error) {
-      console.log(error.message);
-      alert(error.message);
-    }
+        //####### Actualiza Ingresos Egresos #########
+        const accesoDB = "dia";
+        await this.getEgresos(this.state.Fecha, accesoDB, SucursalId, UnidadDeNegocioId);
+
+        //####################################
+        this.setState({
+          Monto: "",
+          Comentarios: "",
+          isWaiting: false,
+        });
+        alert(JSON.stringify(data));
+      } catch (error) {
+        console.log(error.message);
+        alert(error.message);
+      }
+
+
+
+
+
+    });
   };
 
   handleMontoModifica = (MontoModifica) =>{
@@ -1171,7 +1186,8 @@ class Egresos extends Component {
                 <button
                   className="btn btn-primary btn-lg"
                   type="submit"
-                  disabled={this.state.disabledMonto}
+                  // disabled={this.state.disabledMonto}
+                  disabled={this.state.isWaiting === true ? true : this.state.disabledMonto}
                 >
                   Grabar
                 </button>

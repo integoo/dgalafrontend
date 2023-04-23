@@ -27,13 +27,10 @@ export default class Login extends React.Component{
             port = 4001
         }else{
             port = 3001
-            // domain=`decorafiestas.com`
             domain=`grupodgala.com`
         }
-        //const url = 'http://decorafiestas.com:3001/login'
         //const url = `http://decorafiestas.com:${port}/login`
         const protocol = `http`
-        //const domain = `decorafiestas.com`
         const path = `/login`
         
         const url = `${protocol}://${domain}:${port}`
@@ -54,7 +51,7 @@ export default class Login extends React.Component{
                     sessionStorage.setItem('ColaboradorId', data.ColaboradorId)
                     sessionStorage.setItem('SucursalId', data.SucursalId)
                     /* *********************************************** */
-                    this.props.handler(true, data.accessToken,data.db_name,data.Administrador,data.PerfilTransacciones)
+                    this.props.handler(data.SucursalId,true, data.accessToken,data.db_name,data.Administrador,data.PerfilTransacciones,data.user,data.ColaboradorId)
                     this.props.onhandleUrl(url)
                 } else{
                     console.log(data.error)
@@ -77,7 +74,6 @@ export default class Login extends React.Component{
     }
 
     render(){
-
         //const logo = 'https://grupodgala.com/LogoDGala.png'
         const logo = 'LogoDGala.png'
 
@@ -85,25 +81,21 @@ export default class Login extends React.Component{
         <React.Fragment>
             <div className="body-center text-center">
                 <form className="form-signin" onSubmit={this.someMethod}>
-                {/* <img className="mb-4" src={'https://grupodgala.com/LogoDGala.png'} alt="" width="122" height="92" /> */}
-                {/* <img className="mb-4" src={logo} alt="" width="122" height="92" /> */}
-                <img className="mb-4" src={logo} alt="" width="148" height="102" />
-                {/* <h1 className="h3 mb-3 font-weight-normal">Please sign in</h1> */}
-                <h1 className="h3 mb-3 font-weight-bold" style={{color:"darkblue"}}>Grupo D'Gala</h1>
-                <label htmlFor="inputEmail" className="sr-only">Email address</label>
-                <input type="text" id="inputEmail" className="form-control" placeholder="Username" name="usuario" ref={this.usuarioInput} required autoFocus></input>
-                <label htmlFor="inputPassword" className="sr-only">Password</label>
-                <input type="password" id="inputPassword" className="form-control" placeholder="Password" name="password" ref={this.passwordInput} required></input>
-                <div className="checkbox mb-3">
-                        <label style={{fontSize: ".8em"}}>
-                             <input type="checkbox" value="remember-me"/> Remember me 
-                        </label>
-                        
-                </div>
-                    <button className="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
-                    {/* <p className="mt-5 mb-3 text-muted">&copy;{this.props.VersionFecha}{this.props.Version}</p> */}
-                    <p className="mt-5 mb-3 text-muted">&copy;{this.props.jsonv.VersionFecha}{this.props.jsonv.Version}</p>
-                    <span style={{color:"blue"}}>Powered by</span><span style={{marginLeft:"2px",color:"red"}}>Integoo.com</span>
+                    <img className="mb-4" src={logo} alt="" width="148" height="102" />
+                    <h1 className="h3 mb-3 font-weight-bold" style={{color:"darkblue"}}>Grupo D'Gala</h1>
+                    <label htmlFor="inputEmail" className="sr-only">Email address</label>
+                    <input type="text" id="inputEmail" className="form-control" placeholder="Username" name="usuario" ref={this.usuarioInput} required autoFocus></input>
+                    <label htmlFor="inputPassword" className="sr-only">Password</label>
+                    <input type="password" id="inputPassword" className="form-control" placeholder="Password" name="password" ref={this.passwordInput} required></input>
+                    <div className="checkbox mb-3">
+                            <label style={{fontSize: ".8em"}}>
+                                 <input type="checkbox" value="remember-me"/> Remember me 
+                            </label>
+
+                    </div>
+                        <button className="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+                        <p className="mt-5 mb-3 text-muted">&copy;{this.props.jsonv.VersionFecha}{this.props.jsonv.Version}</p>
+                        <span style={{color:"blue"}}>Powered by</span><span style={{marginLeft:"2px",color:"red"}}>Integoo.com</span>
                 </form>
             </div>
         </React.Fragment>

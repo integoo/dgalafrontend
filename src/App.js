@@ -13,10 +13,11 @@ class App extends React.Component{
       accessToken: '',
       dbName: '',
       Administrador: "",
-      Version: " v1.56",
-      VersionFecha: " 2023 Abr 09",
+      Version: " v1.57",
+      VersionFecha: " 2023 Abr 23",
+      PerfilTransacciones: "",
+      user: "",
     }
-
   }
 
   handleUrl = (url) =>{
@@ -25,13 +26,16 @@ class App extends React.Component{
     })
   }
 
-  handlerAppState = (param, param2,paramDB, Administrador, PerfilTransacciones) => {
+  handlerAppState = (sucursalId,trueFalse, accessToken,dbName, Administrador, PerfilTransacciones, user, colaboradorId) => {
     this.setState({
-      isLoggedIn: param,
-      accessToken: param2,
-      dbName: paramDB,
+      SucursalId: sucursalId,
+      isLoggedIn: trueFalse,
+      accessToken: accessToken,
+      dbName: dbName,
       Administrador: Administrador,
-      PerfilTransacciones: PerfilTransacciones
+      PerfilTransacciones: PerfilTransacciones,
+      user: user,
+      ColaboradorId: colaboradorId,
     })
   }
 
@@ -41,11 +45,23 @@ class App extends React.Component{
       VersionFecha: this.state.VersionFecha
     }
 
+    const propsMenu = {
+      SucursalId: this.state.SucursalId,
+      ColaboradorId: this.state.ColaboradorId,
+      accessToken: this.state.accessToken,
+      dbName: this.state.dbName,
+      url: this.state.url,
+      Administrador: this.state.Administrador,
+      Version: this.state.Version,
+      PerfilTransacciones: this.state.PerfilTransacciones,
+      user: this.state.user
+    }
+
       return (
         <div className="App">
           {this.state.isLoggedIn && this.state.url 
-            ? <Menu handler={this.handlerAppState} accessToken={this.state.accessToken} dbName={this.state.dbName} url={this.state.url} Administrador={this.state.Administrador} Version={this.state.Version} PerfilTransacciones={this.state.PerfilTransacciones}/> 
-            // : <Login handler={this.handlerAppState} onhandleUrl={this.handleUrl} Version={this.state.Version} VersionFecha={this.state.VersionFecha} />
+            // ? <Menu handler={this.handlerAppState} accessToken={this.state.accessToken} dbName={this.state.dbName} url={this.state.url} Administrador={this.state.Administrador} Version={this.state.Version} PerfilTransacciones={this.state.PerfilTransacciones} user={this.state.user}/> 
+            ? <Menu handler={this.handlerAppState} onPropsMenu={propsMenu} /> 
             : <Login handler={this.handlerAppState} onhandleUrl={this.handleUrl} jsonv={jsonVersion} />
           }
         </div>

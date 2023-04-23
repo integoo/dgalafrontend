@@ -49,6 +49,7 @@ class VentasIngresos extends Component {
       Monto: "",
       Comentarios: "",
       Posicion: "",
+      isWaiting: false,
     };
   }
 
@@ -727,69 +728,86 @@ class VentasIngresos extends Component {
 
   handleGrabar = async (e) => {
     e.preventDefault();
-    const Fecha = this.state.Fecha;
-    const PeriodoAbiertoPrimerDia = this.state.PeriodoAbiertoPrimerDia;
-    if (Fecha < PeriodoAbiertoPrimerDia) {
-      alert(
-        "No se permite modificar un periodo con Fecha menor al Periodo Abierto"
-      );
-      return;
-    }
-    const json = this.state.SucursalesIngresos;
-    let hayMovimientos = false;
-    for (let i = 0; i < json.length; i++) {
-      if (json[i].Monto === "" || json[i].Monto[0] === " ") {
-        json[i].Monto = 0;
-      }
-      if (
-        json[i].Monto !== "" &&
-        json[i].Monto[0] !== " " &&
-        json[i].Monto > 0
-      ) {
-        hayMovimientos = true;
-      }
-    }
-    if (hayMovimientos === false) {
-      alert("No hay movimiento que registrar");
-      return;
-    }
-    const url = this.props.url + `/ingresos/grabaingresos2`;
 
-    try {
-      const response = await fetch(url, {
-        method: "POST",
-        body: JSON.stringify(json),
-        headers: {
-          Authorization: `Bearer ${this.props.accessToken}`,
-          "Content-Type": "application/json",
-        },
-      });
 
-      const data = await response.json();
-      if (data.error) {
-        console.log(data.error);
-        alert(data.error);
-        return;
-      }
 
-      //## Pone accesoDB = false para que consulte Ingresos sin acceder a la DB
-      const accesoDB = "dia"; //Consulta la Base de Datos
-      //#############################################################################################
+    this.setState(
+      {isWaiting: true,},
+      async() => {
 
-      this.setState(
-        {
-          disabledBotonGrabar: true,
-        },
-        () => {
-          this.handleConsultaIngresos(Fecha, accesoDB);
+      
+
+
+        const Fecha = this.state.Fecha;
+        const PeriodoAbiertoPrimerDia = this.state.PeriodoAbiertoPrimerDia;
+        if (Fecha < PeriodoAbiertoPrimerDia) {
+          alert(
+            "No se permite modificar un periodo con Fecha menor al Periodo Abierto"
+          );
+          return;
         }
-      );
+        const json = this.state.SucursalesIngresos;
+        let hayMovimientos = false;
+        for (let i = 0; i < json.length; i++) {
+          if (json[i].Monto === "" || json[i].Monto[0] === " ") {
+            json[i].Monto = 0;
+          }
+          if (
+            json[i].Monto !== "" &&
+            json[i].Monto[0] !== " " &&
+            json[i].Monto > 0
+          ) {
+            hayMovimientos = true;
+          }
+        }
+        if (hayMovimientos === false) {
+          alert("No hay movimiento que registrar");
+          return;
+        }
+        const url = this.props.url + `/ingresos/grabaingresos2`;
 
-      alert(data.message);
-    } catch (error) {
-      console.log(error.message);
-      alert(error.message);
-    }
+        try {
+          const response = await fetch(url, {
+            method: "POST",
+            body: JSON.stringify(json),
+            headers: {
+              Authorization: `Bearer ${this.props.accessToken}`,
+              "Content-Type": "application/json",
+            },
+          });
+
+          const data = await response.json();
+          if (data.error) {
+            console.log(data.error);
+            alert(data.error);
+            return;
+          }
+
+          //## Pone accesoDB = false para que consulte Ingresos sin acceder a la DB
+          const accesoDB = "dia"; //Consulta la Base de Datos
+          //#############################################################################################
+
+          this.setState(
+            {
+              disabledBotonGrabar: true,
+              isWaiting: false,
+            },
+            () => {
+              this.handleConsultaIngresos(Fecha, accesoDB);
+            }
+          );
+
+          alert(data.message);
+        } catch (error) {
+          console.log(error.message);
+          alert(error.message);
+        }
+
+
+
+
+    })
+
   };
 
   handleCancelar = (e) => {
@@ -1128,7 +1146,7 @@ class VentasIngresos extends Component {
                   type="submit"
                   onClick={this.handleGrabar}
                   className="btn btn-success"
-                  disabled={this.state.disabledBotonGrabar}
+                  disabled={this.state.isWaiting ? true : this.state.disabledBotonGrabar}
                 >
                   Grabar
                 </button>

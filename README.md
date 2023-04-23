@@ -81,7 +81,16 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/t
 6. Usé npm install react-number-format --save para poder dar formato a números y tener el teclado numérico en mobile.
 7. https://github.com/reactchartjs/react-chartjs-2
     npm install --save react-chartjs-2 chart.js
-8.
+8.https://react-icons.github.io/react-icons
+    npm install react-icons
+    En la página tiene las opciones de todos los grupos de icons y su sintaxis.
+    Ant Design Icons: 
+    import { IconName } from "react-icons/ai";
+    	<IconName />
+    Bootstrap Icons:
+    import { IconName } from "react-icons/bs"
+    	< IconName />
+
 
 ################ IMPORTANTE EN CASO DE REHACER LA VERSION O PARA QUITAR ALGUN PAQUETE ####################
 0. Sacar una copia de GitHub : git clone <direccion de github>
@@ -151,4 +160,34 @@ render(){
         )
     }
 #######################################################################
+Para no evitar darle click a botón antes de que termine un proceso Async
+https://stackoverflow.com/questions/58368074/how-to-disable-react-button-until-meteor-method-finishes
+import React, {useState} from "react"
 
+const SampleAsync = () => {
+
+  let [isWaiting, setWaiting ] = useState(false)
+
+  let meteorMethod = () => {
+      setWaiting(true)
+      Meteor.call('insertSometing', data,(result,error) => {
+        if(error) 
+        console.log('erro')
+        else
+        setWaiting(false)
+      })
+  }
+
+
+  // If isWaiting is true the button disable and if false unable
+  // you can also do this: <button disable={isWaiting} onClick={meteorMethod}>Submit</button>
+  return (
+    <div>
+      // you can add inline if
+      <button disable={isWaiting == true ? true : false  } onClick={meteorMethod}>Submit</button>
+    </div>
+  )
+}
+
+export default SampleAsync;
+###################################################################################################
