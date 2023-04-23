@@ -38,14 +38,16 @@ class Menu extends Component {
       SucursalId: this.props.onPropsMenu.SucursalId,
       ColaboradorId: this.props.onPropsMenu.ColaboradorId,
       accessToken: this.props.onPropsMenu.accessToken,
+      dbName: this.props.onPropsMenu.dbName,
       url: this.props.onPropsMenu.url,
-      perfilTransacciones: this.props.onPropsMenu.PerfilTransacciones, //analista,gerente,colaborador
       user: this.props.onPropsMenu.user,
       Administrador: this.props.onPropsMenu.Administrador,
+      perfilTransacciones: this.props.onPropsMenu.PerfilTransacciones, //analista,gerente,colaborador
       userScreen: false,
       userScreen2: false,
       srcrobot: null,
     };
+    alert(this.state.dbName)
   }
 
   componentDidMount(){
