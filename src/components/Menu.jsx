@@ -40,8 +40,9 @@ class Menu extends Component {
       accessToken: this.props.onPropsMenu.accessToken,
       dbName: this.props.onPropsMenu.dbName,
       url: this.props.onPropsMenu.url,
-      user: this.props.onPropsMenu.user,
       Administrador: this.props.onPropsMenu.Administrador,
+      Version: this.props.onPropsMenu.Version,
+      user: this.props.onPropsMenu.user,
       perfilTransacciones: this.props.onPropsMenu.PerfilTransacciones, //analista,gerente,colaborador
       userScreen: false,
       userScreen2: false,
@@ -67,12 +68,12 @@ class Menu extends Component {
     const linkStyle = {
       color: "white",
     };
-//***  Aquí esta el nombre de la Base de Datos como constante producciondb ******/
+//***  Aquí esta el nombre de la Base de Datos como constante dgaladb ******/
 
     let classes = "navbar navbar-expand-lg navbar-white bg-"
-    classes+= (this.state.dbName) === 'dgaladb' ? "primary" : "danger"
+    classes+= (this.state.dbName) === 'dgaladb' ? "primary" : "warning"
 
-    const ambientePruebas = (this.state.dbName) === 'dgaladb' ? <span style={{fontSize:".5rem"}}>{this.state.Version}</span> : 'PRUEBAS '+this.state.url
+    const ambiente = <span style={{fontSize:".5rem"}}>{this.state.Version}</span> 
 
 //******************************************************************************** */
 //***  ACTIVA PRIVILEGIOS O ACCESOS EN EL MENU DE ACUERDO AL "PERFIL" DEL USUARIO*/
@@ -174,7 +175,7 @@ if(perfilTransacciones === "Colaborador"){
               data-target=".navbar-collapse.show"
             >
               <span style={{ marginRight: "10px" }}>
-                D'Gala {ambientePruebas}
+                D'Gala {ambiente}
               </span>
 
               {/* IMAGEN DEL USUARIO ROBOT */}

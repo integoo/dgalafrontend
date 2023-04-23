@@ -53,8 +53,8 @@ class App extends React.Component{
       url: this.state.url,
       Administrador: this.state.Administrador,
       Version: this.state.Version,
+      user: this.state.user,
       PerfilTransacciones: this.state.PerfilTransacciones,
-      user: this.state.user
     }
 
       return (
