@@ -41,6 +41,7 @@ class Menu extends Component {
       url: this.props.onPropsMenu.url,
       perfilTransacciones: this.props.onPropsMenu.PerfilTransacciones, //analista,gerente,colaborador
       user: this.props.onPropsMenu.user,
+      Administrador: this.props.onPropsMenu.Administrador,
       userScreen: false,
       userScreen2: false,
       srcrobot: null,
@@ -68,10 +69,9 @@ class Menu extends Component {
 //***  Aquí esta el nombre de la Base de Datos como constante producciondb ******/
 
     let classes = "navbar navbar-expand-lg navbar-white bg-"
-    classes+= (this.props.dbName) === 'dgaladb' ? "primary" : "danger"
+    classes+= (this.state.dbName) === 'dgaladb' ? "primary" : "danger"
 
-    // const ambientePruebas = (this.props.dbName) === 'dgaladb' ? '' : 'PRUEBAS '+this.props.url
-    const ambientePruebas = (this.props.dbName) === 'dgaladb' ? <span style={{fontSize:".5rem"}}>{this.props.Version}</span> : 'PRUEBAS '+this.props.url
+    const ambientePruebas = (this.state.dbName) === 'dgaladb' ? <span style={{fontSize:".5rem"}}>{this.state.Version}</span> : 'PRUEBAS '+this.state.url
 
 //******************************************************************************** */
 //***  ACTIVA PRIVILEGIOS O ACCESOS EN EL MENU DE ACUERDO AL "PERFIL" DEL USUARIO*/
@@ -144,8 +144,7 @@ if(perfilTransacciones === "Colaborador"){
         ?
           <div className="userScreen2">
             <h1>En Construcción ...!!!</h1>
-            <button>Actualizar</button>
-            <button>Cancelar</button>
+            <button onClick={()=> this.setState({userScreen2: false})}>Cancelar</button>
           </div>
         :
           null
@@ -578,7 +577,7 @@ if(perfilTransacciones === "Colaborador"){
                 accessToken={this.state.accessToken}
                 naturalezaCC="1"
                 url={this.state.url}
-                Administrador={this.props.Administrador}
+                Administrador={this.state.Administrador}
               />
             )}
           />
@@ -590,7 +589,7 @@ if(perfilTransacciones === "Colaborador"){
                 accessToken={this.state.accessToken}
                 naturalezaCC="-1"
                 url={this.state.url}
-                Administrador={this.props.Administrador}
+                Administrador={this.state.Administrador}
               />
             )}
           />
@@ -601,7 +600,7 @@ if(perfilTransacciones === "Colaborador"){
               <EstadoResultadosLimpiaduria
                 accessToken={this.state.accessToken}
                 url={this.state.url}
-                Administrador={this.props.Administrador}
+                Administrador={this.state.Administrador}
               />
             )}
           />
@@ -612,7 +611,7 @@ if(perfilTransacciones === "Colaborador"){
               <EgresosLimpiaduriaBI
                 accessToken={this.state.accessToken}
                 url={this.state.url}
-                Administrador={this.props.Administrador}
+                Administrador={this.state.Administrador}
               />
             )}
           />
@@ -622,7 +621,7 @@ if(perfilTransacciones === "Colaborador"){
               <ComprasRecepcion
                 accessToken={this.state.accessToken}
                 url={this.state.url}
-                Administrador={this.props.Administrador}
+                Administrador={this.state.Administrador}
               />
             )}
           />
@@ -632,7 +631,7 @@ if(perfilTransacciones === "Colaborador"){
               <ComprasConsulta
                 accessToken={this.state.accessToken}
                 url={this.state.url}
-                Administrador={this.props.Administrador}
+                Administrador={this.state.Administrador}
               />
             )}
           />
@@ -642,7 +641,7 @@ if(perfilTransacciones === "Colaborador"){
               <PuntoDeVenta
                 accessToken={this.state.accessToken}
                 url={this.state.url}
-                Administrador={this.props.Administrador}
+                Administrador={this.state.Administrador}
               />
             )}
           />
@@ -652,7 +651,7 @@ if(perfilTransacciones === "Colaborador"){
               <RetirosDeCaja
                 accessToken={this.state.accessToken}
                 url={this.state.url}
-                Administrador={this.props.Administrador}
+                Administrador={this.state.Administrador}
               />
             )}
           />
@@ -662,7 +661,7 @@ if(perfilTransacciones === "Colaborador"){
               <VentasConsultaSucursalesHoy
                 accessToken={this.state.accessToken}
                 url={this.state.url}
-                Administrador={this.props.Administrador}
+                Administrador={this.state.Administrador}
               />
             )}
           />
@@ -672,7 +671,7 @@ if(perfilTransacciones === "Colaborador"){
               <VentasConsultaCategorias
                 accessToken={this.state.accessToken}
                 url={this.state.url}
-                Administrador={this.props.Administrador}
+                Administrador={this.state.Administrador}
               />
             )}
           />
@@ -682,7 +681,7 @@ if(perfilTransacciones === "Colaborador"){
               <VentasConsulta
                 accessToken={this.state.accessToken}
                 url={this.state.url}
-                Administrador={this.props.Administrador}
+                Administrador={this.state.Administrador}
               />
             )}
           />
@@ -692,7 +691,7 @@ if(perfilTransacciones === "Colaborador"){
               <VentasConsultaFechaProducto
                 accessToken={this.state.accessToken}
                 url={this.state.url}
-                Administrador={this.props.Administrador}
+                Administrador={this.state.Administrador}
               />
             )}
           />
@@ -702,7 +701,7 @@ if(perfilTransacciones === "Colaborador"){
               <VentasBI
                 accessToken={this.state.accessToken}
                 url={this.state.url}
-                Administrador={this.props.Administrador}
+                Administrador={this.state.Administrador}
               />
             )}
           />
@@ -712,7 +711,7 @@ if(perfilTransacciones === "Colaborador"){
               <VentasBiLavamaticaTienda
                 accessToken={this.state.accessToken}
                 url={this.state.url}
-                Administrador={this.props.Administrador}
+                Administrador={this.state.Administrador}
               />
             )}
           />
@@ -722,7 +721,7 @@ if(perfilTransacciones === "Colaborador"){
               <ConsultaArticulo
                 accessToken={this.state.accessToken}
                 url={this.state.url}
-                Administrador={this.props.Administrador}
+                Administrador={this.state.Administrador}
               />
             )}
           />
@@ -732,7 +731,7 @@ if(perfilTransacciones === "Colaborador"){
               <Kardex
                 accessToken={this.state.accessToken}
                 url={this.state.url}
-                Administrador={this.props.Administrador}
+                Administrador={this.state.Administrador}
               />
             )}
           />
@@ -742,7 +741,7 @@ if(perfilTransacciones === "Colaborador"){
               <ProductosMasDesplazados
                 accessToken={this.state.accessToken}
                 url={this.state.url}
-                Administrador={this.props.Administrador}
+                Administrador={this.state.Administrador}
               />
             )}
           />
@@ -752,7 +751,7 @@ if(perfilTransacciones === "Colaborador"){
               <AjustesInventario
                 accessToken={this.state.accessToken}
                 url={this.state.url}
-                Administrador={this.props.Administrador}
+                Administrador={this.state.Administrador}
               />
             )}
           />
@@ -762,7 +761,7 @@ if(perfilTransacciones === "Colaborador"){
               <CambiosDePresentacion
                 accessToken={this.state.accessToken}
                 url={this.state.url}
-                Administrador={this.props.Administrador}
+                Administrador={this.state.Administrador}
               />
             )}
           />
@@ -772,7 +771,7 @@ if(perfilTransacciones === "Colaborador"){
               <TraspasosSalida
                 accessToken={this.state.accessToken}
                 url={this.state.url}
-                Administrador={this.props.Administrador}
+                Administrador={this.state.Administrador}
               />
             )}
           />
@@ -782,7 +781,7 @@ if(perfilTransacciones === "Colaborador"){
               <InventarioCiclico
                 accessToken={this.state.accessToken}
                 url={this.state.url}
-                Administrador={this.props.Administrador}
+                Administrador={this.state.Administrador}
               />
             )}
           />
@@ -792,7 +791,7 @@ if(perfilTransacciones === "Colaborador"){
               <InventarioFaltantes
                 accessToken={this.state.accessToken}
                 url={this.state.url}
-                Administrador={this.props.Administrador}
+                Administrador={this.state.Administrador}
               />
             )}
           />
@@ -802,7 +801,7 @@ if(perfilTransacciones === "Colaborador"){
               <InventarioPerpetuo
                 accessToken={this.state.accessToken}
                 url={this.state.url}
-                Administrador={this.props.Administrador}
+                Administrador={this.state.Administrador}
               />
             )}
           />
