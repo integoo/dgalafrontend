@@ -67,6 +67,7 @@ class VentasBI extends Component {
 
       const data = await response.json();
 
+
       this.setState({
         Years: data,
         Year: data[0].Year,
@@ -211,8 +212,6 @@ class VentasBI extends Component {
 
 
 
-
-
       this.setState({
         ventasMelate: data,
         ventasMelateLastYear: dataLastYear,
@@ -238,6 +237,20 @@ class VentasBI extends Component {
       });
 
       const data = await response.json();
+
+      //########################## IMPORTANTE  #######################################
+      /*
+        ESTA VALIDACION LA TUVE QUE PONER PORQUE CUANDO AL INICIO DE AÑO NO SE HA 
+        CAPTURADO NINGÚN RETIRO O PAGO DE MELATE, EL QUERY NO ENCUENTA UN TOTAL 
+        EN Y NO AGREGA EL MES 13 CON MONTO =0 Y MARCA ERROR AL CORRER LA PANTALLA. 
+        ESTA ES UN ARREGLO TEMPORAL, REALMENTE DEBO DE ENCONTRAR COMO AL CORRER UN
+        SELECT SUM(), SI NO ENCUENTA UN VALOR, QUE REGRESE UN REGISTRO CON CERO.
+      */
+      if(data.length === 12){
+        data.push({"Mes":13,"Monto":0})
+      }
+
+      //###############################################################################
 
       this.setState({
         pagosMelate: data,
@@ -509,6 +522,8 @@ class VentasBI extends Component {
     const ventasMelate = this.state.ventasMelate;
     const pagosMelate = this.state.pagosMelate;
 
+
+
     resultado = 0;
     let utilidadPerdidaMelate = [];
     for (let i = 0; i < ventasMelate.length; i++) {
@@ -525,7 +540,6 @@ class VentasBI extends Component {
       }
       utilidadPerdidaMelatePorcentaje.push(resultado);
     }
-
     //################### PREPARACION DE GRÁFICA DE % UTILIAD DE MELATE #################################
     let utilidadPerdidaMelatePorcentajeRecharts = []
     utilidadPerdidaMelatePorcentaje.forEach((element,i) =>{
@@ -548,6 +562,7 @@ class VentasBI extends Component {
     const ventasLastYear = this.state.ventasLastYear;
     const egresos = this.state.egresos;
     const egresosLastYear = this.state.egresosLastYear;
+
 
     //Prepara Arreglo de EGRESOS
     // let arregloEgresos = [];
@@ -718,8 +733,8 @@ class VentasBI extends Component {
           </tbody>
         </table>
         <br />
-        {/* <RechartsBarChart02 data={this.state.data} titulo={"Ventas y Egresos Limpiaduría"} color1={"dodgerblue"} color2={"red"} /> */}
-        <RechartsComposedChart04 data={this.state.data} titulo={"Ventas y Egresos Limpiaduría"} color1={"#005599"} color2={"red"} color3={"dodgerblue"} color4={"#ff5349"} />
+          <RechartsComposedChart04 data={this.state.data} titulo={"Ventas y Egresos Limpiaduría"} color1={"#005599"} color2={"red"} color3={"dodgerblue"} color4={"#ff5349"} />
+
 
 
         <br />
@@ -782,9 +797,8 @@ class VentasBI extends Component {
           </tbody>
         </table>
         <br />
-        {/* <RechartsBarChart02 data={this.state.dataMelate} titulo={"Venta y Utilidad Melate"} color1={"dodgerblue"} color2={"green"} /> */}
-        <RechartsComposedChart03 data={this.state.dataMelate} titulo={"Venta y Utilidad Melate"} color1={"dodgerblue"} color2={"green"} color3={"#005599"} />
-        <RechartsBarChart01 data={this.state.utilidadPerdidaMelatePorcentajeRecharts} titulo={"% Utilidad Melate"} color1={"green"} color2={"red"} />
+          <RechartsComposedChart03 data={this.state.dataMelate} titulo={"Venta y Utilidad Melate"} color1={"dodgerblue"} color2={"green"} color3={"#005599"} />
+          <RechartsBarChart01 data={this.state.utilidadPerdidaMelatePorcentajeRecharts} titulo={"% Utilidad Melate"} color1={"green"} color2={"red"} />
 
         <br />
         <h3>Egresos (Gastos e Inversión)</h3>
@@ -923,7 +937,7 @@ class VentasBI extends Component {
         <br />
         <br />
 
-        <RechartsBarChart01 data={this.state.dataGastosInversionesTotalesRecharts} titulo={"Egresos (Gastos e Inversión)"} color1={"red"} color2={"red"}/>
+          <RechartsBarChart01 data={this.state.dataGastosInversionesTotalesRecharts} titulo={"Egresos (Gastos e Inversión)"} color1={"red"} color2={"red"}/>
 
 
 
@@ -961,7 +975,7 @@ class VentasBI extends Component {
           </tbody>
         </table>
         <br /> 
-        <RechartsBarChart01 data={this.state.dataLimpiaduriaMelateRentasOtrosUtilidadRecharts} titulo={"Utilidad Neta Limpiaduría, Melate, Rentas y Otros Ingresos"} color1={"green"} />
+          <RechartsBarChart01 data={this.state.dataLimpiaduriaMelateRentasOtrosUtilidadRecharts} titulo={"Utilidad Neta Limpiaduría, Melate, Rentas y Otros Ingresos"} color1={"green"} />
 
 
       </div>

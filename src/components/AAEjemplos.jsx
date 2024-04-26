@@ -22,7 +22,7 @@ create database desarrollodb;
 pg_restore -d desarrollodb dgaladb_$fecha.dump
 
 UPDATE colaboradores SET "Password" = 'dfjiejoijeijfjgjrjojijg837439dkK' WHERE "ColaboradorId" <> 0;
-INSERT INTO colaboradores VALUES (0, 'desarrollo', 'desarrollo', '$2b$10$PEBBj5HGAysvCnPEAh282uXTvEYieLEnYWf049swgaRTKqfOP4p4e', 99, USER,CLOCK_TIMESTAMP(), 'S');
+INSERT INTO colaboradores VALUES (0, 'desarrollo', 'desarrollo', '$2b$10$PEBBj5HGAysvCnPEAh282uXTvEYieLEnYWf049swgaRTKqfOP4p4e', 99, USER,CLOCK_TIMESTAMP(), 'S','Gerente');
 #####################################################################################
 
 ALTER TABLE cuotas_mes OWNER TO ubuntu;
