@@ -26,17 +26,20 @@ export default class Login extends React.Component{
             domain=`localhost`
             port = 4001
         }else{
-            port = 3001
-            //domain=`grupodgala.com`
-            domain=`decorafiestas.com`
+            //port = 3001
+            port = 8443 //Puerto alternativo a 443 https el cual ya está ocupado por dgalafront-end Apache
+            domain=`grupodgala.com`
+            //domain=`decorafiestas.com`
         }
         //const url = `http://decorafiestas.com:${port}/login`
-        const protocol = `http`
+        //const protocol = `http`
+        const protocol = `https`
         const path = `/login`
         
         const url = `${protocol}://${domain}:${port}`
 
         try{
+            alert(url+path)
                 const response = await fetch(url+path, {
                     method:'POST',
                     body: JSON.stringify(json),
