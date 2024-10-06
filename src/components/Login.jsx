@@ -39,7 +39,6 @@ export default class Login extends React.Component{
         const url = `${protocol}://${domain}:${port}`
 
         try{
-            alert(url+path)
                 const response = await fetch(url+path, {
                     method:'POST',
                     body: JSON.stringify(json),

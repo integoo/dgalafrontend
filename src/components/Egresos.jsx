@@ -246,7 +246,7 @@ class Egresos extends Component {
   };
 
   getPeriodoAbierto = async (Fecha) => {
-    const url = this.props.url + `/periodoabierto`;
+    const url = this.props.url + `/api/periodoabierto`;
     //let Fecha = this.state.Fecha
     let PeriodoAbierto;
     let PeriodoAbiertoPrimerDia;
@@ -331,7 +331,7 @@ class Egresos extends Component {
     //let bandera = false
     let data = []
     const url =
-      this.props.url + `/ingresos/unidadesdenegociocatalogo/${naturalezaCC}`;
+      this.props.url + `/api/ingresos/unidadesdenegociocatalogo/${naturalezaCC}`;
     try {
       const response = await fetch(url, {
         headers: {
@@ -362,7 +362,7 @@ class Egresos extends Component {
     //let bandera = false
     let data = []
     const url =
-      this.props.url + `/ingresos/cuentascontablescatalogo/${naturalezaCC}`;
+      this.props.url + `/api/ingresos/cuentascontablescatalogo/${naturalezaCC}`;
     try {
       const response = await fetch(url, {
         headers: {
@@ -393,7 +393,7 @@ class Egresos extends Component {
     //let bandera = false
     let data = []
     const url =
-      this.props.url + `/ingresos/subcuentascontablescatalogo/${naturalezaCC}`;
+      this.props.url + `/api/ingresos/subcuentascontablescatalogo/${naturalezaCC}`;
     try {
       const response = await fetch(url, {
         headers: {
@@ -429,7 +429,7 @@ class Egresos extends Component {
     if (accesoDB === "mes" || accesoDB === "dia") {
       const url =
         this.props.url +
-        `/ingresos/getIngresosEgresos/${vfecha}/${naturalezaCC}/${accesoDB}/${trans}`;
+        `/api/ingresos/getIngresosEgresos/${vfecha}/${naturalezaCC}/${accesoDB}/${trans}`;
       try {
         const response = await fetch(url, {
           headers: {
@@ -766,7 +766,7 @@ class Egresos extends Component {
       };
 
       try {
-        const url = this.props.url + `/ingresos/grabaingresos`;
+        const url = this.props.url + `/api/ingresos/grabaingresos`;
         const response = await fetch(url, {
           method: "POST",
           body: JSON.stringify(json), //JSON.stringify(data)

@@ -174,7 +174,7 @@ class VentasIngresos extends Component {
   };
 
   getPeriodoAbierto = async () => {
-    const url = this.props.url + `/periodoabierto`;
+    const url = this.props.url + `/api/periodoabierto`;
     let bandera = false;
     try {
       const response = await fetch(url, {
@@ -204,7 +204,7 @@ class VentasIngresos extends Component {
     const naturalezaCC = this.props.naturalezaCC;
     let bandera = false;
     const url =
-      this.props.url + `/ingresos/unidadesdenegociocatalogo/${naturalezaCC}`;
+      this.props.url + `/api/ingresos/unidadesdenegociocatalogo/${naturalezaCC}`;
     try {
       const response = await fetch(url, {
         headers: {
@@ -247,7 +247,7 @@ class VentasIngresos extends Component {
     const naturalezaCC = this.props.naturalezaCC;
     let bandera = false;
     const url =
-      this.props.url + `/ingresos/cuentascontablescatalogo/${naturalezaCC}`;
+      this.props.url + `/api/ingresos/cuentascontablescatalogo/${naturalezaCC}`;
     try {
       const response = await fetch(url, {
         headers: {
@@ -289,7 +289,7 @@ class VentasIngresos extends Component {
     const naturalezaCC = this.props.naturalezaCC;
     let bandera = false;
     const url =
-      this.props.url + `/ingresos/subcuentascontablescatalogo/${naturalezaCC}`;
+      this.props.url + `/api/ingresos/subcuentascontablescatalogo/${naturalezaCC}`;
     try {
       const response = await fetch(url, {
         headers: {
@@ -461,7 +461,7 @@ class VentasIngresos extends Component {
       const naturalezaCC = this.props.naturalezaCC;
       const url =
         this.props.url +
-        `/ingresos/getIngresosEgresos/${Fecha}/${naturalezaCC}/${accesoDB}/${trans}`;
+        `/api/ingresos/getIngresosEgresos/${Fecha}/${naturalezaCC}/${accesoDB}/${trans}`;
 
       try {
         const response = await fetch(url, {
@@ -764,7 +764,7 @@ class VentasIngresos extends Component {
           alert("No hay movimiento que registrar");
           return;
         }
-        const url = this.props.url + `/ingresos/grabaingresos2`;
+        const url = this.props.url + `/api/ingresos/grabaingresos2`;
 
         try {
           const response = await fetch(url, {

@@ -76,7 +76,7 @@ class EstadoResultadosLimpiaduria extends React.Component {
   };
 
   getPeriodoAbierto = async () => {
-    const url = this.props.url + `/periodoabierto`;
+    const url = this.props.url + `/api/periodoabierto`;
     //let Fecha = this.state.Fecha;
     let PeriodoAbierto;
     let PeriodoAbiertoPrimerDia;
