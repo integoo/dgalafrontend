@@ -34,7 +34,7 @@ export default class Login extends React.Component{
         //const url = `http://decorafiestas.com:${port}/login`
         //const protocol = `http`
         const protocol = `https`
-        const path = `/login`
+        const path = `/api/login`
         
         const url = `${protocol}://${domain}:${port}`
 
