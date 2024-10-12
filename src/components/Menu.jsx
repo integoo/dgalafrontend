@@ -65,14 +65,10 @@ class Menu extends Component {
   }
 
   render() {
-    const linkStyle = {
-      color: "white",
-    };
-//***  Aquí esta el nombre de la Base de Datos como constante dgaladb ******/
 
+    const linkStyle = {color: "white",};
     let classes = "navbar navbar-expand-lg navbar-white bg-"
-    classes+= (this.state.dbName) === 'dgaladb' ? "primary" : "warning"
-
+    classes+= (this.state.dbName) === 'dgaladb' ? "primary" : "warning" //Nombre de la Base de Datos
     const ambiente = <span style={{fontSize:".5rem"}}>{this.state.Version}</span> 
 
 //******************************************************************************** */

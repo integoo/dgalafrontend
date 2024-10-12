@@ -22,18 +22,17 @@ export default class Login extends React.Component{
 
         let port;
         let domain;
+        let protocol;
         if(user === 'desarrollo'){
             domain=`localhost`
             port = 4001
+            protocol = `http`
         }else{
-            //port = 3001
-            port = 8443 //Puerto alternativo a 443 https el cual ya está ocupado por dgalafront-end Apache
+            port = 3001
+            //port = 8443 //Puerto alternativo a 443 https el cual ya está ocupado por dgalafront-end Apache
             domain=`grupodgala.com`
-            //domain=`decorafiestas.com`
+            protocol = `http` //El protocolo es http y el puerto 3001 porque Apache Reverse Proxy cifra la información y aisla el backend.
         }
-        //const url = `http://decorafiestas.com:${port}/login`
-        //const protocol = `http`
-        const protocol = `https`
         const path = `/api/login`
         
         const url = `${protocol}://${domain}:${port}`
@@ -77,7 +76,6 @@ export default class Login extends React.Component{
     }
 
     render(){
-        //const logo = 'https://grupodgala.com/LogoDGala.png'
         const logo = 'LogoDGala.png'
 
         return(
