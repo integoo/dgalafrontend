@@ -188,9 +188,12 @@ class VentasIngresos extends Component {
         return bandera
       }
       this.setState({
-        PeriodoAbierto: data.rows[0].Periodo,
-        PeriodoAbiertoPrimerDia: data.rows[0].PrimerDiaMes.substring(0, 10),
-        PeriodoAbiertoUltimoDia: data.rows[0].UltimoDiaMes.substring(0, 10),
+        //EU PeriodoAbierto: data.rows[0].Periodo,
+        PeriodoAbierto: data[0].Periodo,
+        //EU PeriodoAbiertoPrimerDia: data.rows[0].PrimerDiaMes.substring(0, 10),
+        PeriodoAbiertoPrimerDia: data[0].PrimerDiaMes.substring(0, 10),
+        //EU PeriodoAbiertoUltimoDia: data.rows[0].UltimoDiaMes.substring(0, 10),
+        PeriodoAbiertoUltimoDia: data[0].UltimoDiaMes.substring(0, 10),
       });
       bandera = true;
     } catch (error) {

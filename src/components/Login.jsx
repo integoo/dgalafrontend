@@ -30,18 +30,13 @@ export default class Login extends React.Component{
             protocol = `http`
             url = `${protocol}://${domain}:${port}`
         }else{
-            //EU port = 3001
-            //port = 8443 //Puerto alternativo a 443 https el cual ya está ocupado por dgalafront-end Apache
             domain=`grupodgala.com`
-            //EU protocol = `http` //El protocolo es http y el puerto 3001 porque Apache Reverse Proxy cifra la información y aisla el backend.
             protocol = `https` 
             url = `${protocol}://${domain}`
         }
-        const path = `/api/login`
-        
         
         try{
-                const response = await fetch(url+path, {
+                const response = await fetch(url+`/api/login`, {
                     method:'POST',
                     body: JSON.stringify(json),
                     headers:{
