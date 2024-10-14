@@ -93,9 +93,9 @@ class EstadoResultadosLimpiaduria extends React.Component {
         alert(data.error);
         return;
       }
-      PeriodoAbierto = data.rows[0].Periodo;
-      PeriodoAbiertoPrimerDia = data.rows[0].PrimerDiaMes.substring(0, 10);
-      PeriodoAbiertoUltimoDia = data.rows[0].UltimoDiaMes.substring(0, 10);
+      PeriodoAbierto = data[0].Periodo;
+      PeriodoAbiertoPrimerDia = data[0].PrimerDiaMes.substring(0, 10);
+      PeriodoAbiertoUltimoDia = data[0].UltimoDiaMes.substring(0, 10);
 
       //   if(Fecha > PeriodoAbiertoUltimoDia){
       //     Fecha = PeriodoAbiertoUltimoDia
